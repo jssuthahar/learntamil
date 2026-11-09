@@ -69,6 +69,12 @@ After publishing:
 2. Link to the site from blog.msdevbuild.com and your profiles. Links from trusted pages matter most for ranking.
 3. Check structured data with the [Rich Results Test](https://search.google.com/test/rich-results).
 
+## Rewards and certificates
+
+- **Games** give an appreciation chime, a celebration pop-up with spoken praise (அருமை!, நன்று! …), points (+10, +5 bonus for 3 in a row) and a scoreboard with streak and best score. Sounds are generated in the browser (Web Audio) and can be muted with 🔊.
+- **Tokens 🪙 and 20 badges 🏅** are saved on the device (`localStorage`); tap 🪙 in the header to see *My rewards*.
+- **Certificates 🎓**: five level tests of 10 questions each (vowels → consonants → uyirmei → reading words → master). Questions are generated from `js/data.js`, so answers are always correct. Score 8/10 to pass and unlock the next level. The certificate is drawn on a canvas (so Tamil renders correctly) and saved as a PDF by a small built-in writer in `js/cert.js`, with no external library, so it works offline. Certificates are for encouragement and are not an official qualification.
+
 ## Install as an app (PWA) and offline use
 
 Learn Tamil is a Progressive Web App:

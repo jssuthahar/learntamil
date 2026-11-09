@@ -59,9 +59,10 @@
       <button class="nav-item" data-go="reading"><span class="nav-ic" aria-hidden="true">📖</span><span class="nav-t"><span class="ta">வாசிப்பு</span><small>Reading</small></span></button>
       <button class="nav-item" data-go="stories"><span class="nav-ic" aria-hidden="true">📚</span><span class="nav-t"><span class="ta">கதைகள்</span><small>Stories</small></span></button>
       <button class="nav-item" data-go="practice"><span class="nav-ic" aria-hidden="true">🎮</span><span class="nav-t"><span class="ta">விளையாட்டு</span><small>Games</small></span></button>
+      <button class="nav-item" data-go="certificate"><span class="nav-ic" aria-hidden="true">🎓</span><span class="nav-t"><span class="ta">சான்றிதழ்</span><small>Certificate</small></span></button>
     </nav>
     <span class="spacer"></span>
-    <span class="stars" id="stars" title="Stars earned in Practice" aria-label="Stars earned">⭐ <span id="starN">0</span></span>
+    <button class="stars" id="stars" type="button" title="My rewards" aria-label="My rewards: tokens and badges"><span aria-hidden="true">🪙</span> <span id="starN">0</span></button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme" title="Theme">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
@@ -231,7 +232,7 @@
 
   <!-- விளையாட்டு -->
   <section class="panel" id="practice" role="tabpanel">
-    <div class="sec-head"><div><h2>விளையாட்டு · Games</h2><p>Pick a game. Every right answer earns a star.</p></div></div>
+    <div class="sec-head"><div><h2>விளையாட்டு · Games</h2><p>Pick a game. Every right answer earns points 🏆 and tokens 🪙 — 3 in a row gives a bonus 🔥. Tap 🪙 at the top to see your badges.</p></div></div>
     <div class="gamepick" id="gamePick" role="group" aria-label="Choose a game">
       <button class="gcard" data-game="build" aria-pressed="true"><span class="gi" aria-hidden="true">🧮</span><b>க் + ஆ = ?</b><small>Build a letter</small></button>
       <button class="gcard" data-game="listen" aria-pressed="false"><span class="gi" aria-hidden="true">👂</span><b>Listen</b><small>Hear &amp; pick</small></button>
@@ -239,6 +240,13 @@
       <button class="gcard" data-game="balloon" aria-pressed="false"><span class="gi" aria-hidden="true">🎈</span><b>Balloon pop</b><small>Pop the letter</small></button>
       <button class="gcard" data-game="words" aria-pressed="false"><span class="gi" aria-hidden="true">🧩</span><b>Word builder</b><small>Put letters in order</small></button>
       <button class="gcard" data-game="memory" aria-pressed="false"><span class="gi" aria-hidden="true">🃏</span><b>Memory</b><small>Match the pairs</small></button>
+    </div>
+
+    <div class="scoreboard" id="scoreboard" aria-live="polite">
+      <div class="sb-item"><span class="sb-ic" aria-hidden="true">🏆</span><b id="sbScore">0</b><small>Score</small></div>
+      <div class="sb-item"><span class="sb-ic" aria-hidden="true">🔥</span><b id="sbStreak">0</b><small>Streak</small></div>
+      <div class="sb-item"><span class="sb-ic" aria-hidden="true">👑</span><b id="sbBest">0</b><small>Best</small></div>
+      <button class="sb-sound" id="sfxBtn" type="button" aria-pressed="true">🔊</button>
     </div>
 
     <!-- Spin wheel -->
@@ -294,9 +302,16 @@
       <div class="q" id="qShow"></div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback" aria-live="polite"></div>
-      <div class="scorebar"><span>✓ <span id="sOk">0</span></span><span class="muted">Tries <span id="sAll">0</span></span></div>
       <button class="btn" id="hear" style="margin-top:14px">🔊 <span class="ta">மீண்டும் கேள்</span> · Hear again</button>
     </div>
+  </section>
+
+  <!-- சான்றிதழ் -->
+  <section class="panel" id="certificate" role="tabpanel">
+    <div class="sec-head"><div><h2>சான்றிதழ் · Certificates</h2><p>Pass a short test at each level (8 out of 10) to earn a certificate you can download as a PDF. Each level unlocks the next.</p></div></div>
+    <div class="cert-levels" id="certLevels"></div>
+    <div class="cert-quiz glass" id="certQuiz" hidden></div>
+    <div class="cert-result glass" id="certResult" hidden></div>
   </section>
 
   <div class="toolbar" id="globalTools" style="justify-content:center;margin-top:22px">
@@ -365,7 +380,11 @@
 <script src="audio/manifest.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
+<script src="js/rewards.js"></script>
 <script src="js/games.js"></script>
+<script src="js/cert.js"></script>
 <script src="js/pwa.js"></script>
+<script src="js/faq-data.js"></script>
+<script src="js/chat.js"></script>
 </body>
 </html>
