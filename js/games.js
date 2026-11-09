@@ -48,7 +48,7 @@ $('#readSay').addEventListener('click', ()=>{ R.token++; speak(R.list[R.idx][0])
 $('#readPrev').addEventListener('click', ()=>{ if (R.idx>0){ R.idx--; renderRead(); } });
 $('#readNext').addEventListener('click', ()=>{ R.idx = (R.idx+1) % R.list.length; renderRead(); });
 $('#readDone').addEventListener('click', e=>{
-  addStar(); sparkle(e.currentTarget);
+  Rewards.cheer(e.currentTarget, false); addStar(1); Progress.track('word');
   if ($('#readAns').hidden) reveal();
   if (R.idx === R.list.length-1) confetti();
   setTimeout(()=>{ R.idx = (R.idx+1) % R.list.length; renderRead(); }, 1100);
@@ -65,6 +65,7 @@ $$('#readLevels .seg-btn').forEach(b=>b.addEventListener('click', ()=>{
 let game = 'build';
 function showGame(g){
   game = g;
+  Rewards.score.reset(g);
   $$('#gamePick .gcard').forEach(c=>c.setAttribute('aria-pressed', c.dataset.game===g));
   stopBalloon();
   const panelId = (g==='build' || g==='listen') ? 'g-quiz' : 'g-'+g;
@@ -122,10 +123,11 @@ function landed(){
     b.innerHTML = `<span class="pe" aria-hidden="true">${emo}</span><span class="pw" lang="ta">${word}</span><span class="r">${mean}</span>`;
     b.addEventListener('click', ()=>{
       if (i === spinIdx){
-        b.classList.add('right'); sparkle(b); addStar(); speak(word);
-        fb($('#spinFb'), `${praise()} ${word} — ${v.l}`, 'ok');
+        b.classList.add('right');
+        const r = Rewards.win(b, { after: ()=>speak(word) }); Progress.track('spin');
+        fb($('#spinFb'), `${r.ta} ${word} — ${v.l}`, 'ok');
         box.querySelectorAll('button').forEach(x=>x.disabled = true);
-      } else { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); fb($('#spinFb'), 'பரவாயில்லை, மீண்டும் முயற்சி செய்!', 'bad'); speak(word); }
+      } else { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); Rewards.miss(); fb($('#spinFb'), 'பரவாயில்லை, மீண்டும் முயற்சி செய்!', 'bad'); setTimeout(()=>speak(word), 300); }
     });
     box.appendChild(b);
   });
@@ -176,12 +178,12 @@ function spawnBalloon(){
   b.addEventListener('click', ()=>{
     if (!B.on || b.classList.contains('popped')) return;
     if (b.textContent === B.target.l){
-      b.classList.add('popped'); sparkle(b); B.score++; B.hits++;
+      b.classList.add('popped'); B.score++; B.hits++;
       $('#balScore').textContent = B.score;
-      if (B.score % 3 === 0) addStar();
+      Rewards.sfx.pop(); Rewards.win(b, { quiet: true });
       setTimeout(()=>b.remove(), 300);
       if (B.hits >= 3){ B.hits = 0; newTarget(); }
-    } else { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); }
+    } else { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); Rewards.miss(); }
   });
   sky.appendChild(b);
 }
@@ -191,7 +193,8 @@ function endBalloon(){
   const s = $('#balStart'); s.hidden = false;
   s.querySelector('p').innerHTML = `<span class="ta">${B.score >= 6 ? 'அருமை!' : 'நன்று!'}</span><br><b class="bal-final">🎈 ${B.score}</b><br><small class="muted">balloons popped</small>`;
   $('#balGo').textContent = '↻ Play again';
-  if (B.score >= 6) confetti();
+  Progress.track('balloon', B.score);
+  if (B.score >= 6) Rewards.win($('#balSky'), { big: true, points: 20 });
 }
 $('#balGo').addEventListener('click', startBalloon);
 
@@ -220,15 +223,15 @@ function placeTile(t){
   if (t.textContent === W.letters[W.filled]){
     const slot = $$('#wbSlots .slot')[W.filled];
     slot.textContent = t.textContent; slot.classList.add('filled');
-    t.disabled = true; t.classList.add('used'); say1(t.textContent);
+    t.disabled = true; t.classList.add('used'); Rewards.sfx.tick(); say1(t.textContent);
     W.filled++;
     if (W.filled === W.letters.length){
-      W.done = true; addStar(); confetti();
-      fb($('#wbFb'), `${praise()} ${W.word[0]}`, 'ok');
-      setTimeout(()=>speak(W.word[0]), 600);
+      W.done = true; Progress.track('built');
+      const r = Rewards.win($('#wbSlots'), { big: true, points: 20, after: ()=>speak(W.word[0]) });
+      fb($('#wbFb'), `${r.ta} ${W.word[0]}`, 'ok');
     }
   } else {
-    t.classList.remove('nope'); void t.offsetWidth; t.classList.add('nope');
+    t.classList.remove('nope'); void t.offsetWidth; t.classList.add('nope'); Rewards.miss();
     fb($('#wbFb'), 'பரவாயில்லை, மீண்டும் முயற்சி செய்!', 'bad');
   }
 }
@@ -263,10 +266,11 @@ function flip(b, c){
   M.moves++; $('#memMoves').textContent = M.moves;
   const [[b1,c1],[b2,c2]] = M.open; M.open = [];
   if (c1.i === c2.i && c1.kind !== c2.kind){
-    b1.classList.add('match'); b2.classList.add('match'); sparkle(b2); M.matched++;
-    if (M.matched === 6){ addStar(); confetti(); fb($('#memFb'), `${praise()} ${M.moves} moves`, 'ok'); }
+    b1.classList.add('match'); b2.classList.add('match'); M.matched++;
+    if (M.matched < 6) Rewards.win(b2, { quiet: true });
+    else { Progress.track('memory'); const r = Rewards.win($('#memGrid'), { big: true, points: 30 }); fb($('#memFb'), `${r.ta} ${M.moves} moves`, 'ok'); }
   } else {
-    M.lock = true;
+    M.lock = true; Rewards.miss();
     setTimeout(()=>{ [b1,b2].forEach(x=>{ x.classList.remove('up'); x.setAttribute('aria-label','Hidden card'); }); M.lock = false; }, 1000);
   }
 }

@@ -74,11 +74,13 @@
 <p>To make the site work, a few small values are saved in your browser's own storage. They never leave your device and we cannot see them.</p>
 <div class="tbl"><table><thead><tr><th>What</th><th>Where</th><th>Why</th></tr></thead><tbody>
 <tr><td>Light or dark theme</td><td>localStorage <code>lt-theme</code></td><td>Remembers your colour choice</td></tr>
-<tr><td>Stars earned</td><td>localStorage <code>lt-stars</code></td><td>Shows the star count from games</td></tr>
+<tr><td>Game progress: tokens, badges, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
+<tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
+<tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
 </tbody></table></div>
-<p>You can remove all of this at any time by clearing this site's data in your browser settings.</p>
+<p>You can remove all of this at any time with <em>Reset progress</em> in the 🪙 My rewards panel, or by clearing this site's data in your browser settings.</p>
 
 <h2>Microphone</h2>
 <p>Only the optional <strong>Letter Recorder</strong> page uses the microphone, and only after you allow it and press <em>Record</em>. Recordings stay in your browser. They are never uploaded by this website; they leave your device only if you choose to download the zip file yourself.</p>
@@ -122,5 +124,7 @@
   </div>
 </footer>
 <script src="js/pwa.js"></script>
+<script src="js/faq-data.js"></script>
+<script src="js/chat.js"></script>
 </body>
 </html>

@@ -147,6 +147,8 @@ ${more}
 </main>
 ${FOOTER}
 <script src="js/pwa.js"></script>
+<script src="js/faq-data.js"></script>
+<script src="js/chat.js"></script>
 </body>
 </html>
 `;
@@ -395,7 +397,7 @@ const storyHtml = s => `<article class="story glass" id="${s.id}">
   <ol class="st-pages">${s.pages.map(([e, t, en]) => `<li><span class="st-e" aria-hidden="true">${e}</span><div><p class="ta st-t">${t}</p><p class="st-en">${esc(en)}</p></div></li>`).join('')}</ol>
   <a class="st-listen" href="./#/stories">🔊 Listen to this story in the app</a>
 </article>`;
-const moralOf = id => { const s = STORIES.find(x => x.id === id); const p = s.pages[s.pages.length - 1]; return [s.title, p[1], p[2]]; };
+const moralOf = id => { const s = STORIES.find(x => x.id === id); const p = s.pages[s.pages.length - 1]; return [`${s.title} (${s.en})`, p[1], p[2]]; };
 const STORY_FAQ = [
   ['Which Tamil stories are good for young children?', 'Short stories with animals and a clear lesson work well: ' + STORIES.map(s => `${s.title} (${s.en})`).join(', ') + '. Each is told in a few simple sentences.'],
   ...['crow', 'lion', 'race'].map(id => { const [t, ta2, en] = moralOf(id); return [`What is the moral of ${t}?`, `The moral of ${t} is “${ta2}” — ${en}`]; })
@@ -458,6 +460,33 @@ ${h2('faq', '❓', 'அடிக்கடி கேட்கப்படும�
   schema: [faqSchemaFor(TA_FAQ, 'ezhuthukal.html')]
 }));
 
+/* ---------- Ask Kili chat: knowledge base (js/faq-data.js) ----------
+   All guide FAQs + help about using the site. [text](url) becomes a link in the chat. */
+const ISS = ISSUES_URL;
+const HELP = [
+  ['How do I hear a letter?', 'Open Letters (எழுத்துகள்) and tap any letter tile. The big letter, its sound and a picture word appear at the top; press 🔊 to hear it again. Vowels play the letter and then their picture word.', 'sound hear listen play letter tap audio', './#/uyir'],
+  ['The sound is wrong or there is no sound', `Sounds come from your device's Tamil text-to-speech voice, which can mispronounce single letters. To get a Tamil voice — Android: Settings → Text-to-speech → Google → install Tamil. Windows: Settings → Time & language → Speech → add Tamil. iPhone/Mac: Settings → Accessibility → Spoken Content → Voices → Tamil. Microsoft Edge has clearer Tamil voices. If you hear a mistake, please [report it on GitHub Issues](${ISS}).`, 'sound voice wrong no not working mute silent pronounce pronunciation audio speaker tts', ''],
+  ['How do I install Learn Tamil as an app?', 'On Android, Chrome or Edge, tap the ⬇ Install app button at the top. On iPhone or iPad, open the site in Safari, tap Share and then Add to Home Screen. The app opens full screen and has shortcuts to Letters, Reading, Stories, Games and Certificate.', 'install app download home screen phone mobile iphone android pwa', ''],
+  ['Does it work offline?', 'Yes. After your first visit, letters, reading, stories, games, certificates and the guide pages work without internet. Sounds from the device voice work offline only if the voice is stored on the device.', 'offline internet wifi network connection data', ''],
+  ['How do I get a certificate?', 'Open 🎓 Certificate, choose a level and answer 10 questions. Score 8 or more to pass, type the name, and download the certificate as a PDF. Each level unlocks the next. Certificates are for encouragement, not an official qualification.', 'certificate cert pdf level test exam pass download சான்றிதழ்', './#/certificate'],
+  ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
+  ['How do I reset progress?', 'Tap 🪙 at the top to open My rewards, then press Reset progress. You can also clear this site’s data in your browser settings.', 'reset clear delete progress start again restart', ''],
+  ['Which games are there?', 'Six games: க் + ஆ = ? (build a letter), Listen & pick, Spin wheel, Balloon pop, Word builder and Memory. Every right answer gives points, a cheer and tokens; 3 in a row gives a bonus.', 'game games play fun quiz balloon spin memory word builder', './#/practice'],
+  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts, no cookies, no analytics, no ads and no tracking. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
+  ['How can I report a mistake or give feedback?', `Please open an issue on [GitHub Issues](${ISS}). There are short forms for a wrong sound or Tamil mistake, a bug, or an idea. Issues are public, so please don’t include personal details.`, 'report mistake bug error wrong issue feedback idea suggest problem github', ''],
+  ['How can I support Learn Tamil?', `Learn Tamil is free with no ads. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
+  ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
+  ['Where can I read Tamil stories?', 'Open Stories (கதைகள்) in the app to hear five short stories read aloud — tap any word to see its letters. You can also read them as text with English meaning on the [Tamil stories page](tamil-stories-for-kids.html).', 'story stories read kathai கதை moral', './#/stories'],
+  ['How does reading practice work?', 'Open Reading (வாசிப்பு). Read the word yourself, tap 🐢 to hear it letter by letter, then show the picture to check. There are three levels: 2, 3 and 4+ letter words.', 'reading read practice words level spell', './#/reading']
+];
+const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
+  'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ };
+const KB = [
+  ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
+  ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))
+];
+write('js/faq-data.js', '/* Generated by tools/build-pages.mjs — knowledge base for the Ask Kili chat. Do not edit by hand. */\nwindow.LT_FAQ = ' + JSON.stringify(KB) + ';\n');
+
 /* ---------- sitemap (with language alternates) ---------- */
 const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
   ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
@@ -504,11 +533,13 @@ const privacyBody = `
 <p>To make the site work, a few small values are saved in your browser's own storage. They never leave your device and we cannot see them.</p>
 <div class="tbl"><table><thead><tr><th>What</th><th>Where</th><th>Why</th></tr></thead><tbody>
 <tr><td>Light or dark theme</td><td>localStorage <code>lt-theme</code></td><td>Remembers your colour choice</td></tr>
-<tr><td>Stars earned</td><td>localStorage <code>lt-stars</code></td><td>Shows the star count from games</td></tr>
+<tr><td>Game progress: tokens, badges, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
+<tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
+<tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
 </tbody></table></div>
-<p>You can remove all of this at any time by clearing this site's data in your browser settings.</p>
+<p>You can remove all of this at any time with <em>Reset progress</em> in the 🪙 My rewards panel, or by clearing this site's data in your browser settings.</p>
 
 <h2>Microphone</h2>
 <p>Only the optional <strong>Letter Recorder</strong> page uses the microphone, and only after you allow it and press <em>Record</em>. Recordings stay in your browser. They are never uploaded by this website; they leave your device only if you choose to download the zip file yourself.</p>
@@ -562,22 +593,25 @@ const termsBody = `
 <h2>4. Voluntary support</h2>
 <p>Learn Tamil is free and will stay free. Supporting it through <a href="${COFFEE_URL}" rel="noopener">Buy Me a Coffee</a> is completely voluntary, does not unlock any extra features, and is handled by Buy Me a Coffee under its own terms. Payments should be made by a parent or adult.</p>
 
-<h2>5. Children</h2>
+<h2 id="certificates">5. Certificates</h2>
+<p>Level certificates are made in your browser when a test is passed. They are practice certificates to encourage children, <strong>not an official or accredited qualification</strong>, and are not verified by any school or examination board.</p>
+
+<h2>6. Children</h2>
 <p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
 
-<h2>6. Links to other websites</h2>
+<h2>7. Links to other websites</h2>
 <p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). We are not responsible for their content or practices.</p>
 
-<h2>7. No warranty</h2>
+<h2>8. No warranty</h2>
 <p>The site is provided “as is” and “as available”, without warranties of any kind, express or implied, including fitness for a particular purpose and uninterrupted or error-free operation.</p>
 
-<h2>8. Limitation of liability</h2>
+<h2>9. Limitation of liability</h2>
 <p>To the fullest extent permitted by law, the author is not liable for any loss or damage arising from the use of, or inability to use, this free website.</p>
 
-<h2>9. Changes</h2>
+<h2>10. Changes</h2>
 <p>These terms may be updated from time to time. The current version is always on this page with its “Updated” date. Continuing to use the site after a change means you accept the updated terms.</p>
 
-<h2>10. Contact</h2>
+<h2>11. Contact</h2>
 <p>Questions about these terms can be sent through the ${CONTACT}.</p>
 `;
 fs.writeFileSync(path.join(ROOT, 'terms.html'), shell({

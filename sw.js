@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'a3027ac5c9';
+const VERSION = 'd01ee01222';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -10,7 +10,7 @@ const PRECACHE = [
   './', 'index.html', 'tamil-alphabet.html', 'tamil-vowels.html', 'tamil-consonants.html',
   'uyirmei-ezhuthukal.html', 'tamil-words-for-kids.html', 'tamil-stories-for-kids.html', 'ezhuthukal.html',
   'privacy.html', 'terms.html',
-  'css/styles.css', 'js/data.js', 'js/app.js', 'js/games.js', 'audio/manifest.js',
+  'css/styles.css', 'js/data.js', 'js/app.js', 'js/rewards.js', 'js/games.js', 'js/cert.js', 'js/faq-data.js', 'js/chat.js', 'js/pwa.js', 'audio/manifest.js',
   'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'
 ];

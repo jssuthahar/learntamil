@@ -138,14 +138,9 @@ function confetti(){
     particle(['🎉','⭐','🎈','✨','🌟','🍬'][i%6], Math.random()*W, -30, (Math.random()*2-1)*80, innerHeight*(.6+Math.random()*.4), 1600+Math.random()*1200, 18+Math.random()*14);
   }
 }
-let stars = 0;
-try{ stars = parseInt(localStorage.getItem('lt-stars'),10) || 0; }catch(e){}
-function renderStars(bump){
-  $('#starN').textContent = stars;
-  if (bump){ const s=$('#stars'); s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
-}
-function addStar(){ stars++; try{ localStorage.setItem('lt-stars', stars); }catch(e){} renderStars(true); }
-renderStars(false);
+// Tokens, badges and saved progress live in rewards.js (Progress).
+function addStar(n = 1){ if (typeof Progress !== 'undefined') Progress.addTokens(n); }
+const track = (what, v)=>{ if (typeof Progress !== 'undefined') Progress.track(what, v); };
 
 // floating letters behind the hero
 (function(){
@@ -184,6 +179,7 @@ function play(item, tileEl){
   display(item);
   $$('.tile.playing').forEach(t=>t.classList.remove('playing'));
   if (tileEl){ tileEl.classList.add('playing'); sparkle(tileEl); }
+  track('letter', item.l);
   sayItem(item, ()=>tileEl && tileEl.classList.remove('playing'));
 }
 $('#replay').addEventListener('click', ()=>sayItem(current));
@@ -364,7 +360,7 @@ function readPage(){
     if (k < sents.length){ speakSentence(sents[k++], ()=>setTimeout(step, 350)); return; }
     if ($('#autoTurn').checked && pageIdx < story.pages.length-1){ pageIdx++; renderPage(); setTimeout(readPage, 700); return; }
     stopReading();
-    if (pageIdx === story.pages.length-1){ $('#theEnd').hidden = false; confetti(); }
+    if (pageIdx === story.pages.length-1){ $('#theEnd').hidden = false; confetti(); track('story', story.id); }
   };
   step();
 }
@@ -377,7 +373,7 @@ function stopReading(){
 }
 $('#readMe').addEventListener('click', ()=> reading ? stopReading() : readPage());
 $('#prev').addEventListener('click', ()=>{ stopReading(); if (pageIdx>0){ pageIdx--; renderPage(); } });
-$('#next').addEventListener('click', ()=>{ stopReading(); if (pageIdx<story.pages.length-1){ pageIdx++; renderPage(); } else if ($('#theEnd').hidden){ $('#theEnd').hidden=false; confetti(); } });
+$('#next').addEventListener('click', ()=>{ stopReading(); if (pageIdx<story.pages.length-1){ pageIdx++; renderPage(); } else if ($('#theEnd').hidden){ $('#theEnd').hidden=false; confetti(); track('story', story.id); } });
 $('#again').addEventListener('click', ()=>{ pageIdx=0; renderPage(); });
 $('#showEn').addEventListener('change', e=>{ $('#pen').hidden = !e.target.checked; });
 
@@ -427,20 +423,20 @@ function newQuestion(){
 }
 function choose(o,b){
   if (locked) return;
-  tries++; $('#sAll').textContent = tries;
+  tries++;
   if (o===answer){
-    locked = true; ok++; $('#sOk').textContent = ok;
+    locked = true; ok++;
     b.classList.add('right');
-    const praise = PRAISE[rand(PRAISE.length)];
-    $('#feedback').textContent = mode==='build' ? `${praise} ${answer.cons.c+PULLI} + ${answer.vowel.l} = ${answer.l}` : `${praise} ${answer.l}`;
-    addStar(); sparkle(b); if (ok % 5 === 0) confetti();
+    // appreciation sound + pop-up + score, then say the letter, then the next question
+    const r = Rewards.win(b, { after: ()=>sayItem(answer, ()=>setTimeout(newQuestion, 600)) });
+    $('#feedback').textContent = mode==='build' ? `${r.ta} ${answer.cons.c+PULLI} + ${answer.vowel.l} = ${answer.l}` : `${r.ta} ${answer.l}`;
     $('#feedback').className = 'feedback ok';
-    sayItem(answer, ()=>setTimeout(newQuestion, 700));
   } else {
     b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+    Rewards.miss();
     $('#feedback').textContent = 'பரவாயில்லை, மீண்டும் முயற்சி செய்! · Try again';
     $('#feedback').className = 'feedback bad';
-    sayItem(o);
+    setTimeout(()=>sayItem(o), 300);
   }
 }
 $('#hear').addEventListener('click', ()=>answer && sayItem(answer));
@@ -451,7 +447,7 @@ function setQuizMode(m){ mode = m; newQuestion(); }
    TABS (hash routing so each section can be bookmarked)
    ===================================================================== */
 const LETTER_TABS = ['uyir','mei','aytham','uyirmei'];
-const SECTIONS = [...LETTER_TABS, 'reading', 'stories', 'practice'];
+const SECTIONS = [...LETTER_TABS, 'reading', 'stories', 'practice', 'certificate'];
 let lastLetterTab = 'uyir';
 function openTab(name){
   if (name === 'letters') name = lastLetterTab;
