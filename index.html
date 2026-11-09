@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>தமிழ் எழுத்துகள் · Learn Tamil | MSDEVBUILD</title>
+<meta name="description" content="Learn all 247 Tamil letters — 12 உயிர், 18 மெய், ஆய்தம் and 216 உயிர்மெய் — with sound, examples, read-along stories and practice. By MSDEVBUILD.">
+<meta name="theme-color" content="#0078d4">
+<script>
+  // Apply saved theme before paint (no flash).
+  try { var t = localStorage.getItem('lt-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Baloo+Thambi+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#/uyir" aria-label="MSDEVBUILD Learn Tamil — home">
+      <span class="brand-mark" aria-hidden="true">அ</span>
+      <span class="brand-name">MSDEVBUILD<small>Learn Tamil · <span class="ta">தமிழ் கற்போம்</span></small></span>
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <button class="nav-item" data-go="letters"><span class="nav-ic" aria-hidden="true">🔤</span><span class="nav-t"><span class="ta">எழுத்துகள்</span><small>Letters</small></span></button>
+      <button class="nav-item" data-go="reading"><span class="nav-ic" aria-hidden="true">📖</span><span class="nav-t"><span class="ta">வாசிப்பு</span><small>Reading</small></span></button>
+      <button class="nav-item" data-go="stories"><span class="nav-ic" aria-hidden="true">📚</span><span class="nav-t"><span class="ta">கதைகள்</span><small>Stories</small></span></button>
+      <button class="nav-item" data-go="practice"><span class="nav-ic" aria-hidden="true">🎮</span><span class="nav-t"><span class="ta">விளையாட்டு</span><small>Games</small></span></button>
+    </nav>
+    <span class="spacer"></span>
+    <span class="stars" id="stars" title="Stars earned in Practice" aria-label="Stars earned">⭐ <span id="starN">0</span></span>
+    <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme" title="Theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">247 letters · Tap to listen</span>
+        <h1>தமிழ் எழுத்துகள்</h1>
+        <p class="lead">Learn every Tamil letter with its sound, how it is formed, and a picture word — then read simple stories and play games. Made for children and beginners.</p>
+      </div>
+      <button class="mascot" id="mascot" type="button" aria-label="Kili the parrot says hello">
+        <span class="bird" aria-hidden="true">🦜</span>
+        <span class="bubble" id="bubble" lang="ta">வணக்கம்! வா, தமிழ் கற்போம்!</span>
+      </button>
+    </div>
+    <div class="stats" role="list">
+      <div class="stat glass" role="listitem"><b>12</b><span>உயிர்</span></div>
+      <div class="stat glass" role="listitem"><b>18</b><span>மெய்</span></div>
+      <div class="stat glass" role="listitem"><b>1</b><span>ஆய்தம்</span></div>
+      <div class="stat glass" role="listitem"><b>216</b><span>உயிர்மெய்</span></div>
+      <div class="stat glass total" role="listitem"><b>247</b><span>மொத்தம்<em> · Total</em></span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="tabs" id="letterTabs" aria-label="Letter groups">
+  <div class="wrap">
+    <div class="tablist glass" role="tablist">
+      <button class="tab" role="tab" data-tab="uyir" aria-controls="uyir"><span class="ic" aria-hidden="true">🌱</span><span class="ta">உயிர்</span><span class="n">12</span></button>
+      <button class="tab" role="tab" data-tab="mei" aria-controls="mei"><span class="ic" aria-hidden="true">🧱</span><span class="ta">மெய்</span><span class="n">18</span></button>
+      <button class="tab" role="tab" data-tab="aytham" aria-controls="aytham"><span class="ic" aria-hidden="true">✨</span><span class="ta">ஆய்தம்</span><span class="n">1</span></button>
+      <button class="tab" role="tab" data-tab="uyirmei" aria-controls="uyirmei"><span class="ic" aria-hidden="true">🧩</span><span class="ta">உயிர்மெய்</span><span class="n">216</span></button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="app">
+  <div class="notice glass" id="notice" role="status" hidden></div>
+
+  <div class="player glass" id="player">
+    <div class="big" id="big" lang="ta">அ</div>
+    <div class="meta">
+      <div class="roman" id="roman">a</div>
+      <div class="kind" id="kind" lang="ta">உயிர் எழுத்து · குறில்</div>
+      <div class="hint" id="hint">“a” as in “about”</div>
+      <button class="ex" id="ex" type="button"><span id="exPic" aria-hidden="true">👩</span><span class="ta" id="exWord">அம்மா</span><span class="muted" id="exMean">mother</span></button>
+    </div>
+    <button class="play-btn" id="replay" aria-label="Play the sound again">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+    </button>
+  </div>
+
+  <!-- உயிர் -->
+  <section class="panel" id="uyir" role="tabpanel">
+    <div class="sec-head">
+      <div><h2>உயிர் எழுத்துகள் · Vowels</h2><p>12 vowels — 5 short (குறில்) and 7 long (நெடில்).</p></div>
+    </div>
+    <div class="group">குறில் <span class="chip-s">Short · 5</span></div>
+    <div class="grid" id="gKuril"></div>
+    <div class="group">நெடில் <span class="chip-s">Long · 7</span></div>
+    <div class="grid" id="gNedil"></div>
+  </section>
+
+  <!-- மெய் -->
+  <section class="panel" id="mei" role="tabpanel">
+    <div class="sec-head">
+      <div><h2>மெய் எழுத்துகள் · Consonants</h2><p>18 consonants, each written with a dot on top (புள்ளி). Grouped by how they sound.</p></div>
+    </div>
+    <div id="gMei"></div>
+    <div class="callout glass">In school a pure consonant is usually read with a short <b>இ</b> before it — <b>க்</b> is said “ik”, <b>ங்</b> “ing”. This page plays it the same way so the sound is clear.</div>
+  </section>
+
+  <!-- ஆய்தம் -->
+  <section class="panel" id="aytham" role="tabpanel">
+    <div class="sec-head">
+      <div><h2>ஆய்த எழுத்து · The special letter</h2><p>One letter, also called <span class="ta">அஃகேனம்</span> or <span class="ta">முப்புள்ளி</span> (three dots).</p></div>
+    </div>
+    <div class="grid" id="gAy" style="max-width:240px"></div>
+    <div class="callout glass"><b>ஃ</b> always comes between a short vowel and a வல்லினம் letter, as in <b>எஃகு</b> (steel) and <b>அஃது</b> (that). Its sound is a soft breathy “kh”.</div>
+  </section>
+
+  <!-- உயிர்மெய் -->
+  <section class="panel" id="uyirmei" role="tabpanel">
+    <div class="sec-head">
+      <div><h2>உயிர்மெய் எழுத்துகள் · Consonant + Vowel</h2><p>18 consonants × 12 vowels = 216 letters.</p></div>
+    </div>
+    <div class="builder glass">
+      <h3>Build a letter</h3>
+      <div class="pickrow" id="pickCons" aria-label="Choose a consonant"></div>
+      <div class="pickrow" id="pickVow" aria-label="Choose a vowel"></div>
+      <div class="equation" aria-live="polite"><span class="m" id="eqM">க்</span><span class="op">+</span><span class="u" id="eqU">அ</span><span class="op">=</span><span class="res" id="eqR" role="button" tabindex="0" aria-label="Play">க</span></div>
+      <div class="eq-note" id="eqNote">ka</div>
+    </div>
+    <div class="glass tablewrap"><table class="um" id="tUm"></table></div>
+    <p class="muted" style="text-align:center;font-size:14px">Tap ▶ to hear a whole row.</p>
+  </section>
+
+  <!-- கதைகள் -->
+  <section class="panel" id="stories" role="tabpanel">
+    <div id="shelfView">
+      <div class="sec-head"><div><h2>கதை நூலகம் · Read-to-me stories</h2><p>Tap a word to hear it and see its letters.</p></div></div>
+      <div class="shelf" id="shelf"></div>
+    </div>
+    <div id="readerView" hidden>
+      <div class="rtop">
+        <button class="btn" id="backShelf">← <span class="ta">கதைகள்</span></button>
+        <div class="rtitle" id="rTitle"></div>
+        <div class="pageno" id="pageNo"></div>
+      </div>
+      <div class="page glass" id="page">
+        <div class="pic" id="pic" aria-hidden="true"></div>
+        <div class="ptext" id="ptext" lang="ta"></div>
+        <div class="pen" id="pen" lang="en"></div>
+      </div>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="rbar">
+        <button class="btn" id="prev" aria-label="Previous page">◀</button>
+        <button class="btn primary" id="readMe"><span class="ta">படித்துக் காட்டு</span></button>
+        <button class="btn" id="next" aria-label="Next page">▶</button>
+      </div>
+      <div class="ropts">
+        <label><input type="checkbox" id="showEn" checked> Show English meaning</label>
+        <label><input type="checkbox" id="autoTurn"> Read whole story</label>
+      </div>
+      <div class="theend" id="theEnd" hidden>
+        <div class="t">முடிந்தது! · The End</div>
+        <button class="btn primary" id="again"><span class="ta">மீண்டும் படி</span> · Read again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- பயிற்சி -->
+  <!-- வாசிப்பு -->
+  <section class="panel" id="reading" role="tabpanel">
+    <div class="sec-head">
+      <div><h2>வாசிப்புப் பயிற்சி · Reading</h2><p>Read the word yourself, sound it out letter by letter, then check the picture.</p></div>
+    </div>
+    <div class="seg" id="readLevels" role="group" aria-label="Level">
+      <button class="seg-btn" data-level="1" aria-pressed="true"><b>Level 1</b><small class="ta">2 எழுத்து</small></button>
+      <button class="seg-btn" data-level="2" aria-pressed="false"><b>Level 2</b><small class="ta">3 எழுத்து</small></button>
+      <button class="seg-btn" data-level="3" aria-pressed="false"><b>Level 3</b><small class="ta">4+ எழுத்து</small></button>
+    </div>
+    <div class="readcard glass">
+      <div class="read-top"><span class="muted" id="readPos"></span><span class="read-dots" id="readDots" aria-hidden="true"></span></div>
+      <div class="read-word" id="readWord" lang="ta" aria-live="polite"></div>
+      <div class="read-pic" id="readPic">
+        <button class="reveal" id="readReveal" type="button"><span aria-hidden="true">❓</span> Show picture</button>
+        <div class="read-ans" id="readAns" hidden><span class="read-emoji" id="readEmoji" aria-hidden="true"></span><span class="read-mean" id="readMean"></span></div>
+      </div>
+      <div class="read-actions">
+        <button class="btn" id="readSlow">🐢 <span class="ta">எழுத்து எழுத்தாக</span><span class="en"> · Letter by letter</span></button>
+        <button class="btn" id="readSay">🔊 <span class="ta">சொல்</span><span class="en"> · Whole word</span></button>
+      </div>
+      <div class="read-nav">
+        <button class="btn" id="readPrev" aria-label="Previous word">◀</button>
+        <button class="btn primary" id="readDone">⭐ <span class="ta">படித்தேன்!</span><span class="en"> · I read it</span></button>
+        <button class="btn" id="readNext" aria-label="Next word">▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- விளையாட்டு -->
+  <section class="panel" id="practice" role="tabpanel">
+    <div class="sec-head"><div><h2>விளையாட்டு · Games</h2><p>Pick a game. Every right answer earns a star.</p></div></div>
+    <div class="gamepick" id="gamePick" role="group" aria-label="Choose a game">
+      <button class="gcard" data-game="build" aria-pressed="true"><span class="gi" aria-hidden="true">🧮</span><b>க் + ஆ = ?</b><small>Build a letter</small></button>
+      <button class="gcard" data-game="listen" aria-pressed="false"><span class="gi" aria-hidden="true">👂</span><b>Listen</b><small>Hear &amp; pick</small></button>
+      <button class="gcard" data-game="spin" aria-pressed="false"><span class="gi" aria-hidden="true">🎡</span><b>Spin wheel</b><small>Find the picture</small></button>
+      <button class="gcard" data-game="balloon" aria-pressed="false"><span class="gi" aria-hidden="true">🎈</span><b>Balloon pop</b><small>Pop the letter</small></button>
+      <button class="gcard" data-game="words" aria-pressed="false"><span class="gi" aria-hidden="true">🧩</span><b>Word builder</b><small>Put letters in order</small></button>
+      <button class="gcard" data-game="memory" aria-pressed="false"><span class="gi" aria-hidden="true">🃏</span><b>Memory</b><small>Match the pairs</small></button>
+    </div>
+
+    <!-- Spin wheel -->
+    <div class="game glass" id="g-spin" hidden>
+      <div class="ask"><span class="ta">சக்கரத்தைச் சுற்று!</span><small>Spin the wheel, then tap the picture that starts with that letter</small></div>
+      <div class="wheel-wrap">
+        <div class="wheel-pointer" aria-hidden="true"></div>
+        <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of vowels"></svg>
+        <button class="wheel-hub" id="spinBtn" type="button">SPIN</button>
+      </div>
+      <div class="spin-q" id="spinQ" hidden>
+        <div class="spin-letter" id="spinLetter" lang="ta"></div>
+        <div class="opts pics" id="spinOpts"></div>
+      </div>
+      <div class="feedback" id="spinFb" aria-live="polite"></div>
+    </div>
+
+    <!-- Balloon pop -->
+    <div class="game glass" id="g-balloon" hidden>
+      <div class="bal-top">
+        <div class="bal-target"><span class="muted">Pop</span> <b id="balTarget" lang="ta">அ</b></div>
+        <div class="bal-stats"><span>🎈 <b id="balScore">0</b></span><span>⏱ <b id="balTime">40</b>s</span></div>
+      </div>
+      <div class="bal-sky" id="balSky">
+        <div class="bal-start" id="balStart">
+          <p><span class="ta">சரியான பலூனை உடை!</span><br><small class="muted">Pop only the balloons with the letter shown above</small></p>
+          <button class="btn primary big" id="balGo">▶ Start</button>
+        </div>
+      </div>
+      <div class="timebar"><i id="balBar"></i></div>
+    </div>
+
+    <!-- Word builder -->
+    <div class="game glass" id="g-words" hidden>
+      <div class="ask"><span class="ta">சொல்லை உருவாக்கு</span><small>Tap the letters in the right order to make the word</small></div>
+      <div class="wb-pic"><span id="wbEmoji" aria-hidden="true"></span><span class="muted" id="wbMean"></span><button class="btn small" id="wbHear">🔊</button></div>
+      <div class="wb-slots" id="wbSlots" lang="ta"></div>
+      <div class="wb-tiles" id="wbTiles" lang="ta"></div>
+      <div class="feedback" id="wbFb" aria-live="polite"></div>
+      <button class="btn" id="wbNext">Next word ▶</button>
+    </div>
+
+    <!-- Memory -->
+    <div class="game glass" id="g-memory" hidden>
+      <div class="ask"><span class="ta">ஜோடி சேர்</span><small>Match each vowel with the picture word that starts with it</small></div>
+      <div class="mem-grid" id="memGrid"></div>
+      <div class="mem-bar"><span>Moves <b id="memMoves">0</b></span><button class="btn small" id="memNew">↻ New game</button></div>
+      <div class="feedback" id="memFb" aria-live="polite"></div>
+    </div>
+
+    <div class="quiz game glass" id="g-quiz">
+      <div class="ask" id="qAsk"></div>
+      <div class="q" id="qShow"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="scorebar"><span>✓ <span id="sOk">0</span></span><span class="muted">Tries <span id="sAll">0</span></span></div>
+      <button class="btn" id="hear" style="margin-top:14px">🔊 <span class="ta">மீண்டும் கேள்</span> · Hear again</button>
+    </div>
+  </section>
+
+  <div class="toolbar" id="globalTools" style="justify-content:center;margin-top:22px">
+    <label>Speed <input type="range" id="rate" min="0.4" max="1.2" step="0.1" value="0.7" aria-label="Speech speed"></label>
+    <label><input type="checkbox" id="showRoman" checked> Show English sound</label>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><span class="ta">12 உயிர் + 18 மெய் + 1 ஆய்தம் + 216 உயிர்மெய் = 247</span></span>
+    <span>© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Learn Tamil</span>
+  </div>
+</footer>
+
+<!-- Recorded letter sounds (made with record.html). Missing file = device voice is used. -->
+<script src="audio/manifest.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/games.js"></script>
+</body>
+</html>

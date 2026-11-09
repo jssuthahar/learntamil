@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Letter Recorder | MSDEVBUILD Learn Tamil</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="stylesheet" href="css/record.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>Letter Recorder</h1>
+  <div class="muted">Record the correct sound of each Tamil letter. The Learn Tamil page then plays your voice instead of the device voice.</div>
+
+  <div class="steps glass">
+    <b>How to use</b>
+    <ol>
+      <li>Use a quiet room. Allow the microphone when the browser asks.</li>
+      <li>Pick a letter, press <b>Record</b> (or <kbd>Space</kbd>), say the letter once, press again to stop. Silence at the start and end is trimmed automatically.</li>
+      <li>Listen (<kbd>P</kbd>). If it is right, go to the next letter (<kbd>→</kbd>). Progress is saved in this browser.</li>
+      <li>Press <b>Download audio.zip</b> and unzip it into the <code>learntamil/audio/</code> folder, next to index.html. You can do this part-way and again later.</li>
+    </ol>
+  </div>
+
+  <div class="studio">
+    <div class="now glass">
+      <div class="l" id="cur" lang="ta">அ</div>
+      <div class="how" id="how"></div>
+      <div class="pos" id="pos"></div>
+    </div>
+    <div class="ctrl glass">
+      <button class="btn rec" id="recBtn">● Record</button>
+      <div class="meter" aria-hidden="true"><i id="lvl"></i></div>
+      <div class="row">
+        <button class="btn" id="playBtn" disabled>▶ Listen</button>
+        <button class="btn" id="delBtn" disabled>Delete</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="prevBtn">← Previous</button>
+        <button class="btn primary" id="nextBtn">Next →</button>
+      </div>
+      <div class="status" id="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span class="progress" id="progress">0 / 247 recorded</span>
+    <span class="grow"></span>
+    <button class="btn primary" id="zipBtn">⬇ Download audio.zip</button>
+  </div>
+  <div class="filters" role="group" aria-label="Show">
+    <button class="btn" data-f="all" aria-pressed="true">All 247</button>
+    <button class="btn" data-f="ou" aria-pressed="false">Problem letters (உ ஊ ஒ ஓ forms + ஞ row)</button>
+    <button class="btn" data-f="todo" aria-pressed="false">Not recorded yet</button>
+  </div>
+  <div class="glass" style="margin-top:10px"><div class="grid" id="grid"></div></div>
+  <p class="muted" style="font-size:14px">Back to <a href="index.html">Learn Tamil</a>.</p>
+</div>
+
+<script src="audio/manifest.js"></script>
+<script src="js/record.js"></script>
+</body>
+</html>
