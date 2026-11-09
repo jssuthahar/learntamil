@@ -390,13 +390,20 @@ const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j=rand(i+1); [a[i],
 let mode='build', answer=null, ok=0, tries=0, locked=false;
 const PRAISE = ['அருமை!', 'நன்று!', 'மிகவும் நன்று!', 'சரியான விடை!'];
 
+// Remember recent answers so the same letter does not come back for a long while.
+const recentQ = { build: [], listen: [] };
+function freshPick(list, m, keep){
+  let x, t = 0; do { x = list[rand(list.length)]; } while (recentQ[m].includes(x.l) && ++t < 80);
+  recentQ[m].push(x.l); if (recentQ[m].length > keep) recentQ[m].shift();
+  return x;
+}
 function newQuestion(){
   locked = false; $('#feedback').textContent=''; $('#feedback').className='feedback';
   const box = $('#opts'); box.innerHTML='';
   let options;
   if (mode==='build'){
-    const ci = rand(18), vi = rand(12);
-    answer = uyirmei[ci][vi];
+    answer = freshPick(uyirmei.flat(), 'build', 120);
+    const ci = CONS.indexOf(answer.cons), vi = VOWELS.indexOf(answer.vowel);
     const others = shuffle([...Array(12).keys()].filter(i=>i!==vi)).slice(0,3).map(i=>uyirmei[ci][i]);
     options = shuffle([answer, ...others]);
     $('#qAsk').innerHTML = 'சரியான எழுத்தைத் தேர்ந்தெடு<small>Pick the letter these two make</small>';
@@ -404,7 +411,7 @@ function newQuestion(){
     $('#hear').hidden = true;
   } else {
     const pool = [...uyir, ...uyirmei.flat()];
-    answer = pool[rand(pool.length)];
+    answer = freshPick(pool, 'listen', 120);
     const keys = new Set([soundKey(answer)]); options = [answer];
     while (options.length < 3){ const c = pool[rand(pool.length)]; const k = soundKey(c); if (!keys.has(k)){ keys.add(k); options.push(c); } }
     shuffle(options);

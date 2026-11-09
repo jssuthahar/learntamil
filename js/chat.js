@@ -23,7 +23,7 @@
     aytham: 'aaytham', ayutham: 'aaytham', aaytham: 'aaytham', 'ஆய்தம்': 'aaytham', 'ஃ': 'aaytham',
     donate: 'support', coffee: 'support', sponsor: 'support', contribute: 'support',
     story: 'story', kathai: 'story', 'கதை': 'story', 'கதைகள்': 'story',
-    word: 'word', 'சொல்': 'word', 'சொற்கள்': 'word', count: 'many', number: 'many', total: 'many', 'எத்தனை': 'many'
+    word: 'word', 'சொல்': 'word', 'சொற்கள்': 'word', count: 'many', total: 'many', number: 'number', numeral: 'number', digit: 'number', 'எத்தனை': 'many'
   };
   function tokens(s){
     return String(s).normalize('NFC').toLowerCase()

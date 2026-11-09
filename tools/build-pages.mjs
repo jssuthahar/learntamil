@@ -20,8 +20,8 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const ctx = {};
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/data.js'), 'utf8') +
-  ';this.D={PULLI,VOWELS,CONS,GROUPS,WORDS,STORIES};', ctx);
-const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES } = ctx.D;
+  ';this.D={PULLI,VOWELS,CONS,GROUPS,WORDS,STORIES,TOPICS};', ctx);
+const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS } = ctx.D;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const PUBLISHED = '2026-11-09';
 const ISSUES_URL = 'https://github.com/jssuthahar/learntamil/issues';
@@ -41,7 +41,14 @@ export const GUIDES = [
   { file: 'uyirmei-ezhuthukal.html', ic: '🧩', en: 'Uyirmei chart — 216 letters', ta: 'உயிர்மெய் எழுத்துகள்' },
   { file: 'tamil-words-for-kids.html', ic: '🍎', en: 'Tamil words for kids', ta: 'படச் சொற்கள்' },
   { file: 'tamil-stories-for-kids.html', ic: '📚', en: 'Tamil stories for kids', ta: 'சிறுவர் கதைகள்' },
-  { file: 'ezhuthukal.html', ic: 'அ', en: 'Tamil letters — in Tamil', ta: 'தமிழில் எழுத்துகள்' }
+  { file: 'ezhuthukal.html', ic: 'அ', en: 'Tamil letters — in Tamil', ta: 'தமிழில் எழுத்துகள்' },
+  { file: 'tamil-numbers.html', ic: '🔢', en: 'Tamil numbers 1 to 10', ta: 'எண்கள்' },
+  { file: 'tamil-colours.html', ic: '🎨', en: 'Colours in Tamil', ta: 'நிறங்கள்' },
+  { file: 'tamil-days-of-the-week.html', ic: '📅', en: 'Days of the week in Tamil', ta: 'கிழமைகள்' },
+  { file: 'tamil-body-parts.html', ic: '🧒', en: 'Body parts in Tamil', ta: 'உடல் உறுப்புகள்' },
+  { file: 'tamil-family-words.html', ic: '👨‍👩‍👧', en: 'Family words in Tamil', ta: 'குடும்பம்' },
+  { file: 'tamil-fruits-and-food.html', ic: '🍉', en: 'Fruits and food in Tamil', ta: 'பழங்களும் உணவும்' },
+  { file: 'tamil-printables.html', ic: '🖨️', en: 'Free printable charts & worksheets', ta: 'அச்சிடும் தாள்கள்' }
 ];
 
 const FLOAT = ['அ','க','ழ','ஆ','ம','இ','ஞ','ஃ','பூ','கா'];
@@ -460,6 +467,104 @@ ${h2('faq', '❓', 'அடிக்கடி கேட்கப்படும�
   schema: [faqSchemaFor(TA_FAQ, 'ezhuthukal.html')]
 }));
 
+/* ---------- 8. Word-topic pages (numbers, colours, days, body, family, food) ---------- */
+const topicWords = id => TOPICS.find(t => t.id === id).words;
+const list = (id, sep = ', ') => topicWords(id).map(([w, , m]) => `${w} (${m.split(' · ')[0]})`).join(sep);
+const TOPIC_PAGES = [
+  { id: 'numbers', file: 'tamil-numbers.html', bubble: 'Let’s count!', h1: 'Tamil numbers 1 to 10 — <span class="ta">எண்கள்</span>',
+    title: 'Tamil Numbers 1 to 10 for Kids (with Tamil Numerals)',
+    description: 'Count from 1 to 10 in Tamil: ஒன்று, இரண்டு, மூன்று … பத்து — with Tamil numerals ௧ ௨ ௩, pictures and letter-by-letter reading for kids.',
+    lead: 'Learn to count from 1 to 10 in Tamil. Each number shows the Tamil word, its letters and the Tamil numeral (௧, ௨, ௩ …).',
+    faq: [
+      ['How do you count from 1 to 10 in Tamil?', '1 ஒன்று (onru), 2 இரண்டு (irandu), 3 மூன்று (moonru), 4 நான்கு (naangu), 5 ஐந்து (ainthu), 6 ஆறு (aaru), 7 ஏழு (ezhu), 8 எட்டு (ettu), 9 ஒன்பது (onbathu), 10 பத்து (pathu).'],
+      ['How are numbers written in Tamil script?', 'Tamil has its own numerals: ௧ (1), ௨ (2), ௩ (3), ௪ (4), ௫ (5), ௬ (6), ௭ (7), ௮ (8), ௯ (9) and ௰ (10). Today the digits 1, 2, 3 … are used in everyday writing; Tamil numerals are seen in older texts, calendars and formal uses.']
+    ] },
+  { id: 'colours', file: 'tamil-colours.html', bubble: 'So many colours!', h1: 'Colours in Tamil — <span class="ta">நிறங்கள்</span>',
+    title: 'Colours in Tamil for Kids — Names with Pictures',
+    description: 'Learn colour names in Tamil: சிவப்பு (red), நீலம் (blue), பச்சை (green), மஞ்சள் (yellow) and more — with pictures and letter-by-letter reading.',
+    lead: 'Colour names are some of the first words children love to say. Here are ten colours in Tamil with their letters.',
+    faq: [
+      ['What are the colours called in Tamil?', 'Colours in Tamil: ' + list('colours') + '. The word for colour is நிறம் (niram); colours are நிறங்கள்.'],
+      ['What is red in Tamil?', 'Red in Tamil is சிவப்பு (sivappu). Blue is நீலம் (neelam), green is பச்சை (pachai) and yellow is மஞ்சள் (manjal).']
+    ] },
+  { id: 'days', file: 'tamil-days-of-the-week.html', bubble: 'What day is it?', h1: 'Days of the week in Tamil — <span class="ta">கிழமைகள்</span>',
+    title: 'Days of the Week in Tamil (கிழமைகள்) for Kids',
+    description: 'The seven days of the week in Tamil: ஞாயிறு, திங்கள், செவ்வாய், புதன், வியாழன், வெள்ளி, சனி — with meanings and letter-by-letter reading.',
+    lead: 'The seven days of the week in Tamil, from Sunday to Saturday. In Tamil, “day of the week” is கிழமை (kizhamai).',
+    faq: [
+      ['What are the days of the week in Tamil?', 'The days of the week in Tamil are ' + list('days') + '. Each is often said with கிழமை, for example திங்கள்கிழமை (Monday).'],
+      ['Why are Tamil day names linked to the sun, moon and planets?', 'Each Tamil day is named after a heavenly body: ஞாயிறு (the Sun) for Sunday, திங்கள் (the Moon) for Monday, செவ்வாய் (Mars) for Tuesday, புதன் (Mercury) for Wednesday, வியாழன் (Jupiter) for Thursday, வெள்ளி (Venus) for Friday and சனி (Saturn) for Saturday.']
+    ] },
+  { id: 'body', file: 'tamil-body-parts.html', bubble: 'Head, eyes, ears!', h1: 'Body parts in Tamil — <span class="ta">உடல் உறுப்புகள்</span>',
+    title: 'Body Parts in Tamil for Kids — Names with Pictures',
+    description: 'Learn the parts of the body in Tamil: தலை (head), கண் (eye), காது (ear), மூக்கு (nose), வாய் (mouth), கை (hand) and more — with pictures.',
+    lead: 'Point and say! Ten parts of the body in Tamil, each with a picture and its letters.',
+    faq: [
+      ['What are the parts of the body called in Tamil?', 'Parts of the body in Tamil: ' + list('body') + '. The body is உடல் (udal) and its parts are உறுப்புகள் (uruppugal).'],
+      ['How can children learn body parts in Tamil?', 'Play a pointing game: say a word such as கண் (eye) or மூக்கு (nose) and let the child point to it. Then swap — the child says the word while you point.']
+    ] },
+  { id: 'family', file: 'tamil-family-words.html', bubble: 'My family!', h1: 'Family words in Tamil — <span class="ta">குடும்பம்</span>',
+    title: 'Family Members in Tamil — Words for Kids',
+    description: 'Family words in Tamil for children: அம்மா (mother), அப்பா (father), அண்ணன், அக்கா, தம்பி, தங்கை, தாத்தா, பாட்டி — with meanings and pictures.',
+    lead: 'Tamil has different words for older and younger brothers and sisters. Here are eight family words every child uses.',
+    faq: [
+      ['How do you say family members in Tamil?', 'Family words in Tamil: ' + list('family') + '. Family is குடும்பம் (kudumbam).'],
+      ['What is the difference between அண்ணன் and தம்பி?', 'அண்ணன் (annan) is an elder brother and தம்பி (thambi) is a younger brother. In the same way, அக்கா (akka) is an elder sister and தங்கை (thangai) is a younger sister.']
+    ] },
+  { id: 'food', file: 'tamil-fruits-and-food.html', bubble: 'Yummy words!', h1: 'Fruits and food in Tamil — <span class="ta">பழங்களும் உணவும்</span>',
+    title: 'Fruits and Food Names in Tamil for Kids',
+    description: 'Fruit and food names in Tamil: மாம்பழம் (mango), வாழைப்பழம் (banana), திராட்சை (grapes), தேங்காய் (coconut), பால் (milk) and more — with pictures.',
+    lead: 'Delicious words! Fruits and everyday foods in Tamil, each with a picture and its letters.',
+    faq: [
+      ['What are fruit names in Tamil?', 'Fruit names in Tamil: ' + topicWords('food').slice(0, 8).map(([w, , m]) => `${w} (${m})`).join(', ') + '. Fruit is பழம் (pazham).'],
+      ['What is mango in Tamil?', 'Mango in Tamil is மாம்பழம் (maambazham) — from மா (mango tree) and பழம் (fruit). Banana is வாழைப்பழம் (vaazhaippazham).']
+    ] }
+];
+for (const T of TOPIC_PAGES){
+  const t = TOPICS.find(x => x.id === T.id);
+  write(T.file, shell({
+    file: T.file, guide: true, bubble: T.bubble, title: T.title, description: T.description, h1: T.h1,
+    eyebrow: `${t.words.length} words · Pictures · Letter by letter`,
+    body: `
+<p class="lead-doc">${T.lead} Hear every word and practise in the <a href="./#/reading">Reading section</a> of the app (choose <b>${t.ic} ${t.en}</b>).</p>
+${h2('words', t.ic, `${t.en} — ${ta(t.ta)}`)}
+<div class="wcards">${t.words.map(wordCard).join('')}</div>
+${tip('Say each word aloud together, clap once for each letter, then find the word’s first letter in the <a href="tamil-alphabet.html">alphabet chart</a>.')}
+${h2('faq', '❓', `Questions about ${t.en.toLowerCase()} in Tamil`)}
+<div class="faq">${faqHtmlFor(T.faq)}</div>`,
+    schema: [faqSchemaFor(T.faq, T.file),
+      DTS(T.file, `${t.en} in Tamil`, t.words.map(([w, , m]) => [w, `Tamil word meaning “${m}”. Letters: ${lettersOf(w).join(' + ')}.`]))]
+  }));
+}
+
+/* ---------- 9. Free printables page (PDFs made by tools/build-printables.mjs) ---------- */
+const PRINTS = fs.existsSync(path.join(ROOT, 'printables/printables.json'))
+  ? JSON.parse(fs.readFileSync(path.join(ROOT, 'printables/printables.json'), 'utf8')) : [];
+const PRINT_FAQ = [
+  ['Are the Tamil worksheets free to print?', 'Yes. All charts and tracing worksheets on this page are free for home and classroom use. Download the PDF and print as many copies as you like.'],
+  ['What paper size are the printables?', 'They are made for A4 paper. On US Letter paper, choose “Fit to page” in the print settings.'],
+  ['How should a child use the tracing worksheets?', 'Look at the blue letter, say its sound, then trace the grey outline letters from left to right. One row a day is plenty for young children.']
+];
+if (PRINTS.length) write('tamil-printables.html', shell({
+  file: 'tamil-printables.html', guide: true, bubble: 'Print and practise!',
+  title: 'Free Tamil Alphabet Charts & Tracing Worksheets (PDF)',
+  description: 'Download free printable Tamil alphabet charts and letter tracing worksheets (PDF): uyir, mei, uyirmei 216 chart, numbers 1–10. For home and classroom.',
+  h1: 'Free printable Tamil charts & worksheets', eyebrow: `${PRINTS.length} free PDFs · A4 · Home & classroom`,
+  body: `
+<p class="lead-doc">Free printable PDFs for children learning Tamil: alphabet charts for the wall and tracing worksheets for practice. Print on A4 (or Letter with “Fit to page”).</p>
+<div class="prints">${PRINTS.map(d => `<article class="print-card">
+  <a class="pc-thumb${d.landscape ? ' land' : ''}" href="printables/${d.file}.pdf" aria-label="Download ${esc(d.title)} (PDF)"><img src="assets/printables/${d.file}.png" alt="Preview of ${esc(d.title)}" loading="lazy" width="${d.landscape ? 520 : 368}" height="${d.landscape ? 368 : 520}"></a>
+  <h3>${esc(d.title)}</h3><p class="muted">PDF · ${d.pages} page${d.pages > 1 ? 's' : ''} · A4 ${d.landscape ? 'landscape' : 'portrait'}</p>
+  <a class="btn primary" href="printables/${d.file}.pdf" download>⬇ Download PDF</a></article>`).join('')}</div>
+${tip('Stick the alphabet chart on the wall at your child’s eye level and point to a letter each day. Pair a worksheet with the <a href="./#/uyir">learning app</a> so your child can hear each letter while writing it.')}
+${h2('faq', '❓', 'Questions about the printables')}
+<div class="faq">${faqHtmlFor(PRINT_FAQ)}</div>`,
+  schema: [faqSchemaFor(PRINT_FAQ, 'tamil-printables.html'),
+    { '@type': 'ItemList', name: 'Free Tamil printables', itemListElement: PRINTS.map((d, i) => ({ '@type': 'ListItem', position: i + 1,
+      item: { '@type': 'DigitalDocument', name: d.title, url: SITE + 'printables/' + d.file + '.pdf', encodingFormat: 'application/pdf',
+        thumbnailUrl: SITE + 'assets/printables/' + d.file + '.png', isAccessibleForFree: true, inLanguage: ['ta', 'en'], author: { '@id': SITE + '#author' } } })) }]
+}));
+
 /* ---------- Ask Kili chat: knowledge base (js/faq-data.js) ----------
    All guide FAQs + help about using the site. [text](url) becomes a link in the chat. */
 const ISS = ISSUES_URL;
@@ -468,7 +573,7 @@ const HELP = [
   ['The sound is wrong or there is no sound', `Sounds come from your device's Tamil text-to-speech voice, which can mispronounce single letters. To get a Tamil voice — Android: Settings → Text-to-speech → Google → install Tamil. Windows: Settings → Time & language → Speech → add Tamil. iPhone/Mac: Settings → Accessibility → Spoken Content → Voices → Tamil. Microsoft Edge has clearer Tamil voices. If you hear a mistake, please [report it on GitHub Issues](${ISS}).`, 'sound voice wrong no not working mute silent pronounce pronunciation audio speaker tts', ''],
   ['How do I install Learn Tamil as an app?', 'On Android, Chrome or Edge, tap the ⬇ Install app button at the top. On iPhone or iPad, open the site in Safari, tap Share and then Add to Home Screen. The app opens full screen and has shortcuts to Letters, Reading, Stories, Games and Certificate.', 'install app download home screen phone mobile iphone android pwa', ''],
   ['Does it work offline?', 'Yes. After your first visit, letters, reading, stories, games, certificates and the guide pages work without internet. Sounds from the device voice work offline only if the voice is stored on the device.', 'offline internet wifi network connection data', ''],
-  ['How do I get a certificate?', 'Open 🎓 Certificate, choose a level and answer 10 questions. Score 8 or more to pass, type the name, and download the certificate as a PDF. Each level unlocks the next. Certificates are for encouragement, not an official qualification.', 'certificate cert pdf level test exam pass download சான்றிதழ்', './#/certificate'],
+  ['How do I get a certificate?', 'Open 🎓 Certificate, choose one of the 10 levels and answer the questions (10 questions, pass with 8; the Champion level has 15, pass with 12). Type the name and download the certificate as a PDF. Each level unlocks the next, and every test asks new questions. Certificates are for encouragement, not an official qualification.', 'certificate cert pdf level test exam pass download சான்றிதழ்', './#/certificate'],
   ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
   ['How do I reset progress?', 'Tap 🪙 at the top to open My rewards, then press Reset progress. You can also clear this site’s data in your browser settings.', 'reset clear delete progress start again restart', ''],
   ['Which games are there?', 'Six games: க் + ஆ = ? (build a letter), Listen & pick, Spin wheel, Balloon pop, Word builder and Memory. Every right answer gives points, a cheer and tokens; 3 in a row gives a bonus.', 'game games play fun quiz balloon spin memory word builder', './#/practice'],
@@ -477,10 +582,13 @@ const HELP = [
   ['How can I support Learn Tamil?', `Learn Tamil is free with no ads. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
   ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
   ['Where can I read Tamil stories?', 'Open Stories (கதைகள்) in the app to hear five short stories read aloud — tap any word to see its letters. You can also read them as text with English meaning on the [Tamil stories page](tamil-stories-for-kids.html).', 'story stories read kathai கதை moral', './#/stories'],
+  ['Where can I download printable worksheets and charts?', 'Free printable PDFs — Tamil alphabet charts, an uyirmei chart, a numbers chart and letter tracing worksheets — are on the [printables page](tamil-printables.html). Print them on A4 or Letter paper.', 'printable print worksheet worksheets pdf chart tracing trace download sheet paper', 'tamil-printables.html'],
+  ['What word topics can my child learn?', 'In Reading (வாசிப்பு) choose a topic: numbers 1–10, colours, days of the week, parts of the body, family and fruits & food. Each word shows its picture and letters and can be heard aloud.', 'topic topics numbers colours colors days week body family fruit fruits food vocabulary words', './#/reading'],
   ['How does reading practice work?', 'Open Reading (வாசிப்பு). Read the word yourself, tap 🐢 to hear it letter by letter, then show the picture to check. There are three levels: 2, 3 and 4+ letter words.', 'reading read practice words level spell', './#/reading']
 ];
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
-  'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ };
+  'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
+  ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ };
 const KB = [
   ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
   ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))
@@ -489,6 +597,7 @@ write('js/faq-data.js', '/* Generated by tools/build-pages.mjs — knowledge bas
 
 /* ---------- sitemap (with language alternates) ---------- */
 const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
+  ...PRINTS.map(d => ['printables/' + d.file + '.pdf', '0.6', 'monthly']),
   ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
 const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
   ? ALT.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}"/>`).join('') : '';
@@ -645,6 +754,7 @@ put('FAQ', faqHtml());
 put('FAQ-SCHEMA', '');
 put('FOOTER', FOOTER);
 put('SUPPORT', SUPPORT);
+put('GUIDES', GUIDES.map(g => `<a class="guide-card" href="${g.file}"><span class="gc-ic" aria-hidden="true">${g.ic}</span><b>${g.en}</b><span class="ta">${g.ta}</span></a>`).join(''));
 fs.writeFileSync(idxPath, idx);
 
 /* ---------- stamp a content hash into sw.js so every change reaches installed apps ---------- */

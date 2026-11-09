@@ -17,6 +17,13 @@ Key facts:
 - [Tamil words for kids](https://jssuthahar.github.io/learntamil/tamil-words-for-kids.html)
 - [Tamil stories for kids](https://jssuthahar.github.io/learntamil/tamil-stories-for-kids.html)
 - [Tamil letters — in Tamil](https://jssuthahar.github.io/learntamil/ezhuthukal.html)
+- [Tamil numbers 1 to 10](https://jssuthahar.github.io/learntamil/tamil-numbers.html)
+- [Colours in Tamil](https://jssuthahar.github.io/learntamil/tamil-colours.html)
+- [Days of the week in Tamil](https://jssuthahar.github.io/learntamil/tamil-days-of-the-week.html)
+- [Body parts in Tamil](https://jssuthahar.github.io/learntamil/tamil-body-parts.html)
+- [Family words in Tamil](https://jssuthahar.github.io/learntamil/tamil-family-words.html)
+- [Fruits and food in Tamil](https://jssuthahar.github.io/learntamil/tamil-fruits-and-food.html)
+- [Free printable charts & worksheets](https://jssuthahar.github.io/learntamil/tamil-printables.html)
 
 ## App and policies
 - [Learning app](https://jssuthahar.github.io/learntamil/): interactive letters with audio, reading practice, stories and games (requires JavaScript).

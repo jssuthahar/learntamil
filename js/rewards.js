@@ -31,6 +31,9 @@ const SFX = {
     [523.25, 659.25, 783.99].forEach(f => tone(f, 0.5, 0.7, 'sine', 0.1)); },
   wrong(){ if (!sfxOn) return; tone(330, 0, 0.16, 'sine', 0.11, 260); tone(262, 0.14, 0.22, 'sine', 0.09, 220); },
   tick(){ if (!sfxOn) return; tone(1046.5, 0, 0.09, 'triangle', 0.08); },
+  click(){ if (!sfxOn) return; tone(1800, 0, 0.035, 'square', 0.05, 900); tone(420, 0, 0.05, 'triangle', 0.07); },
+  spinStart(){ if (!sfxOn) return; tone(300, 0, 0.35, 'sawtooth', 0.04, 900); },
+  landed(){ if (!sfxOn) return; [880, 1318.5].forEach((f, i) => tone(f, i * 0.1, 0.35, 'triangle', 0.12)); },
   pop(){ if (!sfxOn) return; tone(700, 0, 0.12, 'square', 0.06, 180); tone(1400, 0.02, 0.06, 'triangle', 0.05); }
 };
 
@@ -151,11 +154,16 @@ const BADGES = [
   { id: 'builder',  ic: '🧩', ta: '5 சொற்கள் அமைத்தாய்',       en: 'Built 5 words',                       ok: p => p.built >= 5 },
   { id: 'spin',     ic: '🎡', ta: 'சக்கர நட்சத்திரம்',          en: 'Spin star — 5 right on the wheel',    ok: p => p.spins >= 5 },
   { id: 't100',     ic: '🪙', ta: '100 நாணயங்கள்',           en: 'Collected 100 tokens',                ok: p => p.tokensEver >= 100 },
+  { id: 'day3',     ic: '🔥', ta: '3 நாள் தொடர்ச்சி',          en: 'Learned 3 days in a row',             ok: p => p.bestDays >= 3 },
+  { id: 'day7',     ic: '📆', ta: '7 நாள் தொடர்ச்சி',          en: 'Learned 7 days in a row',             ok: p => p.bestDays >= 7 },
+  { id: 'goal',     ic: '🎯', ta: 'இன்றைய இலக்கு',            en: 'Finished a daily goal',               ok: p => !!p.goalDay },
   { id: 'cert1',    ic: '🎓', ta: 'முதல் சான்றிதழ்',           en: 'Earned your first certificate',       ok: p => Object.keys(p.certs || {}).length >= 1 },
-  { id: 'cert5',    ic: '👑', ta: '5 சான்றிதழ்களும்',          en: 'Earned all 5 certificates',           ok: p => Object.keys(p.certs || {}).length >= 5 }
+  { id: 'cert5',    ic: '👑', ta: '5 சான்றிதழ்கள்',            en: 'Earned 5 certificates',               ok: p => Object.keys(p.certs || {}).length >= 5 },
+  { id: 'cert10',   ic: '🏆', ta: '10 சான்றிதழ்களும்',         en: 'Earned all 10 certificates',          ok: p => Object.keys(p.certs || {}).length >= 10 }
 ];
 const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, letters: [], words: 0, stories: [],
-  memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {}, since: new Date().toISOString().slice(0, 10) });
+  memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {},
+  day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10) });
 
 const Progress = {
   d: DEFAULT(),
@@ -165,14 +173,14 @@ const Progress = {
       if (raw) this.d = Object.assign(DEFAULT(), JSON.parse(raw));
       else { const old = parseInt(localStorage.getItem('lt-stars'), 10) || 0; this.d.tokens = this.d.tokensEver = old; }   // earlier ⭐ stars become tokens
     } catch (e) {}
-    this.paint(false);
+    this.paint(false);   // the Today card is painted at the end of this file
   },
   save(){ try { localStorage.setItem('lt-progress', JSON.stringify(this.d)); } catch (e) {} },
   paint(bump){
     const n = document.getElementById('starN'); if (n) n.textContent = this.d.tokens;
     if (bump){ const c = document.getElementById('stars'); if (c){ c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); } }
   },
-  addTokens(n){ if (!n) return; this.d.tokens += n; this.d.tokensEver += n; this.save(); this.paint(true); this.check(); },
+  addTokens(n){ if (!n) return; this.d.tokens += n; this.d.tokensEver += n; this.save(); this.paint(true); this.check(); this.grow(); },
   track(what, v){
     const d = this.d;
     if (what === 'correct') d.correct++;
@@ -184,6 +192,7 @@ const Progress = {
     else if (what === 'balloon') d.balloonBest = Math.max(d.balloonBest, v || 0);
     else if (what === 'built') d.built++;
     else if (what === 'spin') d.spins++;
+    if (what !== 'streak') this.activity();
     this.save(); this.check();
   },
   check(){
@@ -194,7 +203,34 @@ const Progress = {
     this.save(); this.paint(true);
     fresh.forEach(b => badgeQueue.push(b)); if (!badgeShowing) nextBadge();
   },
-  reset(){ this.d = DEFAULT(); this.save(); this.paint(true); try { Object.keys(localStorage).filter(k => k.startsWith('lt-best-')).forEach(k => localStorage.removeItem(k)); } catch (e) {} Score.render(true); }
+  /* ---- day streak and daily goal ---- */
+  rollDay(){
+    const t = todayStr(); if (this.d.day === t) return;
+    if (this.d.day !== dayStr(-1)) this.d.streakDays = 0;
+    this.d.today = 0;
+  },
+  activity(){
+    const d = this.d, t = todayStr();
+    if (d.day !== t){ this.rollDay(); d.streakDays += 1; d.day = t; d.bestDays = Math.max(d.bestDays, d.streakDays); }
+    d.today++;
+    if (d.today >= GOAL && d.goalDay !== t){
+      d.goalDay = t; this.save();
+      setTimeout(() => celebrate('🎯', 'இன்றைய இலக்கு முடிந்தது!', `Daily goal done! ${GOAL} things learned today · +10 🪙`), 1400);
+      setTimeout(() => this.addTokens(10), 1500);
+    }
+    paintToday();
+  },
+  /* ---- Kili grows with every token earned ---- */
+  grow(){
+    const st = stageOf(this.d.tokensEver);
+    if (st > this.d.stage){
+      this.d.stage = st; this.save();
+      const S = STAGES[st];
+      setTimeout(() => celebrate(S.ic, 'நிலை உயர்ந்தது! · Level up!', `Kili is now ${S.ta} · ${S.en} (Level ${st + 1})`), 2200);
+    }
+    paintToday();
+  },
+  reset(){ this.d = DEFAULT(); setTimeout(paintToday); this.save(); this.paint(true); try { Object.keys(localStorage).filter(k => k.startsWith('lt-best-')).forEach(k => localStorage.removeItem(k)); } catch (e) {} Score.render(true); }
 };
 
 /* ---------- "New badge!" celebration (one at a time) ---------- */
@@ -248,3 +284,68 @@ function openRewards(){
 const chip = document.getElementById('stars');
 if (chip) chip.addEventListener('click', openRewards);
 Progress.load();
+
+
+/* =====================================================================
+   TODAY CARD: greeting, Kili's level, daily goal, streak, letter of the day
+   ===================================================================== */
+const GOAL = 10;
+const STAGES = [
+  { at: 0,   ic: '🥚', ta: 'முட்டை',            en: 'Egg' },
+  { at: 25,  ic: '🐣', ta: 'குஞ்சு',             en: 'Hatchling' },
+  { at: 75,  ic: '🐥', ta: 'சிறு பறவை',          en: 'Little bird' },
+  { at: 150, ic: '🦜', ta: 'கிளி',               en: 'Parrot' },
+  { at: 300, ic: '🌟', ta: 'நட்சத்திரக் கிளி',    en: 'Star parrot' },
+  { at: 500, ic: '👑', ta: 'அரசக் கிளி',          en: 'Royal parrot' }
+];
+function stageOf(xp){ return STAGES.reduce((s, x, i) => xp >= x.at ? i : s, 0); }
+function pad2(n){ return String(n).padStart(2, '0'); }
+function dayStr(off = 0){ const d = new Date(); d.setDate(d.getDate() + off); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }
+function todayStr(){ return dayStr(0); }
+
+function celebrate(icon, ta, en){
+  const el = document.createElement('div');
+  el.className = 'badge-pop'; el.setAttribute('role', 'status');
+  el.innerHTML = `<div class="bp-card"><span class="bp-ic" aria-hidden="true">${icon}</span><b lang="ta">${ta}</b><small>${en}</small><span class="bp-wow" lang="ta">வாழ்த்துகள்! 🎉</span></div>`;
+  document.body.appendChild(el);
+  SFX.win(); confetti(); setTimeout(() => speak('வாழ்த்துகள்!'), 400);
+  const close = () => { el.classList.add('out'); setTimeout(() => el.remove(), 300); };
+  el.addEventListener('click', close); setTimeout(close, 3400);
+}
+
+/* Letter of the day: the same letter for everyone on a given date. */
+function letterOfDay(){
+  const all = [...uyir, ...mei, ...aytham, ...uyirmei.flat()];
+  let h = 0; for (const c of todayStr()) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return all[h % all.length];
+}
+function paintToday(){
+  const box = document.getElementById('today'); if (!box) return;
+  const d = Progress.d, st = stageOf(d.tokensEver), S = STAGES[st], N = STAGES[st + 1];
+  let name = ''; try { name = (localStorage.getItem('lt-cert-name') || '').split(' ')[0]; } catch (e) {}
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('kiliStage', S.ic);
+  set('todayHi', name ? `வணக்கம், ${name}! 👋` : 'வணக்கம்! 👋');
+  set('todayStage', `Level ${st + 1} · ${S.ta} · ${S.en}`);
+  const bar = document.getElementById('lvlBar');
+  if (N){ bar.style.width = Math.min(100, (d.tokensEver - S.at) / (N.at - S.at) * 100) + '%'; set('lvlNext', `${N.at - d.tokensEver} 🪙 more to grow into ${N.ic} ${N.en}`); }
+  else { bar.style.width = '100%'; set('lvlNext', 'Top level reached — amazing! 🎉'); }
+  const today = d.day === todayStr() ? d.today : 0;
+  set('goalN', Math.min(today, GOAL));
+  document.getElementById('goalRing').style.setProperty('--p', Math.min(1, today / GOAL));
+  set('streakN', (d.day === todayStr() || d.day === dayStr(-1)) ? d.streakDays : 0);
+  set('todayGoal', today >= GOAL ? '🎯 Today’s goal done! Come back tomorrow to keep your streak 🔥'
+                                 : `🎯 Today’s goal: learn ${GOAL} things — ${GOAL - today} to go!`);
+  set('lotdL', letterOfDay().l);
+}
+(function(){
+  const b = document.getElementById('lotd'); if (!b) return;
+  b.addEventListener('click', () => {
+    const L = letterOfDay();
+    const tab = L.fam === 'uyir' ? 'uyir' : L.fam === 'mei' ? 'mei' : L.fam === 'ay' ? 'aytham' : 'uyirmei';
+    if (L.fam === 'um'){ bC = L.ci; bV = VOWELS.indexOf(L.vowel); renderBuilder(); }
+    if (location.hash !== '#/' + tab) location.hash = '/' + tab;
+    setTimeout(() => { play(L); document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250);
+  });
+})();
+Progress.rollDay(); paintToday();

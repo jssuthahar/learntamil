@@ -78,10 +78,23 @@
         <h1>தமிழ் எழுத்துகள்</h1>
         <p class="lead">Learn the Tamil alphabet: every letter with its sound, how it is formed, and a picture word — then read simple stories and play games. Made for children and beginners.</p>
       </div>
-      <button class="mascot" id="mascot" type="button" aria-label="Kili the parrot says hello">
-        <span class="bird" aria-hidden="true">🦜</span>
-        <span class="bubble" id="bubble" lang="ta">வணக்கம்! வா, தமிழ் கற்போம்!</span>
-      </button>
+      <aside class="today" id="today" aria-label="Today's learning">
+        <div class="today-top">
+          <button class="today-kili" id="mascot" type="button" aria-label="Kili says hello"><span class="bird" id="kiliStage" aria-hidden="true">🥚</span></button>
+          <div class="today-hi">
+            <b id="todayHi" lang="ta">வணக்கம்! 👋</b>
+            <small id="todayStage">Level 1 · முட்டை · Egg</small>
+            <div class="lvl-bar" aria-hidden="true"><i id="lvlBar"></i></div>
+            <small class="muted" id="lvlNext">25 🪙 to grow</small>
+          </div>
+        </div>
+        <div class="today-row">
+          <div class="goal-ring" id="goalRing" style="--p:0" role="img" aria-label="Today's goal"><span><b id="goalN">0</b><small>/10</small></span></div>
+          <div class="today-stat"><b id="streakN">0</b><small>🔥 days in a row</small></div>
+          <button class="lotd" id="lotd" type="button" aria-label="Letter of the day"><small>Letter of the day</small><b id="lotdL" lang="ta">அ</b></button>
+        </div>
+        <p class="today-goal" id="todayGoal">🎯 Today's goal: learn 10 things</p>
+      </aside>
     </div>
     <div class="stats" role="list">
       <div class="stat glass" role="listitem"><b>12</b><span>உயிர்</span></div>
@@ -211,6 +224,7 @@
       <button class="seg-btn" data-level="2" aria-pressed="false"><b>Level 2</b><small class="ta">3 எழுத்து</small></button>
       <button class="seg-btn" data-level="3" aria-pressed="false"><b>Level 3</b><small class="ta">4+ எழுத்து</small></button>
     </div>
+    <div class="topic-chips" id="readTopics" role="group" aria-label="Word topics"></div>
     <div class="readcard glass">
       <div class="read-top"><span class="muted" id="readPos"></span><span class="read-dots" id="readDots" aria-hidden="true"></span></div>
       <div class="read-word" id="readWord" lang="ta" aria-live="polite"></div>
@@ -240,6 +254,11 @@
       <button class="gcard" data-game="balloon" aria-pressed="false"><span class="gi" aria-hidden="true">🎈</span><b>Balloon pop</b><small>Pop the letter</small></button>
       <button class="gcard" data-game="words" aria-pressed="false"><span class="gi" aria-hidden="true">🧩</span><b>Word builder</b><small>Put letters in order</small></button>
       <button class="gcard" data-game="memory" aria-pressed="false"><span class="gi" aria-hidden="true">🃏</span><b>Memory</b><small>Match the pairs</small></button>
+      <button class="gcard" data-game="quiz" aria-pressed="false"><span class="gi" aria-hidden="true">🧠</span><b>Tamil quiz</b><small>Mixed questions</small></button>
+      <button class="gcard" data-game="picture" aria-pressed="false"><span class="gi" aria-hidden="true">🖼️</span><b>Picture words</b><small>See &amp; pick</small></button>
+      <button class="gcard" data-game="topics" aria-pressed="false"><span class="gi" aria-hidden="true">🔢</span><b>Topics</b><small>Numbers, colours, days</small></button>
+      <button class="gcard" data-game="spell" aria-pressed="false"><span class="gi" aria-hidden="true">✏️</span><b>Spelling</b><small>Missing letter</small></button>
+      <button class="gcard" data-game="story" aria-pressed="false"><span class="gi" aria-hidden="true">📚</span><b>Sentences</b><small>Read &amp; understand</small></button>
     </div>
 
     <div class="scoreboard" id="scoreboard" aria-live="polite">
@@ -297,6 +316,16 @@
       <div class="feedback" id="memFb" aria-live="polite"></div>
     </div>
 
+    <!-- Question games (quiz, pictures, topics, spelling, sentences) -->
+    <div class="game glass mcq" id="g-mcq" hidden>
+      <div class="ask" id="mqAsk"></div>
+      <div class="mq-bar"><span class="muted" id="mqCount">✓ 0 / 0</span><button class="btn small" id="mqSkip" type="button">Skip ▶</button></div>
+      <div class="cq-q" id="mqQ"></div>
+      <div class="cq-opts" id="mqOpts"></div>
+      <div class="feedback" id="mqFb" aria-live="polite"></div>
+      <button class="btn primary" id="mqNext" type="button" hidden>Next question →</button>
+    </div>
+
     <div class="quiz game glass" id="g-quiz">
       <div class="ask" id="qAsk"></div>
       <div class="q" id="qShow"></div>
@@ -308,7 +337,7 @@
 
   <!-- சான்றிதழ் -->
   <section class="panel" id="certificate" role="tabpanel">
-    <div class="sec-head"><div><h2>சான்றிதழ் · Certificates</h2><p>Pass a short test at each level (8 out of 10) to earn a certificate you can download as a PDF. Each level unlocks the next.</p></div></div>
+    <div class="sec-head"><div><h2>சான்றிதழ் · Certificates</h2><p>Ten levels, from vowels to Tamil Champion. Pass a short test at each level (8 out of 10; the Champion level needs 12 out of 15) to earn a certificate you can download as a PDF. Each level unlocks the next, and every test asks new questions.</p></div></div>
     <div class="cert-levels" id="certLevels"></div>
     <div class="cert-quiz glass" id="certQuiz" hidden></div>
     <div class="cert-result glass" id="certResult" hidden></div>
@@ -326,7 +355,11 @@
 
 <section class="wrap more-guides" aria-labelledby="guidesTitle">
   <h2 id="guidesTitle"><span class="h-ic" aria-hidden="true">🧭</span>Guides for parents and teachers</h2>
-  <div class="guides"><a class="guide-card" href="tamil-alphabet.html"><span class="gc-ic" aria-hidden="true">🔤</span><b>Tamil alphabet — 247 letters</b><span class="ta">தமிழ் எழுத்துகள்</span></a><a class="guide-card" href="tamil-vowels.html"><span class="gc-ic" aria-hidden="true">🌱</span><b>Tamil vowels</b><span class="ta">உயிர் எழுத்துகள்</span></a><a class="guide-card" href="tamil-consonants.html"><span class="gc-ic" aria-hidden="true">🧱</span><b>Tamil consonants</b><span class="ta">மெய் எழுத்துகள்</span></a><a class="guide-card" href="uyirmei-ezhuthukal.html"><span class="gc-ic" aria-hidden="true">🧩</span><b>Uyirmei chart (216)</b><span class="ta">உயிர்மெய் எழுத்துகள்</span></a><a class="guide-card" href="tamil-words-for-kids.html"><span class="gc-ic" aria-hidden="true">🍎</span><b>Tamil words for kids</b><span class="ta">படச் சொற்கள்</span></a><a class="guide-card" href="tamil-stories-for-kids.html"><span class="gc-ic" aria-hidden="true">📚</span><b>Tamil stories for kids</b><span class="ta">சிறுவர் கதைகள்</span></a><a class="guide-card" href="ezhuthukal.html"><span class="gc-ic" aria-hidden="true">அ</span><b>Read in Tamil</b><span class="ta">தமிழில் படிக்க</span></a></div>
+  <div class="guides">
+<!-- GUIDES:START -->
+<a class="guide-card" href="tamil-alphabet.html"><span class="gc-ic" aria-hidden="true">🔤</span><b>Tamil alphabet — all 247 letters</b><span class="ta">தமிழ் எழுத்துகள்</span></a><a class="guide-card" href="tamil-vowels.html"><span class="gc-ic" aria-hidden="true">🌱</span><b>Tamil vowels (uyir ezhuthukal)</b><span class="ta">உயிர் எழுத்துகள்</span></a><a class="guide-card" href="tamil-consonants.html"><span class="gc-ic" aria-hidden="true">🧱</span><b>Tamil consonants (mei ezhuthukal)</b><span class="ta">மெய் எழுத்துகள்</span></a><a class="guide-card" href="uyirmei-ezhuthukal.html"><span class="gc-ic" aria-hidden="true">🧩</span><b>Uyirmei chart — 216 letters</b><span class="ta">உயிர்மெய் எழுத்துகள்</span></a><a class="guide-card" href="tamil-words-for-kids.html"><span class="gc-ic" aria-hidden="true">🍎</span><b>Tamil words for kids</b><span class="ta">படச் சொற்கள்</span></a><a class="guide-card" href="tamil-stories-for-kids.html"><span class="gc-ic" aria-hidden="true">📚</span><b>Tamil stories for kids</b><span class="ta">சிறுவர் கதைகள்</span></a><a class="guide-card" href="ezhuthukal.html"><span class="gc-ic" aria-hidden="true">அ</span><b>Tamil letters — in Tamil</b><span class="ta">தமிழில் எழுத்துகள்</span></a><a class="guide-card" href="tamil-numbers.html"><span class="gc-ic" aria-hidden="true">🔢</span><b>Tamil numbers 1 to 10</b><span class="ta">எண்கள்</span></a><a class="guide-card" href="tamil-colours.html"><span class="gc-ic" aria-hidden="true">🎨</span><b>Colours in Tamil</b><span class="ta">நிறங்கள்</span></a><a class="guide-card" href="tamil-days-of-the-week.html"><span class="gc-ic" aria-hidden="true">📅</span><b>Days of the week in Tamil</b><span class="ta">கிழமைகள்</span></a><a class="guide-card" href="tamil-body-parts.html"><span class="gc-ic" aria-hidden="true">🧒</span><b>Body parts in Tamil</b><span class="ta">உடல் உறுப்புகள்</span></a><a class="guide-card" href="tamil-family-words.html"><span class="gc-ic" aria-hidden="true">👨‍👩‍👧</span><b>Family words in Tamil</b><span class="ta">குடும்பம்</span></a><a class="guide-card" href="tamil-fruits-and-food.html"><span class="gc-ic" aria-hidden="true">🍉</span><b>Fruits and food in Tamil</b><span class="ta">பழங்களும் உணவும்</span></a><a class="guide-card" href="tamil-printables.html"><span class="gc-ic" aria-hidden="true">🖨️</span><b>Free printable charts & worksheets</b><span class="ta">அச்சிடும் தாள்கள்</span></a>
+<!-- GUIDES:END -->
+  </div>
 </section>
 
 <div class="wrap">
@@ -369,7 +402,7 @@
       <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
       <a class="coffee-link" href="https://buymeacoffee.com/jssuthahar" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </nav>
-    <nav class="foot-guides" aria-label="Guides"><b>Guides:</b> <a href="tamil-alphabet.html">Tamil alphabet — all 247 letters</a> · <a href="tamil-vowels.html">Tamil vowels (uyir ezhuthukal)</a> · <a href="tamil-consonants.html">Tamil consonants (mei ezhuthukal)</a> · <a href="uyirmei-ezhuthukal.html">Uyirmei chart — 216 letters</a> · <a href="tamil-words-for-kids.html">Tamil words for kids</a> · <a href="tamil-stories-for-kids.html">Tamil stories for kids</a> · <a href="ezhuthukal.html">Tamil letters — in Tamil</a></nav>
+    <nav class="foot-guides" aria-label="Guides"><b>Guides:</b> <a href="tamil-alphabet.html">Tamil alphabet — all 247 letters</a> · <a href="tamil-vowels.html">Tamil vowels (uyir ezhuthukal)</a> · <a href="tamil-consonants.html">Tamil consonants (mei ezhuthukal)</a> · <a href="uyirmei-ezhuthukal.html">Uyirmei chart — 216 letters</a> · <a href="tamil-words-for-kids.html">Tamil words for kids</a> · <a href="tamil-stories-for-kids.html">Tamil stories for kids</a> · <a href="ezhuthukal.html">Tamil letters — in Tamil</a> · <a href="tamil-numbers.html">Tamil numbers 1 to 10</a> · <a href="tamil-colours.html">Colours in Tamil</a> · <a href="tamil-days-of-the-week.html">Days of the week in Tamil</a> · <a href="tamil-body-parts.html">Body parts in Tamil</a> · <a href="tamil-family-words.html">Family words in Tamil</a> · <a href="tamil-fruits-and-food.html">Fruits and food in Tamil</a> · <a href="tamil-printables.html">Free printable charts & worksheets</a></nav>
     <p class="foot-disc"><b>Disclaimer:</b> Sounds are played by your device's text-to-speech voice and may sometimes be incorrect. If you hear any mistake in the voice, please <a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">report it here as an issue</a>.</p>
     <div class="muted">© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Suthahar Jegatheesan</div>
   </div>

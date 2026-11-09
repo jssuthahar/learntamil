@@ -110,3 +110,29 @@ const WORDS = [
   ['குரங்கு','🐒','monkey'], ['தக்காளி','🍅','tomato'], ['மிட்டாய்','🍬','sweet, candy'], ['மாம்பழம்','🥭','mango'],
   ['புத்தகம்','📖','book'], ['ஒட்டகம்','🐫','camel'], ['கடிகாரம்','⏰','clock']
 ];
+
+/* ---------- Word topics (Reading → Topics, and the topic guide pages) ----------
+   [word, emoji, English meaning]. Common, standard words children learn first. */
+const TOPICS = [
+  { id: 'numbers', ic: '🔢', ta: 'எண்கள்', en: 'Numbers 1–10', words: [
+    ['ஒன்று', '1️⃣', 'one · 1 · ௧'], ['இரண்டு', '2️⃣', 'two · 2 · ௨'], ['மூன்று', '3️⃣', 'three · 3 · ௩'], ['நான்கு', '4️⃣', 'four · 4 · ௪'],
+    ['ஐந்து', '5️⃣', 'five · 5 · ௫'], ['ஆறு', '6️⃣', 'six · 6 · ௬'], ['ஏழு', '7️⃣', 'seven · 7 · ௭'], ['எட்டு', '8️⃣', 'eight · 8 · ௮'],
+    ['ஒன்பது', '9️⃣', 'nine · 9 · ௯'], ['பத்து', '🔟', 'ten · 10 · ௰'] ] },
+  { id: 'colours', ic: '🎨', ta: 'நிறங்கள்', en: 'Colours', words: [
+    ['சிவப்பு', '🔴', 'red'], ['நீலம்', '🔵', 'blue'], ['பச்சை', '🟢', 'green'], ['மஞ்சள்', '🟡', 'yellow'],
+    ['ஆரஞ்சு', '🟠', 'orange'], ['ஊதா', '🟣', 'purple'], ['பழுப்பு', '🟤', 'brown'], ['வெள்ளை', '⚪', 'white'],
+    ['கறுப்பு', '⚫', 'black'], ['இளஞ்சிவப்பு', '🌸', 'pink'] ] },
+  { id: 'days', ic: '📅', ta: 'கிழமைகள்', en: 'Days of the week', words: [
+    ['ஞாயிறு', '☀️', 'Sunday'], ['திங்கள்', '🌙', 'Monday'], ['செவ்வாய்', '📅', 'Tuesday'], ['புதன்', '📅', 'Wednesday'],
+    ['வியாழன்', '📅', 'Thursday'], ['வெள்ளி', '📅', 'Friday'], ['சனி', '📅', 'Saturday'] ] },
+  { id: 'body', ic: '🧒', ta: 'உடல் உறுப்புகள்', en: 'Parts of the body', words: [
+    ['தலை', '👤', 'head'], ['கண்', '👁️', 'eye'], ['காது', '👂', 'ear'], ['மூக்கு', '👃', 'nose'], ['வாய்', '👄', 'mouth'],
+    ['பல்', '🦷', 'tooth'], ['முடி', '💇', 'hair'], ['கை', '✋', 'hand'], ['விரல்', '☝️', 'finger'], ['கால்', '🦵', 'leg'] ] },
+  { id: 'family', ic: '👨‍👩‍👧', ta: 'குடும்பம்', en: 'Family', words: [
+    ['அம்மா', '👩', 'mother'], ['அப்பா', '👨', 'father'], ['அண்ணன்', '👦', 'elder brother'], ['அக்கா', '👧', 'elder sister'],
+    ['தம்பி', '👦', 'younger brother'], ['தங்கை', '👧', 'younger sister'], ['தாத்தா', '👴', 'grandfather'], ['பாட்டி', '👵', 'grandmother'] ] },
+  { id: 'food', ic: '🍎', ta: 'பழங்களும் உணவும்', en: 'Fruits and food', words: [
+    ['மாம்பழம்', '🥭', 'mango'], ['வாழைப்பழம்', '🍌', 'banana'], ['திராட்சை', '🍇', 'grapes'], ['ஆப்பிள்', '🍎', 'apple'],
+    ['தர்பூசணி', '🍉', 'watermelon'], ['அன்னாசி', '🍍', 'pineapple'], ['எலுமிச்சை', '🍋', 'lemon'], ['தேங்காய்', '🥥', 'coconut'],
+    ['பால்', '🥛', 'milk'], ['சோறு', '🍚', 'cooked rice'], ['முட்டை', '🥚', 'egg'] ] }
+];

@@ -1,0 +1,44 @@
+[
+ {
+  "file": "tamil-uyir-chart",
+  "title": "Tamil vowels chart (12 uyir ezhuthukal)",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-mei-chart",
+  "title": "Tamil consonants chart (18 mei ezhuthukal)",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-alphabet-chart",
+  "title": "Tamil alphabet chart — 12 vowels, 18 consonants and ஃ",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-uyirmei-chart",
+  "title": "Uyirmei chart — all 216 Tamil letters",
+  "landscape": true,
+  "pages": 1
+ },
+ {
+  "file": "tamil-numbers-chart",
+  "title": "Tamil numbers 1 to 10 chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-uyir-tracing-worksheet",
+  "title": "Tamil vowels tracing worksheet (uyir)",
+  "landscape": false,
+  "pages": 2
+ },
+ {
+  "file": "tamil-mei-tracing-worksheet",
+  "title": "Tamil consonants tracing worksheet (mei)",
+  "landscape": false,
+  "pages": 3
+ }
+]

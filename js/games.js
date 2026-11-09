@@ -11,8 +11,12 @@ function wordLevel(w){ const n = lettersOf(w).length; return n <= 2 ? 1 : n === 
 /* =====================================================================
    READING PRACTICE
    ===================================================================== */
-const R = { level:1, idx:0, list:[], token:0 };
-function buildReadList(){ R.list = WORDS.filter(w=>wordLevel(w[0])===R.level); R.idx = 0; renderRead(); }
+const R = { level:1, topic:null, idx:0, list:[], token:0 };
+function buildReadList(){
+  const t = R.topic && TOPICS.find(x=>x.id===R.topic);
+  R.list = t ? t.words : WORDS.filter(w=>wordLevel(w[0])===R.level);
+  R.idx = 0; renderRead();
+}
 function renderRead(){
   if (!R.list.length) buildReadList();
   R.token++;
@@ -54,10 +58,23 @@ $('#readDone').addEventListener('click', e=>{
   setTimeout(()=>{ R.idx = (R.idx+1) % R.list.length; renderRead(); }, 1100);
 });
 $$('#readLevels .seg-btn').forEach(b=>b.addEventListener('click', ()=>{
-  R.level = +b.dataset.level;
+  R.level = +b.dataset.level; R.topic = null;
   $$('#readLevels .seg-btn').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  $$('#readTopics .topic-chip').forEach(x=>x.setAttribute('aria-pressed', 'false'));
   buildReadList();
 }));
+// Word topics: numbers, colours, days, body, family, food
+(function(){
+  const box = $('#readTopics'); if (!box || typeof TOPICS === 'undefined') return;
+  box.innerHTML = '<span class="tc-label">Topics:</span>' + TOPICS.map(t =>
+    `<button class="topic-chip" type="button" data-topic="${t.id}" aria-pressed="false"><span aria-hidden="true">${t.ic}</span> <span class="ta">${t.ta}</span><small>${t.en}</small></button>`).join('');
+  $$('#readTopics .topic-chip').forEach(b=>b.addEventListener('click', ()=>{
+    R.topic = b.dataset.topic;
+    $$('#readTopics .topic-chip').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    $$('#readLevels .seg-btn').forEach(x=>x.setAttribute('aria-pressed', 'false'));
+    buildReadList();
+  }));
+})();
 
 /* =====================================================================
    GAMES HUB
@@ -68,13 +85,14 @@ function showGame(g){
   Rewards.score.reset(g);
   $$('#gamePick .gcard').forEach(c=>c.setAttribute('aria-pressed', c.dataset.game===g));
   stopBalloon();
-  const panelId = (g==='build' || g==='listen') ? 'g-quiz' : 'g-'+g;
+  const panelId = (g==='build' || g==='listen') ? 'g-quiz' : MCQ_INFO[g] ? 'g-mcq' : 'g-'+g;
   $$('#practice .game').forEach(x=>x.hidden = x.id !== panelId);
   if (g==='build' || g==='listen') setQuizMode(g);
   if (g==='spin') initSpin();
   if (g==='balloon') resetBalloon();
   if (g==='words') newWord();
   if (g==='memory') newMemory();
+  if (MCQ_INFO[g]) startMcq(g);
 }
 $$('#gamePick .gcard').forEach(c=>c.addEventListener('click', ()=>showGame(c.dataset.game)));
 document.addEventListener('lt:section', e=>{
@@ -108,10 +126,33 @@ function spin(){
   wheelRot = base + 360*5 + want + jitter;
   const svg = $('#wheel');
   if (calm){ svg.style.transition = 'none'; svg.style.transform = `rotate(${wheelRot}deg)`; landed(); return; }
+  Rewards.sfx.spinStart();
   svg.style.transform = `rotate(${wheelRot}deg)`;
+  spinTicks(svg);
+}
+/* Click each time a segment passes the pointer — follows the wheel's real angle, so the
+   clicks are fast at the start and slow down as the wheel slows. */
+function wheelAngle(svg){
+  const m = getComputedStyle(svg).transform;
+  if (!m || m === 'none') return 0;
+  const v = m.match(/matrix\(([^)]+)\)/); if (!v) return 0;
+  const [a, b] = v[1].split(',').map(Number);
+  return Math.atan2(b, a) * 180 / Math.PI;
+}
+function spinTicks(svg){
+  const segOf = deg => Math.floor((((deg % 360) + 360) % 360 + 15) / 30) % 12;   // segment under the pointer
+  let seg = segOf(wheelAngle(svg));
+  const step = ()=>{
+    if (!spinning) return;
+    const cur = segOf(wheelAngle(svg));
+    if (cur !== seg){ seg = cur; Rewards.sfx.click(); }
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 function landed(){
   spinning = false; $('#spinBtn').disabled = false;
+  Rewards.sfx.landed();
   const v = VOWELS[spinIdx];
   $('#spinLetter').textContent = v.l;
   sayItem(uyir[spinIdx]);
@@ -275,3 +316,57 @@ function flip(b, c){
   }
 }
 $('#memNew').addEventListener('click', newMemory);
+
+/* ---------- 🧠 Question games: quiz, pictures, topics, spelling, sentences ----------
+   Questions come from the certificate generators (cert.js), so there are hundreds of them.
+   Each game remembers what it has asked and never repeats a question until all have been seen. */
+const MCQ_INFO = {
+  quiz:    { ta:'தமிழ் வினாடி வினா', en:'Mixed questions — letters, words, spelling and stories' },
+  picture: { ta:'படம் பார், சொல்லைத் தேர்ந்தெடு', en:'Look at the picture and pick the Tamil word' },
+  topics:  { ta:'எண்கள், நிறங்கள், கிழமைகள்', en:'Numbers, colours, days, family, body and food' },
+  spell:   { ta:'எழுத்துக்கூட்டல்', en:'Missing letters, jumbled letters and spelling' },
+  story:   { ta:'வாக்கியம் படி', en:'Read sentences from the stories' }
+};
+const MQ = { mode:null, seen:{}, q:null, done:false, n:0, right:0, t:0 };
+function startMcq(g){
+  MQ.mode = g; MQ.n = 0; MQ.right = 0; MQ.seen[g] = MQ.seen[g] || new Set();
+  $('#mqAsk').innerHTML = `<span class="ta">${MCQ_INFO[g].ta}</span><small>${MCQ_INFO[g].en}</small>`;
+  newMcq();
+}
+function newMcq(){
+  clearTimeout(MQ.t);
+  const bank = CERT.bank[MQ.mode], seen = MQ.seen[MQ.mode];
+  let q, k, tries = 0;
+  do { q = bank[rand(bank.length)](); k = CERT.keyOf(q); }
+  while (++tries < 400 && (q.opts.length < 2 || seen.has(k)));
+  if (tries >= 400) seen.clear();   // every question asked — begin a fresh round
+  seen.add(k); MQ.q = q; MQ.done = false;
+  $('#mqCount').textContent = `✓ ${MQ.right} / ${MQ.n}`;
+  $('#mqQ').innerHTML = q.q;
+  $('#mqNext').hidden = true; fb($('#mqFb'), '');
+  const box = $('#mqOpts'); box.innerHTML = '';
+  q.opts.forEach((o, i)=>{
+    const b = document.createElement('button'); b.type='button'; b.className='cq-opt'; b.innerHTML = o.label;
+    b.style.setProperty('--d', (i*60)+'ms');
+    b.addEventListener('click', ()=>answerMcq(o, b));
+    box.appendChild(b);
+  });
+}
+function answerMcq(o, b){
+  if (MQ.done) return; MQ.done = true; MQ.n++;
+  $$('#mqOpts .cq-opt').forEach((x, j)=>{ x.disabled = true; if (MQ.q.opts[j].ok) x.classList.add('right'); });
+  if (o.ok){
+    MQ.right++; b.classList.add('right');
+    const big = MQ.n % 10 === 0 && MQ.right >= MQ.n - 2;   // a round of 10 with 8+ right
+    const r = Rewards.win(b, big ? { big: true, points: 20, say: false } : { say: false });
+    $('#mqFb').innerHTML = `<span>✓ ${r.ta}</span> <small>${MQ.q.explain}</small>`; $('#mqFb').className = 'feedback ok';
+    MQ.t = setTimeout(newMcq, 1800);
+  } else {
+    b.classList.add('wrong'); Rewards.miss();
+    $('#mqFb').innerHTML = `<span>✗ பரவாயில்லை!</span> <small>${MQ.q.explain}</small>`; $('#mqFb').className = 'feedback bad';
+    $('#mqNext').hidden = false; $('#mqNext').focus({ preventScroll: true });
+  }
+  $('#mqCount').textContent = `✓ ${MQ.right} / ${MQ.n}`;
+}
+$('#mqNext').addEventListener('click', newMcq);
+$('#mqSkip').addEventListener('click', newMcq);

@@ -9,7 +9,7 @@ A free, mobile-friendly website for children and beginners to learn the 247 Tami
 | **எழுத்துகள் · Letters** | 12 உயிர், 18 மெய், ஆய்தம், 216 உயிர்மெய் — tap to hear, picture words, build-a-letter |
 | **வாசிப்பு · Reading** | 46 picture words in 3 levels; sound out letter by letter, then reveal the picture |
 | **கதைகள் · Stories** | 5 read-aloud stories with word-tap letter breakdown and English meaning |
-| **விளையாட்டு · Games** | Build a letter, Listen & pick, Spin wheel, Balloon pop, Word builder, Memory |
+| **விளையாட்டு · Games** | Build a letter, Listen & pick, Spin wheel, Balloon pop, Word builder, Memory, Tamil quiz, Picture words, Topics, Spelling, Sentences — question games never repeat a question until all have been asked |
 
 ## Project layout
 
@@ -72,8 +72,18 @@ After publishing:
 ## Rewards and certificates
 
 - **Games** give an appreciation chime, a celebration pop-up with spoken praise (அருமை!, நன்று! …), points (+10, +5 bonus for 3 in a row) and a scoreboard with streak and best score. Sounds are generated in the browser (Web Audio) and can be muted with 🔊.
-- **Tokens 🪙 and 20 badges 🏅** are saved on the device (`localStorage`); tap 🪙 in the header to see *My rewards*.
-- **Certificates 🎓**: five level tests of 10 questions each (vowels → consonants → uyirmei → reading words → master). Questions are generated from `js/data.js`, so answers are always correct. Score 8/10 to pass and unlock the next level. The certificate is drawn on a canvas (so Tamil renders correctly) and saved as a PDF by a small built-in writer in `js/cert.js`, with no external library, so it works offline. Certificates are for encouragement and are not an official qualification.
+- **Tokens 🪙 and 24 badges 🏅** are saved on the device (`localStorage`); tap 🪙 in the header to see *My rewards*.
+- **Certificates 🎓**: ten level tests (vowels → consonants → uyirmei → reading words → alphabet master → numbers, colours and days → family, body and food → spelling → reading sentences → Tamil champion). Levels 1–9 have 10 questions (pass with 8); the Champion level has 15 (pass with 12). Questions are generated from `js/data.js`, so answers are always correct, and the questions already asked are remembered on the device (`lt-cert-seen`) so a retake gets different questions. The certificate has no signature; it shows the date and a certificate ID. It is drawn on a canvas (so Tamil renders correctly) and saved as a PDF by a small built-in writer in `js/cert.js`, with no external library, so it works offline. Certificates are for encouragement and are not an official qualification.
+
+## Motivation features
+
+- **Today card** on the home screen: greets the child by name, shows Kili's level, the daily goal ring (learn 10 things), the day streak 🔥 and a **Letter of the day**.
+- **Kili grows** with every token: 🥚 முட்டை → 🐣 குஞ்சு → 🐥 சிறு பறவை → 🦜 கிளி → 🌟 நட்சத்திரக் கிளி → 👑 அரசக் கிளி, with a level-up celebration.
+- **Word topics** in Reading: numbers 1–10, colours, days, body, family, fruits & food (data in `js/data.js` → `TOPICS`).
+
+## Printable PDFs
+
+`node tools/build-printables.mjs` creates the free charts and tracing worksheets in `printables/` (and previews in `assets/printables/`) using headless Chrome, so Tamil text prints correctly. Run it after changing letters or topics, then run `node tools/build-pages.mjs`.
 
 ## Install as an app (PWA) and offline use
 
