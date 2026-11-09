@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 
-export const SITE = 'https://jssuthahar.github.io/learntamil/';
+export const SITE = 'https://learntamil.msdevbuild.com/';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const TODAY = new Date().toISOString().slice(0, 10);
 

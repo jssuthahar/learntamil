@@ -51,7 +51,7 @@ This writes `audio/*.mp3` and `audio/manifest.js` using the neural voice `ta-IN-
 
 1. Push this repository to GitHub.
 2. Settings → Pages → *Deploy from a branch* → `main` / `(root)`.
-3. The site is served at `https://<username>.github.io/learntamil/`.
+3. Add your domain in Settings → Pages → Custom domain (this repo uses `CNAME` → `learntamil.msdevbuild.com`) and tick **Enforce HTTPS**. Set `SITE` in `tools/build-pages.mjs` to the same domain.
 
 ## Static pages, SEO and AEO
 

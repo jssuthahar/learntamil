@@ -51,7 +51,7 @@ h1 small{display:block;font-family:Inter;font-size:11pt;color:#4a5163;font-weigh
 .gt{font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:800;font-size:13pt;color:#0b8a6c;margin:6px 0 2px}
 `;
 const head = (ta, en) => `<div class="head"><span class="brand"><span class="mark">அ</span>LEARN TAMIL · <span class="ta">தமிழ் கற்போம்</span></span><span style="font-size:9pt;color:#6b7385">Free printable</span></div><h1>${ta}<small>${en}</small></h1>`;
-const foot = page => `<div class="foot"><span>jssuthahar.github.io/learntamil · Free for home and classroom use</span><span>${page}</span></div>`;
+const foot = page => `<div class="foot"><span>learntamil.msdevbuild.com · Free for home and classroom use</span><span>${page}</span></div>`;
 const doc = (css, body, landscape = false) => `<!doctype html><html lang="ta"><head><meta charset="utf-8"><style>@page{size:A4 ${landscape ? 'landscape' : 'portrait'};margin:11mm}${BASE_CSS}${landscape ? '.page{height:187mm}' : ''}${css}</style></head><body>${body}</body></html>`;
 
 const vowelCard = v => `<div class="card uy"><span class="L" style="font-size:54pt">${v.l}</span><span class="r">${v.r} · <span class="ta">${v.len}</span></span><span class="e">${v.ex[0]}</span><span class="w">${v.ex[1]}</span><span class="m">${v.ex[2]}</span></div>`;

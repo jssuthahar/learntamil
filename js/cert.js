@@ -367,7 +367,7 @@ const CERT = (() => {
     g.fillStyle = '#4a5163'; g.font = `500 32px ${ui}`; g.fillText('Date · தேதி', 560, 1450); g.fillText('Certificate ID · சான்றிதழ் எண்', W - 560, 1450);
     g.font = `190px ${ui}`; g.fillText('🏅', W / 2, 1400);
     g.fillStyle = '#6b7385'; g.font = `500 28px ${ui}`;
-    g.fillText('Learn Tamil · MSDEVBUILD  ·  jssuthahar.github.io/learntamil  ·  A practice certificate for encouragement, not an official qualification', W / 2, H - 150);
+    g.fillText('Learn Tamil · MSDEVBUILD  ·  learntamil.msdevbuild.com  ·  A practice certificate for encouragement, not an official qualification', W / 2, H - 150);
   }
   function fitText(g, text, x, y, maxW, size, weight, family, color){
     g.font = `${weight} ${size}px ${family}`;

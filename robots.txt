@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /record.html
 
-Sitemap: https://jssuthahar.github.io/learntamil/sitemap.xml
+Sitemap: https://learntamil.msdevbuild.com/sitemap.xml

@@ -10,23 +10,23 @@ Key facts:
 - Grantha letters ஜ ஷ ஸ ஹ க்ஷ ஸ்ரீ are used for borrowed words and are not counted in the 247.
 
 ## Guides
-- [Tamil alphabet — all 247 letters](https://jssuthahar.github.io/learntamil/tamil-alphabet.html)
-- [Tamil vowels (uyir ezhuthukal)](https://jssuthahar.github.io/learntamil/tamil-vowels.html)
-- [Tamil consonants (mei ezhuthukal)](https://jssuthahar.github.io/learntamil/tamil-consonants.html)
-- [Uyirmei chart — 216 letters](https://jssuthahar.github.io/learntamil/uyirmei-ezhuthukal.html)
-- [Tamil words for kids](https://jssuthahar.github.io/learntamil/tamil-words-for-kids.html)
-- [Tamil stories for kids](https://jssuthahar.github.io/learntamil/tamil-stories-for-kids.html)
-- [Tamil letters — in Tamil](https://jssuthahar.github.io/learntamil/ezhuthukal.html)
-- [Tamil numbers 1 to 10](https://jssuthahar.github.io/learntamil/tamil-numbers.html)
-- [Colours in Tamil](https://jssuthahar.github.io/learntamil/tamil-colours.html)
-- [Days of the week in Tamil](https://jssuthahar.github.io/learntamil/tamil-days-of-the-week.html)
-- [Body parts in Tamil](https://jssuthahar.github.io/learntamil/tamil-body-parts.html)
-- [Family words in Tamil](https://jssuthahar.github.io/learntamil/tamil-family-words.html)
-- [Fruits and food in Tamil](https://jssuthahar.github.io/learntamil/tamil-fruits-and-food.html)
-- [Free printable charts & worksheets](https://jssuthahar.github.io/learntamil/tamil-printables.html)
+- [Tamil alphabet — all 247 letters](https://learntamil.msdevbuild.com/tamil-alphabet.html)
+- [Tamil vowels (uyir ezhuthukal)](https://learntamil.msdevbuild.com/tamil-vowels.html)
+- [Tamil consonants (mei ezhuthukal)](https://learntamil.msdevbuild.com/tamil-consonants.html)
+- [Uyirmei chart — 216 letters](https://learntamil.msdevbuild.com/uyirmei-ezhuthukal.html)
+- [Tamil words for kids](https://learntamil.msdevbuild.com/tamil-words-for-kids.html)
+- [Tamil stories for kids](https://learntamil.msdevbuild.com/tamil-stories-for-kids.html)
+- [Tamil letters — in Tamil](https://learntamil.msdevbuild.com/ezhuthukal.html)
+- [Tamil numbers 1 to 10](https://learntamil.msdevbuild.com/tamil-numbers.html)
+- [Colours in Tamil](https://learntamil.msdevbuild.com/tamil-colours.html)
+- [Days of the week in Tamil](https://learntamil.msdevbuild.com/tamil-days-of-the-week.html)
+- [Body parts in Tamil](https://learntamil.msdevbuild.com/tamil-body-parts.html)
+- [Family words in Tamil](https://learntamil.msdevbuild.com/tamil-family-words.html)
+- [Fruits and food in Tamil](https://learntamil.msdevbuild.com/tamil-fruits-and-food.html)
+- [Free printable charts & worksheets](https://learntamil.msdevbuild.com/tamil-printables.html)
 
 ## App and policies
-- [Learning app](https://jssuthahar.github.io/learntamil/): interactive letters with audio, reading practice, stories and games (requires JavaScript).
-- [Privacy & data](https://jssuthahar.github.io/learntamil/privacy.html): no personal data is collected.
-- [Terms](https://jssuthahar.github.io/learntamil/terms.html)
+- [Learning app](https://learntamil.msdevbuild.com/): interactive letters with audio, reading practice, stories and games (requires JavaScript).
+- [Privacy & data](https://learntamil.msdevbuild.com/privacy.html): no personal data is collected.
+- [Terms](https://learntamil.msdevbuild.com/terms.html)
 - [Report an issue](https://github.com/jssuthahar/learntamil/issues)
