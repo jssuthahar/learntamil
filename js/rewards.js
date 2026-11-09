@@ -112,8 +112,8 @@ function flyPoints(fromEl, text){
 /* ---------- score ---------- */
 const Score = {
   game: 'build', score: 0, streak: 0, shown: 0,
-  best(g = this.game){ try { return +localStorage.getItem('lt-best-' + g) || 0; } catch (e) { return 0; } },
-  saveBest(){ try { if (this.score > this.best()) localStorage.setItem('lt-best-' + this.game, this.score); } catch (e) {} },
+  best(g = this.game){ return +Profiles.get('lt-best-' + g) || 0; },
+  saveBest(){ if (this.score > this.best()) Profiles.set('lt-best-' + this.game, this.score); },
   reset(game){ this.game = game; this.score = 0; this.streak = 0; this.render(true); },
   render(instant){
     const sEl = document.getElementById('sbScore'); if (!sEl) return;
@@ -196,7 +196,7 @@ const BADGES = [
   { id: 'l247',     ic: '👑', ta: '247 எழுத்துகள்',          en: 'Heard all 247 letters',               ok: p => p.letters.length >= 247 },
   { id: 'read10',   ic: '📖', ta: '10 சொற்கள் படித்தாய்',      en: 'Read 10 words',                       ok: p => p.words >= 10 },
   { id: 'story1',   ic: '📚', ta: 'ஒரு கதை முடித்தாய்',        en: 'Finished a story',                    ok: p => p.stories.length >= 1 },
-  { id: 'story5',   ic: '🏰', ta: '5 கதைகளும் முடித்தாய்',     en: 'Finished all 5 stories',              ok: p => p.stories.length >= 5 },
+  { id: 'story5',   ic: '🏰', ta: '5 கதைகளும் முடித்தாய்',     en: 'Finished all 5 stories',              ok: p => STORIES.every(s => p.stories.includes(s.id)) },
   { id: 'memory',   ic: '🃏', ta: 'நினைவாற்றல்',              en: 'Memory master — finished a Memory game', ok: p => p.memoryWins >= 1 },
   { id: 'balloon',  ic: '🎈', ta: '10 பலூன்கள் உடைத்தாய்',     en: 'Popped 10 balloons in one game',      ok: p => p.balloonBest >= 10 },
   { id: 'builder',  ic: '🧩', ta: '5 சொற்கள் அமைத்தாய்',       en: 'Built 5 words',                       ok: p => p.built >= 5 },
@@ -205,25 +205,30 @@ const BADGES = [
   { id: 'day3',     ic: '🔥', ta: '3 நாள் தொடர்ச்சி',          en: 'Learned 3 days in a row',             ok: p => p.bestDays >= 3 },
   { id: 'day7',     ic: '📆', ta: '7 நாள் தொடர்ச்சி',          en: 'Learned 7 days in a row',             ok: p => p.bestDays >= 7 },
   { id: 'goal',     ic: '🎯', ta: 'இன்றைய இலக்கு',            en: 'Finished a daily goal',               ok: p => !!p.goalDay },
-  { id: 'cert1',    ic: '🎓', ta: 'முதல் சான்றிதழ்',           en: 'Earned your first certificate',       ok: p => Object.keys(p.certs || {}).length >= 1 },
+  { id: 'trace5',   ic: '✍️', ta: '5 எழுத்துகள் எழுதினாய்',    en: 'Traced 5 different letters',          ok: p => (p.traced || []).length >= 5 },
+  { id: 'say5',     ic: '🎤', ta: '5 முறை சொன்னாய்',          en: 'Said 5 letters or words aloud',       ok: p => (p.said || 0) >= 5 },
+  { id: 'rhyme',    ic: '🎵', ta: 'பாடல் பாடினாய்',            en: 'Sang along to a rhyme',               ok: p => (p.rhymes || []).length >= 1 },
+  { id: 'colour',   ic: '🎨', ta: 'வண்ணம் தீட்டினாய்',          en: 'Coloured a whole picture',            ok: p => (p.coloured || 0) >= 1 },
+  { id: 'cert1',   ic: '🎓', ta: 'முதல் சான்றிதழ்',           en: 'Earned your first certificate',       ok: p => Object.keys(p.certs || {}).length >= 1 },
   { id: 'cert5',    ic: '👑', ta: '5 சான்றிதழ்கள்',            en: 'Earned 5 certificates',               ok: p => Object.keys(p.certs || {}).length >= 5 },
   { id: 'cert10',   ic: '🏆', ta: '10 சான்றிதழ்களும்',         en: 'Earned all 10 certificates',          ok: p => Object.keys(p.certs || {}).length >= 10 }
 ];
 const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, letters: [], words: 0, stories: [],
   memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {},
+  misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {},
   day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10) });
 
 const Progress = {
   d: DEFAULT(),
   load(){
     try {
-      const raw = localStorage.getItem('lt-progress');
+      const raw = Profiles.get('lt-progress');
       if (raw) this.d = Object.assign(DEFAULT(), JSON.parse(raw));
-      else { const old = parseInt(localStorage.getItem('lt-stars'), 10) || 0; this.d.tokens = this.d.tokensEver = old; }   // earlier ⭐ stars become tokens
+      else { const old = parseInt(Profiles.get('lt-stars'), 10) || 0; this.d.tokens = this.d.tokensEver = old; }   // earlier ⭐ stars become tokens
     } catch (e) {}
     this.paint(false);   // the Today card is painted at the end of this file
   },
-  save(){ try { localStorage.setItem('lt-progress', JSON.stringify(this.d)); } catch (e) {} },
+  save(){ Profiles.set('lt-progress', JSON.stringify(this.d)); },
   paint(bump){
     const n = document.getElementById('starN'); if (n) n.textContent = this.d.tokens;
     if (bump){ const c = document.getElementById('stars'); if (c){ c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); } }
@@ -240,6 +245,11 @@ const Progress = {
     else if (what === 'balloon') d.balloonBest = Math.max(d.balloonBest, v || 0);
     else if (what === 'built') d.built++;
     else if (what === 'spin') d.spins++;
+    else if (what === 'miss'){ d.misses[v] = (d.misses[v] || 0) + 1; this.save(); return; }   // letters to practise (Parent corner)
+    else if (what === 'traced'){ if (!d.traced.includes(v)) d.traced.push(v); }
+    else if (what === 'rhyme'){ if (!d.rhymes.includes(v)) d.rhymes.push(v); else return; }
+    else if (what === 'coloured') d.coloured++;
+    else if (what === 'said') d.said++;
     if (what !== 'streak') this.activity();
     this.save(); this.check();
   },
@@ -278,7 +288,7 @@ const Progress = {
     }
     paintToday();
   },
-  reset(){ this.d = DEFAULT(); setTimeout(paintToday); this.save(); this.paint(true); try { Object.keys(localStorage).filter(k => k.startsWith('lt-best-')).forEach(k => localStorage.removeItem(k)); } catch (e) {} Score.render(true); }
+  reset(){ this.d = DEFAULT(); setTimeout(paintToday); this.save(); this.paint(true); try { Object.keys(localStorage).filter(k => k.startsWith('lt-best-') && Profiles.mine(k)).forEach(k => localStorage.removeItem(k)); } catch (e) {} Score.render(true); }
 };
 
 /* ---------- "New badge!" celebration (one at a time) ---------- */
@@ -317,13 +327,16 @@ function openRewards(){
     <div class="rw-stats">
       ${stat('✅', d.correct, 'Right answers')}${stat('🔥', d.bestStreak, 'Best streak')}
       ${stat('🔤', `${d.letters.length}/247`, 'Letters heard')}${stat('📖', d.words, 'Words read')}
-      ${stat('📚', `${d.stories.length}/5`, 'Stories finished')}${stat('🧩', d.built, 'Words built')}
+      ${stat('📚', `${d.stories.filter(id => STORIES.some(s => s.id === id)).length}/${STORIES.length}`, 'Stories finished')}${stat('🧩', d.built, 'Words built')}
+      ${stat('✍️', d.traced.length, 'Letters traced')}${stat('🎤', d.said, 'Said aloud')}${stat('🎨', d.coloured, 'Pictures coloured')}
     </div>
+    <p class="rw-links"><button class="btn small" type="button" data-open="stickers">📒 Sticker book</button> <button class="btn small" type="button" data-open="parents">👪 Parent corner</button></p>
     <h3>Badges <small>${got} / ${BADGES.length}</small></h3>
     <div class="rw-badges">${BADGES.map(b => { const on = d.badges.includes(b.id);
       return `<div class="rw-badge ${on ? 'on' : ''}" title="${b.en}"><span aria-hidden="true">${on ? b.ic : '🔒'}</span><b lang="ta">${b.ta}</b><small>${b.en}</small></div>`; }).join('')}</div>
     <p class="rw-note">Saved only on this device. <button class="rw-reset" type="button">Reset progress</button></p>`;
   dlg.querySelector('.rw-x').onclick = () => dlg.close();
+  dlg.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { dlg.close(); document.dispatchEvent(new CustomEvent('lt:open', { detail: b.dataset.open })); });
   dlg.querySelector('.rw-reset').onclick = () => {
     if (confirm('Reset all tokens, badges and scores on this device?')){ Progress.reset(); openRewards(); }
   };
@@ -370,7 +383,7 @@ function letterOfDay(){
 function paintToday(){
   const box = document.getElementById('today'); if (!box) return;
   const d = Progress.d, st = stageOf(d.tokensEver), S = STAGES[st], N = STAGES[st + 1];
-  let name = ''; try { name = (localStorage.getItem('lt-cert-name') || '').split(' ')[0]; } catch (e) {}
+  const name = (Profiles.current().name || Profiles.get('lt-cert-name') || '').split(' ')[0];
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   set('kiliStage', S.ic);
   set('todayHi', name ? `வணக்கம், ${name}! 👋` : 'வணக்கம்! 👋');

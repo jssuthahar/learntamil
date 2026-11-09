@@ -8,8 +8,8 @@ A free, mobile-friendly website for children and beginners to learn the 247 Tami
 | --- | --- |
 | **எழுத்துகள் · Letters** | 12 உயிர், 18 மெய், ஆய்தம், 216 உயிர்மெய் — tap to hear, picture words, build-a-letter |
 | **வாசிப்பு · Reading** | 46 picture words in 3 levels; sound out letter by letter, then reveal the picture |
-| **கதைகள் · Stories** | 5 read-aloud stories with word-tap letter breakdown and English meaning |
-| **விளையாட்டு · Games** | Build a letter, Listen & pick, Spin wheel, Balloon pop, Word builder, Memory, Tamil quiz, Picture words, Topics, Spelling, Sentences — question games never repeat a question until all have been asked |
+| **கதைகள் · Stories** | 5 read-aloud stories, sing-along rhymes and Aathichoodi, and 4 festival stories — with word-tap letter breakdown and English meaning |
+| **விளையாட்டு · Games** | Build a letter, Listen & pick, Spin wheel, Balloon pop, Word builder, Memory, Tamil quiz, Picture words, Topics, Spelling, Sentences, Trace, Colouring, Little ones — question games never repeat a question until all have been asked |
 
 ## Project layout
 
@@ -18,9 +18,15 @@ index.html          page markup
 record.html         letter recorder (make real audio for each letter)
 css/styles.css      site styles (light/dark, phone layout)
 css/record.css      recorder styles
-js/data.js          letters, words and stories (all Tamil text lives here)
+js/profiles.js      child profiles: per-child localStorage keys (loaded first)
+js/data.js          letters, words, stories, topics, rhymes, festivals (all Tamil text lives here)
 js/app.js           letters, stories, speech, navigation
 js/games.js         reading practice and games
+js/trace.js         ✍️ trace a letter and 🎨 colouring
+js/voice.js         🎤 say it back (record and compare)
+js/rhymes.js        🎵 rhymes, 🌺 Aathichoodi, 🪔 festivals
+js/little.js        👶 little ones mode
+js/family.js        📒 stickers, 👪 parent corner, ⏰ break reminder, profile switcher
 js/record.js        recorder logic
 audio/manifest.js   list of recorded letter sounds (created by record.html)
 ```
@@ -80,6 +86,21 @@ After publishing:
 - **Today card** on the home screen: greets the child by name, shows Kili's level, the daily goal ring (learn 10 things), the day streak 🔥 and a **Letter of the day**.
 - **Kili grows** with every token: 🥚 முட்டை → 🐣 குஞ்சு → 🐥 சிறு பறவை → 🦜 கிளி → 🌟 நட்சத்திரக் கிளி → 👑 அரசக் கிளி, with a level-up celebration.
 - **Word topics** in Reading: numbers 1–10, colours, days, body, family, fruits & food (data in `js/data.js` → `TOPICS`).
+
+## Kids features
+
+- **✍️ Trace** (Games → Trace, or ✍️ under the big letter): the letter is drawn faintly on a board and the child traces it with a finger, mouse or pen. It counts when about 75% of the letter is covered, most of the ink stays on the letter and the child hasn't simply scribbled over it. There is no stroke-order data, so it checks the shape, not the order of strokes. Code: `js/trace.js`.
+- **🎤 Say it back** (under the big letter and in Reading): hear the right sound, record yourself (up to 4 seconds) and play both to compare. The recording is kept only in memory and thrown away when the window closes; there is no speech recognition and nothing is uploaded. Code: `js/voice.js`.
+- **🎵 Rhymes and 🌺 Aathichoodi** (Stories → Rhymes): நிலா நிலா ஓடி வா (traditional), Bharathiyar's ஓடி விளையாடு பாப்பா and Avvaiyar's ஆத்திசூடி (one line for each vowel and ஃ), all public domain. Each word lights up as it is sung. An Aathichoodi *line of the day* is on the Today card. Data: `RHYMES` and `AATHICHOODI` in `js/data.js`.
+- **🪔 Festivals** (Stories → Festivals): Pongal, Tamil New Year, Deepavali and Karthigai Deepam, each with a short read-aloud story and its words (`FESTIVALS` in `js/data.js`).
+- **🎨 Colouring** (Games → Colouring): six line pictures; picking a colour says its Tamil name; colouring the whole picture says the picture's word.
+- **👶 Little ones** (`#/little`, ages 3–5): pictures only, big buttons, sounds play by themselves and there's no wrong-answer buzzer. *Look & listen* and *Find it* modes. Code: `js/little.js`.
+- **More word topics**: animals, birds, vehicles, shapes, opposites and the 12 Tamil months. They appear in Reading → Topics, the Topics and Picture words games, spelling, and the sticker book.
+- **👧👦 Child profiles**: up to 6 children per device. The first child keeps the original `localStorage` keys, so existing progress is kept, and other children's keys end in `@<id>` (`js/profiles.js`). Switch child with the animal button on the Today card.
+- **📒 Sticker book**: one new picture sticker for every 10 tokens earned.
+- **👪 Parent corner** (press and hold for 3 seconds): minutes per day for the last 7 days, letters heard and traced, stories, rhymes, certificates, the letters missed most often in the Listen and Build games, child management and an optional **⏰ break reminder** (every 15–45 minutes, with a one-minute pause screen). Code: `js/family.js`.
+
+New Tamil text (topics, rhymes, Aathichoodi meanings, festival stories) should be checked by a Tamil teacher before publishing.
 
 ## Printable PDFs
 

@@ -87,6 +87,7 @@
             <div class="lvl-bar" aria-hidden="true"><i id="lvlBar"></i></div>
             <small class="muted" id="lvlNext">25 🪙 to grow</small>
           </div>
+          <button class="prof-btn" id="profileBtn" type="button" aria-label="Who is learning? Switch child"><span id="profIc" aria-hidden="true">🦁</span><small>Switch</small></button>
         </div>
         <div class="today-row">
           <div class="goal-ring" id="goalRing" style="--p:0" role="img" aria-label="Today's goal"><span><b id="goalN">0</b><small>/10</small></span></div>
@@ -94,6 +95,12 @@
           <button class="lotd" id="lotd" type="button" aria-label="Letter of the day"><small>Letter of the day</small><b id="lotdL" lang="ta">அ</b></button>
         </div>
         <p class="today-goal" id="todayGoal">🎯 Today's goal: learn 10 things</p>
+        <button class="today-line" id="lineOfDay" type="button" aria-label="Aathichoodi line of the day — tap to hear"><small>🌺 Line of the day · <span lang="ta">ஆத்திசூடி</span></small><b lang="ta" id="lineTa"></b><span id="lineEn"></span></button>
+        <div class="today-chips">
+          <button class="tchip" type="button" data-open="stickers">📒 <span>Stickers</span></button>
+          <a class="tchip" href="#/little">👶 <span>Little ones</span></a>
+          <button class="tchip" type="button" data-open="parents">👪 <span>Parents</span></button>
+        </div>
         <p class="push-row"><button type="button" class="btn small push-btn" data-push hidden>🔔 Turn on reminders</button><small class="muted" data-push-note aria-live="polite"></small></p>
       </aside>
     </div>
@@ -129,6 +136,10 @@
       <div class="kind" id="kind" lang="ta">உயிர் எழுத்து · குறில்</div>
       <div class="hint" id="hint">“a” as in “about”</div>
       <button class="ex" id="ex" type="button"><span id="exPic" aria-hidden="true">👩</span><span class="ta" id="exWord">அம்மா</span><span class="muted" id="exMean">mother</span></button>
+      <div class="player-acts">
+        <button class="btn small" id="traceThis" type="button">✍️ <span class="ta">எழுது</span> · Trace</button>
+        <button class="btn small" id="sayThis" type="button">🎤 <span class="ta">சொல்</span> · Say it</button>
+      </div>
     </div>
     <button class="play-btn" id="replay" aria-label="Play the sound again">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
@@ -182,9 +193,35 @@
 
   <!-- கதைகள் -->
   <section class="panel" id="stories" role="tabpanel">
+    <div class="seg" id="storyKinds" role="group" aria-label="Stories, rhymes or festivals">
+      <button class="seg-btn" type="button" data-kind="books" aria-pressed="true"><b>📚 Stories</b><small class="ta">கதைகள்</small></button>
+      <button class="seg-btn" type="button" data-kind="rhymes" aria-pressed="false"><b>🎵 Rhymes</b><small class="ta">பாடல்கள்</small></button>
+      <button class="seg-btn" type="button" data-kind="festivals" aria-pressed="false"><b>🪔 Festivals</b><small class="ta">பண்டிகைகள்</small></button>
+    </div>
     <div id="shelfView">
       <div class="sec-head"><div><h2>கதை நூலகம் · Read-to-me stories</h2><p>Tap a word to hear it and see its letters. <a class="guide-link" href="tamil-stories-for-kids.html">Read as text →</a></p></div></div>
       <div class="shelf" id="shelf"></div>
+    </div>
+    <div id="rhymeShelf" hidden>
+      <div class="sec-head"><div><h2>பாடல்கள் · Sing-along rhymes</h2><p>Old Tamil rhymes and Avvaiyar's Aathichoodi. Each word lights up as it is sung — tap any word to hear it and see its letters.</p></div></div>
+      <div class="shelf" id="rhymeList"></div>
+    </div>
+    <div id="rhymeView" class="rhyme glass" hidden>
+      <div class="rtop">
+        <button class="btn" id="rhymeBack" type="button">← <span class="ta">பாடல்கள்</span></button>
+        <div class="rtitle" id="rhymeTitle" lang="ta"></div>
+        <small class="muted" id="rhymeBy"></small>
+      </div>
+      <div class="rhyme-lines" id="rhymeLines" lang="ta"></div>
+      <div class="breakdown" id="rhymeBd"></div>
+      <div class="rbar">
+        <button class="btn primary" id="rhymeSing" type="button">▶ <span class="ta">பாடு</span> · Sing along</button>
+      </div>
+      <div class="ropts"><label><input type="checkbox" id="rhymeEn" checked> Show English meaning</label></div>
+    </div>
+    <div id="festShelf" hidden>
+      <div class="sec-head"><div><h2>பண்டிகைகள் · Tamil festivals</h2><p>A short read-aloud story for each festival, and its special words. Tap a word to hear it.</p></div></div>
+      <div class="fest-list" id="festList"></div>
     </div>
     <div id="readerView" hidden>
       <div class="rtop">
@@ -236,6 +273,7 @@
       <div class="read-actions">
         <button class="btn" id="readSlow">🐢 <span class="ta">எழுத்து எழுத்தாக</span><span class="en"> · Letter by letter</span></button>
         <button class="btn" id="readSay">🔊 <span class="ta">சொல்</span><span class="en"> · Whole word</span></button>
+        <button class="btn" id="readMic">🎤 <span class="ta">நான் சொல்கிறேன்</span><span class="en"> · Say it</span></button>
       </div>
       <div class="read-nav">
         <button class="btn" id="readPrev" aria-label="Previous word">◀</button>
@@ -260,6 +298,9 @@
       <button class="gcard" data-game="topics" aria-pressed="false"><span class="gi" aria-hidden="true">🔢</span><b>Topics</b><small>Numbers, colours, days</small></button>
       <button class="gcard" data-game="spell" aria-pressed="false"><span class="gi" aria-hidden="true">✏️</span><b>Spelling</b><small>Missing letter</small></button>
       <button class="gcard" data-game="story" aria-pressed="false"><span class="gi" aria-hidden="true">📚</span><b>Sentences</b><small>Read &amp; understand</small></button>
+      <button class="gcard" data-game="trace" aria-pressed="false"><span class="gi" aria-hidden="true">✍️</span><b>Trace</b><small>Write with your finger</small></button>
+      <button class="gcard" data-game="colour" aria-pressed="false"><span class="gi" aria-hidden="true">🎨</span><b>Colouring</b><small>Colours in Tamil</small></button>
+      <button class="gcard" data-game="little" aria-pressed="false"><span class="gi" aria-hidden="true">👶</span><b>Little ones</b><small>Ages 3–5</small></button>
     </div>
 
     <div class="scoreboard" id="scoreboard" aria-live="polite">
@@ -317,6 +358,38 @@
       <div class="feedback" id="memFb" aria-live="polite"></div>
     </div>
 
+    <!-- Trace a letter (js/trace.js) -->
+    <div class="game glass" id="g-trace" hidden>
+      <div class="ask"><span class="ta">விரலால் எழுது</span><small>Trace the grey letter with your finger, mouse or pen</small></div>
+      <div class="seg tr-sets" id="trSets" role="group" aria-label="Letter group">
+        <button class="seg-btn" type="button" data-set="uyir" aria-pressed="true"><b>உயிர்</b><small>12</small></button>
+        <button class="seg-btn" type="button" data-set="mei" aria-pressed="false"><b>மெய்</b><small>18</small></button>
+        <button class="seg-btn" type="button" data-set="um" aria-pressed="false"><b>உயிர்மெய்</b><small>216</small></button>
+      </div>
+      <div class="tr-top"><button class="btn small" id="trPrev" type="button" aria-label="Previous letter">◀</button><b class="tr-name" id="trName" lang="ta"></b><button class="btn small" id="trNext" type="button" aria-label="Next letter">▶</button></div>
+      <div class="tr-board"><canvas id="trCanvas" width="600" height="600" aria-label="Tracing board"></canvas><div class="tr-meter" aria-hidden="true"><i id="trMeter"></i></div></div>
+      <div class="feedback" id="trFb" aria-live="polite"></div>
+      <div class="read-actions">
+        <button class="btn" id="trHear" type="button">🔊 Hear</button>
+        <button class="btn" id="trClear" type="button">↺ <span class="ta">அழி</span> · Clear</button>
+        <button class="btn" id="trSay" type="button">🎤 Say it</button>
+      </div>
+    </div>
+
+    <!-- Colouring (js/trace.js) -->
+    <div class="game glass" id="g-colour" hidden>
+      <div class="ask"><span class="ta">வண்ணம் தீட்டு</span><small>Pick a colour — hear its Tamil name — then tap the picture to fill it</small></div>
+      <div class="col-wrap">
+        <div class="col-pic" id="colPic"></div>
+        <div class="col-side">
+          <div class="col-word"><span id="colEmoji" aria-hidden="true"></span><b lang="ta" id="colWord"></b><small class="muted" id="colMean"></small></div>
+          <div class="col-palette" id="colPalette" role="group" aria-label="Colours"></div>
+          <div class="read-actions"><button class="btn small" id="colClear" type="button">↺ Clear</button><button class="btn small" id="colNext" type="button">Next picture ▶</button></div>
+        </div>
+      </div>
+      <div class="feedback" id="colFb" aria-live="polite"></div>
+    </div>
+
     <!-- Question games (quiz, pictures, topics, spelling, sentences) -->
     <div class="game glass mcq" id="g-mcq" hidden>
       <div class="ask" id="mqAsk"></div>
@@ -342,6 +415,24 @@
     <div class="cert-levels" id="certLevels"></div>
     <div class="cert-quiz glass" id="certQuiz" hidden></div>
     <div class="cert-result glass" id="certResult" hidden></div>
+  </section>
+
+  <!-- சின்னஞ்சிறு: Little ones mode (js/little.js) -->
+  <section class="panel little" id="little" role="tabpanel" aria-label="Little ones">
+    <div class="lt-head">
+      <h2><span aria-hidden="true">👶</span> <span class="ta">சின்னஞ்சிறு</span></h2>
+      <a class="btn small" href="#/uyir" aria-label="Leave Little ones">✕</a>
+    </div>
+    <div class="lt-modes" role="group" aria-label="Choose">
+      <button class="lt-mode" type="button" data-mode="look" aria-pressed="true" aria-label="Look and listen"><span aria-hidden="true">👀</span></button>
+      <button class="lt-mode" type="button" data-mode="find" aria-pressed="false" aria-label="Find it"><span aria-hidden="true">🎯</span></button>
+    </div>
+    <div class="lt-themes" id="ltThemes" role="group" aria-label="Pictures"></div>
+    <div class="lt-grid" id="ltGrid"></div>
+    <div class="lt-find" id="ltFind" hidden>
+      <button class="lt-ask" id="ltAsk" type="button" aria-label="Hear the word again"><span aria-hidden="true">🔊</span></button>
+      <div class="lt-opts" id="ltOpts"></div>
+    </div>
   </section>
 
   <div class="toolbar" id="globalTools" style="justify-content:center;margin-top:22px">
@@ -430,11 +521,17 @@
 
 <!-- Recorded letter sounds (made with record.html). Missing file = device voice is used. -->
 <script src="audio/manifest.js"></script>
+<script src="js/profiles.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 <script src="js/rewards.js"></script>
 <script src="js/games.js"></script>
 <script src="js/cert.js"></script>
+<script src="js/trace.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/rhymes.js"></script>
+<script src="js/little.js"></script>
+<script src="js/family.js"></script>
 <script src="js/pwa.js"></script>
 <script type="module" src="js/firebase.js"></script>
 <script src="js/support.js" defer></script>

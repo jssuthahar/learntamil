@@ -87,6 +87,7 @@ function showGame(g){
   $$('#gamePick .gcard').forEach(c=>c.setAttribute('aria-pressed', c.dataset.game===g));
   stopBalloon();
   const panelId = (g==='build' || g==='listen') ? 'g-quiz' : MCQ_INFO[g] ? 'g-mcq' : 'g-'+g;
+  if (g==='little'){ location.hash = '/little'; return; }
   $$('#practice .game').forEach(x=>x.hidden = x.id !== panelId);
   if (g==='build' || g==='listen') setQuizMode(g);
   if (g==='spin') initSpin();
@@ -94,6 +95,7 @@ function showGame(g){
   if (g==='words') newWord();
   if (g==='memory') newMemory();
   if (MCQ_INFO[g]) startMcq(g);
+  document.dispatchEvent(new CustomEvent('lt:game', {detail:g}));   // trace.js and others start their own games
 }
 $$('#gamePick .gcard').forEach(c=>c.addEventListener('click', ()=>showGame(c.dataset.game)));
 document.addEventListener('lt:section', e=>{
@@ -131,11 +133,11 @@ function spinWords(){
 }
 // Spin memory is saved on this device, so a child coming back later still gets new letters and words.
 const SPIN_KEY = 'lt-spin-seen';
-const SP = (()=>{ let d = null; try { d = JSON.parse(localStorage.getItem(SPIN_KEY)); } catch (e) {}
+const SP = (()=>{ let d = null; try { d = JSON.parse(Profiles.get(SPIN_KEY)); } catch (e) {}
   d = d && typeof d === 'object' ? d : {};
   return { recent: Array.isArray(d.recent) ? d.recent : [], used: d.used && typeof d.used === 'object' ? d.used : {}, shown: Array.isArray(d.shown) ? d.shown : [] }; })();
 const spinRecent = SP.recent;   // letters landed on lately
-const spinSave = ()=>{ try { localStorage.setItem(SPIN_KEY, JSON.stringify(SP)); } catch (e) {} };
+const spinSave = ()=>{ Profiles.set(SPIN_KEY, JSON.stringify(SP)); };
 function freshWord(i){   // the answer word: every word for this letter is used before any comes back
   const ws = spinWords()[i], used = SP.used[i] = SP.used[i] || [];
   let left = ws.filter(w=>!used.includes(w[1]));
@@ -359,7 +361,7 @@ $('#memNew').addEventListener('click', newMemory);
 const MCQ_INFO = {
   quiz:    { ta:'தமிழ் வினாடி வினா', en:'Mixed questions — letters, words, spelling and stories' },
   picture: { ta:'படம் பார், சொல்லைத் தேர்ந்தெடு', en:'Look at the picture and pick the Tamil word' },
-  topics:  { ta:'எண்கள், நிறங்கள், கிழமைகள்', en:'Numbers, colours, days, family, body and food' },
+  topics:  { ta:'எண்கள், நிறங்கள், கிழமைகள்', en:'Numbers, colours, days, animals, opposites, months and more' },
   spell:   { ta:'எழுத்துக்கூட்டல்', en:'Missing letters, jumbled letters and spelling' },
   story:   { ta:'வாக்கியம் படி', en:'Read sentences from the stories' }
 };

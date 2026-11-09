@@ -446,7 +446,7 @@ function choose(o,b){
     $('#feedback').className = 'feedback ok';
   } else {
     b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
-    Rewards.miss();
+    Rewards.miss(); Progress.track('miss', answer.l);
     $('#feedback').textContent = 'பரவாயில்லை, மீண்டும் முயற்சி செய்! · Try again';
     $('#feedback').className = 'feedback bad';
     setTimeout(()=>sayItem(o), 300);
@@ -460,7 +460,7 @@ function setQuizMode(m){ mode = m; newQuestion(); }
    TABS (hash routing so each section can be bookmarked)
    ===================================================================== */
 const LETTER_TABS = ['uyir','mei','aytham','uyirmei'];
-const SECTIONS = [...LETTER_TABS, 'reading', 'stories', 'practice', 'certificate'];
+const SECTIONS = [...LETTER_TABS, 'reading', 'stories', 'practice', 'certificate', 'little'];
 let lastLetterTab = 'uyir';
 function openTab(name){
   if (name === 'letters') name = lastLetterTab;

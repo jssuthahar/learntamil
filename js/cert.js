@@ -127,6 +127,17 @@ const CERT = (() => {
   const topicMeaning = id => () => { const ws = topic(id), w = pick(ws);
     return Q(`What does ${T(w[0])} mean?`, w[2], others(ws, w, 3, x => x[2]).map(x => x[2]), `${w[0]} = ${w[2]}`); };
 
+  /* ---------- More topics (practice games only): animals, birds, vehicles, shapes, opposites, months ---------- */
+  const OPP = topic('opposites').map(w => ({ w: w[0], e: w[1], en: w[2].split(' · ')[0], opp: w[2].split(' of ')[1] }));
+  const qOpposite = () => { const o = pick(OPP), ans = OPP.find(x => x.w === o.opp);
+    return Q(`<span class="cq-emo">${o.e}</span> What is the opposite of ${T(o.w)} <small>(${o.en})</small>?`, T(ans.w),
+      others(OPP.filter(x => x.w !== o.w), ans, 3, x => x.w).map(x => T(x.w)), `${o.w} (${o.en}) ↔ ${ans.w} (${ans.en})`); };
+  const MONTHS = topic('months');
+  const qMonthNext = () => { const i = rand(MONTHS.length), m = MONTHS[i], n = MONTHS[(i + 1) % MONTHS.length];
+    return Q(`Which Tamil month comes after ${T(m[0])}?`, T(n[0]), others(MONTHS, n, 3).map(x => T(x[0])), `${m[0]} → ${n[0]}`); };
+  const qMonthFirst = () => Q('Which is the first month of the Tamil year?', T('சித்திரை'), shuffle(MONTHS.slice(1)).slice(0, 3).map(x => T(x[0])),
+    'The Tamil year starts with சித்திரை (mid-April) — Tamil New Year.');
+
   /* ---------- Level 8: spelling ---------- */
   const SPELL = [...WORDS, ...TOPICS.filter(t => t.id !== 'numbers').flatMap(t => t.words), ...topic('numbers')]
     .filter((w, i, a) => lettersOf(w[0]).length >= 2 && a.findIndex(x => x[0] === w[0]) === i)
@@ -186,8 +197,10 @@ const CERT = (() => {
   /* Question banks for the practice games (games.js) — same generators, endless play. */
   const bank = {
     letters: [qVowelPic, qVowelRoman, qVowelLength, qVowelNext, qMeiRoman, qMeiGroup, qMeiInWord, qMeiNext, qUmBuild, qUmSplit, qUmLength, qUmRoman],
-    picture: [qWordPic, qWordMeaning, qColourPic, topicPic('body'), topicPic('family'), topicPic('food')],
-    topics: [qNumWord, qNumMeaning, qNumTamilDigit, qColourMeaning, qDayNext, qDayBefore, qDayMeaning, topicMeaning('body'), topicMeaning('family'), topicMeaning('food')],
+    picture: [qWordPic, qWordMeaning, qColourPic, topicPic('body'), topicPic('family'), topicPic('food'),
+      topicPic('animals'), topicPic('birds'), topicPic('vehicles'), topicPic('shapes')],
+    topics: [qNumWord, qNumMeaning, qNumTamilDigit, qColourMeaning, qDayNext, qDayBefore, qDayMeaning, topicMeaning('body'), topicMeaning('family'), topicMeaning('food'),
+      topicMeaning('animals'), topicMeaning('birds'), topicMeaning('vehicles'), topicMeaning('shapes'), qOpposite, qOpposite, qMonthNext, qMonthFirst],
     spell: [qMissing, qJoin, qUnscramble, qLast, qWordCount, qWordFirst],
     story: [qSentMeaning, qSentPick, qSentWho, qStoryTitle],
     facts: FACTS
@@ -197,9 +210,9 @@ const CERT = (() => {
   /* ---------- no repeats: remember recently asked questions per level (this device only) ---------- */
   const keyOf = q => q.q + '|' + (q.opts.find(o => o.ok) || {}).label;
   const SEEN_KEY = 'lt-cert-seen';
-  const loadSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || {}; } catch (e) { return {}; } };
+  const loadSeen = () => { try { return JSON.parse(Profiles.get(SEEN_KEY)) || {}; } catch (e) { return {}; } };
   const saveSeen = (n, keys) => { const all = loadSeen(); all[n] = keys.slice(-150);
-    try { localStorage.setItem(SEEN_KEY, JSON.stringify(all)); } catch (e) {} };
+    Profiles.set(SEEN_KEY, JSON.stringify(all)); };
 
   function makeTest(level){
     const N = tot(level), past = loadSeen()[level.n] || [], hist = new Set(past);
@@ -289,7 +302,7 @@ const CERT = (() => {
       return;
     }
     Rewards.sfx.win(); confetti(); setTimeout(() => speak('வாழ்த்துகள்!'), 500); logEv('certificate_earned', { level: L.n });
-    let lastName = ''; try { lastName = localStorage.getItem('lt-cert-name') || ''; } catch (e) {}
+    const lastName = Profiles.get('lt-cert-name') || Profiles.current().name || '';
     box.innerHTML = `<div class="cr-emo" aria-hidden="true">🎓</div><h3><span class="ta">வாழ்த்துகள்!</span> You passed Level ${L.n}</h3>
       <p class="cr-score">${S.right}/${N} <small>(${pct}%)</small></p>
       <form class="cr-form" id="crForm"><label for="crName">Name for the certificate · <span class="ta">பெயர்</span></label>
@@ -299,7 +312,7 @@ const CERT = (() => {
     $('#crForm').onsubmit = e => {
       e.preventDefault();
       const name = $('#crName').value.replace(/\s+/g, ' ').trim().slice(0, 40); if (!name) return;
-      try { localStorage.setItem('lt-cert-name', name); } catch (er) {}
+      Profiles.set('lt-cert-name', name);
       const prev = certs()[L.n];
       const c = { name, score: Math.max(S.right, prev ? prev.score : 0), total: tot(L), date: new Date().toISOString().slice(0, 10),
         id: `LT${L.n}-${Date.now().toString(36).toUpperCase().slice(-6)}` };
