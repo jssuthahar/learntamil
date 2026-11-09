@@ -1132,3 +1132,10 @@ body:not(.doc-page) footer{padding-bottom:calc(40px + env(safe-area-inset-bottom
   .consent-btns{width:100%}.consent-btns .toast-btn{flex:1}
 }
 @media (prefers-reduced-motion:reduce){.consent{transition:none}}
+
+/* Reminders (push notifications) switch */
+.push-row{margin:10px 0 0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.push-row:has(.push-btn[hidden]){display:none}
+.push-btn{font-size:13.5px;white-space:normal;max-width:100%}
+.push-btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-deep);border-color:transparent}
+.push-row small:empty{display:none}

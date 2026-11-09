@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'e30499f5e9';
+const VERSION = '317b12cac3';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -44,6 +44,28 @@ self.addEventListener('activate', event => {
     for (const key of await caches.keys())
       if (key.startsWith('lt-core-') && key !== CORE) await caches.delete(key);
     await self.clients.claim();
+  })());
+});
+
+/* Push notifications from Firebase Cloud Messaging (sent from the Firebase console). */
+self.addEventListener('push', event => {
+  let p = {}; try { p = event.data ? event.data.json() : {}; } catch (e) { p = { notification: { body: event.data && event.data.text() } }; }
+  const n = p.notification || {}, d = p.data || {};
+  const link = (p.fcmOptions && p.fcmOptions.link) || (p.fcm_options && p.fcm_options.link) || d.link || d.url || n.click_action || './';
+  event.waitUntil(self.registration.showNotification(n.title || d.title || 'Learn Tamil · தமிழ் கற்போம்', {
+    body: n.body || d.body || 'Time to learn a new Tamil letter! 🦜',
+    icon: n.icon || 'assets/icon-192.png', badge: 'assets/icon-192.png',
+    image: n.image || d.image, tag: p.collapse_key || 'lt-reminder', renotify: true,
+    data: { link }
+  }));
+});
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.link) || './', self.registration.scope).href;
+  event.waitUntil((async () => {
+    for (const c of await self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      if (c.url.startsWith(self.registration.scope) && 'focus' in c){ if (c.url !== url && 'navigate' in c) await c.navigate(url).catch(() => {}); return c.focus(); }
+    return self.clients.openWindow(url);
   })());
 });
 

@@ -24,14 +24,16 @@ const live = location.protocol === 'https:' && !/^(localhost|127\.|0\.0\.0\.0)/.
 const getChoice = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
 const setChoice = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
 
+let appP = null;
+const getApp = () => appP || (appP = import(SDK + 'firebase-app.js').then(m => m.getApps()[0] || m.initializeApp(firebaseConfig)));
+
 let started = false;
 async function startAnalytics(){
   if (started || !live) return; started = true;
   try {
-    const [{ initializeApp }, { initializeAnalytics, setConsent, logEvent, isSupported }] =
-      await Promise.all([import(SDK + 'firebase-app.js'), import(SDK + 'firebase-analytics.js')]);
+    const { initializeAnalytics, setConsent, logEvent, isSupported } = await import(SDK + 'firebase-analytics.js');
     if (!(await isSupported().catch(() => false))) return;
-    const app = initializeApp(firebaseConfig);
+    const app = await getApp();
     setConsent({ ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
     const analytics = initializeAnalytics(app, { config: { allow_google_signals: false, allow_ad_personalization_signals: false } });
     window.ltLog = (name, params = {}) => { try { logEvent(analytics, name, params); } catch (e) {} };
@@ -91,4 +93,77 @@ document.querySelectorAll('[data-consent-status]').forEach(el => {
   const c = getChoice();
   el.textContent = c === 'yes' ? 'You allowed analytics cookies on this device.'
     : c === 'no' ? 'You turned analytics cookies off on this device.' : 'You have not chosen yet.';
+});
+
+/* =====================================================================
+   PUSH NOTIFICATIONS (Firebase Cloud Messaging)
+   Only after a parent taps "Turn on reminders" — the browser permission prompt is never shown
+   on its own. The device token is kept in localStorage "lt-push". Messages are sent from the
+   Firebase console (Messaging → New campaign → Notifications, target app "Learn Tamil Web").
+   sw.js shows them and opens the site when one is tapped.
+   ===================================================================== */
+const PUSH_KEY = 'lt-push';
+const ua = navigator.userAgent;
+const isIOS = /iphone|ipad|ipod/i.test(ua) || (ua.includes('Macintosh') && 'ontouchend' in document);
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const pushCapable = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+
+function pushState(){
+  if (!pushCapable) return isIOS && !standalone ? 'ios-install' : 'unsupported';
+  if (Notification.permission === 'denied') return 'blocked';
+  let t = null; try { t = localStorage.getItem(PUSH_KEY); } catch (e) {}
+  return Notification.permission === 'granted' && t ? 'on' : 'off';
+}
+async function messaging(){
+  const m = await import(SDK + 'firebase-messaging.js');
+  if (!(await m.isSupported().catch(() => false))) throw new Error('unsupported');
+  return [m, m.getMessaging(await getApp())];
+}
+async function pushEnable(){
+  if (!pushCapable) throw new Error('unsupported');
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') throw new Error(perm === 'denied' ? 'blocked' : 'dismissed');
+  const reg = await navigator.serviceWorker.register('sw.js', { scope: './' }).then(() => navigator.serviceWorker.ready);
+  const [m, msg] = await messaging();
+  // Some browsers (e.g. Brave with push off) never answer: give up after 25 s instead of spinning forever.
+  const token = await Promise.race([m.getToken(msg, { serviceWorkerRegistration: reg }),
+    new Promise((_, no) => setTimeout(() => no(new Error('timeout')), 25000))]);
+  if (!token) throw new Error('no-token');
+  try { localStorage.setItem(PUSH_KEY, token); } catch (e) {}
+  if (window.ltLog) window.ltLog('push_enabled');
+  return token;
+}
+async function pushDisable(){
+  try { const [m, msg] = await messaging(); await m.deleteToken(msg); } catch (e) {}
+  try { localStorage.removeItem(PUSH_KEY); } catch (e) {}
+}
+window.ltPush = { state: pushState, enable: pushEnable, disable: pushDisable };
+
+/* Buttons: any element with [data-push] becomes a reminders on/off switch. */
+const PUSH_TEXT = {
+  off: '🔔 Turn on reminders', on: '🔕 Turn off reminders',
+  blocked: '🔕 Reminders are blocked in this browser’s site settings',
+  'ios-install': '🔔 For reminders on iPhone/iPad: Share → Add to Home Screen, then open the app'
+};
+function paintPush(b){
+  const st = pushState();
+  if (st === 'unsupported'){ b.hidden = true; return; }
+  b.hidden = false; b.textContent = PUSH_TEXT[st];
+  b.disabled = st === 'blocked' || st === 'ios-install';
+  b.setAttribute('aria-pressed', String(st === 'on'));
+}
+document.querySelectorAll('[data-push]').forEach(b => {
+  paintPush(b);
+  b.addEventListener('click', async () => {
+    const was = pushState(); b.disabled = true; b.textContent = '⏳ Please wait…';
+    try {
+      if (was === 'on') await pushDisable(); else await pushEnable();
+    } catch (e) { console.warn('Reminders:', e && e.message); }
+    document.querySelectorAll('[data-push]').forEach(paintPush);
+    const st = pushState();
+    const note = b.parentElement && b.parentElement.querySelector('[data-push-note]');
+    if (note) note.textContent = st === 'on' ? 'Reminders are on. You can turn them off here any time.'
+      : st === 'blocked' ? 'Notifications are blocked. Allow them in this browser’s site settings to turn reminders on.'
+      : was === 'on' ? 'Reminders are off.' : 'Reminders could not be turned on in this browser. Please try Chrome, Edge, Firefox or Safari.';
+  });
 });
