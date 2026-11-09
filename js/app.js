@@ -358,9 +358,9 @@ function readPage(){
   const step = ()=>{
     if (!reading) return;
     if (k < sents.length){ speakSentence(sents[k++], ()=>setTimeout(step, 350)); return; }
-    if ($('#autoTurn').checked && pageIdx < story.pages.length-1){ pageIdx++; renderPage(); setTimeout(readPage, 700); return; }
+    if ($('#autoTurn').checked && pageIdx < story.pages.length-1){ pageIdx++; if (typeof Rewards !== 'undefined') Rewards.sfx.page(); renderPage(); setTimeout(readPage, 700); return; }
     stopReading();
-    if (pageIdx === story.pages.length-1){ $('#theEnd').hidden = false; confetti(); track('story', story.id); }
+    if (pageIdx === story.pages.length-1){ $('#theEnd').hidden = false; confetti(); if (typeof Rewards !== 'undefined') Rewards.sfx.win(); track('story', story.id); }
   };
   step();
 }
@@ -373,7 +373,7 @@ function stopReading(){
 }
 $('#readMe').addEventListener('click', ()=> reading ? stopReading() : readPage());
 $('#prev').addEventListener('click', ()=>{ stopReading(); if (pageIdx>0){ pageIdx--; renderPage(); } });
-$('#next').addEventListener('click', ()=>{ stopReading(); if (pageIdx<story.pages.length-1){ pageIdx++; renderPage(); } else if ($('#theEnd').hidden){ $('#theEnd').hidden=false; confetti(); track('story', story.id); } });
+$('#next').addEventListener('click', ()=>{ stopReading(); if (pageIdx<story.pages.length-1){ pageIdx++; renderPage(); } else if ($('#theEnd').hidden){ $('#theEnd').hidden=false; confetti(); if (typeof Rewards !== 'undefined') Rewards.sfx.win(); track('story', story.id); } });
 $('#again').addEventListener('click', ()=>{ pageIdx=0; renderPage(); });
 $('#showEn').addEventListener('change', e=>{ $('#pen').hidden = !e.target.checked; });
 

@@ -321,7 +321,7 @@ function newMemory(){
 }
 function flip(b, c){
   if (M.lock || b.classList.contains('up')) return;
-  b.classList.add('up'); b.setAttribute('aria-label', c.kind==='l' ? VOWELS[c.i].l : VOWELS[c.i].ex[1]);
+  b.classList.add('up'); Rewards.sfx.flip(); b.setAttribute('aria-label', c.kind==='l' ? VOWELS[c.i].l : VOWELS[c.i].ex[1]);
   c.kind==='l' ? sayItem(uyir[c.i]) : speak(VOWELS[c.i].ex[1]);
   M.open.push([b,c]);
   if (M.open.length < 2) return;
