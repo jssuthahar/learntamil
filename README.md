@@ -84,6 +84,10 @@ Learn Tamil is a Progressive Web App:
 
 The same site can be packaged for stores with [PWABuilder](https://www.pwabuilder.com/) — enter the site URL to generate a Google Play package (Trusted Web Activity), a Microsoft Store package, or an iOS project. For Google Play you must also publish `/.well-known/assetlinks.json`, which needs a custom domain (it must sit at the domain root).
 
+## Support the project
+
+Learn Tamil is free, with no ads and no tracking. If it helps your family or classroom, you can support it at **<https://buymeacoffee.com/jssuthahar>** ☕. The site only links there; it loads no Buy Me a Coffee script.
+
 ## Report an issue or give feedback
 
 Found a wrong sound, a Tamil mistake or a bug, or have an idea? Please open an issue: **<https://github.com/jssuthahar/learntamil/issues>**. There are short forms for *Wrong sound or Tamil mistake*, *Bug report* and *Feedback or idea*. Issues are public, so please don't include personal details.

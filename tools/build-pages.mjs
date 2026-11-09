@@ -20,33 +20,80 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const ctx = {};
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/data.js'), 'utf8') +
-  ';this.D={PULLI,VOWELS,CONS,GROUPS,WORDS};', ctx);
-const { PULLI, VOWELS, CONS, GROUPS, WORDS } = ctx.D;
+  ';this.D={PULLI,VOWELS,CONS,GROUPS,WORDS,STORIES};', ctx);
+const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES } = ctx.D;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const PUBLISHED = '2026-11-09';
+const ISSUES_URL = 'https://github.com/jssuthahar/learntamil/issues';
+export const COFFEE_URL = 'https://buymeacoffee.com/jssuthahar';
+/* Support card for parents — a plain link (no widget script), so nothing tracks visitors. */
+export const SUPPORT = `<aside class="support-card" aria-label="Support Learn Tamil">
+  <span class="sc-ic" aria-hidden="true">☕</span>
+  <div><b>Keep Learn Tamil free</b><p>Learn Tamil is free, with no ads and no tracking. If it helps your family or classroom, you can support it with a coffee. <span class="ta">உங்கள் ஆதரவுக்கு நன்றி!</span></p></div>
+  <a class="coffee-btn" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+</aside>`;
 
-/* ---------- shared page shell ---------- */
-export function shell({ file, title, description, h1, eyebrow, body, schema = [], ogType = 'article' }) {
+/* All guide pages — used for the footer, "More guides" cards, sitemap and llms.txt. */
+export const GUIDES = [
+  { file: 'tamil-alphabet.html', ic: '🔤', en: 'Tamil alphabet — all 247 letters', ta: 'தமிழ் எழுத்துகள்' },
+  { file: 'tamil-vowels.html', ic: '🌱', en: 'Tamil vowels (uyir ezhuthukal)', ta: 'உயிர் எழுத்துகள்' },
+  { file: 'tamil-consonants.html', ic: '🧱', en: 'Tamil consonants (mei ezhuthukal)', ta: 'மெய் எழுத்துகள்' },
+  { file: 'uyirmei-ezhuthukal.html', ic: '🧩', en: 'Uyirmei chart — 216 letters', ta: 'உயிர்மெய் எழுத்துகள்' },
+  { file: 'tamil-words-for-kids.html', ic: '🍎', en: 'Tamil words for kids', ta: 'படச் சொற்கள்' },
+  { file: 'tamil-stories-for-kids.html', ic: '📚', en: 'Tamil stories for kids', ta: 'சிறுவர் கதைகள்' },
+  { file: 'ezhuthukal.html', ic: 'அ', en: 'Tamil letters — in Tamil', ta: 'தமிழில் எழுத்துகள்' }
+];
+
+const FLOAT = ['அ','க','ழ','ஆ','ம','இ','ஞ','ஃ','பூ','கா'];
+const floaters = () => FLOAT.map((l, i) =>
+  `<span style="left:${4 + (i * 61) % 90}%;top:${8 + (i * 37) % 76}%;font-size:${30 + (i * 13) % 40}px;--t:${7 + i % 5}s;--dl:${-i * 0.7}s">${l}</span>`).join('');
+
+/* ---------- shared page shell (kid-friendly hero, schema, footer) ---------- */
+export function shell({ file, title, description, h1, eyebrow, body, schema = [], ogType = 'article',
+                        lang = 'en', alternates = [], bubble = '', guide = false }) {
   const url = SITE + (file === 'index.html' ? '' : file);
+  const plainH1 = h1.replace(/<[^>]+>/g, '');
+  const T = lang === 'ta'
+    ? { updated: 'புதுப்பிக்கப்பட்டது', by: 'எழுதியவர்', open: 'செயலியைத் திற', more: 'மேலும் படிக்க' }
+    : { updated: 'Updated', by: 'By', open: 'Open the learning app', more: 'More guides' };
   const graph = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'WebPage', '@id': url + '#page', url, name: title, description, inLanguage: ['en', 'ta'],
-      isPartOf: { '@id': SITE + '#website' }, author: { '@id': SITE + '#author' }, dateModified: TODAY },
+    { '@type': 'WebPage', '@id': url + '#page', url, name: title, description, inLanguage: lang,
+      isPartOf: { '@id': SITE + '#website' }, author: { '@id': SITE + '#author' }, dateModified: TODAY,
+      primaryImageOfPage: SITE + 'assets/og-image.png' },
     { '@type': 'BreadcrumbList', itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Learn Tamil', item: SITE },
-      { '@type': 'ListItem', position: 2, name: h1.replace(/<[^>]+>/g, ''), item: url } ] },
+      { '@type': 'ListItem', position: 2, name: plainH1, item: url } ] },
+    ...(guide ? [{ '@type': 'Article', '@id': url + '#article', headline: title.slice(0, 110), description,
+      inLanguage: lang, image: SITE + 'assets/og-image.png', datePublished: PUBLISHED, dateModified: TODAY,
+      author: { '@type': 'Person', '@id': SITE + '#author', name: 'Suthahar Jegatheesan', url: 'https://blog.msdevbuild.com/about/' },
+      publisher: { '@id': SITE + '#author' }, mainEntityOfPage: { '@id': url + '#page' },
+      isAccessibleForFree: true, educationalLevel: 'Beginner',
+      audience: { '@type': 'EducationalAudience', educationalRole: 'student' } }] : []),
     ...schema ] };
+  const alt = alternates.map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}">`).join('\n');
+  const more = guide ? `
+<section class="more-guides" aria-labelledby="moreT">
+  <h2 id="moreT"><span class="h-ic" aria-hidden="true">🧭</span>${T.more}</h2>
+  <div class="guides">${GUIDES.filter(g => g.file !== file).map(g =>
+    `<a class="guide-card" href="${g.file}"><span class="gc-ic" aria-hidden="true">${g.ic}</span><b>${g.en}</b><span class="ta">${g.ta}</span></a>`).join('')}</div>
+  ${SUPPORT}
+  <a class="cta-app" href="./"><span aria-hidden="true">🎮</span> ${lang === 'ta' ? 'ஒலியுடன் கற்க செயலியைத் திறக்கவும்' : 'Hear every letter — open the free learning app'} →</a>
+</section>` : '';
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
+${alt}
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Suthahar Jegatheesan">
 <meta name="theme-color" content="#0078d4">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="Learn Tamil · MSDEVBUILD">
+<meta property="og:locale" content="${lang === 'ta' ? 'ta_IN' : 'en_US'}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${url}">
@@ -54,6 +101,7 @@ export function shell({ file, title, description, h1, eyebrow, body, schema = []
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Learn Tamil — தமிழ் எழுத்துகள், 247 letters">
+${guide ? `<meta property="article:published_time" content="${PUBLISHED}">\n<meta property="article:modified_time" content="${TODAY}">\n<meta property="article:author" content="Suthahar Jegatheesan">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -78,15 +126,24 @@ export function shell({ file, title, description, h1, eyebrow, body, schema = []
       <span class="brand-name">MSDEVBUILD<small>Learn Tamil · <span class="ta">தமிழ் கற்போம்</span></small></span>
     </a>
     <span class="spacer"></span>
-    <a class="btn primary small" href="./">Open <span class="hide-sm">the learning </span>app →</a>
+    <a class="btn primary small" href="./"><span aria-hidden="true">🎮</span> <span class="hide-sm">${T.open} </span>→</a>
   </div>
 </header>
 <main class="wrap doc">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="./">Learn Tamil</a> › <span>${h1.replace(/<[^>]+>/g, '')}</span></nav>
-  ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
-  <h1>${h1}</h1>
-  <p class="doc-meta">Updated <time datetime="${TODAY}">${new Date(TODAY).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · By <a href="https://blog.msdevbuild.com/about/" rel="author">Suthahar Jegatheesan</a></p>
+  <section class="doc-hero">
+    <div class="floaters" aria-hidden="true">${floaters()}</div>
+    <div class="doc-hero-in">
+      <div>
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="./">Learn Tamil</a> › <span>${plainH1}</span></nav>
+        ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
+        <h1>${h1}</h1>
+        <p class="doc-meta">${T.updated} <time datetime="${TODAY}">${new Date(TODAY).toLocaleDateString(lang === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · ${T.by} <a href="https://blog.msdevbuild.com/about/" rel="author">Suthahar Jegatheesan</a></p>
+      </div>
+      <div class="doc-mascot" aria-hidden="true"><span class="bird">🦜</span>${bubble ? `<span class="bubble">${bubble}</span>` : ''}</div>
+    </div>
+  </section>
 ${body}
+${more}
 </main>
 ${FOOTER}
 <script src="js/pwa.js"></script>
@@ -99,12 +156,14 @@ export const FOOTER = `<footer>
     <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads, no tracking.</span></div>
     <nav class="foot-links" aria-label="Footer">
       <a href="./">Learning app</a>
-      <a href="tamil-alphabet.html">Tamil alphabet chart</a>
       <a href="privacy.html">Privacy &amp; data</a>
       <a href="terms.html">Terms</a>
-      <a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">Report an issue / feedback</a>
+      <a href="${ISSUES_URL}" rel="noopener">Report an issue / feedback</a>
       <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
+      <a class="coffee-link" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </nav>
+    <nav class="foot-guides" aria-label="Guides"><b>Guides:</b> ${GUIDES.map(g => `<a href="${g.file}">${g.en}</a>`).join(' · ')}</nav>
+    <p class="foot-disc"><b>Disclaimer:</b> Sounds are played by your device's text-to-speech voice and may sometimes be incorrect. If you hear any mistake in the voice, please <a href="${ISSUES_URL}" rel="noopener">report it here as an issue</a>.</p>
     <div class="muted">© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Suthahar Jegatheesan</div>
   </div>
 </footer>`;
@@ -139,77 +198,295 @@ export const FAQ = [
   ['Is Learn Tamil free to use?',
    `Yes. Learn Tamil is completely free, needs no sign-up, shows no ads and does not track users. It works in any modern browser on phones, tablets and computers.`]
 ];
-export const faqSchema = () => ({ '@type': 'FAQPage', '@id': SITE + '#faq',
-  mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
-export const faqHtml = () => FAQ.map(([q, a]) => `<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n');
+/* ---------- generic helpers for guide pages ---------- */
+const faqSchemaFor = (list, file) => ({ '@type': 'FAQPage', '@id': SITE + file + '#faq',
+  mainEntity: list.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
+const faqHtmlFor = list => list.map(([q, a]) => `<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n');
+export const faqSchema = () => faqSchemaFor(FAQ, 'tamil-alphabet.html');
+export const faqHtml = () => faqHtmlFor(FAQ);
+const h2 = (id, ic, html) => `<h2 id="${id}"><span class="h-ic" aria-hidden="true">${ic}</span>${html}</h2>`;
+const tip = html => `<div class="tip"><span aria-hidden="true">💡</span><p>${html}</p></div>`;
+const seg = new Intl.Segmenter('ta', { granularity: 'grapheme' });
+const lettersOf = w => [...seg.segment(w.normalize('NFC'))].map(x => x.segment);
+const ta = s => `<span class="ta">${s}</span>`;
+const vowelCard = (v, lang = 'en') => `<div class="lcard f-uyir"><span class="lc-l ta">${v.l}</span><span class="lc-r">${v.r}</span>` +
+  `<span class="lc-b ${v.len === 'குறில்' ? 'short' : 'long'}">${v.len}${lang === 'en' ? (v.len === 'குறில்' ? ' · short' : ' · long') : ''}</span>` +
+  `<span class="lc-e" aria-hidden="true">${v.ex[0]}</span><span class="lc-w ta">${v.ex[1]}</span>${lang === 'en' ? `<span class="lc-m">${esc(v.ex[2])}</span>` : ''}</div>`;
+const consCard = (k, lang = 'en') => `<div class="lcard f-mei"><span class="lc-l ta">${k.c + PULLI}</span><span class="lc-r">${k.r}</span>` +
+  `<span class="lc-e" aria-hidden="true">${k.ex[0]}</span><span class="lc-w ta">${k.ex[1]}</span>${lang === 'en' ? `<span class="lc-m">${esc(k.ex[2])}</span>` : ''}</div>`;
+const cards = arr => `<div class="lcards">${arr.join('')}</div>`;
+const DTS = (file, name, terms) => ({ '@type': 'DefinedTermSet', '@id': SITE + file + '#terms', name,
+  hasDefinedTerm: terms.map(([n, d]) => ({ '@type': 'DefinedTerm', name: n, description: d, inDefinedTermSet: SITE + file + '#terms' })) });
+const ALT = [{ hreflang: 'en', file: 'tamil-alphabet.html' }, { hreflang: 'ta', file: 'ezhuthukal.html' }, { hreflang: 'x-default', file: 'tamil-alphabet.html' }];
+const write = (file, html) => fs.writeFileSync(path.join(ROOT, file), html);
 
+/* ---------- 1. Tamil alphabet (overview) ---------- */
 const alphabetBody = `
-<p class="lead-doc"><strong>The Tamil alphabet has 247 letters</strong>: 12 vowels (<span class="ta">உயிர்</span>), 18 consonants (<span class="ta">மெய்</span>), 1 special letter (<span class="ta">ஆய்தம்</span> ஃ) and 216 consonant-vowel letters (<span class="ta">உயிர்மெய்</span>). This page lists every letter with its romanised sound, a pronunciation tip and an example word. To <em>hear</em> each letter, use the free <a href="./">Learn Tamil app</a>.</p>
+<p class="lead-doc"><strong>The Tamil alphabet has 247 letters</strong>: 12 vowels (${ta('உயிர்')}), 18 consonants (${ta('மெய்')}), 1 special letter (${ta('ஆய்தம்')} ஃ) and 216 consonant-vowel letters (${ta('உயிர்மெய்')}). This page lists every letter with its romanised sound, a pronunciation tip and an example word. To <em>hear</em> each letter, use the free <a href="./">Learn Tamil app</a>. <a href="ezhuthukal.html" hreflang="ta" lang="ta">இந்தப் பக்கத்தைத் தமிழில் படிக்க →</a></p>
 
 <div class="sum-grid">
-  <div class="glass"><b>12</b><span class="ta">உயிர்</span><small>vowels</small></div>
-  <div class="glass"><b>18</b><span class="ta">மெய்</span><small>consonants</small></div>
-  <div class="glass"><b>1</b><span class="ta">ஆய்தம்</span><small>special letter</small></div>
-  <div class="glass"><b>216</b><span class="ta">உயிர்மெய்</span><small>18 × 12</small></div>
-  <div class="glass total"><b>247</b><span class="ta">மொத்தம்</span><small>total</small></div>
+  <div class="glass"><b>12</b>${ta('உயிர்')}<small>vowels</small></div>
+  <div class="glass"><b>18</b>${ta('மெய்')}<small>consonants</small></div>
+  <div class="glass"><b>1</b>${ta('ஆய்தம்')}<small>special letter</small></div>
+  <div class="glass"><b>216</b>${ta('உயிர்மெய்')}<small>18 × 12</small></div>
+  <div class="glass total"><b>247</b>${ta('மொத்தம்')}<small>total</small></div>
 </div>
 
 <nav class="toc glass" aria-label="On this page"><b>On this page</b>
 <a href="#uyir">12 vowels</a><a href="#mei">18 consonants</a><a href="#aytham">ஆய்தம் ஃ</a><a href="#uyirmei">216 uyirmei chart</a><a href="#words">Picture words</a><a href="#faq">FAQ</a></nav>
 
-<h2 id="uyir">1. Tamil vowels — <span class="ta">உயிர் எழுத்துகள்</span> (12)</h2>
-<p>Tamil has 12 vowels. Five are short (<span class="ta">குறில்</span>): <span class="ta">${kuril.map(v => v.l).join(' ')}</span>. Seven are long (<span class="ta">நெடில்</span>): <span class="ta">${nedil.map(v => v.l).join(' ')}</span>.</p>
+${h2('uyir', '🌱', `Tamil vowels — ${ta('உயிர் எழுத்துகள்')} (12)`)}
+<p>Tamil has 12 vowels. Five are short (${ta('குறில்')}): ${ta(kuril.map(v => v.l).join(' '))}. Seven are long (${ta('நெடில்')}): ${ta(nedil.map(v => v.l).join(' '))}. <a href="tamil-vowels.html">Full guide to Tamil vowels →</a></p>
 <div class="tbl"><table><thead><tr><th>Letter</th><th>Sound</th><th>Length</th><th>How to say it</th><th>Example</th></tr></thead><tbody>${vowelRows}</tbody></table></div>
 
-<h2 id="mei">2. Tamil consonants — <span class="ta">மெய் எழுத்துகள்</span> (18)</h2>
-<p>Each consonant is written with a dot on top (<span class="ta">புள்ளி</span>, pulli). They form three groups of six: <span class="ta">வல்லினம்</span> (hard) <span class="ta">${meiByGroup('v').map(k => k.c + PULLI).join(' ')}</span>, <span class="ta">மெல்லினம்</span> (soft) <span class="ta">${meiByGroup('m').map(k => k.c + PULLI).join(' ')}</span> and <span class="ta">இடையினம்</span> (medium) <span class="ta">${meiByGroup('i').map(k => k.c + PULLI).join(' ')}</span>.</p>
+${h2('mei', '🧱', `Tamil consonants — ${ta('மெய் எழுத்துகள்')} (18)`)}
+<p>Each consonant is written with a dot on top (${ta('புள்ளி')}, pulli). They form three groups of six: ${ta('வல்லினம்')} (hard) ${ta(meiByGroup('v').map(k => k.c + PULLI).join(' '))}, ${ta('மெல்லினம்')} (soft) ${ta(meiByGroup('m').map(k => k.c + PULLI).join(' '))} and ${ta('இடையினம்')} (medium) ${ta(meiByGroup('i').map(k => k.c + PULLI).join(' '))}. <a href="tamil-consonants.html">Full guide to Tamil consonants →</a></p>
 <div class="tbl"><table><thead><tr><th>Letter</th><th>Sound</th><th>Group</th><th>How to say it</th><th>Example word</th></tr></thead><tbody>${meiRows}</tbody></table></div>
 
-<h2 id="aytham">3. The special letter — <span class="ta">ஆய்த எழுத்து</span> ஃ (1)</h2>
-<p><span class="ta big-inline">ஃ</span> is called <span class="ta">ஆய்தம்</span>, <span class="ta">அஃகேனம்</span> or <span class="ta">முப்புள்ளி</span> (three dots). It comes between a short vowel and a <span class="ta">வல்லினம்</span> letter, as in <span class="ta">எஃகு</span> (steel) and <span class="ta">அஃது</span> (that). Its sound is a soft, breathy “kh”.</p>
+${h2('aytham', '✨', `The special letter — ${ta('ஆய்த எழுத்து')} ஃ (1)`)}
+<p><span class="ta big-inline">ஃ</span> is called ${ta('ஆய்தம்')}, ${ta('அஃகேனம்')} or ${ta('முப்புள்ளி')} (three dots). It comes between a short vowel and a ${ta('வல்லினம்')} letter, as in ${ta('எஃகு')} (steel) and ${ta('அஃது')} (that). Its sound is a soft, breathy “kh”.</p>
 
-<h2 id="uyirmei">4. Uyirmei chart — <span class="ta">உயிர்மெய் எழுத்துகள்</span> (216)</h2>
-<p>Every consonant joins every vowel: <span class="ta">க் + அ = க</span>, <span class="ta">க் + ஆ = கா</span>, <span class="ta">க் + இ = கி</span> … 18 consonants × 12 vowels = 216 letters. Rows are consonants, columns are vowels.</p>
+${h2('uyirmei', '🧩', `Uyirmei chart — ${ta('உயிர்மெய் எழுத்துகள்')} (216)`)}
+<p>Every consonant joins every vowel: ${ta('க் + அ = க')}, ${ta('க் + ஆ = கா')}, ${ta('க் + இ = கி')} … 18 consonants × 12 vowels = 216 letters. Rows are consonants, columns are vowels. <a href="uyirmei-ezhuthukal.html">How to read and write uyirmei letters →</a></p>
 <div class="tbl um-static"><table><thead>${umHead}</thead><tbody>${umRows}</tbody></table></div>
 
-<h2 id="words">5. First Tamil words to read</h2>
-<p>After the letters, children can read these ${WORDS.length} simple picture words. Practise them in the <a href="./#/reading">Reading section</a> of the app.</p>
+${h2('words', '🍎', 'First Tamil words to read')}
+<p>After the letters, children can read these ${WORDS.length} simple picture words. See them with letter-by-letter breakdowns in <a href="tamil-words-for-kids.html">Tamil words for kids</a>, or practise in the <a href="./#/reading">Reading section</a> of the app.</p>
 <ul class="word-list">${wordsList}</ul>
 
-<h2 id="faq">Frequently asked questions</h2>
+${h2('faq', '❓', 'Frequently asked questions')}
 <div class="faq">${faqHtml()}</div>
 
-<p class="doc-note">Romanisation is a simple guide for beginners; listen to a teacher or the app for exact sounds. Found a mistake, a wrong sound or a bug? Please report it on <a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">GitHub Issues</a>.</p>
+<p class="doc-note">Romanisation is a simple guide for beginners; listen to a teacher or the app for exact sounds. Found a mistake, a wrong sound or a bug? Please report it on <a href="${ISSUES_URL}" rel="noopener">GitHub Issues</a>.</p>
 `;
-
-const alphabetSchema = [
-  { '@type': 'LearningResource', '@id': SITE + 'tamil-alphabet.html#resource',
-    name: 'Tamil Alphabet: all 247 letters with pronunciation',
-    inLanguage: ['ta', 'en'], learningResourceType: ['Chart', 'Reference'],
-    educationalLevel: 'Beginner', isAccessibleForFree: true,
-    teaches: ['Tamil vowels (uyir ezhuthukal)', 'Tamil consonants (mei ezhuthukal)', 'Uyirmei letters', 'Aaytham'],
-    audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
-    author: { '@id': SITE + '#author' } },
-  faqSchema()
-];
-
-const out = shell({
-  file: 'tamil-alphabet.html',
+write('tamil-alphabet.html', shell({
+  file: 'tamil-alphabet.html', guide: true, alternates: ALT, bubble: 'All 247 letters!',
   title: 'Tamil Alphabet: All 247 Letters with Pronunciation Chart',
   description: 'The Tamil alphabet has 247 letters: 12 vowels (uyir), 18 consonants (mei), ஃ and 216 uyirmei. Full chart with sounds, pronunciation tips and example words.',
   h1: 'Tamil Alphabet — all 247 letters <span class="ta">(தமிழ் எழுத்துகள்)</span>',
-  eyebrow: 'Chart · Pronunciation · Examples',
-  body: alphabetBody,
-  schema: alphabetSchema
-});
-fs.writeFileSync(path.join(ROOT, 'tamil-alphabet.html'), out);
+  eyebrow: 'Chart · Pronunciation · Examples', body: alphabetBody,
+  schema: [{ '@type': 'LearningResource', '@id': SITE + 'tamil-alphabet.html#resource',
+    name: 'Tamil Alphabet: all 247 letters with pronunciation', inLanguage: ['ta', 'en'],
+    learningResourceType: ['Chart', 'Reference'], educationalLevel: 'Beginner', isAccessibleForFree: true,
+    teaches: ['Tamil vowels (uyir ezhuthukal)', 'Tamil consonants (mei ezhuthukal)', 'Uyirmei letters', 'Aaytham'],
+    audience: { '@type': 'EducationalAudience', educationalRole: 'student' }, author: { '@id': SITE + '#author' } },
+    faqSchema()]
+}));
 
-/* ---------- sitemap ---------- */
-const pages = [['', '1.0', 'weekly'], ['tamil-alphabet.html', '0.9', 'monthly'], ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
-fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  pages.map(([p, pr, cf]) => `  <url><loc>${SITE}${p}</loc><lastmod>${TODAY}</lastmod><changefreq>${cf}</changefreq><priority>${pr}</priority></url>`).join('\n') +
-  `\n</urlset>\n`);
+/* ---------- 2. Tamil vowels ---------- */
+const SIGN_EX = VOWELS.map(v => `<tr><td class="L ta">${v.l}</td><td class="ta sign">${v.s ? '◌' + v.s : '—'}</td><td class="ta">க் + ${v.l} = <b>${'க' + v.s}</b></td><td>${'k' + v.r}</td></tr>`).join('');
+const VOWEL_FAQ = [
+  ['Why are Tamil vowels called uyir (life)?', 'In Tamil grammar the vowels are called உயிர் (uyir, “life”) and the consonants மெய் (mei, “body”). When a consonant joins a vowel it becomes உயிர்மெய் (uyirmei, “life + body”), like a body that comes alive.'],
+  ['What is the difference between kuril and nedil?', 'குறில் (kuril) vowels are short and are held for about one beat (one மாத்திரை, maathirai). நெடில் (nedil) vowels are long and are held for about two beats. The short vowels are அ இ உ எ ஒ and the long vowels are ஆ ஈ ஊ ஏ ஐ ஓ ஔ.'],
+  ['What are mudhal ezhuthukal (primary letters)?', 'The 12 vowels and 18 consonants together — 30 letters — are called முதல் எழுத்துகள் (mudhal ezhuthukal, primary letters). Uyirmei letters and ஃ belong to the சார்பு எழுத்துகள் (saarbu ezhuthukal, dependent letters).'],
+  ['How are Tamil vowels written after a consonant?', 'After a consonant, each vowel (except அ) is written as a vowel sign: ா for ஆ, ி for இ, ீ for ஈ, ு for உ, ூ for ஊ, ெ for எ, ே for ஏ, ை for ஐ, ொ for ஒ, ோ for ஓ and ௌ for ஔ. For example க் + ஆ = கா and க் + ஐ = கை. With அ the consonant simply loses its dot: க் + அ = க.']
+];
+write('tamil-vowels.html', shell({
+  file: 'tamil-vowels.html', guide: true, bubble: "Let's learn the 12 vowels!",
+  title: 'Tamil Vowels (Uyir Ezhuthukal): 12 Letters with Sounds',
+  description: 'Learn the 12 Tamil vowels (உயிர் எழுத்துகள்): 5 short kuril and 7 long nedil, with sounds, vowel signs and picture words for kids.',
+  h1: 'Tamil vowels — <span class="ta">உயிர் எழுத்துகள்</span>', eyebrow: '12 letters · Kuril & Nedil · Vowel signs',
+  body: `
+<p class="lead-doc">Tamil has <strong>12 vowels</strong>, called ${ta('உயிர் எழுத்துகள்')} (uyir ezhuthukal). “Uyir” means <em>life</em> — vowels give life to every other letter. Five vowels are short (${ta('குறில்')}) and seven are long (${ta('நெடில்')}).</p>
+${h2('all', '🌱', 'The 12 Tamil vowels')}
+${cards(VOWELS.map(v => vowelCard(v)))}
+${tip(`Tap any vowel in the <a href="./#/uyir">learning app</a> to hear it, then hear it again inside its picture word.`)}
+${h2('kuril-nedil', '⏱️', `Short and long — ${ta('குறில்')} and ${ta('நெடில்')}`)}
+<p>A short vowel is held for about one beat, a long vowel for about two. Five vowels come in short–long pairs; ${ta('ஐ')} and ${ta('ஔ')} are long vowels without a short partner.</p>
+<div class="pairs">${[['அ', 'ஆ'], ['இ', 'ஈ'], ['உ', 'ஊ'], ['எ', 'ஏ'], ['ஒ', 'ஓ']].map(([a, b]) => `<div class="pair"><span class="ta s">${a}</span><span class="arrow" aria-hidden="true">→</span><span class="ta l">${b}</span></div>`).join('')}<div class="pair solo"><span class="ta l">ஐ</span><span class="ta l">ஔ</span></div></div>
+${h2('signs', '✍️', 'Vowel signs — how vowels join consonants')}
+<p>After a consonant, a vowel is written as a small sign. Here is every vowel with ${ta('க்')}:</p>
+<div class="tbl"><table><thead><tr><th>Vowel</th><th>Sign</th><th>With க்</th><th>Sound</th></tr></thead><tbody>${SIGN_EX}</tbody></table></div>
+${tip(`${ta('ொ ோ ௌ')} are written in two parts — one before and one after the consonant: ${ta('கொ')} has ${ta('ெ')} before ${ta('க')} and ${ta('ா')} after it. See all 216 combinations in the <a href="uyirmei-ezhuthukal.html">uyirmei chart</a>.`)}
+${h2('faq', '❓', 'Questions about Tamil vowels')}
+<div class="faq">${faqHtmlFor(VOWEL_FAQ)}</div>`,
+  schema: [faqSchemaFor(VOWEL_FAQ, 'tamil-vowels.html'),
+    DTS('tamil-vowels.html', 'Tamil vowels (uyir ezhuthukal)', VOWELS.map(v => [v.l, `Tamil vowel “${v.r}”, ${v.len === 'குறில்' ? 'short (kuril)' : 'long (nedil)'}; ${v.hint}. Example: ${v.ex[1]} (${v.ex[2]}).`]))]
+}));
+
+/* ---------- 3. Tamil consonants ---------- */
+const TRICKY = [
+  ['Three “n” letters', [['ந', 'n — tongue at the teeth; mostly at the start of a word or before த', 'நாய் (dog)'], ['ன', 'ṉ — tongue at the gum; mostly in the middle or end of a word', 'மீன் (fish)'], ['ண', 'ṇ — tongue curled back', 'கண் (eye)']]],
+  ['Three “l” letters', [['ல', 'l — as in “love”', 'பல் (tooth)'], ['ள', 'ḷ — tongue curled back', 'தேள் (scorpion)'], ['ழ', 'zh — tongue curled far back, special to Tamil', 'தமிழ் (Tamil)']]],
+  ['Two “r” letters', [['ர', 'r — soft tapped r', 'நீர் (water)'], ['ற', 'ṟ — strong trilled r', 'காற்று (wind)']]]
+];
+const INAM = [['க', 'ங', 'சிங்கம்', 'lion'], ['ச', 'ஞ', 'மஞ்சள்', 'turmeric'], ['ட', 'ண', 'வண்டு', 'beetle'], ['த', 'ந', 'பந்து', 'ball'], ['ப', 'ம', 'பாம்பு', 'snake'], ['ற', 'ன', 'கன்று', 'calf']];
+const CONS_FAQ = [
+  ['Why do Tamil consonants have a dot on top?', 'The dot is called புள்ளி (pulli). It shows a pure consonant with no vowel sound, for example க் (k). When a vowel is added the dot goes away: க் + அ = க (ka).'],
+  ['What is the difference between ந, ன and ண?', 'All three are “n” sounds. ந is said with the tongue at the teeth and mostly starts words (நாய்) or comes before த (பந்து). ன is said with the tongue at the gum and comes in the middle or end of words (மீன்). ண is said with the tongue curled back (கண்).'],
+  ['What do vallinam, mellinam and idaiyinam mean?', 'They are the three groups of Tamil consonants. வல்லினம் (vallinam) are hard sounds: க் ச் ட் த் ப் ற். மெல்லினம் (mellinam) are soft, nasal sounds: ங் ஞ் ண் ந் ம் ன். இடையினம் (idaiyinam) are in-between sounds: ய் ர் ல் வ் ழ் ள்.'],
+  ['How do you say a Tamil consonant on its own?', 'In school a pure consonant is usually read with a short இ before it, so க் is said “ik” and ங் is said “ing”. This makes the consonant sound easy to hear.']
+];
+write('tamil-consonants.html', shell({
+  file: 'tamil-consonants.html', guide: true, bubble: '18 consonants — let’s go!',
+  title: 'Tamil Consonants (Mei Ezhuthukal): 18 Letters & Sounds',
+  description: 'Learn the 18 Tamil consonants (மெய் எழுத்துகள்): vallinam, mellinam, idaiyinam, the pulli dot and tricky letters ந ன ண, ல ள ழ, ர ற — with examples.',
+  h1: 'Tamil consonants — <span class="ta">மெய் எழுத்துகள்</span>', eyebrow: '18 letters · 3 groups · Tricky sounds',
+  body: `
+<p class="lead-doc">Tamil has <strong>18 consonants</strong>, called ${ta('மெய் எழுத்துகள்')} (mei ezhuthukal). “Mei” means <em>body</em>. Each one is written with a dot on top — the ${ta('புள்ளி')} (pulli) — which means “no vowel yet”.</p>
+${['v', 'm', 'i'].map(g => `${h2('g-' + g, g === 'v' ? '🥁' : g === 'm' ? '🎵' : '🌊', `${ta(GROUPS[g].ta)} — ${GROUPS[g].en.toLowerCase()} (6)`)}\n${cards(meiByGroup(g).map(k => consCard(k)))}`).join('\n')}
+${tip(`In class, pure consonants are read with a short ${ta('இ')} in front: ${ta('க்')} is said “ik”. Hear all 18 in the <a href="./#/mei">learning app</a>.`)}
+${h2('tricky', '👂', 'Tricky letters that sound alike')}
+${TRICKY.map(([t, rows]) => `<h3>${t}</h3><div class="tbl"><table><thead><tr><th>Letter</th><th>How to say it</th><th>Example</th></tr></thead><tbody>${rows.map(([l, h, e]) => `<tr><td class="L ta">${l}</td><td>${esc(h)}</td><td class="ta">${e}</td></tr>`).join('')}</tbody></table></div>`).join('')}
+${h2('pairs', '🤝', 'Hard and soft partners')}
+<p>Each hard letter (${ta('வல்லினம்')}) has a soft partner (${ta('மெல்லினம்')}) that often comes just before it inside a word:</p>
+<div class="tbl"><table><thead><tr><th>Soft + hard</th><th>Example word</th></tr></thead><tbody>${INAM.map(([h, s, w, m]) => `<tr><td class="ta">${s + PULLI} + ${h}</td><td>${ta(w)} — ${m}</td></tr>`).join('')}</tbody></table></div>
+${h2('faq', '❓', 'Questions about Tamil consonants')}
+<div class="faq">${faqHtmlFor(CONS_FAQ)}</div>`,
+  schema: [faqSchemaFor(CONS_FAQ, 'tamil-consonants.html'),
+    DTS('tamil-consonants.html', 'Tamil consonants (mei ezhuthukal)', CONS.map(k => [k.c + PULLI, `Tamil consonant “${k.r}”, ${GROUPS[k.g].ta} (${GROUPS[k.g].en.toLowerCase()}); ${k.hint}. Example: ${k.ex[1]} (${k.ex[2]}).`]))]
+}));
+
+/* ---------- 4. Uyirmei ---------- */
+const ROWS = CONS.map(k => `<li><b class="ta">${k.c} வரிசை</b> <span class="ta">${VOWELS.map(v => k.c + v.s).join(' ')}</span></li>`).join('');
+const UM_FAQ = [
+  ['How do you read the uyirmei chart?', 'Each row is a consonant and each column is a vowel. Find the consonant on the left and the vowel at the top; the letter where they meet is the uyirmei letter. For example, row ம் and column ஆ give மா.'],
+  ['How many uyirmei letters are short and how many are long?', 'An uyirmei letter is short or long depending on its vowel. With the 5 short vowels there are 18 × 5 = 90 short (குறில்) uyirmei letters, and with the 7 long vowels there are 18 × 7 = 126 long (நெடில்) uyirmei letters. 90 + 126 = 216.'],
+  ['What is க வரிசை (the ka row)?', 'க வரிசை is the row of 12 letters made from க்: க கா கி கீ கு கூ கெ கே கை கொ கோ கௌ. Children usually learn uyirmei one row at a time, starting with this row.'],
+  ['Which uyirmei letters are hardest to write?', 'The உ and ஊ forms (like கு, சு, டு, து, பு and கூ, சூ, டூ) change shape for each consonant, so they are best learned row by row. The ொ, ோ and ௌ forms are written on both sides of the consonant, as in கொ, கோ and கௌ.']
+];
+write('uyirmei-ezhuthukal.html', shell({
+  file: 'uyirmei-ezhuthukal.html', guide: true, bubble: 'Mix and match letters!',
+  title: 'Uyirmei Ezhuthukal Chart: All 216 Tamil Letters',
+  description: 'Full uyirmei ezhuthukal (உயிர்மெய் எழுத்துகள்) chart: how 18 consonants join 12 vowels to make 216 Tamil letters, with sounds, rows and writing tips.',
+  h1: 'Uyirmei chart — <span class="ta">உயிர்மெய் எழுத்துகள்</span> (216)', eyebrow: '18 × 12 · Chart · Writing tips',
+  body: `
+<p class="lead-doc">An <strong>uyirmei</strong> letter (${ta('உயிர்மெய்')}, “life + body”) is a consonant joined with a vowel. Each of the 18 consonants joins each of the 12 vowels, so there are <strong>18 × 12 = 216</strong> uyirmei letters — 90 short and 126 long.</p>
+<div class="formula" aria-label="க் plus அ equals க"><span class="ta m">க்</span><span class="op">+</span><span class="ta u">அ</span><span class="op">=</span><span class="ta r">க</span><span class="sep"></span><span class="ta m">க்</span><span class="op">+</span><span class="ta u">ஆ</span><span class="op">=</span><span class="ta r">கா</span></div>
+${h2('chart', '🧩', 'The full uyirmei chart')}
+<p>Rows are consonants, columns are vowels. Build any letter yourself in the <a href="./#/uyirmei">learning app</a>.</p>
+<div class="tbl um-static"><table><thead>${umHead}</thead><tbody>${umRows}</tbody></table></div>
+${h2('rows', '📋', 'All 18 rows (வரிசை)')}
+<ul class="rows">${ROWS}</ul>
+${tip('Learn one row a day: say the row aloud, write it, then find those letters in simple words.')}
+${h2('faq', '❓', 'Questions about uyirmei letters')}
+<div class="faq">${faqHtmlFor(UM_FAQ)}</div>`,
+  schema: [faqSchemaFor(UM_FAQ, 'uyirmei-ezhuthukal.html')]
+}));
+
+/* ---------- 5. Words for kids ---------- */
+const lvl = w => { const n = lettersOf(w).length; return n <= 2 ? 1 : n === 3 ? 2 : 3; };
+const ANIMALS = new Set(['ஆடு', 'மான்', 'மீன்', 'பூனை', 'நாய்', 'எலி', 'பசு', 'யானை', 'கிளி', 'ஆமை', 'கோழி', 'பாம்பு', 'முயல்', 'தவளை', 'குதிரை', 'கரடி', 'மயில்', 'வாத்து', 'சிங்கம்', 'குரங்கு', 'ஒட்டகம்']);
+const wordCard = ([w, e, m]) => `<div class="wcard"><span class="wc-e" aria-hidden="true">${e}</span><span class="wc-w ta">${w}</span><span class="wc-b ta">${lettersOf(w).join(' + ')}</span><span class="wc-m">${esc(m)}</span></div>`;
+const animals = WORDS.filter(w => ANIMALS.has(w[0]));
+const WORD_FAQ = [
+  ['What are the first Tamil words a child should learn?', 'Short two-letter words with clear pictures are best to start: ஆடு (goat), மீன் (fish), பூனை (cat), நாய் (dog), இலை (leaf), வீடு (house) and நிலா (moon). Then move on to three-letter words like மரம் (tree) and பந்து (ball).'],
+  ['What are the names of animals in Tamil?', 'Some animal names in Tamil: ' + animals.map(([w, , m]) => `${w} (${m})`).join(', ') + '.'],
+  ['How can I help my child read Tamil words?', 'Point to each letter and say its sound, then blend the sounds together: ஆ + டு = ஆடு. Start with two-letter words, use pictures, and practise a few words every day. The Reading section of the Learn Tamil app does this letter by letter with sound.']
+];
+write('tamil-words-for-kids.html', shell({
+  file: 'tamil-words-for-kids.html', guide: true, bubble: 'Read with me!',
+  title: 'Simple Tamil Words for Kids with Pictures (46 Words)',
+  description: '46 easy Tamil words for children with pictures, English meanings and letter-by-letter breakdown — ஆடு, மீன், பூனை, யானை and more, in three reading levels.',
+  h1: 'Tamil words for kids — <span class="ta">படச் சொற்கள்</span>', eyebrow: '46 words · Pictures · 3 levels',
+  body: `
+<p class="lead-doc">Here are <strong>${WORDS.length} simple Tamil words</strong> for children, each with a picture, its English meaning and the letters it is made of. Start with Level 1 (two letters) and move up. Practise them with sound in the <a href="./#/reading">Reading section</a> of the app.</p>
+${[1, 2, 3].map(L => `${h2('level-' + L, ['🐣', '🐥', '🦅'][L - 1], `Level ${L} — ${L === 3 ? '4 or more' : L + 1} letters`)}\n<div class="wcards">${WORDS.filter(w => lvl(w[0]) === L).map(wordCard).join('')}</div>`).join('\n')}
+${tip('Cover the picture, let your child read the word, then uncover the picture to check. Celebrate every word!')}
+${h2('faq', '❓', 'Questions about Tamil words for kids')}
+<div class="faq">${faqHtmlFor(WORD_FAQ)}</div>`,
+  schema: [faqSchemaFor(WORD_FAQ, 'tamil-words-for-kids.html'),
+    DTS('tamil-words-for-kids.html', 'Simple Tamil words for children', WORDS.map(([w, , m]) => [w, `Tamil word meaning “${m}”. Letters: ${lettersOf(w).join(' + ')}.`]))]
+}));
+
+/* ---------- 6. Stories for kids ---------- */
+const storyHtml = s => `<article class="story glass" id="${s.id}">
+  <header class="st-head"><span class="st-cover" aria-hidden="true">${s.cover}</span><div><h3 class="ta">${s.title}</h3><p>${esc(s.en)} · <span class="badge">${s.lvl}</span></p></div></header>
+  <ol class="st-pages">${s.pages.map(([e, t, en]) => `<li><span class="st-e" aria-hidden="true">${e}</span><div><p class="ta st-t">${t}</p><p class="st-en">${esc(en)}</p></div></li>`).join('')}</ol>
+  <a class="st-listen" href="./#/stories">🔊 Listen to this story in the app</a>
+</article>`;
+const moralOf = id => { const s = STORIES.find(x => x.id === id); const p = s.pages[s.pages.length - 1]; return [s.title, p[1], p[2]]; };
+const STORY_FAQ = [
+  ['Which Tamil stories are good for young children?', 'Short stories with animals and a clear lesson work well: ' + STORIES.map(s => `${s.title} (${s.en})`).join(', ') + '. Each is told in a few simple sentences.'],
+  ...['crow', 'lion', 'race'].map(id => { const [t, ta2, en] = moralOf(id); return [`What is the moral of ${t}?`, `The moral of ${t} is “${ta2}” — ${en}`]; })
+];
+write('tamil-stories-for-kids.html', shell({
+  file: 'tamil-stories-for-kids.html', guide: true, bubble: 'Story time!',
+  title: 'Short Tamil Stories for Kids with English Meaning',
+  description: '5 short Tamil moral stories for children — காகமும் பானையும், சிங்கமும் எலியும், முயலும் ஆமையும் and more — in simple Tamil with English meaning.',
+  h1: 'Tamil stories for kids — <span class="ta">சிறுவர் கதைகள்</span>', eyebrow: '5 stories · Simple Tamil · English meaning',
+  body: `
+<p class="lead-doc">${STORIES.length} short, simple Tamil stories for children, page by page with the English meaning. In the <a href="./#/stories">learning app</a> each story is read aloud and every word can be tapped to see its letters.</p>
+<nav class="toc glass" aria-label="Stories"><b>Stories</b>${STORIES.map(s => `<a href="#${s.id}"><span class="ta">${s.title}</span></a>`).join('')}</nav>
+${STORIES.map(storyHtml).join('\n')}
+${h2('faq', '❓', 'Questions about Tamil stories')}
+<div class="faq">${faqHtmlFor(STORY_FAQ)}</div>`,
+  schema: [faqSchemaFor(STORY_FAQ, 'tamil-stories-for-kids.html'),
+    { '@type': 'ItemList', name: 'Tamil stories for kids', itemListElement: STORIES.map((s, i) => ({ '@type': 'ListItem', position: i + 1,
+      item: { '@type': 'ShortStory', name: s.title, alternateName: s.en, inLanguage: 'ta', url: SITE + 'tamil-stories-for-kids.html#' + s.id,
+        author: { '@id': SITE + '#author' }, isAccessibleForFree: true, audience: { '@type': 'PeopleAudience', suggestedMinAge: 4, suggestedMaxAge: 10 } } })) }]
+}));
+
+/* ---------- 7. Tamil-language page ---------- */
+const TA_FAQ = [
+  ['தமிழில் எத்தனை எழுத்துகள் உள்ளன?', 'தமிழில் மொத்தம் 247 எழுத்துகள் உள்ளன: 12 உயிர் எழுத்துகள், 18 மெய் எழுத்துகள், 1 ஆய்த எழுத்து, 216 உயிர்மெய் எழுத்துகள்.'],
+  ['உயிர் எழுத்துகள் யாவை?', 'அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஆகிய 12 எழுத்துகள் உயிர் எழுத்துகள். இவற்றில் அ, இ, உ, எ, ஒ ஆகிய ஐந்தும் குறில்; ஆ, ஈ, ஊ, ஏ, ஐ, ஓ, ஔ ஆகிய ஏழும் நெடில்.'],
+  ['மெய் எழுத்துகள் யாவை?', `${CONS.map(k => k.c + PULLI).join(' ')} ஆகிய 18 எழுத்துகள் மெய் எழுத்துகள். இவை வல்லினம் (${meiByGroup('v').map(k => k.c + PULLI).join(' ')}), மெல்லினம் (${meiByGroup('m').map(k => k.c + PULLI).join(' ')}), இடையினம் (${meiByGroup('i').map(k => k.c + PULLI).join(' ')}) என மூன்று வகைப்படும்.`],
+  ['உயிர்மெய் எழுத்துகள் எப்படி உருவாகின்றன?', 'மெய் எழுத்துடன் உயிர் எழுத்து சேர்ந்து உயிர்மெய் எழுத்து உருவாகிறது. எடுத்துக்காட்டு: க் + அ = க, க் + ஆ = கா. 18 மெய் × 12 உயிர் = 216 உயிர்மெய் எழுத்துகள்.'],
+  ['ஆய்த எழுத்து என்றால் என்ன?', 'ஃ என்பது ஆய்த எழுத்து. இதை அஃகேனம், முப்புள்ளி என்றும் அழைப்பர். எடுத்துக்காட்டு: எஃகு, அஃது.'],
+  ['முதல் எழுத்துகள் எவை?', 'உயிர் எழுத்துகள் 12, மெய் எழுத்துகள் 18 — ஆக 30 எழுத்துகளும் முதல் எழுத்துகள் எனப்படும். உயிர்மெய், ஆய்தம் ஆகியவை சார்பு எழுத்துகள் வகையைச் சேர்ந்தவை.'],
+  ['ஜ, ஷ, ஸ, ஹ தமிழ் எழுத்துகளா?', 'ஜ, ஷ, ஸ, ஹ, க்ஷ, ஸ்ரீ ஆகியவை கிரந்த எழுத்துகள். பிறமொழிச் சொற்களை எழுத இவை பயன்படுகின்றன; 247 தமிழ் எழுத்துகளில் இவை சேர்க்கப்படுவதில்லை.']
+];
+write('ezhuthukal.html', shell({
+  file: 'ezhuthukal.html', lang: 'ta', guide: true, alternates: ALT, bubble: 'வா, எழுத்துகளைக் கற்போம்!',
+  title: 'தமிழ் எழுத்துகள் 247 — உயிர், மெய், உயிர்மெய் அட்டவணை',
+  description: 'தமிழில் உள்ள 247 எழுத்துகள்: 12 உயிர், 18 மெய், ஆய்தம், 216 உயிர்மெய் எழுத்துகள் — குழந்தைகளுக்கான எளிய விளக்கம், எடுத்துக்காட்டுச் சொற்களுடன்.',
+  h1: 'தமிழ் எழுத்துகள் — 247 எழுத்துகள்', eyebrow: 'உயிர் · மெய் · ஆய்தம் · உயிர்மெய்',
+  body: `
+<p class="lead-doc">தமிழில் மொத்தம் <strong>247 எழுத்துகள்</strong> உள்ளன: 12 உயிர் எழுத்துகள், 18 மெய் எழுத்துகள், 1 ஆய்த எழுத்து, 216 உயிர்மெய் எழுத்துகள். ஒவ்வொரு எழுத்தையும் ஒலியுடன் கேட்க <a href="./">கற்றல் செயலியைத்</a> திறக்கவும். <a href="tamil-alphabet.html" hreflang="en" lang="en">Read this page in English →</a></p>
+<div class="sum-grid">
+  <div class="glass"><b>12</b><span>உயிர்</span></div><div class="glass"><b>18</b><span>மெய்</span></div>
+  <div class="glass"><b>1</b><span>ஆய்தம்</span></div><div class="glass"><b>216</b><span>உயிர்மெய்</span></div>
+  <div class="glass total"><b>247</b><span>மொத்தம்</span></div>
+</div>
+${h2('uyir', '🌱', 'உயிர் எழுத்துகள் (12)')}
+<p>அ, இ, உ, எ, ஒ ஆகிய ஐந்தும் குறில் எழுத்துகள்; ஆ, ஈ, ஊ, ஏ, ஐ, ஓ, ஔ ஆகிய ஏழும் நெடில் எழுத்துகள்.</p>
+${cards(VOWELS.map(v => vowelCard(v, 'ta')))}
+${h2('mei', '🧱', 'மெய் எழுத்துகள் (18)')}
+<p>ஒவ்வொரு மெய் எழுத்தின் மேலும் ஒரு புள்ளி இருக்கும். இவை வல்லினம், மெல்லினம், இடையினம் என மூன்று வகைப்படும்.</p>
+${['v', 'm', 'i'].map(g => `<h3>${GROUPS[g].ta}</h3>${cards(meiByGroup(g).map(k => consCard(k, 'ta')))}`).join('')}
+${h2('aytham', '✨', 'ஆய்த எழுத்து (1)')}
+<p><span class="big-inline">ஃ</span> — இதை அஃகேனம், முப்புள்ளி என்றும் அழைப்பர். எடுத்துக்காட்டு: எஃகு, அஃது.</p>
+${h2('uyirmei', '🧩', 'உயிர்மெய் எழுத்துகள் (216)')}
+<p>மெய் எழுத்துடன் உயிர் எழுத்து சேரும்போது உயிர்மெய் எழுத்து உருவாகிறது. எடுத்துக்காட்டு: க் + அ = க, க் + ஆ = கா. 18 × 12 = 216 உயிர்மெய் எழுத்துகள்.</p>
+<div class="tbl um-static"><table><thead>${umHead}</thead><tbody>${umRows}</tbody></table></div>
+${h2('grantha', '📝', 'கிரந்த எழுத்துகள்')}
+<p>ஜ, ஷ, ஸ, ஹ, க்ஷ, ஸ்ரீ ஆகியவை கிரந்த எழுத்துகள். இவை பிறமொழிச் சொற்களை எழுதப் பயன்படுகின்றன; 247 எழுத்துகளில் சேர்க்கப்படுவதில்லை.</p>
+${h2('faq', '❓', 'அடிக்கடி கேட்கப்படும் கேள்விகள்')}
+<div class="faq">${faqHtmlFor(TA_FAQ)}</div>
+<p class="doc-note">குரலில் ஏதேனும் தவறு இருந்தால், தயவுசெய்து <a href="${ISSUES_URL}" rel="noopener">இங்கே தெரிவிக்கவும்</a>.</p>`,
+  schema: [faqSchemaFor(TA_FAQ, 'ezhuthukal.html')]
+}));
+
+/* ---------- sitemap (with language alternates) ---------- */
+const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
+  ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
+const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
+  ? ALT.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}"/>`).join('') : '';
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
+  pages.map(([p, pr, cf]) => `  <url><loc>${SITE}${p}</loc>${altXml(p)}<lastmod>${TODAY}</lastmod><changefreq>${cf}</changefreq><priority>${pr}</priority></url>`).join('\n') + `\n</urlset>\n`);
+
+/* ---------- llms.txt (summary for AI assistants) ---------- */
+write('llms.txt', `# Learn Tamil (தமிழ் கற்போம்)
+
+> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads, no tracking. Installable as an app and works offline.
+
+Key facts:
+- The Tamil alphabet has 247 letters: 12 vowels (உயிர், uyir), 18 consonants (மெய், mei), 1 special letter ஃ (ஆய்தம், aaytham) and 216 consonant-vowel letters (உயிர்மெய், uyirmei; 18 × 12).
+- Vowels: ${VOWELS.map(v => v.l).join(' ')} — short (குறில்) ${kuril.map(v => v.l).join(' ')}; long (நெடில்) ${nedil.map(v => v.l).join(' ')}.
+- Consonants: ${CONS.map(k => k.c + PULLI).join(' ')} — வல்லினம் ${meiByGroup('v').map(k => k.c + PULLI).join(' ')}; மெல்லினம் ${meiByGroup('m').map(k => k.c + PULLI).join(' ')}; இடையினம் ${meiByGroup('i').map(k => k.c + PULLI).join(' ')}.
+- 12 vowels + 18 consonants = 30 முதல் எழுத்துகள் (primary letters). Uyirmei: 90 short (18 × 5) + 126 long (18 × 7).
+- Grantha letters ஜ ஷ ஸ ஹ க்ஷ ஸ்ரீ are used for borrowed words and are not counted in the 247.
+
+## Guides
+${GUIDES.map(g => `- [${g.en}](${SITE}${g.file})`).join('\n')}
+
+## App and policies
+- [Learning app](${SITE}): interactive letters with audio, reading practice, stories and games (requires JavaScript).
+- [Privacy & data](${SITE}privacy.html): no personal data is collected.
+- [Terms](${SITE}terms.html)
+- [Report an issue](${ISSUES_URL})
+`);
 
 /* ---------- Privacy & data ---------- */
 const CONTACT = '<a href="https://blog.msdevbuild.com/contact/" rel="noopener">contact page</a>';
@@ -242,6 +519,7 @@ const privacyBody = `
 <li><strong>GitHub Pages</strong> hosts the site and may keep standard server logs. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Google Fonts</strong> supplies the Tamil and English fonts. See the <a href="https://developers.google.com/fonts/faq/privacy" rel="noopener">Google Fonts privacy FAQ</a>.</li>
 <li><strong>cdnjs (Cloudflare)</strong> supplies a zip library, only on the Letter Recorder page.</li>
+<li><strong>Buy Me a Coffee</strong>: the “Buy me a coffee” link opens buymeacoffee.com, where you can choose to support the project. This website does not load any Buy Me a Coffee script and sends it nothing. If you decide to support, Buy Me a Coffee handles the payment under <a href="https://www.buymeacoffee.com/privacy-policy" rel="noopener">its own privacy policy</a>, and may share with the creator the name and message you choose to leave.</li>
 <li><strong>GitHub Issues</strong> is where you can report bugs and give feedback. Issues are <em>public</em>: your GitHub username and whatever you write can be seen by anyone, and are handled under GitHub's privacy statement. Please do not include personal details, especially about children. For private questions use the ${CONTACT}.</li>
 <li><strong>Your browser's text-to-speech voice</strong> reads letters and words aloud. Some voices (for example Microsoft Edge “natural” voices or Google voices) are online services: your browser may send the text being spoken — Tamil letters and words from this site — to that provider. No personal information is part of that text.</li>
 </ul>
@@ -259,7 +537,7 @@ fs.writeFileSync(path.join(ROOT, 'privacy.html'), shell({
   file: 'privacy.html', ogType: 'website',
   title: 'Privacy & Data Policy | Learn Tamil',
   description: 'Learn Tamil collects no personal data: no accounts, cookies, analytics, ads or tracking. See what is stored only on your device and which services the site uses.',
-  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', body: privacyBody
+  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No tracking — promise!', body: privacyBody
 }));
 
 /* ---------- Terms ---------- */
@@ -272,38 +550,41 @@ const termsBody = `
 <h2>2. Content and licence</h2>
 <p>The website's source code and content are published on <a href="https://github.com/jssuthahar/learntamil" rel="noopener">GitHub</a> under the <a href="https://github.com/jssuthahar/learntamil/blob/main/LICENSE" rel="noopener">MIT License</a>, which allows reuse with attribution. Emoji pictures are drawn by your device's emoji font. Fonts are provided by Google Fonts under their own open licences. Names of other products and services belong to their owners.</p>
 
-<h2>3. Accuracy and pronunciation</h2>
+<h2 id="disclaimer">3. Disclaimer: accuracy and pronunciation</h2>
 <p>All Tamil text on the site has been prepared and checked carefully. However:</p>
 <ul>
 <li>Letter sounds may be produced by your device's text-to-speech voice, which can mispronounce some single letters. Recorded or generated audio is used where it is available.</li>
 <li>Romanised sounds and English hints are simple guides for beginners, not exact phonetic descriptions.</li>
 <li>The site supports learning but is not a replacement for a qualified Tamil teacher.</li>
 </ul>
-<p>If you find a mistake, a wrong sound or a bug, or have feedback, please report it on ${ISSUES} so it can be corrected.</p>
+<p><strong>If you hear any mistake in the voice</strong>, or find a wrong letter, word or bug, please report it as an issue on ${ISSUES} so it can be corrected.</p>
 
-<h2>4. Children</h2>
+<h2>4. Voluntary support</h2>
+<p>Learn Tamil is free and will stay free. Supporting it through <a href="${COFFEE_URL}" rel="noopener">Buy Me a Coffee</a> is completely voluntary, does not unlock any extra features, and is handled by Buy Me a Coffee under its own terms. Payments should be made by a parent or adult.</p>
+
+<h2>5. Children</h2>
 <p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
 
-<h2>5. Links to other websites</h2>
+<h2>6. Links to other websites</h2>
 <p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). We are not responsible for their content or practices.</p>
 
-<h2>6. No warranty</h2>
+<h2>7. No warranty</h2>
 <p>The site is provided “as is” and “as available”, without warranties of any kind, express or implied, including fitness for a particular purpose and uninterrupted or error-free operation.</p>
 
-<h2>7. Limitation of liability</h2>
+<h2>8. Limitation of liability</h2>
 <p>To the fullest extent permitted by law, the author is not liable for any loss or damage arising from the use of, or inability to use, this free website.</p>
 
-<h2>8. Changes</h2>
+<h2>9. Changes</h2>
 <p>These terms may be updated from time to time. The current version is always on this page with its “Updated” date. Continuing to use the site after a change means you accept the updated terms.</p>
 
-<h2>9. Contact</h2>
+<h2>10. Contact</h2>
 <p>Questions about these terms can be sent through the ${CONTACT}.</p>
 `;
 fs.writeFileSync(path.join(ROOT, 'terms.html'), shell({
   file: 'terms.html', ogType: 'website',
   title: 'Terms & Conditions | Learn Tamil',
   description: 'Terms for using Learn Tamil, a free Tamil alphabet learning website for children: free educational use, MIT licence, accuracy notes, children and liability.',
-  h1: 'Terms &amp; conditions', eyebrow: 'Legal', body: termsBody
+  h1: 'Terms &amp; conditions', eyebrow: 'Legal', bubble: 'Simple, friendly rules', body: termsBody
 }));
 
 /* ---------- 404 ---------- */
@@ -329,6 +610,7 @@ put('FAQ', faqHtml());
 // FAQPage markup lives only on tamil-alphabet.html (Google: mark up repeated FAQs once).
 put('FAQ-SCHEMA', '');
 put('FOOTER', FOOTER);
+put('SUPPORT', SUPPORT);
 fs.writeFileSync(idxPath, idx);
 
 /* ---------- stamp a content hash into sw.js so every change reaches installed apps ---------- */
@@ -344,4 +626,4 @@ import('node:crypto').then(({ createHash }) => {
   console.log('Service worker version', version);
 });
 
-console.log('Built tamil-alphabet.html, privacy.html, terms.html, 404.html, sitemap.xml and updated index.html');
+console.log('Built ' + GUIDES.length + ' guide pages, privacy, terms, 404, sitemap.xml, llms.txt and updated index.html');
