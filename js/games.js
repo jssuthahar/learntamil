@@ -187,7 +187,7 @@ function landed(){
   Rewards.sfx.landed();
   const v = VOWELS[spinIdx];
   $('#spinLetter').textContent = v.l;
-  sayItem(uyir[spinIdx]);
+  sayLetter(v.l, v.l);   // only the letter: its usual example word is often not one of the pictures and confused children
   const others = shuffle(VOWELS.map((_,i)=>i).filter(i=>i!==spinIdx)).slice(0,2);
   const pics = { [spinIdx]: freshWord(spinIdx) };
   others.forEach(i=>{ pics[i] = freshOption(i); });
