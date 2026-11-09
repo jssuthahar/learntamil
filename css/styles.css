@@ -1139,3 +1139,29 @@ body:not(.doc-page) footer{padding-bottom:calc(40px + env(safe-area-inset-bottom
 .push-btn{font-size:13.5px;white-space:normal;max-width:100%}
 .push-btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-deep);border-color:transparent}
 .push-row small:empty{display:none}
+
+/* "Support this free project" note (js/support.js) */
+.support-pop{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:16px;background:rgb(10 20 40 / .45);animation:fadeIn .3s ease;overflow-y:auto}
+.support-pop.out{animation:fadeOut .3s ease forwards}
+.sp-card{position:relative;max-width:440px;width:100%;padding:26px 24px 18px;border-radius:28px;text-align:center;color:var(--text);
+  background:radial-gradient(320px 200px at 50% 0%,rgb(255 214 102 / .4),transparent 70%),var(--bg);border:4px solid #ffd166;
+  box-shadow:0 30px 70px -20px rgb(0 0 0 / .55);animation:popIn .55s cubic-bezier(.3,1.6,.5,1)}
+.sp-card h2{font-family:var(--font-kid);font-size:22px;margin:6px 0 10px;line-height:1.25}
+.sp-card h2 span{display:block;font-size:26px;color:var(--accent-deep)}
+.sp-card p{margin:0 0 10px;line-height:1.55;font-size:15px;text-align:left}
+.sp-progress{background:var(--accent-soft);color:var(--accent-deep);border-radius:14px;padding:10px 12px;font-weight:600}
+.sp-card .sp-ta{text-align:center;font-weight:700;color:var(--accent-deep)}
+.sp-art{position:relative;height:64px;font-size:46px;line-height:64px}
+.sp-bird{display:inline-block;animation:spBob 2.4s ease-in-out infinite}
+.sp-cup{display:inline-block;margin-left:6px;transform:rotate(8deg)}
+.sp-heart{position:absolute;left:50%;top:-6px;font-size:22px;transform:translateX(-120%);animation:spFloat 2.4s ease-in-out infinite}
+@keyframes spBob{50%{transform:translateY(-6px) rotate(-4deg)}}
+@keyframes spFloat{0%{opacity:0;transform:translate(-120%,10px) scale(.6)}40%{opacity:1}100%{opacity:0;transform:translate(-120%,-18px) scale(1.1)}}
+.sp-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.sp-btns .coffee-btn{font-size:16px}
+.sp-x{position:absolute;right:10px;top:8px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:26px;line-height:1;cursor:pointer}
+.sp-x:hover{background:var(--accent-soft)}
+.sp-done{margin-top:10px;border:0;background:none;color:var(--text-muted);font-size:13px;text-decoration:underline;cursor:pointer}
+.sp-thanks{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:111;background:var(--bg);color:var(--text);border:3px solid #ffd166;border-radius:999px;padding:12px 22px;font-weight:700;box-shadow:0 18px 40px -12px rgb(0 0 0 / .4);animation:popIn .45s cubic-bezier(.3,1.6,.5,1)}
+.sp-thanks.out{animation:fadeOut .4s ease forwards}
+@media (max-width:480px){.sp-card{padding:22px 16px 14px}.sp-card p{font-size:14.5px}.sp-btns>*{flex:1 1 100%}}

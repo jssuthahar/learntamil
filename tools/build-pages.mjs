@@ -155,6 +155,7 @@ ${more}
 ${FOOTER}
 <script src="js/pwa.js"></script>
 <script type="module" src="js/firebase.js"></script>
+<script src="js/support.js" defer></script>
 <script src="js/faq-data.js"></script>
 <script src="js/chat.js"></script>
 </body>
@@ -650,6 +651,7 @@ const privacyBody = `
 <tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
 <tr><td>Reminder device token</td><td>localStorage <code>lt-push</code></td><td>Only if you turn reminders on; deleted when you turn them off</td></tr>
+<tr><td>When the “support this project” note was last shown</td><td>localStorage <code>lt-support</code></td><td>So the note appears only now and then, and rests after you answer it</td></tr>
 <tr><td>Your cookie choice</td><td>localStorage <code>lt-consent</code></td><td>Remembers whether you allowed anonymous usage statistics</td></tr>
 <tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
