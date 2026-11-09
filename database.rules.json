@@ -1,0 +1,51 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "stats": {
+      ".read": true,
+      "visits": {
+        ".write": true,
+        ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
+      }
+    },
+
+    "countries": {
+      ".read": true,
+      ".indexOn": ["n"],
+      "$cc": {
+        ".write": true,
+        ".validate": "$cc.matches(/^[A-Z]{2}$/) && newData.hasChildren(['n', 'name'])",
+        "n":    { ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1" },
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "cities": {
+      ".read": true,
+      ".indexOn": ["n"],
+      "$id": {
+        ".write": true,
+        ".validate": "$id.matches(/^[A-Z]{2}_[a-z0-9-]{1,40}$/) && newData.hasChildren(['n', 'city', 'cc'])",
+        "n":    { ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1" },
+        "city": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60" },
+        "cc":   { ".validate": "newData.isString() && newData.val().matches(/^[A-Z]{2}$/)" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "live": {
+      ".read": true,
+      "$sid": {
+        ".write": true,
+        ".validate": "$sid.matches(/^[a-z0-9]{10,24}$/) && newData.hasChild('t')",
+        "t":    { ".validate": "newData.val() === now" },
+        "cc":   { ".validate": "newData.isString() && newData.val().matches(/^[A-Z]{2}$/)" },
+        "city": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

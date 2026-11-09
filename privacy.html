@@ -82,12 +82,17 @@
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
 <tr><td>Reminder device token</td><td>localStorage <code>lt-push</code></td><td>Only if you turn reminders on; deleted when you turn them off</td></tr>
 <tr><td>When the “support this project” note was last shown</td><td>localStorage <code>lt-support</code></td><td>So the note appears only now and then, and rests after you answer it</td></tr>
+<tr><td>Visit counted, random session ID and approximate place</td><td>sessionStorage <code>lt-counted</code>, <code>lt-sid</code>, <code>lt-geo</code>, <code>lt-located</code></td><td>So one visit is counted once; removed when the tab is closed</td></tr>
 <tr><td>Your cookie choice</td><td>localStorage <code>lt-consent</code></td><td>Remembers whether you allowed anonymous usage statistics</td></tr>
 <tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
 </tbody></table></div>
 <p>You can remove all of this at any time with <em>Reset progress</em> in the 🪙 My rewards panel, or by clearing this site's data in your browser settings.</p>
+
+<h2 id="live">“Learning around the world” counter</h2>
+<p>The home page shows how many visits the site has had, how many people are learning right now, and the top countries and cities. To make this work, each visit adds one to a shared counter in <strong>Firebase Realtime Database</strong> (Google), and an open page keeps a temporary anonymous entry (a random ID, removed when the page is closed) so it can be counted as “learning right now”. No cookies are used for this.</p>
+<p><strong>Only if you allowed the cookie notice</strong>, the site also asks <a href="https://www.geojs.io/" rel="noopener">GeoJS</a> for the approximate country and town of your internet connection, and adds one to that country and town on the map. Your IP address is sent to GeoJS for this lookup but is never stored by Learn Tamil; only the country and town name are kept, as part of the totals. If you tap “No thanks”, no place is looked up.</p>
 
 <h2 id="reminders">Reminders (push notifications)</h2>
 <p>You can choose to get occasional reminders, such as “Time to learn a new letter!”. They are <strong>off</strong> until you tap <em>Turn on reminders</em> and your browser asks for permission. When you turn them on, <strong>Firebase Cloud Messaging</strong> (Google) gives this browser a random device token so a reminder can be delivered. The token is not linked to a name, email or any other personal detail, and is saved in this browser (localStorage <code>lt-push</code>). Turning reminders off deletes the token. You can also block notifications for this site in your browser settings at any time.</p>
@@ -101,6 +106,9 @@
 <ul>
 <li><strong>GitHub Pages</strong> hosts the site and may keep standard server logs. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Google Analytics for Firebase</strong> (project <code>learntamil-js</code>) receives the anonymous usage statistics described above, only if you allow them.</li>
+<li><strong>Firebase Realtime Database</strong> keeps the anonymous visit totals for the “learning around the world” counter.</li>
+<li><strong>Google reCAPTCHA</strong> (through Firebase App Check) quietly checks that requests to our Firebase services come from this real website and not from automated scripts, to keep the counter and reminders free of spam. It runs in the background, never shows a puzzle, and works under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" rel="noopener">Terms</a>.</li>
+<li><strong>GeoJS</strong> looks up an approximate country and town, only if you allowed the cookie notice (see <a href="#live">the counter</a>).</li>
 <li><strong>Firebase Cloud Messaging</strong> delivers reminders, only if you turn them on (see <a href="#reminders">Reminders</a>).</li>
 <li><strong>Google Fonts</strong> supplies the Tamil and English fonts. See the <a href="https://developers.google.com/fonts/faq/privacy" rel="noopener">Google Fonts privacy FAQ</a>.</li>
 <li><strong>cdnjs (Cloudflare)</strong> supplies a zip library, only on the Letter Recorder page.</li>
