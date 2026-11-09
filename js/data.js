@@ -46,6 +46,20 @@ const GROUPS = {
   m:{ta:'மெல்லினம்', en:'Soft (nasal) sounds'},
   i:{ta:'இடையினம்', en:'Medium sounds'}
 };
+// More picture words that start with each vowel (Spin wheel). [emoji, word, English meaning]
+const VOWEL_WORDS = {
+  'அ':[['🐿️','அணில்','squirrel'], ['🍚','அரிசி','rice']],
+  'ஆ':[['🦉','ஆந்தை','owl'], ['🌳','ஆலமரம்','banyan tree']],
+  'இ':[['🪶','இறகு','feather'], ['❤️','இதயம்','heart']],
+  'உ':[['🌍','உலகம்','world'], ['👄','உதடு','lips'], ['🥔','உருளைக்கிழங்கு','potato']],
+  'ஊ':[['🏘️','ஊர்','village, town']],
+  'எ':[['🐜','எறும்பு','ant'], ['🐃','எருமை','buffalo']],
+  'ஏ':[['🏞️','ஏரி','lake']],
+  'ஐ':[['🍦','ஐஸ்கிரீம்','ice cream']],
+  'ஒ':[['🦒','ஒட்டகச்சிவிங்கி','giraffe']],
+  'ஓ':[['🐺','ஓநாய்','wolf'], ['🦎','ஓணான்','garden lizard']],
+  'ஔ':[['💊','ஔடதம்','medicine']]
+};
 const SIGN_TO_VOWEL = Object.fromEntries(VOWELS.map(v=>[v.s,v]));
 
 /* ---------- Stories: simple written Tamil with English meaning per page ---------- */

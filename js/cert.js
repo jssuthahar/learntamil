@@ -202,11 +202,12 @@ const CERT = (() => {
     try { localStorage.setItem(SEEN_KEY, JSON.stringify(all)); } catch (e) {} };
 
   function makeTest(level){
-    const N = tot(level), hist = new Set(loadSeen()[level.n] || []);
+    const N = tot(level), past = loadSeen()[level.n] || [], hist = new Set(past);
     const out = [], seenQ = new Set(), keys = [], gens = shuffle(level.gen.slice());
     let tries = 0, fresh = true;
     while (out.length < N && tries++ < 3000){
-      if (tries === 1500){ fresh = false; hist.clear(); }   // every question has been asked — start a new round
+      // Every question has been asked: start a new round, but still never repeat the previous test.
+      if (tries === 1500){ fresh = false; hist.clear(); past.slice(-N).forEach(k => hist.add(k)); }
       const q = gens[(out.length + (tries >> 4)) % gens.length]();
       const k = keyOf(q);
       if (q.opts.length < 2 || seenQ.has(q.q) || hist.has(k)) continue;
