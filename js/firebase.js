@@ -32,8 +32,9 @@ const setChoice = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
 let appP = null;
 /* Firebase App Check: proves each request comes from this real website (invisible reCAPTCHA v3),
    so scripts that copy the apiKey are rejected once enforcement is turned on in the Firebase console.
-   Paste the reCAPTCHA v3 *site* key below (the public one, NOT the secret key). Empty = App Check off. */
-const RECAPTCHA_SITE_KEY = '';
+   Uses reCAPTCHA Enterprise (Google Cloud → Security → reCAPTCHA / Fraud Defense), score-based website key.
+   Paste that key's ID below (it is public). Empty = App Check off. */
+const RECAPTCHA_SITE_KEY = '6LdqYRguAAAAAPneeKzgSJ_4mnt9IPN-cQSsNhwu';
 
 const getApp = () => appP || (appP = (async () => {
   const m = await import(SDK + 'firebase-app.js');
@@ -42,7 +43,7 @@ const getApp = () => appP || (appP = (async () => {
   if (RECAPTCHA_SITE_KEY){   // must be set up before the database, messaging or analytics start
     try {
       const ac = await import(SDK + 'firebase-app-check.js');
-      ac.initializeAppCheck(app, { provider: new ac.ReCaptchaV3Provider(RECAPTCHA_SITE_KEY), isTokenAutoRefreshEnabled: true });
+      ac.initializeAppCheck(app, { provider: new ac.ReCaptchaEnterpriseProvider(RECAPTCHA_SITE_KEY), isTokenAutoRefreshEnabled: true });
     } catch (e) { /* reCAPTCHA blocked: requests go without a token (rejected only if enforcement is on) */ }
   }
   return app;
