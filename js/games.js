@@ -81,6 +81,7 @@ $$('#readLevels .seg-btn').forEach(b=>b.addEventListener('click', ()=>{
    ===================================================================== */
 let game = 'build';
 function showGame(g){
+  logEv('game_start', { game: g });
   game = g;
   Rewards.score.reset(g);
   $$('#gamePick .gcard').forEach(c=>c.setAttribute('aria-pressed', c.dataset.game===g));
@@ -103,6 +104,20 @@ document.addEventListener('lt:section', e=>{
 /* ---------- 🎡 Spin wheel (12 vowels) ---------- */
 const WHEEL_COLORS = ['#1769d1','#e0480c','#0b8a6c','#7c3aed','#d97706','#db2777'];
 let wheelRot = 0, spinning = false, spinIdx = -1, wheelBuilt = false;
+function pt(r, deg){ const a = deg*Math.PI/180; return [ (r*Math.sin(a)).toFixed(2), (-r*Math.cos(a)).toFixed(2) ]; }
+function initSpin(){
+  if (!wheelBuilt){
+    const svg = $('#wheel'); let html = '';
+    VOWELS.forEach((v,i)=>{
+      const c = i*30, [x1,y1] = pt(100, c-15), [x2,y2] = pt(100, c+15), [tx,ty] = pt(70, c);
+      html += `<path d="M0 0 L${x1} ${y1} A100 100 0 0 1 ${x2} ${y2} Z" fill="${WHEEL_COLORS[i%6]}" stroke="#fff" stroke-width="2"/>`;
+      html += `<text x="${tx}" y="${ty}" transform="rotate(${c} ${tx} ${ty})" text-anchor="middle" dominant-baseline="central" class="wheel-t">${v.l}</text>`;
+    });
+    html += '<circle r="100" fill="none" stroke="#fff" stroke-width="4"/>';
+    svg.innerHTML = html; wheelBuilt = true;
+  }
+  $('#spinQ').hidden = true; fb($('#spinFb'), '');
+}
 // Every picture word that starts with each vowel: its own example, extra words, reading words and topic words.
 let SPIN_WORDS = null;
 function spinWords(){

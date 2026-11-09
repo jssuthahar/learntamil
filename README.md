@@ -102,7 +102,7 @@ The same site can be packaged for stores with [PWABuilder](https://www.pwabuilde
 
 ## Support the project
 
-Learn Tamil is free, with no ads and no tracking. If it helps your family or classroom, you can support it at **<https://buymeacoffee.com/jssuthahar>** ☕. The site only links there; it loads no Buy Me a Coffee script.
+Learn Tamil is free, with no ads. If it helps your family or classroom, you can support it at **<https://buymeacoffee.com/jssuthahar>** ☕. The site only links there; it loads no Buy Me a Coffee script.
 
 ## Report an issue or give feedback
 

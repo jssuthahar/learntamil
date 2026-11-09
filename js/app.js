@@ -140,7 +140,13 @@ function confetti(){
 }
 // Tokens, badges and saved progress live in rewards.js (Progress).
 function addStar(n = 1){ if (typeof Progress !== 'undefined') Progress.addTokens(n); }
-const track = (what, v)=>{ if (typeof Progress !== 'undefined') Progress.track(what, v); };
+const track = (what, v)=>{ if (typeof Progress !== 'undefined') Progress.track(what, v); if (what === 'story') logEv('story_complete', { story: String(v) }); };
+// Anonymous usage events for Firebase Analytics (js/firebase.js). Queued until it loads.
+function logEv(name, params = {}){
+  if (window.ltLog) return window.ltLog(name, params);
+  if (window.ltConsent && window.ltConsent.choice() === 'no') return;
+  const q = window.ltQ = window.ltQ || []; if (q.length < 30) q.push([name, params]);
+}
 
 // floating letters behind the hero
 (function(){

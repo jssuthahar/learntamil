@@ -288,7 +288,7 @@ const CERT = (() => {
       $('#crRetry').onclick = () => start(L.n); $('#crBack').onclick = renderLevels;
       return;
     }
-    Rewards.sfx.win(); confetti(); setTimeout(() => speak('வாழ்த்துகள்!'), 500);
+    Rewards.sfx.win(); confetti(); setTimeout(() => speak('வாழ்த்துகள்!'), 500); logEv('certificate_earned', { level: L.n });
     let lastName = ''; try { lastName = localStorage.getItem('lt-cert-name') || ''; } catch (e) {}
     box.innerHTML = `<div class="cr-emo" aria-hidden="true">🎓</div><h3><span class="ta">வாழ்த்துகள்!</span> You passed Level ${L.n}</h3>
       <p class="cr-score">${S.right}/${N} <small>(${pct}%)</small></p>

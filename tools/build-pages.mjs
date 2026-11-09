@@ -29,7 +29,7 @@ export const COFFEE_URL = 'https://buymeacoffee.com/jssuthahar';
 /* Support card for parents — a plain link (no widget script), so nothing tracks visitors. */
 export const SUPPORT = `<aside class="support-card" aria-label="Support Learn Tamil">
   <span class="sc-ic" aria-hidden="true">☕</span>
-  <div><b>Keep Learn Tamil free</b><p>Learn Tamil is free, with no ads and no tracking. If it helps your family or classroom, you can support it with a coffee. <span class="ta">உங்கள் ஆதரவுக்கு நன்றி!</span></p></div>
+  <div><b>Keep Learn Tamil free</b><p>Learn Tamil is free, with no ads. If it helps your family or classroom, you can support it with a coffee. <span class="ta">உங்கள் ஆதரவுக்கு நன்றி!</span></p></div>
   <a class="coffee-btn" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
 </aside>`;
 
@@ -154,6 +154,7 @@ ${more}
 </main>
 ${FOOTER}
 <script src="js/pwa.js"></script>
+<script type="module" src="js/firebase.js"></script>
 <script src="js/faq-data.js"></script>
 <script src="js/chat.js"></script>
 </body>
@@ -162,7 +163,7 @@ ${FOOTER}
 }
 export const FOOTER = `<footer>
   <div class="wrap foot">
-    <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads, no tracking.</span></div>
+    <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads.</span></div>
     <nav class="foot-links" aria-label="Footer">
       <a href="./">Learning app</a>
       <a href="privacy.html">Privacy &amp; data</a>
@@ -577,7 +578,7 @@ const HELP = [
   ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
   ['How do I reset progress?', 'Tap 🪙 at the top to open My rewards, then press Reset progress. You can also clear this site’s data in your browser settings.', 'reset clear delete progress start again restart', ''],
   ['Which games are there?', 'Six games: க் + ஆ = ? (build a letter), Listen & pick, Spin wheel, Balloon pop, Word builder and Memory. Every right answer gives points, a cheer and tokens; 3 in a row gives a bonus.', 'game games play fun quiz balloon spin memory word builder', './#/practice'],
-  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts, no cookies, no analytics, no ads and no tracking. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
+  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts and no ads. If a parent allows it, it counts anonymous visits and game use with Google Analytics for Firebase, with advertising features turned off. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
   ['How can I report a mistake or give feedback?', `Please open an issue on [GitHub Issues](${ISS}). There are short forms for a wrong sound or Tamil mistake, a bug, or an idea. Issues are public, so please don’t include personal details.`, 'report mistake bug error wrong issue feedback idea suggest problem github', ''],
   ['How can I support Learn Tamil?', `Learn Tamil is free with no ads. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
   ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
@@ -607,7 +608,7 @@ write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="htt
 /* ---------- llms.txt (summary for AI assistants) ---------- */
 write('llms.txt', `# Learn Tamil (தமிழ் கற்போம்)
 
-> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads, no tracking. Installable as an app and works offline.
+> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads. Installable as an app and works offline.
 
 Key facts:
 - The Tamil alphabet has 247 letters: 12 vowels (உயிர், uyir), 18 consonants (மெய், mei), 1 special letter ஃ (ஆய்தம், aaytham) and 216 consonant-vowel letters (உயிர்மெய், uyirmei; 18 × 12).
@@ -630,13 +631,16 @@ ${GUIDES.map(g => `- [${g.en}](${SITE}${g.file})`).join('\n')}
 const CONTACT = '<a href="https://blog.msdevbuild.com/contact/" rel="noopener">contact page</a>';
 const ISSUES = '<a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">GitHub Issues</a>';
 const privacyBody = `
-<div class="callout glass"><b>In short:</b> Learn Tamil does not collect, store or sell any personal information. There are no accounts, no cookies, no analytics, no advertising and no tracking. A few settings are saved only in your own browser.</div>
+<div class="callout glass"><b>In short:</b> Learn Tamil does not collect, store or sell any personal information. There are no accounts and no advertising. If you allow it, we count anonymous visits and game use with Google Analytics for Firebase, with all advertising features turned off. Progress and settings are saved only in your own browser.</div>
 
 <h2>Who runs this website</h2>
 <p>Learn Tamil (<a href="${SITE}">${SITE}</a>) is a free educational website made by Suthahar Jegatheesan under the MSDEVBUILD name. It is a personal, non-commercial project. Questions about privacy can be sent through the ${CONTACT}.</p>
 
 <h2>Information we collect</h2>
-<p><strong>None.</strong> The site has no sign-up, no login, no forms and no comments. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run analytics or advertising scripts.</p>
+<p><strong>No personal information.</strong> The site has no sign-up, no login, no forms and no comments. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
+<h3 id="analytics">Anonymous usage statistics (only if you allow them)</h3>
+<p>When you first visit, a notice asks whether we may count visits. <strong>Nothing is loaded or sent unless you tap “Allow”.</strong> If you allow it, the site uses <strong>Google Analytics for Firebase</strong> to learn which lessons and games are useful. It records pages visited and simple events such as “a game was started”, “a story was finished”, “a badge was earned” or “a certificate level was passed”, together with general technical details (approximate country, device type, browser). It stores a random visitor ID in first-party cookies (<code>_ga</code>, <code>_ga_*</code>) so repeat visits can be counted. We have turned off Google signals, advertising cookies and ad personalisation, and we never send names, the certificate name or anything your child types. Google processes this data under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. If you tap “No thanks”, or change your mind later, the site works exactly the same. Your choice is saved in this browser (localStorage <code>lt-consent</code>).</p>
+<p><strong data-consent-status>Your choice is saved in this browser.</strong> <button type="button" class="btn small" data-consent-open>Change cookie choice</button></p>
 
 <h2>What is saved on your device</h2>
 <p>To make the site work, a few small values are saved in your browser's own storage. They never leave your device and we cannot see them.</p>
@@ -645,6 +649,7 @@ const privacyBody = `
 <tr><td>Game progress: tokens, badges, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
 <tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
+<tr><td>Your cookie choice</td><td>localStorage <code>lt-consent</code></td><td>Remembers whether you allowed anonymous usage statistics</td></tr>
 <tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
@@ -658,6 +663,7 @@ const privacyBody = `
 <p>Like most websites, Learn Tamil relies on a few outside services. They may receive technical information such as your IP address and browser type when your browser contacts them:</p>
 <ul>
 <li><strong>GitHub Pages</strong> hosts the site and may keep standard server logs. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
+<li><strong>Google Analytics for Firebase</strong> (project <code>learntamil-js</code>) receives the anonymous usage statistics described above, only if you allow them.</li>
 <li><strong>Google Fonts</strong> supplies the Tamil and English fonts. See the <a href="https://developers.google.com/fonts/faq/privacy" rel="noopener">Google Fonts privacy FAQ</a>.</li>
 <li><strong>cdnjs (Cloudflare)</strong> supplies a zip library, only on the Letter Recorder page.</li>
 <li><strong>Buy Me a Coffee</strong>: the “Buy me a coffee” link opens buymeacoffee.com, where you can choose to support the project. This website does not load any Buy Me a Coffee script and sends it nothing. If you decide to support, Buy Me a Coffee handles the payment under <a href="https://www.buymeacoffee.com/privacy-policy" rel="noopener">its own privacy policy</a>, and may share with the creator the name and message you choose to leave.</li>
@@ -666,7 +672,7 @@ const privacyBody = `
 </ul>
 
 <h2>Children's privacy</h2>
-<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. There are no ads, no chat, no sharing features and no links that ask for personal details. We recommend that young children use the site with a parent or teacher.</p>
+<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads, no chat, no sharing features and no links that ask for personal details. We recommend that young children use the site with a parent or teacher.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the new version will be posted on this page with a new “Updated” date.</p>
@@ -677,8 +683,8 @@ const privacyBody = `
 fs.writeFileSync(path.join(ROOT, 'privacy.html'), shell({
   file: 'privacy.html', ogType: 'website',
   title: 'Privacy & Data Policy | Learn Tamil',
-  description: 'Learn Tamil collects no personal data: no accounts, cookies, analytics, ads or tracking. See what is stored only on your device and which services the site uses.',
-  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No tracking — promise!', body: privacyBody
+  description: 'Learn Tamil collects no personal data: no accounts and no ads, only anonymous usage statistics. See what is stored on your device and which services the site uses.',
+  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No ads — promise!', body: privacyBody
 }));
 
 /* ---------- Terms ---------- */
@@ -707,7 +713,7 @@ const termsBody = `
 <p>Level certificates are made in your browser when a test is passed. They are practice certificates to encourage children, <strong>not an official or accredited qualification</strong>, and are not verified by any school or examination board.</p>
 
 <h2>6. Children</h2>
-<p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
+<p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information, only anonymous usage statistics; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
 
 <h2>7. Links to other websites</h2>
 <p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). We are not responsible for their content or practices.</p>

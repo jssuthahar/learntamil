@@ -273,7 +273,7 @@ const Progress = {
     const st = stageOf(this.d.tokensEver);
     if (st > this.d.stage){
       this.d.stage = st; this.save();
-      const S = STAGES[st];
+      const S = STAGES[st]; logEv('level_up', { level: st + 1 });
       setTimeout(() => celebrate(S.ic, 'நிலை உயர்ந்தது! · Level up!', `Kili is now ${S.ta} · ${S.en} (Level ${st + 1})`), 2200);
     }
     paintToday();
@@ -291,7 +291,7 @@ function nextBadge(){
     el.className = 'badge-pop'; el.setAttribute('role', 'status');
     el.innerHTML = `<div class="bp-card"><span class="bp-ribbon">🏅 புதிய பதக்கம்! · New badge!</span><span class="bp-ic" aria-hidden="true">${b.ic}</span><b lang="ta">${b.ta}</b><small>${b.en}</small><span class="bp-tok">+10 🪙</span><span class="bp-wow" lang="ta">வாழ்த்துகள்! 🎉</span></div>`;
     document.body.appendChild(el);
-    SFX.badge(); confetti();
+    SFX.badge(); confetti(); logEv('badge_earned', { badge: b.id });
     setTimeout(() => speak('வாழ்த்துகள்!'), 1100);
     const close = () => { el.classList.add('out'); setTimeout(() => { el.remove(); nextBadge(); }, 300); };
     el.addEventListener('click', close);

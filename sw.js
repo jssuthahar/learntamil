@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = '7dfb3c930e';
+const VERSION = 'e30499f5e9';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -12,7 +12,7 @@ const PRECACHE = [
   'tamil-numbers.html', 'tamil-colours.html', 'tamil-days-of-the-week.html', 'tamil-body-parts.html',
   'tamil-family-words.html', 'tamil-fruits-and-food.html', 'tamil-printables.html',
   'privacy.html', 'terms.html',
-  'css/styles.css', 'js/data.js', 'js/app.js', 'js/rewards.js', 'js/games.js', 'js/cert.js', 'js/faq-data.js', 'js/chat.js', 'js/pwa.js', 'audio/manifest.js',
+  'css/styles.css', 'js/data.js', 'js/app.js', 'js/rewards.js', 'js/games.js', 'js/cert.js', 'js/faq-data.js', 'js/chat.js', 'js/pwa.js', 'js/firebase.js', 'audio/manifest.js',
   'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'
 ];
