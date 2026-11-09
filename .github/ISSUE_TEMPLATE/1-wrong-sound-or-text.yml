@@ -1,0 +1,51 @@
+name: Wrong sound or Tamil mistake
+description: A letter sounds wrong, or a Tamil letter, word, spelling or meaning is incorrect.
+title: "[Tamil] "
+labels: ["tamil-content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping keep Learn Tamil correct for children. 🙏
+        Issues are public — please don't include personal details.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is wrong?
+      options:
+        - Letter sound is wrong
+        - Tamil letter / spelling is wrong
+        - English meaning or hint is wrong
+        - Story or word text is wrong
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: letter
+    attributes:
+      label: Which letter or word?
+      placeholder: "e.g. ஒ, கு, ஞா, ஒட்டகம்"
+    validations:
+      required: true
+  - type: dropdown
+    id: section
+    attributes:
+      label: Where did you see it?
+      options:
+        - Letters (உயிர் / மெய் / ஆய்தம் / உயிர்மெய்)
+        - Reading (வாசிப்பு)
+        - Stories (கதைகள்)
+        - Games (விளையாட்டு)
+        - Tamil alphabet chart page
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What should it be?
+      description: The correct sound, spelling or meaning, if you know it.
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser (for sound problems)
+      placeholder: "e.g. Android phone, Chrome · iPhone, Safari · Windows, Edge"

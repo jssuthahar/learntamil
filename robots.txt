@@ -1,0 +1,6 @@
+# Learn Tamil — all pages may be crawled, including by AI answer engines.
+User-agent: *
+Allow: /
+Disallow: /record.html
+
+Sitemap: https://jssuthahar.github.io/learntamil/sitemap.xml

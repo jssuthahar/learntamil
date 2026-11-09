@@ -1,0 +1,15 @@
+# Learn Tamil (தமிழ் கற்போம்)
+
+> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads, no tracking.
+
+Key facts:
+- The Tamil alphabet has 247 letters: 12 vowels (உயிர், uyir), 18 consonants (மெய், mei), 1 special letter ஃ (ஆய்தம், aaytham) and 216 consonant-vowel letters (உயிர்மெய், uyirmei; 18 × 12).
+- Vowels: அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ — short (குறில்) அ இ உ எ ஒ; long (நெடில்) ஆ ஈ ஊ ஏ ஐ ஓ ஔ.
+- Consonants: க் ங் ச் ஞ் ட் ண் த் ந் ப் ம் ய் ர் ல் வ் ழ் ள் ற் ன் — வல்லினம் க் ச் ட் த் ப் ற்; மெல்லினம் ங் ஞ் ண் ந் ம் ன்; இடையினம் ய் ர் ல் வ் ழ் ள்.
+- Grantha letters ஜ ஷ ஸ ஹ க்ஷ ஸ்ரீ are used for borrowed words and are not counted in the 247.
+
+## Pages
+- [Tamil alphabet chart](https://jssuthahar.github.io/learntamil/tamil-alphabet.html): every letter with romanised sound, pronunciation tip, example word, full 216 uyirmei chart and FAQ (static HTML).
+- [Learning app](https://jssuthahar.github.io/learntamil/): interactive letters with audio, reading practice, stories and games (requires JavaScript).
+- [Privacy & data](https://jssuthahar.github.io/learntamil/privacy.html): no personal data is collected.
+- [Terms](https://jssuthahar.github.io/learntamil/terms.html)

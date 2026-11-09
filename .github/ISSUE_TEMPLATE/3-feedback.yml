@@ -1,0 +1,21 @@
+name: Feedback or idea
+description: Suggest a new word, story, game or improvement.
+title: "[Idea] "
+labels: ["feedback"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea or feedback
+    validations:
+      required: true
+  - type: dropdown
+    id: who
+    attributes:
+      label: I am a…
+      options:
+        - Parent
+        - Teacher
+        - Learner
+        - Developer
+        - Other

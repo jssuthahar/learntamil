@@ -2,10 +2,41 @@
 <html lang="ta">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>தமிழ் எழுத்துகள் · Learn Tamil | MSDEVBUILD</title>
-<meta name="description" content="Learn all 247 Tamil letters — 12 உயிர், 18 மெய், ஆய்தம் and 216 உயிர்மெய் — with sound, examples, read-along stories and practice. By MSDEVBUILD.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learn Tamil Alphabet for Kids: 247 Letters, Sound &amp; Games</title>
+<meta name="description" content="Free app to learn all 247 Tamil letters (12 uyir, 18 mei, ஃ, 216 uyirmei) with sound, picture words, stories, reading practice and games for kids.">
+<link rel="canonical" href="https://jssuthahar.github.io/learntamil/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Suthahar Jegatheesan">
+<meta name="keywords" content="Tamil alphabet, Tamil letters, learn Tamil, Tamil for kids, uyir ezhuthukal, mei ezhuthukal, uyirmei, 247 Tamil letters, தமிழ் எழுத்துகள், உயிர் எழுத்துகள்">
 <meta name="theme-color" content="#0078d4">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Learn Tamil · MSDEVBUILD">
+<meta property="og:title" content="Learn Tamil Alphabet for Kids — 247 Letters with Sound &amp; Games">
+<meta property="og:description" content="Tap any Tamil letter to hear it. Picture words, read-along stories, reading practice and games. Free, no sign-up, no ads.">
+<meta property="og:url" content="https://jssuthahar.github.io/learntamil/">
+<meta property="og:image" content="https://jssuthahar.github.io/learntamil/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Learn Tamil — தமிழ் எழுத்துகள், 247 letters">
+<meta property="og:locale" content="ta_IN">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learn Tamil Alphabet for Kids — 247 Letters with Sound">
+<meta name="twitter:description" content="Tap any Tamil letter to hear it. Picture words, stories, reading practice and games. Free.">
+<meta name="twitter:image" content="https://jssuthahar.github.io/learntamil/assets/og-image.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Learn Tamil">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="Learn Tamil">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://jssuthahar.github.io/learntamil/#website", "url": "https://jssuthahar.github.io/learntamil/", "name": "Learn Tamil", "alternateName": ["தமிழ் கற்போம்", "Learn Tamil Letters", "MSDEVBUILD Learn Tamil"], "inLanguage": ["ta", "en"], "publisher": {"@id": "https://jssuthahar.github.io/learntamil/#author"}}, {"@type": "Person", "@id": "https://jssuthahar.github.io/learntamil/#author", "name": "Suthahar Jegatheesan", "url": "https://blog.msdevbuild.com/about/", "sameAs": ["https://blog.msdevbuild.com", "https://github.com/jssuthahar"], "brand": {"@type": "Brand", "name": "MSDEVBUILD"}}, {"@type": ["WebApplication", "LearningResource"], "@id": "https://jssuthahar.github.io/learntamil/#app", "name": "Learn Tamil — Tamil alphabet, reading and games for kids", "url": "https://jssuthahar.github.io/learntamil/", "description": "Free interactive app to learn the 247 Tamil letters with sound, picture words, read-along stories, reading practice and games.", "applicationCategory": "EducationalApplication", "operatingSystem": "Any (web browser)", "browserRequirements": "Requires JavaScript", "inLanguage": ["ta", "en"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "educationalLevel": "Beginner", "typicalAgeRange": "4-12", "learningResourceType": ["Interactive resource", "Game", "Story"], "teaches": ["Tamil alphabet", "Tamil vowels (uyir ezhuthukal)", "Tamil consonants (mei ezhuthukal)", "Uyirmei letters", "Reading simple Tamil words"], "audience": {"@type": "EducationalAudience", "educationalRole": "student"}, "author": {"@id": "https://jssuthahar.github.io/learntamil/#author"}, "image": "https://jssuthahar.github.io/learntamil/assets/og-image.png"}]}</script>
+<!-- FAQ-SCHEMA:START -->
+
+<!-- FAQ-SCHEMA:END -->
 <script>
   // Apply saved theme before paint (no flash).
   try { var t = localStorage.getItem('lt-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
@@ -42,9 +73,9 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <span class="eyebrow">247 letters · Tap to listen</span>
+        <span class="eyebrow">Tamil alphabet · 247 letters · Tap to listen</span>
         <h1>தமிழ் எழுத்துகள்</h1>
-        <p class="lead">Learn every Tamil letter with its sound, how it is formed, and a picture word — then read simple stories and play games. Made for children and beginners.</p>
+        <p class="lead">Learn the Tamil alphabet: every letter with its sound, how it is formed, and a picture word — then read simple stories and play games. Made for children and beginners.</p>
       </div>
       <button class="mascot" id="mascot" type="button" aria-label="Kili the parrot says hello">
         <span class="bird" aria-hidden="true">🦜</span>
@@ -72,6 +103,7 @@
   </div>
 </nav>
 
+<noscript><div class="wrap"><p class="notice glass">Learn Tamil needs JavaScript for sound and games. You can still read the full <a href="tamil-alphabet.html">Tamil alphabet chart</a>.</p></div></noscript>
 <main class="wrap" id="app">
   <div class="notice glass" id="notice" role="status" hidden></div>
 
@@ -271,19 +303,49 @@
     <label>Speed <input type="range" id="rate" min="0.4" max="1.2" step="0.1" value="0.7" aria-label="Speech speed"></label>
     <label><input type="checkbox" id="showRoman" checked> Show English sound</label>
   </div>
+  <p class="feedback-link"><a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">🐞 Found a wrong sound, a mistake or a bug? Tell us on GitHub</a></p>
 </main>
 
+<section class="wrap faq-sec" id="faq" aria-labelledby="faqTitle">
+  <h2 id="faqTitle">Tamil alphabet — questions parents ask</h2>
+  <p class="muted">Quick answers about Tamil letters. See the full <a href="tamil-alphabet.html">Tamil alphabet chart</a> for every letter with pronunciation.</p>
+  <div class="faq">
+<!-- FAQ:START -->
+<details class="faq-item"><summary>How many letters are there in the Tamil alphabet?</summary><p>There are 247 letters in the Tamil alphabet: 12 vowels (உயிர் எழுத்துகள், uyir ezhuthukal), 18 consonants (மெய் எழுத்துகள், mei ezhuthukal), 1 special letter ஃ (ஆய்த எழுத்து, aaytha ezhuthu) and 216 consonant-vowel letters (உயிர்மெய் எழுத்துகள், uyirmei ezhuthukal). 12 + 18 + 1 + 216 = 247.</p></details>
+<details class="faq-item"><summary>What are the 12 Tamil vowels (uyir ezhuthukal)?</summary><p>The 12 Tamil vowels are அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ. Five are short (குறில், kuril): அ இ உ எ ஒ. Seven are long (நெடில், nedil): ஆ ஈ ஊ ஏ ஐ ஓ ஔ.</p></details>
+<details class="faq-item"><summary>What are the 18 Tamil consonants (mei ezhuthukal)?</summary><p>The 18 Tamil consonants are க் ங் ச் ஞ் ட் ண் த் ந் ப் ம் ய் ர் ல் வ் ழ் ள் ற் ன். Each is written with a dot on top called புள்ளி (pulli). They form three groups of six: வல்லினம் (vallinam, hard) க் ச் ட் த் ப் ற்; மெல்லினம் (mellinam, soft) ங் ஞ் ண் ந் ம் ன்; இடையினம் (idaiyinam, medium) ய் ர் ல் வ் ழ் ள்.</p></details>
+<details class="faq-item"><summary>What are uyirmei letters and why are there 216?</summary><p>An uyirmei (உயிர்மெய்) letter is a consonant joined with a vowel, for example க் + அ = க, க் + ஆ = கா, க் + இ = கி. Each of the 18 consonants combines with each of the 12 vowels, so 18 × 12 = 216 uyirmei letters.</p></details>
+<details class="faq-item"><summary>What is the Tamil letter ஃ (aaytham)?</summary><p>ஃ is the ஆய்த எழுத்து (aaytha ezhuthu), also called அஃகேனம் or முப்புள்ளி (three dots). It is a single special letter that comes between a short vowel and a வல்லினம் letter, as in எஃகு (steel) and அஃது (that).</p></details>
+<details class="faq-item"><summary>How do you pronounce ழ (zha) in Tamil?</summary><p>ழ (romanised &quot;zh&quot;) is made by curling the tip of the tongue far back and letting the sound flow, somewhere between an &quot;r&quot; and an &quot;l&quot;. It is heard in the word தமிழ் (Tamil). It is different from ல (l, as in &quot;love&quot;) and ள (ḷ, l with the tongue curled back).</p></details>
+<details class="faq-item"><summary>Are ஜ, ஷ, ஸ, ஹ part of the 247 Tamil letters?</summary><p>No. ஜ, ஷ, ஸ, ஹ, க்ஷ and ஸ்ரீ are Grantha letters used for words borrowed from other languages. They are widely used but are not counted in the 247 letters of the Tamil alphabet.</p></details>
+<details class="faq-item"><summary>What is the best way for a child to start learning Tamil letters?</summary><p>Start with the 12 uyir (vowel) letters and their sounds, then learn the 18 mei (consonant) letters. Next, learn uyirmei letters one consonant row at a time (க கா கி கீ …), then read simple two-letter words such as ஆடு (goat) and மீன் (fish). Short daily practice with sound and pictures works best.</p></details>
+<details class="faq-item"><summary>Is Learn Tamil free to use?</summary><p>Yes. Learn Tamil is completely free, needs no sign-up, shows no ads and does not track users. It works in any modern browser on phones, tablets and computers.</p></details>
+<!-- FAQ:END -->
+  </div>
+</section>
+
+<!-- FOOTER:START -->
 <footer>
-  <div class="wrap">
-    <span><span class="ta">12 உயிர் + 18 மெய் + 1 ஆய்தம் + 216 உயிர்மெய் = 247</span></span>
-    <span>© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Learn Tamil</span>
+  <div class="wrap foot">
+    <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads, no tracking.</span></div>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="./">Learning app</a>
+      <a href="tamil-alphabet.html">Tamil alphabet chart</a>
+      <a href="privacy.html">Privacy &amp; data</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">Report an issue / feedback</a>
+      <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
+    </nav>
+    <div class="muted">© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Suthahar Jegatheesan</div>
   </div>
 </footer>
+<!-- FOOTER:END -->
 
 <!-- Recorded letter sounds (made with record.html). Missing file = device voice is used. -->
 <script src="audio/manifest.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 <script src="js/games.js"></script>
+<script src="js/pwa.js"></script>
 </body>
 </html>

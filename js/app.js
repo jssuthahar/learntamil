@@ -79,9 +79,14 @@ function sayLetter(l, ttsText, onend){
    correctly at the start of a word, so the word always gives the right sound too.
    With a recording (audio/), only the letter is played. */
 const inWord = item => item.fam==='uyir' && !REC[keyOf(item.l)] && item.ex && item.ex[1] !== item.l;
+let tapId = 0;   // only the latest tap may play its follow-up word
 const sayItem = (item, onend)=>{
+  const id = ++tapId;
   if (inWord(item)) {
-    sayLetter(item.l, item.l, ()=>{ speakT = setTimeout(()=>speak(item.ex[1], onend), 350); });
+    sayLetter(item.l, item.l, ()=>{
+      if (id !== tapId) return;               // a newer tap stopped this one
+      speakT = setTimeout(()=>{ if (id === tapId) speak(item.ex[1], onend); }, 350);
+    });
     return;
   }
   sayLetter(item.l, item.say, onend);

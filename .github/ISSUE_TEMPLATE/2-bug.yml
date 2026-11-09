@@ -1,0 +1,35 @@
+name: Bug report
+description: Something does not work — a button, game, page or layout.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Issues are public — please don't include personal details.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: "e.g. In Balloon pop, tapping a balloon does nothing."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Games
+        2. Choose Balloon pop
+        3. Press Start
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: "e.g. iPhone 14, Safari · Windows 11, Chrome"
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot (optional)
+      description: Drag an image here.
