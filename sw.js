@@ -1,28 +1,103 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'cd9805ce37';
+const VERSION = 'ee281d9774';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
 
 const PRECACHE = [
-  './', 'index.html', 'tamil-alphabet.html', 'tamil-vowels.html', 'tamil-consonants.html',
-  'uyirmei-ezhuthukal.html', 'tamil-words-for-kids.html', 'tamil-stories-for-kids.html', 'ezhuthukal.html',
-  'tamil-numbers.html', 'tamil-colours.html', 'tamil-days-of-the-week.html', 'tamil-body-parts.html',
-  'tamil-family-words.html', 'tamil-fruits-and-food.html', 'tamil-printables.html',
-  'privacy.html', 'terms.html',
-  'css/styles.css', 'js/profiles.js', 'js/data.js', 'js/app.js', 'js/rewards.js', 'js/games.js', 'js/cert.js', 'js/trace.js', 'js/voice.js', 'js/rhymes.js', 'js/little.js', 'js/family.js', 'js/faq-data.js', 'js/chat.js', 'js/pwa.js', 'js/firebase.js', 'js/support.js', 'audio/manifest.js',
-  'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
-  'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'
+  './',
+  'index.html',
+  'tamil-alphabet.html',
+  'tamil-vowels.html',
+  'tamil-consonants.html',
+  'uyirmei-ezhuthukal.html',
+  'tamil-words-for-kids.html',
+  'tamil-stories-for-kids.html',
+  'ezhuthukal.html',
+  'tamil-numbers.html',
+  'tamil-colours.html',
+  'tamil-days-of-the-week.html',
+  'tamil-body-parts.html',
+  'tamil-family-words.html',
+  'tamil-fruits-and-food.html',
+  'tamil-printables.html',
+  'privacy.html',
+  'terms.html',
+  'assets/css/00-tokens.css',
+  'assets/css/10-base.css',
+  'assets/css/20-letters.css',
+  'assets/css/21-stories.css',
+  'assets/css/22-practice.css',
+  'assets/css/30-motion.css',
+  'assets/css/40-navigation.css',
+  'assets/css/41-reading.css',
+  'assets/css/42-games.css',
+  'assets/css/50-responsive.css',
+  'assets/css/60-pages.css',
+  'assets/css/70-rewards.css',
+  'assets/css/71-certificate.css',
+  'assets/css/80-premium.css',
+  'assets/css/81-chat.css',
+  'assets/css/82-today.css',
+  'assets/css/83-services.css',
+  'assets/css/90-kids.css',
+  'assets/js/core/profiles.js',
+  'assets/audio/manifest.js',
+  'assets/js/data/alphabet.js',
+  'assets/js/data/words.js',
+  'assets/js/data/stories.js',
+  'assets/js/data/rhymes.js',
+  'assets/js/data/festivals.js',
+  'assets/js/core/dom.js',
+  'assets/js/core/letter-model.js',
+  'assets/js/core/speech.js',
+  'assets/js/core/sound.js',
+  'assets/js/core/analytics.js',
+  'assets/js/features/rewards/score.js',
+  'assets/js/features/rewards/progress.js',
+  'assets/js/features/rewards/today.js',
+  'assets/js/features/letters/letters.js',
+  'assets/js/features/stories/story-reader.js',
+  'assets/js/features/games/game-utils.js',
+  'assets/js/features/games/letter-quiz.js',
+  'assets/js/features/reading/reading.js',
+  'assets/js/features/games/hub.js',
+  'assets/js/features/games/spin-wheel.js',
+  'assets/js/features/games/balloon-pop.js',
+  'assets/js/features/games/word-builder.js',
+  'assets/js/features/games/memory.js',
+  'assets/js/features/games/question-games.js',
+  'assets/js/features/certificate/certificate.js',
+  'assets/js/features/games/trace.js',
+  'assets/js/features/games/colouring.js',
+  'assets/js/features/voice/say-back.js',
+  'assets/js/features/stories/rhymes.js',
+  'assets/js/features/little/little.js',
+  'assets/js/features/family/profile-switcher.js',
+  'assets/js/features/family/stickers.js',
+  'assets/js/features/family/parent-corner.js',
+  'assets/js/app.js',
+  'assets/js/services/pwa.js',
+  'assets/js/services/firebase.js',
+  'assets/js/services/support.js',
+  'assets/js/data/faq.js',
+  'assets/js/services/chat.js',
+  'manifest.webmanifest',
+  'assets/favicon.svg',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
+  'assets/icon-maskable-512.png',
+  'assets/apple-touch-icon.png'
 ];
 
-// Letter audio listed in audio/manifest.js (made by tools/generate_audio.py or record.html).
+// Letter audio listed in assets/audio/manifest.js (made by tools/generate_audio.py or record.html).
 function audioFiles(){
   try {
     self.window = self;               // manifest.js writes window.LT_AUDIO
-    importScripts('audio/manifest.js');
-    return Object.values(self.LT_AUDIO || {}).map(f => 'audio/' + f);
+    importScripts('assets/audio/manifest.js');
+    return Object.values(self.LT_AUDIO || {}).map(f => 'assets/audio/' + f);
   } catch (e) { return []; }
 }
 

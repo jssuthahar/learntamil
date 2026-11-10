@@ -1,0 +1,16 @@
+{
+  "name": "learntamil",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Learn Tamil — free Tamil alphabet, reading and games for children (static PWA, no build step for the browser).",
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node tools/build-pages.mjs",
+    "printables": "node tools/build-printables.mjs && node tools/build-pages.mjs",
+    "serve": "python3 -m http.server 8080",
+    "test": "node tools/smoke-test.mjs",
+    "check": "npm run build && npm test"
+  }
+}

@@ -2,7 +2,7 @@
 """
 Generate a natural-sounding audio file for each of the 247 Tamil letters with
 Azure AI Speech (neural voice ta-IN-PallaviNeural by default), and write
-audio/manifest.js so the site plays them instead of the device voice.
+assets/audio/manifest.js so the site plays them instead of the device voice.
 
 Usage
   export AZURE_SPEECH_KEY=<your key>
@@ -25,7 +25,7 @@ CONS   = ['க','ங','ச','ஞ','ட','ண','த','ந','ப','ம','ய','ர
 PROBLEM_VOWEL_IDX = {4, 5, 9, 10}          # உ ஊ ஒ ஓ
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-AUDIO = os.path.join(ROOT, 'audio')
+AUDIO = os.path.join(ROOT, 'assets', 'audio')
 MANIFEST = os.path.join(AUDIO, 'manifest.js')
 
 def key_of(letter):

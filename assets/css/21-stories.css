@@ -1,0 +1,39 @@
+/* Learn Tamil — Story reader.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* Stories */
+.shelf{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.book{border:1px solid var(--glass-line);text-align:left;cursor:pointer;padding:18px;display:flex;flex-direction:column;gap:4px}
+.book:hover{transform:translateY(-2px)}
+.book .cover{font-size:44px;line-height:1.1}
+.book .bt{font-family:var(--font-ta);font-size:21px;font-weight:700;margin-top:6px}
+.book .be{color:var(--text-muted);font-size:14px}
+.badge{align-self:flex-start;margin-top:8px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-deep)}
+.rtop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.rtitle{flex:1;text-align:center;font-family:var(--font-ta);font-weight:700;font-size:20px}
+.pageno{color:var(--text-muted);font-weight:700;min-width:52px;text-align:right}
+.btn{border:1px solid var(--border);background:var(--glass);border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.page{padding:22px 18px 24px;text-align:center;min-height:300px;display:flex;flex-direction:column;justify-content:center}
+.page.turn{animation:turn .35s ease}
+@keyframes turn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.pic{font-size:clamp(64px,14vw,104px);line-height:1.2;margin-bottom:10px}
+.ptext{font-family:var(--font-ta);font-size:clamp(22px,4.2vw,32px);line-height:1.9;font-weight:600}
+.pen{margin-top:10px;color:var(--text-muted);font-size:16px;font-style:italic}
+.pen[hidden]{display:none}
+.w{cursor:pointer;border-radius:8px;padding:0 3px;transition:background .15s}
+.w:hover{background:var(--accent-soft)}
+.sent.reading{background:var(--bg-subtle);border-radius:10px}
+.w.now{background:var(--accent);color:var(--on-accent)}
+.breakdown{min-height:76px;margin:14px 0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--glass-line);background:var(--glass);box-shadow:var(--glass-shadow);border-radius:12px;font-family:var(--font-ta);font-weight:700;font-size:26px;padding:4px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.3}
+.chip small{font-size:11px;color:var(--text-muted);font-weight:600}
+.plus{font-size:22px;color:var(--text-muted);font-weight:700}
+.rbar{display:flex;gap:10px;justify-content:center}
+.rbar .primary{flex:1;max-width:320px}
+.ropts{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--text-muted)}
+.ropts label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.ropts input{accent-color:var(--accent)}
+.theend{text-align:center;margin-top:18px}
+.theend[hidden]{display:none}
+.theend .t{font-family:var(--font-ta);font-size:26px;font-weight:800;margin-bottom:10px}

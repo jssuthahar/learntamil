@@ -1,0 +1,101 @@
+/* Learn Tamil — Premium layer: refined surfaces, depth and motion — refines everything above.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* =====================================================================
+   PREMIUM LAYER — refined surfaces, depth, typography and motion.
+   Placed last so it refines everything above without changing markup.
+   ===================================================================== */
+:root{
+  --surface:#ffffff; --surface-2:#f7f9fc; --hairline:rgb(15 23 42 / .08);
+  --sh-1:0 1px 2px rgb(16 24 40 / .05),0 1px 3px rgb(16 24 40 / .07);
+  --sh-2:0 2px 4px -2px rgb(16 24 40 / .06),0 12px 28px -10px rgb(16 24 40 / .16);
+  --sh-3:0 4px 8px -4px rgb(16 24 40 / .08),0 28px 56px -18px rgb(23 60 140 / .28);
+  --edge:linear-gradient(135deg,rgb(23 105 209 / .45),rgb(124 58 237 / .32) 45%,rgb(255 138 61 / .35));
+  --brand:linear-gradient(135deg,#1769d1 0%,#5b4cf0 55%,#8b3dff 100%);
+  --r-lg:24px; --r-md:18px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --surface:#111c30; --surface-2:#16233b; --hairline:rgb(148 180 220 / .12);
+  --sh-1:0 1px 2px rgb(0 0 0 / .3); --sh-2:0 14px 30px -12px rgb(0 0 0 / .55); --sh-3:0 30px 60px -20px rgb(0 0 0 / .7);
+  --edge:linear-gradient(135deg,rgb(99 177 238 / .5),rgb(167 139 250 / .35) 45%,rgb(251 146 60 / .35));}}
+:root[data-theme="dark"]{
+  --surface:#111c30; --surface-2:#16233b; --hairline:rgb(148 180 220 / .12);
+  --sh-1:0 1px 2px rgb(0 0 0 / .3); --sh-2:0 14px 30px -12px rgb(0 0 0 / .55); --sh-3:0 30px 60px -20px rgb(0 0 0 / .7);
+  --edge:linear-gradient(135deg,rgb(99 177 238 / .5),rgb(167 139 250 / .35) 45%,rgb(251 146 60 / .35));}
+
+::selection{background:rgb(91 76 240 / .22)}
+body{font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* faint dot texture over the page wash */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgb(23 60 140 / .07) 1px,transparent 1.2px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 70%);mask-image:linear-gradient(180deg,#000,transparent 70%)}
+
+/* surfaces with a soft gradient edge */
+.glass,.player,.builder,.quiz,.readcard,.game,.tablewrap,.cert-quiz,.cert-result,.doc-hero,.support-card,.faq-item,.story,.book,.gcard:not([aria-pressed="true"]),.cert-level,.guide-card,.lcard,.wcard,.sb-item:not(:first-child){
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--edge) border-box;
+  border:1px solid transparent;box-shadow:var(--sh-2);backdrop-filter:none;-webkit-backdrop-filter:none}
+.lcard{background:linear-gradient(color-mix(in srgb,var(--fam) 6%,var(--surface)),color-mix(in srgb,var(--fam) 6%,var(--surface))) padding-box,var(--edge) border-box}
+.player,.readcard,.cert-quiz,.cert-result,.doc-hero{box-shadow:var(--sh-3)}
+.doc-hero{background:radial-gradient(260px 220px at 100% 0%,rgb(255 205 86 / .28),transparent 70%) padding-box,radial-gradient(260px 220px at 0% 0%,rgb(23 105 209 / .12),transparent 70%) padding-box,linear-gradient(var(--surface),var(--surface)) padding-box,var(--edge) border-box}
+
+/* header */
+.site-header{background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--hairline);box-shadow:0 1px 0 rgb(255 255 255 / .4) inset}
+.site-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgb(91 76 240 / .35),rgb(255 138 61 / .3),transparent)}
+.site-header .wrap{height:66px}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:var(--brand);box-shadow:0 6px 16px -6px rgb(91 76 240 / .7),inset 0 1px 0 rgb(255 255 255 / .35);font-size:20px}
+.brand-name{letter-spacing:.06em}
+.mainnav{gap:2px;padding:4px;border-radius:16px;background:var(--surface-2);border:1px solid var(--hairline)}
+.nav-item{border-radius:12px;padding:6px 12px}
+.nav-item.on{background:var(--brand);color:#fff;box-shadow:0 8px 18px -8px rgb(91 76 240 / .75),inset 0 1px 0 rgb(255 255 255 / .25)}
+.icon-btn,button.stars{background:var(--surface);border:1px solid var(--hairline);box-shadow:var(--sh-1)}
+
+/* hero */
+.hero{padding:52px 0 26px}
+.hero h1{font-size:clamp(38px,6.6vw,66px);letter-spacing:-.01em;filter:drop-shadow(0 6px 18px rgb(91 76 240 / .18))}
+.eyebrow{background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--edge) border-box;border:1px solid transparent;box-shadow:var(--sh-1);color:var(--accent-deep);padding:6px 14px}
+.eyebrow::before{content:"✦";color:#ff8a3d}
+.hero p.lead{font-size:clamp(16px,2.1vw,19px);line-height:1.65}
+.stat{position:relative;overflow:hidden;border-radius:20px;padding:16px 10px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--fam-bar,var(--brand))}
+.stat:nth-child(1){--fam-bar:var(--c-uyir)} .stat:nth-child(2){--fam-bar:var(--c-mei)} .stat:nth-child(3){--fam-bar:var(--c-ay)} .stat:nth-child(4){--fam-bar:var(--c-um)}
+.stat.total{background:linear-gradient(135deg,#ff8a3d,#ff5e7e 50%,#7c5cff);box-shadow:0 18px 36px -14px rgb(255 94 126 / .65)}
+.stat.total::before{display:none}
+.stat.total::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgb(255 255 255 / .35) 45%,transparent 60%);transform:translateX(-120%);animation:sheen 4.5s ease-in-out infinite}
+@keyframes sheen{0%,60%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+.mascot .bubble{background:var(--surface);box-shadow:var(--sh-2)}
+
+/* sub tabs, segmented controls */
+.tabs .tablist,.seg{background:var(--surface);border:1px solid var(--hairline);box-shadow:var(--sh-2)}
+.tab[aria-selected="true"],.seg-btn[aria-pressed="true"]{background:var(--brand);color:#fff;box-shadow:0 8px 18px -8px rgb(91 76 240 / .7)}
+
+/* buttons */
+.btn{border:1px solid var(--hairline);background:var(--surface);box-shadow:var(--sh-1);border-radius:14px;font-weight:700;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover:not(:disabled){box-shadow:var(--sh-2)}
+.btn.primary,.play-btn,.gcard[aria-pressed="true"]{background:var(--brand);border-color:transparent;color:#fff;box-shadow:0 10px 22px -10px rgb(91 76 240 / .8),inset 0 1px 0 rgb(255 255 255 / .28)}
+.btn.primary:hover:not(:disabled){filter:brightness(1.06)}
+.play-btn{width:60px;height:60px}
+
+/* tiles */
+.tile{background:linear-gradient(180deg,color-mix(in srgb,var(--fam) 4%,var(--surface)),color-mix(in srgb,var(--fam) 10%,var(--surface)));border:1px solid color-mix(in srgb,var(--fam) 18%,var(--hairline));
+  box-shadow:0 4px 0 color-mix(in srgb,var(--fam) 26%,transparent),var(--sh-1)}
+.tile:hover{box-shadow:0 6px 0 color-mix(in srgb,var(--fam) 30%,transparent),var(--sh-2)}
+
+/* section headings */
+.sec-head h2{font-family:var(--font-kid);font-size:clamp(24px,3.6vw,32px);letter-spacing:-.01em}
+.sec-head h2::after{content:"";display:block;width:56px;height:5px;border-radius:5px;margin-top:6px;background:var(--brand)}
+
+/* panel change */
+.panel.on{animation:panelIn .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* disclaimer */
+.disclaimer{background:linear-gradient(color-mix(in srgb,#ffd166 12%,var(--surface)),color-mix(in srgb,#ffd166 12%,var(--surface))) padding-box,linear-gradient(135deg,#ffd166,#ff8a3d) border-box;border:1px solid transparent;box-shadow:var(--sh-1)}
+
+/* premium dark footer */
+footer{background:linear-gradient(180deg,#0b1424,#0a1020);color:#c3cede;border-top:0;margin-top:30px;padding:34px 0 40px;position:relative}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#1769d1,#7c3aed,#ff5e7e,#ff8a3d)}
+footer b{color:#fff}
+footer .muted,footer .foot-disc,footer .foot-guides{color:#93a3bb}
+footer a,footer .foot-links a,.foot-guides a,.foot-disc a{color:#c9dcff}
+footer .foot-disc{border-top-color:rgb(255 255 255 / .1)}
+.foot-links .coffee-link{color:#0b1020!important}
+body:not(.doc-page) footer{padding-bottom:calc(40px + env(safe-area-inset-bottom))}

@@ -1,0 +1,24 @@
+/* Learn Tamil — Navigation (header pills / phone bottom bar) and segmented controls.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* =====================================================================
+   NAVIGATION — header pills on desktop, app-style bottom bar on phones
+   ===================================================================== */
+.mainnav{display:flex;gap:4px;margin-left:18px}
+.nav-item{border:0;background:transparent;border-radius:12px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text-muted);transition:background .15s,color .15s}
+.nav-item:hover{background:var(--accent-soft);color:var(--text)}
+.nav-ic{font-size:20px;line-height:1;transition:transform .2s}
+.nav-t{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.nav-t .ta{font-weight:700;font-size:14px}
+.nav-t small{font-size:11px;font-weight:600;opacity:.8}
+.nav-item.on{background:var(--accent);color:var(--on-accent)}
+.nav-item.on .nav-ic{transform:scale(1.12)}
+.tabs .tablist{display:inline-flex}
+
+/* =====================================================================
+   SEGMENTED CONTROL, small buttons
+   ===================================================================== */
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);margin-bottom:14px;max-width:100%;overflow-x:auto}
+.seg-btn{border:0;background:transparent;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;white-space:nowrap;color:var(--text-muted);font-size:14px}
+.seg-btn[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn.big{padding:14px 28px;font-size:18px}

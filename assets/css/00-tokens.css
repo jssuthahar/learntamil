@@ -1,0 +1,61 @@
+/* Learn Tamil — Design tokens: colours, fonts, surfaces (light and dark).
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* ---------- MSDEVBUILD design tokens (light) ---------- */
+:root{
+  --bg:#ffffff; --bg-subtle:#f3f8fd; --border:#d5dfea;
+  --text:#0b1020; --text-muted:#4a5163;
+  --accent:#0078d4; --accent-deep:#005a9e; --accent-soft:#deecf9;
+  --on-accent:#ffffff;
+  --page-wash:
+    radial-gradient(34vmax 34vmax at 0% 0%, rgb(0 120 212 / .18), transparent 70%),
+    radial-gradient(30vmax 30vmax at 100% 8%, rgb(255 205 86 / .35), transparent 70%),
+    radial-gradient(34vmax 34vmax at 96% 100%, rgb(255 138 101 / .16), transparent 70%),
+    radial-gradient(30vmax 30vmax at 10% 95%, rgb(76 194 176 / .18), transparent 70%),
+    linear-gradient(160deg, #eaf5ff, #fffaf0 55%, #fff3e3);
+  --glass:rgb(255 255 255 / .74); --glass-line:rgb(255 255 255 / .95);
+  --glass-shadow:0 10px 32px -6px rgb(0 90 158 / .14), 0 1px 2px rgb(0 90 158 / .06);
+  --header:rgb(255 255 255 / .78);
+  --grad-text:linear-gradient(100deg,#1769d1,#7c3aed 55%,#e0480c);
+  /* letter-family hues, all sit beside Azure */
+  --c-uyir:#1769d1; --c-mei:#0b8a6c; --c-ay:#7c3aed; --c-um:#e0480c;
+  --ok:#107c10; --bad:#c50f1f;
+  --font-ui:'Segoe UI Variable Text','Segoe UI','Inter',system-ui,-apple-system,sans-serif;
+  --font-ta:'Noto Sans Tamil','Latha','Tamil Sangam MN',sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1424; --bg-subtle:#122036; --border:#263a55;
+    --text:#eef4fb; --text-muted:#a9b7c9;
+    --accent:#63b1ee; --accent-deep:#8fcbf7; --accent-soft:#12375a; --on-accent:#06121f;
+    --page-wash:
+      radial-gradient(34vmax 34vmax at 0% 0%, rgb(0 120 212 / .24), transparent 70%),
+      radial-gradient(30vmax 30vmax at 100% 12%, rgb(0 90 158 / .20), transparent 70%),
+      radial-gradient(34vmax 34vmax at 96% 100%, rgb(0 120 212 / .16), transparent 70%),
+      linear-gradient(135deg, #0b1424, #0d1a2e 55%, #10233d);
+    --glass:rgb(20 36 60 / .66); --glass-line:rgb(120 170 220 / .18);
+    --glass-shadow:0 10px 32px -6px rgb(0 0 0 / .45);
+    --header:rgb(11 20 36 / .78);
+    --grad-text:linear-gradient(100deg,#8fcbf7,#63b1ee);
+    --c-uyir:#63b1ee; --c-mei:#4cc2b0; --c-ay:#b39ddb; --c-um:#f59e6b;
+    --ok:#6ccb5f; --bad:#ff8a8a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1424; --bg-subtle:#122036; --border:#263a55;
+  --text:#eef4fb; --text-muted:#a9b7c9;
+  --accent:#63b1ee; --accent-deep:#8fcbf7; --accent-soft:#12375a; --on-accent:#06121f;
+  --page-wash:
+    radial-gradient(34vmax 34vmax at 0% 0%, rgb(0 120 212 / .24), transparent 70%),
+    radial-gradient(30vmax 30vmax at 100% 12%, rgb(0 90 158 / .20), transparent 70%),
+    radial-gradient(34vmax 34vmax at 96% 100%, rgb(0 120 212 / .16), transparent 70%),
+    linear-gradient(135deg, #0b1424, #0d1a2e 55%, #10233d);
+  --glass:rgb(20 36 60 / .66); --glass-line:rgb(120 170 220 / .18);
+  --glass-shadow:0 10px 32px -6px rgb(0 0 0 / .45);
+  --header:rgb(11 20 36 / .78);
+  --grad-text:linear-gradient(100deg,#8fcbf7,#63b1ee);
+  --c-uyir:#63b1ee; --c-mei:#4cc2b0; --c-ay:#b39ddb; --c-um:#f59e6b;
+  --ok:#6ccb5f; --bad:#ff8a8a;
+  color-scheme:dark;
+}

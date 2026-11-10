@@ -11,7 +11,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import vm from 'node:vm';
+import { loadData } from './lib/load-data.mjs';
 import { execFileSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -20,9 +20,7 @@ const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'lt-print-'));
 const OUT = path.join(ROOT, 'printables'), THUMBS = path.join(ROOT, 'assets/printables');
 fs.mkdirSync(OUT, { recursive: true }); fs.mkdirSync(THUMBS, { recursive: true });
 
-const ctx = {}; vm.createContext(ctx);
-vm.runInContext(fs.readFileSync(path.join(ROOT, 'js/data.js'), 'utf8') + ';this.D={PULLI,VOWELS,CONS,GROUPS,TOPICS};', ctx);
-const { PULLI, VOWELS, CONS, GROUPS, TOPICS } = ctx.D;
+const { PULLI, VOWELS, CONS, GROUPS, TOPICS } = loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'TOPICS']);
 
 const BASE_CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@500;600;700;800&display=block');

@@ -14,24 +14,41 @@ A free, mobile-friendly website for children and beginners to learn the 247 Tami
 ## Project layout
 
 ```text
-index.html          page markup
-record.html         letter recorder (make real audio for each letter)
-css/styles.css      site styles (light/dark, phone layout)
-css/record.css      recorder styles
-js/profiles.js      child profiles: per-child localStorage keys (loaded first)
-js/data.js          letters, words, stories, topics, rhymes, festivals (all Tamil text lives here)
-js/app.js           letters, stories, speech, navigation
-js/games.js         reading practice and games
-js/trace.js         ✍️ trace a letter and 🎨 colouring
-js/voice.js         🎤 say it back (record and compare)
-js/rhymes.js        🎵 rhymes, 🌺 Aathichoodi, 🪔 festivals
-js/little.js        👶 little ones mode
-js/family.js        📒 stickers, 👪 parent corner, ⏰ break reminder, profile switcher
-js/record.js        recorder logic
-audio/manifest.js   list of recorded letter sounds (created by record.html)
+index.html, *.html     public pages (URLs never change; guide pages are generated)
+sw.js                  service worker (offline). PRECACHE and VERSION are generated
+manifest.webmanifest   PWA manifest
+assets/
+  css/                 styles, numbered in cascade order (00-tokens … 90-kids)
+  js/
+    core/              shared building blocks: profiles (storage), dom, letter-model, speech, sound, analytics
+    data/              all Tamil content: alphabet, words + topics, stories, rhymes, festivals, faq (generated)
+    features/          one folder per area: letters, reading, stories, games, rewards, certificate,
+                       voice, little, family, recorder
+    services/          pwa, firebase (analytics + reminders), support card, Ask Kili chat
+    app.js             app shell: router (loads last)
+  audio/               recorded letter sounds + manifest.js
+  *.png, printables/, screenshots/   images (public URLs — keep in place)
+printables/            free PDF charts and worksheets
+tools/
+  lib/assets.mjs       THE list of stylesheets and scripts, in load order
+  lib/load-data.mjs    loads assets/js/data/ for the build tools
+  build-pages.mjs      generates guide pages, sitemap, llms.txt, FAQ data, index.html parts, sw.js lists
+  build-printables.mjs builds the printable PDFs with headless Chrome
+  smoke-test.mjs       opens the app in headless Chrome and checks every section and game
+  generate_audio.py    letter sounds with Azure AI Speech
+docs/ARCHITECTURE.md   how the pieces fit together and the rules for changing them
 ```
 
-No build step and no server code — plain HTML, CSS and JavaScript.
+No bundler and no server code: the browser runs the files as they are. Node 22+ is only needed for the tools:
+
+```bash
+npm run build      # regenerate pages, script/style tags and the service worker lists
+npm test           # smoke test in headless Chrome
+npm run check      # both — run before every push
+npm run serve      # http://localhost:8080
+```
+
+Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) before adding a script or stylesheet.
 
 ## Letter sounds
 
@@ -45,13 +62,13 @@ export AZURE_SPEECH_REGION=<region>    # e.g. centralindia
 python3 tools/generate_audio.py        # or: --only vowels / --only problem
 ```
 
-This writes `audio/*.mp3` and `audio/manifest.js` using the neural voice `ta-IN-PallaviNeural` (try `--voice ta-IN-ValluvarNeural` for a male voice). It never replaces your own recordings unless you pass `--force`. Listen to every letter before publishing.
+This writes `assets/audio/*.mp3` and `assets/audio/manifest.js` using the neural voice `ta-IN-PallaviNeural` (try `--voice ta-IN-ValluvarNeural` for a male voice). It never replaces your own recordings unless you pass `--force`. Listen to every letter before publishing.
 
 ### B. Record them yourself
 
 1. Open `record.html`, record the letters (start with **Problem letters**).
-2. Press **Download audio.zip** and unzip it into the `audio/` folder.
-3. Commit the `audio/` folder. The site plays your recordings automatically and falls back to the device voice for any letter not recorded.
+2. Press **Download audio.zip** and unzip it into the `assets/audio/` folder.
+3. Commit the `assets/audio/` folder. The site plays your recordings automatically and falls back to the device voice for any letter not recorded.
 
 ## Hosting on GitHub Pages
 
@@ -61,10 +78,10 @@ This writes `audio/*.mp3` and `audio/manifest.js` using the neural voice `ta-IN-
 
 ## Static pages, SEO and AEO
 
-`tamil-alphabet.html`, `privacy.html`, `terms.html`, `404.html`, `sitemap.xml` and the FAQ/footer inside `index.html` are generated from `js/data.js` so every letter is readable without JavaScript (for search engines and AI answer engines). After editing `js/data.js` or `tools/build-pages.mjs`, run:
+`tamil-alphabet.html`, `privacy.html`, `terms.html`, `404.html`, `sitemap.xml` and the FAQ/footer inside `index.html` are generated from `assets/js/data/` so every letter is readable without JavaScript (for search engines and AI answer engines). After editing `js/data.js` or `tools/build-pages.mjs`, run:
 
 ```bash
-node tools/build-pages.mjs
+npm run build
 ```
 
 The site address is set once in `tools/build-pages.mjs` (`SITE`). If you move to a custom domain, change it there, in `index.html` (canonical, Open Graph, JSON-LD), `robots.txt` and `llms.txt`, then rebuild.
@@ -79,32 +96,32 @@ After publishing:
 
 - **Games** give an appreciation chime, a celebration pop-up with spoken praise (அருமை!, நன்று! …), points (+10, +5 bonus for 3 in a row) and a scoreboard with streak and best score. Sounds are generated in the browser (Web Audio) and can be muted with 🔊.
 - **Tokens 🪙 and 24 badges 🏅** are saved on the device (`localStorage`); tap 🪙 in the header to see *My rewards*.
-- **Certificates 🎓**: ten level tests (vowels → consonants → uyirmei → reading words → alphabet master → numbers, colours and days → family, body and food → spelling → reading sentences → Tamil champion). Levels 1–9 have 10 questions (pass with 8); the Champion level has 15 (pass with 12). Questions are generated from `js/data.js`, so answers are always correct, and the questions already asked are remembered on the device (`lt-cert-seen`) so a retake gets different questions. The certificate has no signature; it shows the date and a certificate ID. It is drawn on a canvas (so Tamil renders correctly) and saved as a PDF by a small built-in writer in `js/cert.js`, with no external library, so it works offline. Certificates are for encouragement and are not an official qualification.
+- **Certificates 🎓**: ten level tests (vowels → consonants → uyirmei → reading words → alphabet master → numbers, colours and days → family, body and food → spelling → reading sentences → Tamil champion). Levels 1–9 have 10 questions (pass with 8); the Champion level has 15 (pass with 12). Questions are generated from `js/data.js`, so answers are always correct, and the questions already asked are remembered on the device (`lt-cert-seen`) so a retake gets different questions. The certificate has no signature; it shows the date and a certificate ID. It is drawn on a canvas (so Tamil renders correctly) and saved as a PDF by a small built-in writer in `assets/js/features/certificate/certificate.js`, with no external library, so it works offline. Certificates are for encouragement and are not an official qualification.
 
 ## Motivation features
 
 - **Today card** on the home screen: greets the child by name, shows Kili's level, the daily goal ring (learn 10 things), the day streak 🔥 and a **Letter of the day**.
 - **Kili grows** with every token: 🥚 முட்டை → 🐣 குஞ்சு → 🐥 சிறு பறவை → 🦜 கிளி → 🌟 நட்சத்திரக் கிளி → 👑 அரசக் கிளி, with a level-up celebration.
-- **Word topics** in Reading: numbers 1–10, colours, days, body, family, fruits & food (data in `js/data.js` → `TOPICS`).
+- **Word topics** in Reading: numbers 1–10, colours, days, body, family, fruits & food (data in `assets/js/data/words.js` → `TOPICS`).
 
 ## Kids features
 
-- **✍️ Trace** (Games → Trace, or ✍️ under the big letter): the letter is drawn faintly on a board and the child traces it with a finger, mouse or pen. It counts when about 75% of the letter is covered, most of the ink stays on the letter and the child hasn't simply scribbled over it. There is no stroke-order data, so it checks the shape, not the order of strokes. Code: `js/trace.js`.
-- **🎤 Say it back** (under the big letter and in Reading): hear the right sound, record yourself (up to 4 seconds) and play both to compare. The recording is kept only in memory and thrown away when the window closes; there is no speech recognition and nothing is uploaded. Code: `js/voice.js`.
-- **🎵 Rhymes and 🌺 Aathichoodi** (Stories → Rhymes): நிலா நிலா ஓடி வா (traditional), Bharathiyar's ஓடி விளையாடு பாப்பா and Avvaiyar's ஆத்திசூடி (one line for each vowel and ஃ), all public domain. Each word lights up as it is sung. An Aathichoodi *line of the day* is on the Today card. Data: `RHYMES` and `AATHICHOODI` in `js/data.js`.
-- **🪔 Festivals** (Stories → Festivals): Pongal, Tamil New Year, Deepavali and Karthigai Deepam, each with a short read-aloud story and its words (`FESTIVALS` in `js/data.js`).
+- **✍️ Trace** (Games → Trace, or ✍️ under the big letter): the letter is drawn faintly on a board and the child traces it with a finger, mouse or pen. It counts when about 75% of the letter is covered, most of the ink stays on the letter and the child hasn't simply scribbled over it. There is no stroke-order data, so it checks the shape, not the order of strokes. Code: `assets/js/features/games/trace.js`.
+- **🎤 Say it back** (under the big letter and in Reading): hear the right sound, record yourself (up to 4 seconds) and play both to compare. The recording is kept only in memory and thrown away when the window closes; there is no speech recognition and nothing is uploaded. Code: `assets/js/features/voice/say-back.js`.
+- **🎵 Rhymes and 🌺 Aathichoodi** (Stories → Rhymes): நிலா நிலா ஓடி வா (traditional), Bharathiyar's ஓடி விளையாடு பாப்பா and Avvaiyar's ஆத்திசூடி (one line for each vowel and ஃ), all public domain. Each word lights up as it is sung. An Aathichoodi *line of the day* is on the Today card. Data: `assets/js/data/rhymes.js`.
+- **🪔 Festivals** (Stories → Festivals): Pongal, Tamil New Year, Deepavali and Karthigai Deepam, each with a short read-aloud story and its words (`FESTIVALS` in `assets/js/data/festivals.js`).
 - **🎨 Colouring** (Games → Colouring): six line pictures; picking a colour says its Tamil name; colouring the whole picture says the picture's word.
-- **👶 Little ones** (`#/little`, ages 3–5): pictures only, big buttons, sounds play by themselves and there's no wrong-answer buzzer. *Look & listen* and *Find it* modes. Code: `js/little.js`.
+- **👶 Little ones** (`#/little`, ages 3–5): pictures only, big buttons, sounds play by themselves and there's no wrong-answer buzzer. *Look & listen* and *Find it* modes. Code: `assets/js/features/little/little.js`.
 - **More word topics**: animals, birds, vehicles, shapes, opposites and the 12 Tamil months. They appear in Reading → Topics, the Topics and Picture words games, spelling, and the sticker book.
-- **👧👦 Child profiles**: up to 6 children per device. The first child keeps the original `localStorage` keys, so existing progress is kept, and other children's keys end in `@<id>` (`js/profiles.js`). Switch child with the animal button on the Today card.
+- **👧👦 Child profiles**: up to 6 children per device. The first child keeps the original `localStorage` keys, so existing progress is kept, and other children's keys end in `@<id>` (`assets/js/core/profiles.js`). Switch child with the animal button on the Today card.
 - **📒 Sticker book**: one new picture sticker for every 10 tokens earned.
-- **👪 Parent corner** (press and hold for 3 seconds): minutes per day for the last 7 days, letters heard and traced, stories, rhymes, certificates, the letters missed most often in the Listen and Build games, child management and an optional **⏰ break reminder** (every 15–45 minutes, with a one-minute pause screen). Code: `js/family.js`.
+- **👪 Parent corner** (press and hold for 3 seconds): minutes per day for the last 7 days, letters heard and traced, stories, rhymes, certificates, the letters missed most often in the Listen and Build games, child management and an optional **⏰ break reminder** (every 15–45 minutes, with a one-minute pause screen). Code: `assets/js/features/family/`.
 
 New Tamil text (topics, rhymes, Aathichoodi meanings, festival stories) should be checked by a Tamil teacher before publishing.
 
 ## Printable PDFs
 
-`node tools/build-printables.mjs` creates the free charts and tracing worksheets in `printables/` (and previews in `assets/printables/`) using headless Chrome, so Tamil text prints correctly. Run it after changing letters or topics, then run `node tools/build-pages.mjs`.
+`npm run printables` creates the free charts and tracing worksheets in `printables/` (and previews in `assets/printables/`) using headless Chrome, so Tamil text prints correctly. Run it after changing letters or topics, then run `node tools/build-pages.mjs`.
 
 ## Install as an app (PWA) and offline use
 
@@ -115,7 +132,7 @@ Learn Tamil is a Progressive Web App:
 - **Offline:** after the first visit, letters, reading, stories, games, the alphabet chart and all letter audio work without internet. (Spoken sound for letters without audio files depends on the device's voice; offline voices work, online voices need internet.)
 - **Updates:** when a new version is published, users see *“A new version is ready · Refresh”*.
 
-`sw.js` is the service worker. **Always run `node tools/build-pages.mjs` before publishing** — it stamps a new version into `sw.js` so installed apps pick up your changes. If you add a new page, script or stylesheet, add it to `PRECACHE` in `sw.js`.
+`sw.js` is the service worker. **Always run `npm run check` before publishing** — it stamps a new version into `sw.js` so installed apps pick up your changes. To add a script or stylesheet, list it in `tools/lib/assets.mjs`; the build writes it into every page and into `PRECACHE`. A new guide page goes in `GUIDES` in `tools/build-pages.mjs`.
 
 ### Publishing to app stores (optional)
 
@@ -131,4 +148,4 @@ Found a wrong sound, a Tamil mistake or a bug, or have an idea? Please open an i
 
 ## Editing content
 
-All Tamil text is in `js/data.js`. Please have changes reviewed by a Tamil teacher before publishing — this site is used by children.
+All Tamil text is in `assets/js/data/`. Please have changes reviewed by a Tamil teacher before publishing — this site is used by children.

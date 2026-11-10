@@ -1,0 +1,90 @@
+/* Learn Tamil — Phones and small tablets.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* =====================================================================
+   PHONES & SMALL TABLETS
+   ===================================================================== */
+@media (max-width:760px){
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .site-header .wrap{height:56px}
+  .brand-name small{display:none}
+  .mainnav{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:40;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:var(--header);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border)}
+  .nav-item{flex-direction:column;gap:2px;padding:6px 2px;border-radius:12px;min-height:56px;justify-content:center}
+  .nav-t{text-align:center}
+  .nav-t .ta{font-size:12px}
+  .nav-t small{display:none}
+  .nav-item.on{background:var(--accent-soft);color:var(--accent-deep)}
+  .nav-ic{font-size:22px}
+
+  .hero{padding:18px 0 6px}
+  .hero h1{font-size:32px;margin:10px 0 4px}
+  .hero p.lead{font-size:15px;margin-bottom:12px}
+  .hero-grid{gap:8px}
+  .mascot .bird{font-size:52px}
+  .bubble{font-size:14px;padding:6px 12px}
+  .stats{grid-template-columns:repeat(5,1fr);gap:6px}
+  .stat{padding:8px 2px;border-radius:14px}
+  .stat b{font-size:19px}
+  .stat span{font-size:10.5px;line-height:1.2;display:block}
+  .stat.total{grid-column:auto}
+  .stat em{display:none}
+  .floaters span{opacity:.08}
+
+  .tabs{top:56px;padding:8px 0}
+  .tabs .tablist{display:grid;grid-template-columns:repeat(4,1fr);width:100%}
+  .tab{padding:8px 2px;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:0}
+  .tab .ic{margin:0;font-size:18px}
+  .tab .n{display:none}
+
+  .player{gap:12px;padding:10px 12px;margin-bottom:12px}
+  .player .big{font-size:52px}
+  .player .roman{font-size:19px}
+  .player .kind,.player .hint{font-size:13px}
+  .player .ex{font-size:13px;padding:3px 10px 3px 6px}
+
+  .sec-head h2{font-size:21px}
+  .sec-head p{font-size:14px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+  .tile .l{font-size:32px}
+  .group{font-size:16px;margin:16px 0 8px}
+  .builder{padding:12px}
+  .pick{min-width:40px;height:40px;font-size:18px}
+  .equation{font-size:34px;gap:8px}
+  .tablewrap{padding:8px}
+
+  .ptext{font-size:22px}
+  .page{min-height:240px;padding:16px 12px}
+  .chip{font-size:22px;padding:3px 9px}
+
+  .gamepick{grid-template-columns:repeat(3,1fr);gap:8px}
+  .gcard{padding:10px 4px}
+  .gcard .gi{font-size:26px}
+  .gcard small{display:none}
+  .game{padding:16px 10px}
+  .bal-sky{height:58vh;min-height:340px}
+  .balloon{width:64px;height:78px;font-size:24px}
+  .mem-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .mfront.is-l{font-size:36px}
+  .slot{min-width:54px;height:62px;font-size:30px}
+  .wtile{min-width:56px;height:60px;font-size:30px}
+  .opts.pics{gap:8px}
+  .picopt .pe{font-size:36px}
+  .readcard{padding:14px 12px 16px}
+  .read-actions .btn{flex:1;font-size:14px;padding:10px 8px}
+  footer .wrap{flex-direction:column;align-items:center;text-align:center}
+}
+@media (min-width:761px) and (max-width:1000px){
+  .nav-t small{display:none}
+  .gamepick{grid-template-columns:repeat(3,1fr)}
+}
+/* the header's blur would trap the fixed bottom bar inside it, so phones get a solid header */
+@media (max-width:760px){
+  .site-header{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}
+  .notice{font-size:13px;padding:10px 12px}
+}
+.notice{position:relative;padding-right:40px}
+.notice-x{position:absolute;top:6px;right:6px;width:30px;height:30px;border:0;border-radius:8px;background:transparent;cursor:pointer;font-size:16px;color:var(--text-muted)}
+.notice-x:hover{background:var(--accent-soft)}
+#readLevels{display:grid;grid-template-columns:repeat(3,1fr);width:min(100%,480px)}
+.seg-btn{display:flex;flex-direction:column;align-items:center;line-height:1.2;padding:8px 10px}
+.seg-btn small{font-weight:600;font-size:12px;opacity:.85}
+@media (max-width:760px){ .readcard .en{display:none} .read-actions .btn{font-size:15px} }

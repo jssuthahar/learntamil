@@ -1,0 +1,24 @@
+/* Learn Tamil — Practice games (base) and footer.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* Practice */
+.modes{display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.quiz{padding:22px 16px;text-align:center;max-width:720px;margin:0 auto}
+.quiz .ask{font-family:var(--font-ta);font-size:20px;font-weight:700}
+.quiz .ask small{display:block;font-family:var(--font-ui);font-weight:500;color:var(--text-muted);font-size:14px}
+.quiz .q{font-family:var(--font-ta);font-size:clamp(34px,7vw,52px);font-weight:800;margin:14px 0}
+.quiz .q .m{color:var(--c-mei)} .quiz .q .u{color:var(--c-uyir)} .quiz .q .op{color:var(--text-muted);font-weight:600}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;max-width:600px;margin:16px auto}
+.opts .tile{padding:16px 6px 14px}
+.opts .tile .l{font-size:40px;white-space:nowrap}
+.tile.right{background:var(--ok);border-color:var(--ok)} .tile.right .l{color:#fff}
+.tile.wrong{animation:shake .35s;opacity:.5}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.scorebar{display:flex;justify-content:center;gap:18px;font-weight:700;margin-top:6px}
+.feedback{min-height:26px;font-family:var(--font-ta);font-weight:700;margin-top:6px}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+
+/* Footer */
+footer{border-top:1px solid var(--border);padding:24px 0 34px;color:var(--text-muted);font-size:14px}
+footer .wrap{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+footer a{color:var(--accent-deep);font-weight:600;text-decoration:none}
+footer .ta{font-weight:600}

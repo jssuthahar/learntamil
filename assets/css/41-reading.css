@@ -1,0 +1,23 @@
+/* Learn Tamil — Reading practice.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* =====================================================================
+   READING PRACTICE
+   ===================================================================== */
+.readcard{max-width:760px;margin:0 auto;padding:18px 18px 20px;text-align:center}
+.readcard.turn{animation:turn .35s ease}
+.read-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+.read-dots{flex:1;max-width:220px;height:8px;border-radius:8px;background:var(--bg-subtle);position:relative;overflow:hidden}
+.read-dots::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--p,0%);background:linear-gradient(90deg,var(--c-uyir),var(--c-ay));border-radius:8px;transition:width .3s}
+.read-word{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:22px 0 10px}
+.rl{border:0;background:transparent;font-family:var(--font-kid);font-weight:800;font-size:clamp(46px,11vw,76px);line-height:1.25;color:var(--text);padding:0 4px;border-radius:14px;cursor:pointer;border-bottom:4px solid var(--accent-soft)}
+.rl.lit{animation:litUp .8s ease}
+@keyframes litUp{0%{background:transparent}25%{background:var(--accent);color:var(--on-accent);transform:translateY(-6px) scale(1.06)}100%{background:transparent}}
+.read-pic{min-height:132px;display:grid;place-items:center;margin:6px 0 12px}
+.reveal{border:2px dashed var(--border);background:var(--bg-subtle);border-radius:18px;padding:22px 28px;font-weight:700;cursor:pointer;font-size:16px}
+.reveal:hover{border-color:var(--accent)}
+.read-ans{display:flex;flex-direction:column;align-items:center;gap:2px;animation:popIn .45s cubic-bezier(.3,1.6,.5,1)}
+.read-emoji{font-size:76px;line-height:1.1}
+.read-mean{color:var(--text-muted);font-weight:600}
+.read-actions,.read-nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.read-nav{margin-top:12px}
+.read-nav .primary{flex:1;max-width:300px}

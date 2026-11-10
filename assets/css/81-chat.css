@@ -1,0 +1,65 @@
+/* Learn Tamil — Ask Kili chat.
+   Order matters: files load in number order (see tools/lib/assets.mjs). */
+/* =====================================================================
+   ASK KILI CHAT
+   ===================================================================== */
+.kili-fab{position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;gap:8px;padding:10px 18px 10px 12px;border:0;border-radius:999px;cursor:pointer;
+  background:var(--brand);color:#fff;font-weight:800;font-size:15px;box-shadow:0 16px 32px -12px rgb(91 76 240 / .8),inset 0 1px 0 rgb(255 255 255 / .3);transition:transform .18s}
+.kili-fab:hover{transform:translateY(-3px)}
+.kf-bird{font-size:26px;line-height:1;display:inline-block;animation:bob 2.6s ease-in-out infinite}
+.kili-fab.on .kf-bird{animation:none}
+.kili-panel{position:fixed;right:22px;bottom:88px;z-index:75;width:min(400px,calc(100vw - 24px));height:min(600px,calc(100vh - 120px));display:flex;flex-direction:column;
+  border-radius:24px;overflow:hidden;background:var(--surface);box-shadow:var(--sh-3),0 0 0 1px var(--hairline);opacity:0;transform:translateY(14px) scale(.98);transform-origin:bottom right;transition:opacity .2s,transform .2s}
+.kili-panel.show{opacity:1;transform:none}
+.kp-head{display:flex;align-items:center;gap:10px;padding:14px 14px 12px;background:var(--brand);color:#fff}
+.kp-av{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:rgb(255 255 255 / .18)}
+.kp-title{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.kp-title b{font-family:var(--font-kid);font-size:17px}
+.kp-title small{font-size:12px;opacity:.9;display:flex;align-items:center;gap:6px}
+.kp-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgb(74 222 128 / .3)}
+.kp-x{border:0;background:rgb(255 255 255 / .18);color:#fff;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:15px}
+.kp-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface-2)}
+.kp-msg{display:flex;gap:8px;align-items:flex-end;animation:popIn .3s cubic-bezier(.3,1.5,.5,1)}
+.kp-msg.me{justify-content:flex-end}
+.kp-mav{font-size:22px;line-height:1;flex:none}
+.kp-b{max-width:85%;padding:10px 13px;border-radius:18px;font-size:14.5px;line-height:1.55;box-shadow:var(--sh-1)}
+.kp-msg.bot .kp-b{background:var(--surface);border-bottom-left-radius:6px;color:var(--text)}
+.kp-msg.me .kp-b{background:var(--brand);color:#fff;border-bottom-right-radius:6px}
+.kp-b p{margin:4px 0 0}
+.kp-q{display:block;font-size:13px;color:var(--accent-deep)}
+.kp-b a{color:var(--accent-deep);font-weight:700}
+.kp-more{display:inline-block;margin-top:8px;padding:5px 12px;border-radius:999px;background:var(--accent-soft);text-decoration:none}
+.kp-typing{display:inline-flex;gap:4px;padding:4px 2px}
+.kp-typing i{width:7px;height:7px;border-radius:50%;background:var(--text-muted);animation:typing 1s infinite}
+.kp-typing i:nth-child(2){animation-delay:.15s} .kp-typing i:nth-child(3){animation-delay:.3s}
+@keyframes typing{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.kp-chips{display:flex;gap:6px;overflow-x:auto;padding:10px 12px 4px;scrollbar-width:none;background:var(--surface)}
+.kp-chips::-webkit-scrollbar{display:none}
+.kp-chip{flex:none;border:1px solid var(--hairline);background:var(--surface-2);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.kp-chip:hover{border-color:var(--accent);color:var(--accent-deep)}
+.kp-form{display:flex;gap:8px;padding:10px 12px;background:var(--surface)}
+.kp-in{flex:1;min-width:0;border:1px solid var(--hairline);background:var(--surface-2);border-radius:14px;padding:11px 14px;font-size:15px;color:var(--text);font-family:var(--font-ui)}
+.kp-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgb(91 76 240 / .15)}
+.kp-send{width:46px;border:0;border-radius:14px;background:var(--brand);color:#fff;font-size:18px;cursor:pointer}
+.kp-foot{margin:0;padding:0 14px 10px;font-size:11.5px;color:var(--text-muted);background:var(--surface)}
+.kp-foot a{color:var(--accent-deep)}
+@media (max-width:760px){
+  .kili-fab{right:14px;bottom:calc(84px + env(safe-area-inset-bottom));padding:10px;width:54px;height:54px;justify-content:center}
+  .kf-label{display:none}
+  .doc-page .kili-fab{bottom:calc(16px + env(safe-area-inset-bottom))}
+  .kili-panel{right:0;left:0;bottom:0;width:100%;height:min(86vh,680px);border-radius:24px 24px 0 0;transform-origin:bottom center;padding-bottom:env(safe-area-inset-bottom);background:var(--surface)}
+  .toast{bottom:calc(150px + env(safe-area-inset-bottom))}
+  .site-header .wrap{height:58px}
+  .tabs{top:58px}
+  .hero{padding:24px 0 10px}
+  .mainnav{border-radius:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border:0;border-top:1px solid var(--hairline);background:color-mix(in srgb,var(--surface) 94%,transparent)}
+  .nav-item.on{background:var(--brand);color:#fff}
+}
+@media (max-width:760px){
+  .mainnav{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .nav-item{min-width:0;padding:6px 1px}
+  .nav-t,.nav-t .ta{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .nav-t .ta{font-size:10.5px}
+}
+@media (max-width:760px){ .nav-t .ta{font-size:10px;letter-spacing:-.3px;text-overflow:clip} }
+@media (max-width:360px){ .nav-t .ta{font-size:9px} }
