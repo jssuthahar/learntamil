@@ -1,0 +1,59 @@
+/* Learn Tamil — data: badges, Kili's levels and certificate levels.
+   Only names live here. When a badge is earned is decided in features/rewards/progress.js (BADGE_RULES);
+   the questions for each certificate level are in features/certificate/certificate.js. */
+
+/* Badges 🏅 — id must match a rule in BADGE_RULES. */
+const BADGES = [
+  { id: 'first', ic: '🌱', ta: 'முதல் அடி', en: 'First step — first right answer' },
+  { id: 'c10', ic: '⭐', ta: '10 சரியான விடைகள்', en: '10 right answers' },
+  { id: 'c50', ic: '🌟', ta: '50 சரியான விடைகள்', en: '50 right answers' },
+  { id: 'c100', ic: '🏆', ta: '100 சரியான விடைகள்', en: '100 right answers' },
+  { id: 'streak5', ic: '🔥', ta: 'தொடர்ந்து 5 சரி', en: '5 right in a row' },
+  { id: 'streak10', ic: '🚀', ta: 'தொடர்ந்து 10 சரி', en: '10 right in a row' },
+  { id: 'vowels', ic: '🔤', ta: '12 உயிர் எழுத்துகள்', en: 'Heard all 12 vowels' },
+  { id: 'mei', ic: '🧱', ta: '18 மெய் எழுத்துகள்', en: 'Heard all 18 consonants' },
+  { id: 'l50', ic: '🧭', ta: '50 எழுத்துகள்', en: 'Heard 50 different letters' },
+  { id: 'l247', ic: '👑', ta: '247 எழுத்துகள்', en: 'Heard all 247 letters' },
+  { id: 'read10', ic: '📖', ta: '10 சொற்கள் படித்தாய்', en: 'Read 10 words' },
+  { id: 'story1', ic: '📚', ta: 'ஒரு கதை முடித்தாய்', en: 'Finished a story' },
+  { id: 'story5', ic: '🏰', ta: '5 கதைகளும் முடித்தாய்', en: 'Finished all 5 stories' },
+  { id: 'memory', ic: '🃏', ta: 'நினைவாற்றல்', en: 'Memory master — finished a Memory game' },
+  { id: 'balloon', ic: '🎈', ta: '10 பலூன்கள் உடைத்தாய்', en: 'Popped 10 balloons in one game' },
+  { id: 'builder', ic: '🧩', ta: '5 சொற்கள் அமைத்தாய்', en: 'Built 5 words' },
+  { id: 'spin', ic: '🎡', ta: 'சக்கர நட்சத்திரம்', en: 'Spin star — 5 right on the wheel' },
+  { id: 't100', ic: '🪙', ta: '100 நாணயங்கள்', en: 'Collected 100 tokens' },
+  { id: 'day3', ic: '🔥', ta: '3 நாள் தொடர்ச்சி', en: 'Learned 3 days in a row' },
+  { id: 'day7', ic: '📆', ta: '7 நாள் தொடர்ச்சி', en: 'Learned 7 days in a row' },
+  { id: 'goal', ic: '🎯', ta: 'இன்றைய இலக்கு', en: 'Finished a daily goal' },
+  { id: 'trace5', ic: '✍️', ta: '5 எழுத்துகள் எழுதினாய்', en: 'Traced 5 different letters' },
+  { id: 'say5', ic: '🎤', ta: '5 முறை சொன்னாய்', en: 'Said 5 letters or words aloud' },
+  { id: 'rhyme', ic: '🎵', ta: 'பாடல் பாடினாய்', en: 'Sang along to a rhyme' },
+  { id: 'colour', ic: '🎨', ta: 'வண்ணம் தீட்டினாய்', en: 'Coloured a whole picture' },
+  { id: 'cert1', ic: '🎓', ta: 'முதல் சான்றிதழ்', en: 'Earned your first certificate' },
+  { id: 'cert5', ic: '👑', ta: '5 சான்றிதழ்கள்', en: 'Earned 5 certificates' },
+  { id: 'cert10', ic: '🏆', ta: '10 சான்றிதழ்களும்', en: 'Earned all 10 certificates' }
+];
+
+/* Kili the parrot grows with every token earned: at = tokens needed. */
+const STAGES = [
+  { at: 0,   ic: '🥚', ta: 'முட்டை',            en: 'Egg' },
+  { at: 25,  ic: '🐣', ta: 'குஞ்சு',             en: 'Hatchling' },
+  { at: 75,  ic: '🐥', ta: 'சிறு பறவை',          en: 'Little bird' },
+  { at: 150, ic: '🦜', ta: 'கிளி',               en: 'Parrot' },
+  { at: 300, ic: '🌟', ta: 'நட்சத்திரக் கிளி',    en: 'Star parrot' },
+  { at: 500, ic: '👑', ta: 'அரசக் கிளி',          en: 'Royal parrot' }
+];
+
+/* Certificate levels 🎓 — title is printed on the certificate. total/pass default to 10/8. */
+const CERT_LEVELS = [
+  { n: 1, ic: '🌱', ta: 'உயிர் எழுத்துகள்', en: 'Tamil vowels', title: 'தொடக்க நிலை', titleEn: 'Starter' },
+  { n: 2, ic: '🧱', ta: 'மெய் எழுத்துகள்', en: 'Tamil consonants', title: 'அடிப்படை நிலை', titleEn: 'Beginner' },
+  { n: 3, ic: '🧩', ta: 'உயிர்மெய் எழுத்துகள்', en: 'Uyirmei letters', title: 'வளர்ச்சி நிலை', titleEn: 'Explorer' },
+  { n: 4, ic: '📖', ta: 'சொற்கள் படித்தல்', en: 'Reading words', title: 'வாசிப்பு நிலை', titleEn: 'Reader' },
+  { n: 5, ic: '👑', ta: 'தமிழ் எழுத்து வல்லுநர்', en: 'Tamil alphabet master', title: 'சிறப்பு நிலை', titleEn: 'Master' },
+  { n: 6, ic: '🔢', ta: 'எண்கள், நிறங்கள், கிழமைகள்', en: 'Numbers, colours and days', title: 'சொல் நிலை', titleEn: 'Word Explorer' },
+  { n: 7, ic: '🏡', ta: 'குடும்பம், உடல், உணவு', en: 'Family, body and food', title: 'அன்றாடச் சொல் நிலை', titleEn: 'Everyday Words' },
+  { n: 8, ic: '✏️', ta: 'எழுத்துக்கூட்டல்', en: 'Spelling words', title: 'எழுத்துக்கூட்டல் நிலை', titleEn: 'Speller' },
+  { n: 9, ic: '📚', ta: 'வாக்கியம் படித்தல்', en: 'Reading sentences', title: 'வாசிப்புத் திறன் நிலை', titleEn: 'Story Reader' },
+  { n: 10, ic: '🏆', ta: 'தமிழ்ச் சாதனையாளர்', en: 'Tamil champion', title: 'சாதனை நிலை', titleEn: 'Champion', total: 15, pass: 12 }
+];

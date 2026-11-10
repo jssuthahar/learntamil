@@ -61,7 +61,16 @@ await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable'
 
 async function check(name, expr){
   const before = errors.length;
-  try { const v = await run(expr); if (v === false) fail(name); else if (errors.length > before) fail(`${name}: ${errors.slice(before).join(' | ')}`); else pass(name); }
+  try {
+    const v = await run(expr);
+    // Text comes from data/messages.js: a wrong name shows up as "undefined" or an unfilled {placeholder}.
+    const bad = await run(`(()=>{ const t = document.body.textContent;   // includes hidden panels and closed dialogs
+      const m = t.match(/undefined|NaN|\\[object Object\\]|\\{[a-z]+\\}/); return m ? m[0] : ''; })()`);
+    if (v === false) fail(name);
+    else if (errors.length > before) fail(`${name}: ${errors.slice(before).join(' | ')}`);
+    else if (bad) fail(`${name}: broken text on screen ("${bad}")`);
+    else pass(name);
+  }
   catch (e) { fail(`${name}: ${e.message.split('\n')[0]}`); }
 }
 
@@ -69,6 +78,8 @@ console.log('Learn Tamil smoke test');
 await open('index.html');
 await run(`localStorage.setItem('lt-consent','no')`);
 await open('index.html#/uyir');
+// Errors thrown while the page loads (a script in the wrong order, a renamed name) happen before any check runs.
+if (errors.length) fail('errors while the page loaded: ' + errors.join(' | '));
 await check('app loads with no errors', `document.querySelectorAll('#gKuril .tile').length === 5`);
 for (const s of ['mei', 'aytham', 'uyirmei', 'reading', 'stories', 'certificate', 'little', 'practice'])
   await check(`section #/${s} opens`, `(async()=>{ location.hash='/${s}'; await new Promise(r=>setTimeout(r,300)); return document.getElementById('${s}').classList.contains('on'); })()`);
@@ -83,9 +94,32 @@ await check('rewards, stickers and parent corner open', `(async()=>{ document.ge
   document.dispatchEvent(new CustomEvent('lt:open',{detail:'stickers'})); document.getElementById('stickerDlg').close();
   document.dispatchEvent(new CustomEvent('lt:open',{detail:'parents'})); return !!document.querySelector('#parentDlg .gate-btn'); })()`);
 await check('tracing accepts a traced letter', `(async()=>{ showGame('trace'); await renderTrace(); inkCv.getContext('2d').drawImage(maskCv,0,0); drawLetter(inkCv.getContext('2d'), trItem().l, '#000', 14); TR.inked=true; checkTrace(); return TR.done; })()`);
+await check('messages come from data/messages.js', `(async()=>{ location.hash='/practice'; await new Promise(r=>setTimeout(r,200)); showGame('build');
+  const ask = document.getElementById('qAsk').textContent;
+  const o = [...document.querySelectorAll('#opts .tile')].find(b => b.textContent !== answer.l); o && o.click();
+  return ask.startsWith(TEXT.buildAsk[0]) && document.getElementById('feedback').textContent.startsWith(TEXT.tryAgain[0]); })()`);
+await check('Kili level, badges and greeting use data/rewards.js', `(()=>{ paintToday(); openRewards(); const ok = document.getElementById('todayStage').textContent.includes(STAGES[0].ta)
+  && document.querySelectorAll('#rewardsDlg .rw-badge').length === BADGES.length && BADGES.every(b => typeof BADGE_RULES[b.id] === 'function');
+  document.getElementById('rewardsDlg').close(); return ok; })()`);
+await check('celebrations fill their placeholders', `(async()=>{ celebrate('🎯', TEXT.goalDone[0], fmt(TEXT.goalDone[1], { goal: 10 })); await new Promise(r=>setTimeout(r,200));
+  const t = document.querySelector('.badge-pop').innerText; document.querySelectorAll('.badge-pop').forEach(x=>x.remove()); return t.includes('10 things'); })()`);
+await check('certificate levels come from data/rewards.js', `CERT.LEVELS.length === CERT_LEVELS.length && CERT.LEVELS.every(L => L.gen && L.gen.length > 0)`);
 await check('certificate test starts', `(async()=>{ location.hash='/certificate'; await new Promise(r=>setTimeout(r,200)); document.querySelector('#certLevels button')?.click(); return true; })()`);
-for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html'])
-  { await open(page); await check(`${page} loads`, 'document.readyState === "complete"'); }
+for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html']){
+  const before = errors.length; await open(page);
+  if (errors.length > before) fail(`${page}: errors while loading: ${errors.slice(before).join(' | ')}`);
+  await check(`${page} loads`, 'document.readyState === "complete"');
+}
+/* Printables: every PDF and preview listed exists, and the menu promotes the page. */
+const PRINTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'printables/printables.json'), 'utf8'));
+const missingPrints = PRINTS.flatMap(d => [`printables/${d.file}.pdf`, `assets/printables/${d.file}.png`]).filter(f => !fs.existsSync(path.join(ROOT, f)));
+missingPrints.length ? fail('missing printable files: ' + missingPrints.join(', ')) : pass(`all ${PRINTS.length} printables have a PDF and a preview`);
+await open('tamil-printables.html');
+await check('printables page lists every PDF', `document.querySelectorAll('.print-card').length === ${PRINTS.length}`);
+await open('index.html');
+await check('menu links to the printables', `!!document.querySelector('.mainnav a[href="tamil-printables.html"]') && !!document.querySelector('.print-btn') && document.querySelectorAll('.print-promo').length >= 3`);
+await open('record.html');
+await check('recorder lists all 247 letters from data/alphabet.js', 'LETTERS.length === 247');
 
 ws.close(); chrome.kill(); server.close();
 try { fs.rmSync(profile, { recursive: true, force: true }); } catch (e) {}

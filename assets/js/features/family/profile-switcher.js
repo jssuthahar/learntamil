@@ -28,7 +28,7 @@ function paintProfile(){
 function openProfiles(){
   const list = Profiles.list(), cur = Profiles.current().id;
   const d = famDialog('profDlg', `
-    <div class="rw-head"><h2>👧👦 <span lang="ta">யார் படிக்கிறார்கள்?</span> · Who is learning?</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
+    <div class="rw-head"><h2>👧👦 <span lang="ta">${TEXT.whoIsLearning[0]}</span> · ${TEXT.whoIsLearning[1]}</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
     <div class="prof-list">${list.map((p, i) => `<button class="prof-card${p.id === cur ? ' on' : ''}" type="button" data-id="${p.id}" aria-pressed="${p.id === cur}">
       <span class="prof-ic" aria-hidden="true">${p.ic}</span><b>${esc(childName(p, i))}</b><small>${p.id === cur ? 'Learning now' : 'Tap to switch'}</small></button>`).join('')}</div>
     <p class="rw-note">Each child has their own tokens, badges, stickers and certificates.

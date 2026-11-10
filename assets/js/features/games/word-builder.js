@@ -36,7 +36,7 @@ function placeTile(t){
     }
   } else {
     t.classList.remove('nope'); void t.offsetWidth; t.classList.add('nope'); Rewards.miss();
-    fb($('#wbFb'), 'பரவாயில்லை, மீண்டும் முயற்சி செய்!', 'bad');
+    fb($('#wbFb'), TEXT.tryAgain[0], 'bad');
   }
 }
 $('#wbHear').addEventListener('click', ()=>W.word && speak(W.word[0]));

@@ -105,7 +105,7 @@ function landed(){
         const r = Rewards.win(b, { after: ()=>speak(word) }); Progress.track('spin');
         fb($('#spinFb'), `${r.ta} ${word} — ${v.l}`, 'ok');
         box.querySelectorAll('button').forEach(x=>x.disabled = true);
-      } else { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); Rewards.miss(); fb($('#spinFb'), 'பரவாயில்லை, மீண்டும் முயற்சி செய்!', 'bad'); setTimeout(()=>speak(word), 300); }
+      } else { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); Rewards.miss(); fb($('#spinFb'), TEXT.tryAgain[0], 'bad'); setTimeout(()=>speak(word), 300); }
     });
     box.appendChild(b);
   });

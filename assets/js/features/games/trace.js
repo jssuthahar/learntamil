@@ -90,15 +90,15 @@ function checkTrace(){
   }
   const cover = letter ? covered / letter : 0, off = inked ? outside / inked : 0;
   $('#trMeter').style.width = Math.round(Math.min(1, cover / 0.75) * 100) + '%';
-  if (off > 0.35 && inked > 30){ fb($('#trFb'), 'கோட்டுக்குள் எழுது! · Try to stay on the letter', 'bad'); return; }
-  if (inked > letter * 2.0){ fb($('#trFb'), 'மெதுவாக, கோட்டின் மேல் எழுது · Trace slowly along the letter — tap ↺ to try again', 'bad'); return; }
+  if (off > 0.35 && inked > 30){ fb($('#trFb'), TEXT.traceOffLine.join(' · '), 'bad'); return; }
+  if (inked > letter * 2.0){ fb($('#trFb'), TEXT.traceScribble.join(' · '), 'bad'); return; }
   if (cover >= 0.75){
     TR.done = true; const it = trItem();
     Progress.track('traced', it.l);
     const r = Rewards.win(trCv, { after: () => sayItem(it) });
     fb($('#trFb'), `${r.ta} ${it.l} ✍️`, 'ok');
     setTimeout(() => { if (TR.done && game === 'trace'){ TR.i = (TR.i + 1) % TR_SETS[TR.set]().length; renderTrace(); } }, 3200);
-  } else if (cover > 0.3) fb($('#trFb'), 'நன்று! தொடர்ந்து எழுது · Keep going', '');
+  } else if (cover > 0.3) fb($('#trFb'), TEXT.traceKeepGoing.join(' · '), '');
 }
 $$('#trSets .seg-btn').forEach(b => b.addEventListener('click', () => { TR.set = b.dataset.set; TR.i = 0; renderTrace(); }));
 $('#trPrev').addEventListener('click', () => { const n = TR_SETS[TR.set]().length; TR.i = (TR.i - 1 + n) % n; renderTrace(); });

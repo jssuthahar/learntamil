@@ -44,7 +44,7 @@ function openTab(name){
   if (name==='uyirmei') display(uyirmei[bC][bV]);
   if (!isLetters) window.scrollTo({top:0});
 }
-$$('.nav-item').forEach(n=>n.addEventListener('click', ()=>{
+$$('.nav-item[data-go]').forEach(n=>n.addEventListener('click', ()=>{
   const target = n.dataset.go === 'letters' ? lastLetterTab : n.dataset.go;
   if (route() !== target) location.hash = '/' + target; else openTab(target);
 }));

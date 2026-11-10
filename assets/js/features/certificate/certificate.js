@@ -9,8 +9,8 @@
 const CERT = (() => {
   const PASS = 8, TOTAL = 10;
   const pick = a => a[rand(a.length)];
-  const kuril = VOWELS.filter(v => v.len === 'குறில்'), nedil = VOWELS.filter(v => v.len === 'நெடில்');
-  const SOUND_GRP = { 'ந': 'N', 'ன': 'N', 'ண': 'N', 'ல': 'L', 'ள': 'L', 'ழ': 'L', 'ர': 'R', 'ற': 'R' };
+  const kuril = VOWELS.filter(v => v.len === LETTER_LABELS.short), nedil = VOWELS.filter(v => v.len === LETTER_LABELS.long);
+  const SOUND_GRP = SOUND_GROUP;   // data/alphabet.js
   const grp = c => SOUND_GRP[c] || c;
   const T = s => `<span class="ta">${s}</span>`;
 
@@ -57,7 +57,7 @@ const CERT = (() => {
   const qUmSplit = () => { const k = pick(CONS), v = pick(VOWELS), k2 = pick(CONS.filter(x => x !== k));
     const wr = [...others(VOWELS, v, 2).map(x => `${k.c + PULLI} + ${x.l}`), `${k2.c + PULLI} + ${v.l}`];
     return Q(`${T(um(k, v))} is made of…`, T(`${k.c + PULLI} + ${v.l}`), wr.map(T), `${um(k, v)} = ${k.c + PULLI} + ${v.l}`); };
-  const qUmLength = () => { const k = pick(CONS), v = pick(VOWELS), long = v.len === 'நெடில்';
+  const qUmLength = () => { const k = pick(CONS), v = pick(VOWELS), long = v.len === LETTER_LABELS.long;
     return Q(`Is ${T(um(k, v))} short or long?`, `${T(v.len)} <small>${long ? 'long' : 'short'}</small>`,
       [`${T(long ? 'குறில்' : 'நெடில்')} <small>${long ? 'short' : 'long'}</small>`],
       `${um(k, v)} has the vowel ${v.l}, which is ${v.len}.`); };
@@ -174,24 +174,21 @@ const CERT = (() => {
   const qSentWho = () => { const s = pick(STORIES), p = pick(s.pages);
     return Q(`Which story is this sentence from?<br>${TS(p[1])}`, `${s.cover} ${s.en}`, others(STORIES, s, 3).map(x => `${x.cover} ${x.en}`), `${p[1]} — ${p[2]}`); };
 
-  const LEVELS = [
-    { n: 1, ic: '🌱', ta: 'உயிர் எழுத்துகள்', en: 'Tamil vowels', title: 'தொடக்க நிலை', titleEn: 'Starter', gen: [qVowelPic, qVowelRoman, qVowelLength, qVowelNext] },
-    { n: 2, ic: '🧱', ta: 'மெய் எழுத்துகள்', en: 'Tamil consonants', title: 'அடிப்படை நிலை', titleEn: 'Beginner', gen: [qMeiRoman, qMeiGroup, qMeiInWord, qMeiNext] },
-    { n: 3, ic: '🧩', ta: 'உயிர்மெய் எழுத்துகள்', en: 'Uyirmei letters', title: 'வளர்ச்சி நிலை', titleEn: 'Explorer', gen: [qUmBuild, qUmSplit, qUmLength, qUmRoman] },
-    { n: 4, ic: '📖', ta: 'சொற்கள் படித்தல்', en: 'Reading words', title: 'வாசிப்பு நிலை', titleEn: 'Reader', gen: [qWordPic, qWordMeaning, qWordCount, qWordFirst] },
-    { n: 5, ic: '👑', ta: 'தமிழ் எழுத்து வல்லுநர்', en: 'Tamil alphabet master', title: 'சிறப்பு நிலை', titleEn: 'Master',
-      gen: [qFact, qFact, qVowelLength, qMeiGroup, qMeiInWord, qUmSplit, qUmLength, qWordCount, qWordFirst, qWordMeaning] },
-    { n: 6, ic: '🔢', ta: 'எண்கள், நிறங்கள், கிழமைகள்', en: 'Numbers, colours and days', title: 'சொல் நிலை', titleEn: 'Word Explorer',
-      gen: [qNumWord, qNumMeaning, qNumTamilDigit, qColourPic, qColourMeaning, qDayNext, qDayBefore, qDayMeaning] },
-    { n: 7, ic: '🏡', ta: 'குடும்பம், உடல், உணவு', en: 'Family, body and food', title: 'அன்றாடச் சொல் நிலை', titleEn: 'Everyday Words',
-      gen: [topicPic('body'), topicMeaning('body'), topicPic('family'), topicMeaning('family'), topicPic('food'), topicMeaning('food')] },
-    { n: 8, ic: '✏️', ta: 'எழுத்துக்கூட்டல்', en: 'Spelling words', title: 'எழுத்துக்கூட்டல் நிலை', titleEn: 'Speller', gen: [qMissing, qJoin, qUnscramble, qLast] },
-    { n: 9, ic: '📚', ta: 'வாக்கியம் படித்தல்', en: 'Reading sentences', title: 'வாசிப்புத் திறன் நிலை', titleEn: 'Story Reader',
-      gen: [qSentMeaning, qSentPick, qSentWho, qStoryTitle, qSentMeaning, qSentPick] },
-    { n: 10, ic: '🏆', ta: 'தமிழ்ச் சாதனையாளர்', en: 'Tamil champion', title: 'சாதனை நிலை', titleEn: 'Champion', total: 15, pass: 12,
-      gen: [qFact, qVowelRoman, qMeiRoman, qUmRoman, qUmSplit, qWordMeaning, qNumTamilDigit, qDayNext, topicMeaning('family'), topicPic('food'),
-        qMissing, qUnscramble, qJoin, qSentMeaning, qSentPick] }
-  ];
+  /* Level names live in data/rewards.js (CERT_LEVELS); each level's questions are chosen here. */
+  const LEVEL_QUESTIONS = {
+    1: [qVowelPic, qVowelRoman, qVowelLength, qVowelNext],
+    2: [qMeiRoman, qMeiGroup, qMeiInWord, qMeiNext],
+    3: [qUmBuild, qUmSplit, qUmLength, qUmRoman],
+    4: [qWordPic, qWordMeaning, qWordCount, qWordFirst],
+    5: [qFact, qFact, qVowelLength, qMeiGroup, qMeiInWord, qUmSplit, qUmLength, qWordCount, qWordFirst, qWordMeaning],
+    6: [qNumWord, qNumMeaning, qNumTamilDigit, qColourPic, qColourMeaning, qDayNext, qDayBefore, qDayMeaning],
+    7: [topicPic('body'), topicMeaning('body'), topicPic('family'), topicMeaning('family'), topicPic('food'), topicMeaning('food')],
+    8: [qMissing, qJoin, qUnscramble, qLast],
+    9: [qSentMeaning, qSentPick, qSentWho, qStoryTitle, qSentMeaning, qSentPick],
+    10: [qFact, qVowelRoman, qMeiRoman, qUmRoman, qUmSplit, qWordMeaning, qNumTamilDigit, qDayNext, topicMeaning('family'), topicPic('food'),
+        qMissing, qUnscramble, qJoin, qSentMeaning, qSentPick]
+  };
+  const LEVELS = CERT_LEVELS.map(L => ({ ...L, gen: LEVEL_QUESTIONS[L.n] }));
   const tot = L => L.total || TOTAL, need = L => L.pass || PASS;
 
   /* Question banks for the practice games (features/games/question-games.js) — same generators, endless play. */
@@ -282,7 +279,7 @@ const CERT = (() => {
     const q = S.qs[S.i], o = q.opts[k];
     $$('#certQuiz .cq-opt').forEach((x, j) => { x.disabled = true; if (q.opts[j].ok) x.classList.add('right'); });
     if (o.ok){ S.right++; b.classList.add('right'); Rewards.sfx.correct(); sparkle(b);
-      $('#cqFb').innerHTML = `<span class="ok">✓ ${pick(['அருமை!', 'நன்று!', 'சரியான விடை!'])}</span> <small>${q.explain}</small>`; }
+      $('#cqFb').innerHTML = `<span class="ok">✓ ${pick(TEXT.praise)[0]}</span> <small>${q.explain}</small>`; }
     else { b.classList.add('wrong'); Rewards.sfx.wrong();
       $('#cqFb').innerHTML = `<span class="bad">✗ Not quite.</span> <small>${q.explain}</small>`; }
     $('#cqNext').hidden = false; $('#cqNext').focus({ preventScroll: true });
@@ -295,17 +292,17 @@ const CERT = (() => {
     const L = S.level, N = S.qs.length, ok = S.right >= Math.min(need(L), N), pct = Math.round(S.right / N * 100);
     if (!ok){
       Rewards.sfx.wrong();
-      box.innerHTML = `<div class="cr-emo" aria-hidden="true">💪</div><h3><span class="ta">பரவாயில்லை!</span> Keep practising</h3>
+      box.innerHTML = `<div class="cr-emo" aria-hidden="true">💪</div><h3><span class="ta">${TEXT.noWorries[0]}</span> ${TEXT.noWorries[1]}</h3>
         <p class="cr-score">${S.right}/${N} <small>(${pct}%)</small></p><p>You need ${need(L)} out of ${N} to pass. Practise in the app and try again!</p>
         <div class="cr-btns"><button class="btn primary" id="crRetry">↻ Try again</button><button class="btn" id="crBack">← All levels</button></div>`;
       $('#crRetry').onclick = () => start(L.n); $('#crBack').onclick = renderLevels;
       return;
     }
-    Rewards.sfx.win(); confetti(); setTimeout(() => speak('வாழ்த்துகள்!'), 500); logEv('certificate_earned', { level: L.n });
+    Rewards.sfx.win(); confetti(); setTimeout(() => speak(TEXT.congrats), 500); logEv('certificate_earned', { level: L.n });
     const lastName = Profiles.get('lt-cert-name') || Profiles.current().name || '';
-    box.innerHTML = `<div class="cr-emo" aria-hidden="true">🎓</div><h3><span class="ta">வாழ்த்துகள்!</span> You passed Level ${L.n}</h3>
+    box.innerHTML = `<div class="cr-emo" aria-hidden="true">🎓</div><h3><span class="ta">${TEXT.congrats}</span> You passed Level ${L.n}</h3>
       <p class="cr-score">${S.right}/${N} <small>(${pct}%)</small></p>
-      <form class="cr-form" id="crForm"><label for="crName">Name for the certificate · <span class="ta">பெயர்</span></label>
+      <form class="cr-form" id="crForm"><label for="crName">Name for the certificate · <span class="ta">${TEXT.certificate.name}</span></label>
         <div class="cr-row"><input id="crName" maxlength="40" autocomplete="off" required placeholder="e.g. Kavin" value="${escapeAttr(lastName)}">
         <button class="btn primary" type="submit">🎓 Make my certificate</button></div>
         <small class="muted">The name stays on this device only.</small></form>`;
@@ -356,10 +353,10 @@ const CERT = (() => {
     // header
     g.fillStyle = '#0b1020'; g.font = `700 40px ${ui}`; g.fillText('LEARN TAMIL · MSDEVBUILD', W / 2, 230);
     const tg = g.createLinearGradient(W / 2 - 500, 0, W / 2 + 500, 0); tg.addColorStop(0, '#1769d1'); tg.addColorStop(0.55, '#7c3aed'); tg.addColorStop(1, '#e0480c');
-    g.fillStyle = tg; g.font = `800 150px ${kid}`; g.fillText('சான்றிதழ்', W / 2, 390);
+    g.fillStyle = tg; g.font = `800 150px ${kid}`; g.fillText(TEXT.certificate.title, W / 2, 390);
     g.fillStyle = '#3b4256'; g.font = `600 52px ${ui}`; g.fillText('Certificate of Achievement', W / 2, 510);
     // presented to
-    g.font = `500 40px ${ta}`; g.fillStyle = '#4a5163'; g.fillText('இந்தச் சான்றிதழ் பெருமையுடன் வழங்கப்படுகிறது · This certificate is proudly presented to', W / 2, 620);
+    g.font = `500 40px ${ta}`; g.fillStyle = '#4a5163'; g.fillText(TEXT.certificate.presented, W / 2, 620);
     // name (shrink to fit)
     let size = 130; g.font = `800 ${size}px ${kid}`;
     while (g.measureText(c.name).width > W - 700 && size > 60){ size -= 6; g.font = `800 ${size}px ${kid}`; }
@@ -367,7 +364,7 @@ const CERT = (() => {
     g.strokeStyle = '#ffb020'; g.lineWidth = 6; g.beginPath(); g.moveTo(W / 2 - 600, 850); g.lineTo(W / 2 + 600, 850); g.stroke();
     // level
     g.fillStyle = '#4a5163'; g.font = `500 40px ${ui}`; g.fillText('for successfully completing', W / 2, 935);
-    fitText(g, `${L.ic}  நிலை ${L.n} · ${L.ta}`, W / 2, 1050, W - 500, 82, '800', kid, '#1769d1');
+    fitText(g, `${L.ic}  ${TEXT.certificate.level} ${L.n} · ${L.ta}`, W / 2, 1050, W - 500, 82, '800', kid, '#1769d1');
     fitText(g, `${L.title} · Level ${L.n} ${L.titleEn} — ${L.en}`, W / 2, 1150, W - 500, 50, '700', kid, '#e0480c');
     // score pill
     const outOf = c.total || tot(L), pill = `Score ${c.score}/${outOf}  ·  ${Math.round(c.score / outOf * 100)}%`;
@@ -377,7 +374,7 @@ const CERT = (() => {
     // footer: date, medal, certificate ID (no signature)
     const date = new Date(c.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     g.fillStyle = '#0b1020'; g.font = `700 40px ${ui}`; g.fillText(date, 560, 1395); g.fillText(c.id, W - 560, 1395);
-    g.fillStyle = '#4a5163'; g.font = `500 32px ${ui}`; g.fillText('Date · தேதி', 560, 1450); g.fillText('Certificate ID · சான்றிதழ் எண்', W - 560, 1450);
+    g.fillStyle = '#4a5163'; g.font = `500 32px ${ui}`; g.fillText(TEXT.certificate.date, 560, 1450); g.fillText(TEXT.certificate.id, W - 560, 1450);
     g.font = `190px ${ui}`; g.fillText('🏅', W / 2, 1400);
     g.fillStyle = '#6b7385'; g.font = `500 28px ${ui}`;
     g.fillText('Learn Tamil · MSDEVBUILD  ·  learntamil.msdevbuild.com  ·  A practice certificate for encouragement, not an official qualification', W / 2, H - 150);

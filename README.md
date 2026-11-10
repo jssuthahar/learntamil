@@ -21,7 +21,8 @@ assets/
   css/                 styles, numbered in cascade order (00-tokens … 90-kids)
   js/
     core/              shared building blocks: profiles (storage), dom, letter-model, speech, sound, analytics
-    data/              all Tamil content: alphabet, words + topics, stories, rhymes, festivals, faq (generated)
+    data/              ALL text: alphabet, words + topics, stories, rhymes, festivals, badges + levels,
+                       colouring pictures, messages (praise, labels…), faq (generated) — edit wording here only
     features/          one folder per area: letters, reading, stories, games, rewards, certificate,
                        voice, little, family, recorder
     services/          pwa, firebase (analytics + reminders), support card, Ask Kili chat
@@ -121,7 +122,19 @@ New Tamil text (topics, rhymes, Aathichoodi meanings, festival stories) should b
 
 ## Printable PDFs
 
-`npm run printables` creates the free charts and tracing worksheets in `printables/` (and previews in `assets/printables/`) using headless Chrome, so Tamil text prints correctly. Run it after changing letters or topics, then run `node tools/build-pages.mjs`.
+`npm run printables` builds 23 free PDFs (53 A4 pages) in `printables/`, with previews in `assets/printables/`, using headless Chrome so Tamil text is shaped correctly. Everything is made from `assets/js/data/`, so the paper versions always match the app.
+
+| Type | PDFs |
+|---|---|
+| 🔤 Alphabet charts | vowels, consonants, whole alphabet, uyirmei 216 |
+| 🍎 Word charts and posters | numbers, colours (real swatches), animals, birds, fruits and food, body, family, vehicles, shapes, opposites, days and months, Aathichoodi poster |
+| ✏️ Tracing worksheets | vowels, consonants, all 216 uyirmei (one page per consonant), number words 1–10 |
+| 🧩 Activity worksheets | match the picture to the word (4 topics), missing letter (20 words + answer key) |
+| 🎨 Colouring pages | the 6 colouring-game pictures, each with its word to trace |
+
+Worksheets that shuffle (matching, missing letter) use a fixed seed, so a rebuild gives the same PDF and git stays clean. To add one, add it to `DOCS` in `tools/build-printables.mjs` with a `cat`. The printables page groups it automatically. Rebuild a single PDF while designing with `node tools/build-printables.mjs <file>`.
+
+**Promotion:** 🖨️ in the desktop menu, a 🖨️ button in the phone header (the bottom bar keeps its 5 app tabs), a *Printables* chip on the home card, a "Free printables" card in the vowels, consonants and games sections, a Printables button on every guide page, and a long-press shortcut in the installed app.
 
 ## Install as an app (PWA) and offline use
 

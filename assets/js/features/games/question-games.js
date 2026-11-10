@@ -5,13 +5,8 @@
 /* ---------- 🧠 Question games: quiz, pictures, topics, spelling, sentences ----------
    Questions come from the certificate generators (features/certificate/certificate.js), so there are hundreds of them.
    Each game remembers what it has asked and never repeats a question until all have been seen. */
-const MCQ_INFO = {
-  quiz:    { ta:'தமிழ் வினாடி வினா', en:'Mixed questions — letters, words, spelling and stories' },
-  picture: { ta:'படம் பார், சொல்லைத் தேர்ந்தெடு', en:'Look at the picture and pick the Tamil word' },
-  topics:  { ta:'எண்கள், நிறங்கள், கிழமைகள்', en:'Numbers, colours, days, animals, opposites, months and more' },
-  spell:   { ta:'எழுத்துக்கூட்டல்', en:'Missing letters, jumbled letters and spelling' },
-  story:   { ta:'வாக்கியம் படி', en:'Read sentences from the stories' }
-};
+/* Title and description of each question game: data/messages.js → TEXT.questionGames */
+const MCQ_INFO = Object.fromEntries(Object.entries(TEXT.questionGames).map(([k, [ta, en]]) => [k, { ta, en }]));
 const MQ = { mode:null, seen:{}, q:null, done:false, n:0, right:0, t:0 };
 function startMcq(g){
   MQ.mode = g; MQ.n = 0; MQ.right = 0; MQ.seen[g] = MQ.seen[g] || new Set();
@@ -48,7 +43,7 @@ function answerMcq(o, b){
     MQ.t = setTimeout(newMcq, 1800);
   } else {
     b.classList.add('wrong'); Rewards.miss();
-    $('#mqFb').innerHTML = `<span>✗ பரவாயில்லை!</span> <small>${MQ.q.explain}</small>`; $('#mqFb').className = 'feedback bad';
+    $('#mqFb').innerHTML = `<span>✗ ${TEXT.noWorries[0]}</span> <small>${MQ.q.explain}</small>`; $('#mqFb').className = 'feedback bad';
     $('#mqNext').hidden = false; $('#mqNext').focus({ preventScroll: true });
   }
   $('#mqCount').textContent = `✓ ${MQ.right} / ${MQ.n}`;

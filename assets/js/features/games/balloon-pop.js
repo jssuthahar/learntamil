@@ -57,7 +57,7 @@ function endBalloon(){
   stopBalloon();
   $('#balSky').querySelectorAll('.balloon').forEach(b=>b.remove());
   const s = $('#balStart'); s.hidden = false;
-  s.querySelector('p').innerHTML = `<span class="ta">${B.score >= 6 ? 'அருமை!' : 'நன்று!'}</span><br><b class="bal-final">🎈 ${B.score}</b><br><small class="muted">balloons popped</small>`;
+  s.querySelector('p').innerHTML = `<span class="ta">${B.score >= 6 ? TEXT.great : TEXT.good}</span><br><b class="bal-final">🎈 ${B.score}</b><br><small class="muted">balloons popped</small>`;
   $('#balGo').textContent = '↻ Play again';
   Progress.track('balloon', B.score);
   if (B.score >= 6) Rewards.win($('#balSky'), { big: true, points: 20 });

@@ -11,13 +11,13 @@ const SayBack = (() => {
     dlg = document.createElement('dialog'); dlg.className = 'say-dlg'; dlg.setAttribute('aria-labelledby', 'sayText');
     dlg.innerHTML = `
       <button class="rw-x say-x" type="button" aria-label="Close">✕</button>
-      <p class="say-help"><span lang="ta">கேள், பிறகு நீ சொல்!</span><small>Listen, then say it yourself</small></p>
+      <p class="say-help"><span lang="ta">${TEXT.sayHelp[0]}</span><small>${TEXT.sayHelp[1]}</small></p>
       <div class="say-text" id="sayText" lang="ta"></div>
       <button class="say-mic" type="button" aria-label="Record my voice"><span class="say-ic" aria-hidden="true">🎤</span></button>
       <p class="say-status" aria-live="polite"></p>
       <div class="say-row">
-        <button class="btn" type="button" data-act="ref">🔊 <span lang="ta">சரியான ஒலி</span></button>
-        <button class="btn" type="button" data-act="mine" disabled>▶ <span lang="ta">என் குரல்</span></button>
+        <button class="btn" type="button" data-act="ref">🔊 <span lang="ta">${TEXT.correctSound}</span></button>
+        <button class="btn" type="button" data-act="mine" disabled>▶ <span lang="ta">${TEXT.myVoice}</span></button>
         <button class="btn" type="button" data-act="both" disabled>🔁 Both</button>
       </div>
       <p class="say-note">🔒 Your voice stays on this device and is deleted when you close this.</p>`;

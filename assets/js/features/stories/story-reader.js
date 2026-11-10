@@ -47,7 +47,7 @@ function tapWord(w, el){
     if (i){ const p=document.createElement('span'); p.className='plus'; p.textContent='+'; bd.appendChild(p); }
     const c = document.createElement('button'); c.className='chip'; c.lang='ta';
     c.innerHTML = `${l}<small>${explain(l)}</small>`;
-    c.addEventListener('click', ()=>sayLetter(l, l.endsWith(PULLI) ? 'இ'+l : l));
+    c.addEventListener('click', ()=>sayLetter(l, spokenForm(l)));
     bd.appendChild(c);
   });
   const eq = document.createElement('span'); eq.className='plus'; eq.lang='ta'; eq.textContent = '= '+clean; bd.appendChild(eq);
@@ -66,7 +66,7 @@ function speakSentence(sp, done){
 }
 function readPage(){
   const sents = $$('#ptext .sent'); let k = 0;
-  reading = true; $('#readMe').innerHTML = '<span class="ta">நிறுத்து</span> · Stop';
+  reading = true; $('#readMe').innerHTML = `<span class="ta">${TEXT.stop[0]}</span> · ${TEXT.stop[1]}`;
   const step = ()=>{
     if (!reading) return;
     if (k < sents.length){ speakSentence(sents[k++], ()=>setTimeout(step, 350)); return; }
@@ -80,7 +80,7 @@ function stopReading(){
   reading = false; seqToken++;
   stopAudio();
   try{ speechSynthesis.cancel(); }catch(e){}
-  $('#readMe').innerHTML = '<span class="ta">படித்துக் காட்டு</span>';
+  $('#readMe').innerHTML = `<span class="ta">${TEXT.readToMe}</span>`;
   $$('.sent.reading').forEach(s=>s.classList.remove('reading'));
 }
 $('#readMe').addEventListener('click', ()=> reading ? stopReading() : readPage());

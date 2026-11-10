@@ -21,15 +21,15 @@ setInterval(() => {
 function showBreak(){
   try { speechSynthesis.cancel(); } catch (e) {}
   const el = document.createElement('div'); el.className = 'badge-pop break-pop'; el.setAttribute('role', 'alertdialog'); el.setAttribute('aria-label', 'Time for a break');
-  el.innerHTML = `<div class="bp-card"><span class="bp-ic" aria-hidden="true">🧘</span><b lang="ta">கொஞ்சம் ஓய்வெடு!</b>
-    <small>Time for a little break! Stretch 🙆, drink some water 💧 and rest your eyes 👀.</small>
+  el.innerHTML = `<div class="bp-card"><span class="bp-ic" aria-hidden="true">🧘</span><b lang="ta">${TEXT.breakTime[0]}</b>
+    <small>${TEXT.breakTime[1]}</small>
     <button class="btn primary" type="button" disabled>⏳ 1:00</button></div>`;
   document.body.appendChild(el);
-  setTimeout(() => speak('கொஞ்சம் ஓய்வெடு!'), 300);
+  setTimeout(() => speak(TEXT.breakTime[0]), 300);
   const btn = el.querySelector('button'); let s = 60;
   const t = setInterval(() => {
     s--; btn.textContent = `⏳ 0:${String(s).padStart(2, '0')}`;
-    if (s <= 0){ clearInterval(t); btn.disabled = false; btn.innerHTML = '▶ <span lang="ta">மீண்டும் விளையாடு</span> · Back to learning'; }
+    if (s <= 0){ clearInterval(t); btn.disabled = false; btn.innerHTML = `▶ <span lang="ta">${TEXT.backToLearning[0]}</span> · ${TEXT.backToLearning[1]}`; }
   }, 1000);
   btn.onclick = () => { sessionMins = 0; el.remove(); };
 }
@@ -103,7 +103,7 @@ function renderParents(d){
     <p class="pc-links"><a class="btn small" href="#/little">👶 Open Little ones mode (ages 3–5)</a> <button class="btn small" type="button" data-open="rewards">🏅 Badges</button></p>
     <p class="rw-note">🔒 All of this is saved only on this device. Nothing about your child is sent anywhere. Recordings from 🎤 Say it are never saved.</p>`;
   d.querySelector('.rw-x').onclick = () => d.close();
-  d.querySelectorAll('.pc-tricky .chip').forEach(c => c.onclick = () => sayLetter(c.dataset.l, c.dataset.l.endsWith(PULLI) ? 'இ' + c.dataset.l : c.dataset.l));
+  d.querySelectorAll('.pc-tricky .chip').forEach(c => c.onclick = () => sayLetter(c.dataset.l, spokenForm(c.dataset.l)));
   d.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => Profiles.switchTo(b.dataset.sw));
   d.querySelectorAll('[data-rn]').forEach(b => b.onclick = () => {
     const k = list.find(x => x.id === b.dataset.rn); const n = prompt('New name', k.name || '');

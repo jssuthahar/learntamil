@@ -60,13 +60,13 @@ function tapRhymeWord(w, el){
     if (i){ const p = document.createElement('span'); p.className = 'plus'; p.textContent = '+'; bd.appendChild(p); }
     const c = document.createElement('button'); c.className = 'chip'; c.lang = 'ta'; c.type = 'button';
     c.innerHTML = `${l}<small>${explain(l)}</small>`;
-    c.addEventListener('click', () => sayLetter(l, l.endsWith(PULLI) ? 'இ' + l : l));
+    c.addEventListener('click', () => sayLetter(l, spokenForm(l)));
     bd.appendChild(c);
   });
 }
 function sing(){
   const lines = $$('#rhymeLines .sent'); let k = 0;
-  RH.singing = true; $('#rhymeSing').innerHTML = '⏹ <span class="ta">நிறுத்து</span> · Stop';
+  RH.singing = true; $('#rhymeSing').innerHTML = `⏹ <span class="ta">${TEXT.stop[0]}</span> · ${TEXT.stop[1]}`;
   const step = () => {
     if (!RH.singing) return;
     if (k < lines.length){ lines[k].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); speakSentence(lines[k++], () => setTimeout(step, 450)); return; }
@@ -80,7 +80,7 @@ function stopRhyme(){
   if (!RH.singing) return;
   RH.singing = false;
   try { speechSynthesis.cancel(); } catch (e) {}
-  $('#rhymeSing').innerHTML = '▶ <span class="ta">பாடு</span> · Sing along';
+  $('#rhymeSing').innerHTML = `▶ <span class="ta">${TEXT.sing[0]}</span> · ${TEXT.sing[1]}`;
 }
 $('#rhymeSing').addEventListener('click', () => RH.singing ? stopRhyme() : sing());
 $('#rhymeBack').addEventListener('click', () => showKind('rhymes'));
@@ -92,7 +92,7 @@ FESTIVALS.forEach(f => {
   const card = document.createElement('div'); card.className = 'fest glass';
   card.innerHTML = `<div class="fest-top"><span class="cover" aria-hidden="true">${f.cover}</span><div><b lang="ta">${f.title}</b><small>${f.en}</small></div></div>
     <div class="fest-words">${f.words.map(([w, e, m]) => `<button class="fw" type="button" data-w="${w}"><span aria-hidden="true">${e}</span><b lang="ta">${w}</b><small>${m}</small></button>`).join('')}</div>
-    <button class="btn primary fest-read" type="button">📖 <span class="ta">கதை படி</span> · Read the story</button>`;
+    <button class="btn primary fest-read" type="button">📖 <span class="ta">${TEXT.readStory[0]}</span> · ${TEXT.readStory[1]}</button>`;
   card.querySelectorAll('.fw').forEach(b => b.addEventListener('click', () => { sparkle(b); speak(b.dataset.w); }));
   card.querySelector('.fest-read').addEventListener('click', () => { $('#festShelf').hidden = true; $('#storyKinds').hidden = true; openStory(f); });
   $('#festList').appendChild(card);

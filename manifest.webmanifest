@@ -24,7 +24,8 @@
     { "name": "வாசிப்பு · Reading", "short_name": "Reading", "url": "./#/reading", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] },
     { "name": "கதைகள் · Stories", "short_name": "Stories", "url": "./#/stories", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] },
     { "name": "விளையாட்டு · Games", "short_name": "Games", "url": "./#/practice", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] },
-    { "name": "சான்றிதழ் · Certificate", "short_name": "Certificate", "url": "./#/certificate", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] }
+    { "name": "சான்றிதழ் · Certificate", "short_name": "Certificate", "url": "./#/certificate", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] },
+    { "name": "அச்சிடு · Free printables", "short_name": "Printables", "url": "./tamil-printables.html", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] }
   ],
   "screenshots": [
     { "src": "assets/screenshots/phone-letters.png", "sizes": "780x1688", "type": "image/png", "form_factor": "narrow", "label": "Tap any Tamil letter to hear it" },

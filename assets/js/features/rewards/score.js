@@ -4,11 +4,7 @@
 'use strict';
 
 /* ---------- praise ---------- */
-const PRAISES = [
-  ['அருமை!', 'Excellent!'], ['நன்று!', 'Good job!'], ['மிகவும் நன்று!', 'Very good!'],
-  ['சரியான விடை!', 'Correct answer!'], ['மிகச் சிறப்பு!', 'Superb!']
-];
-const BIG_PRAISES = [['அருமை!', 'Excellent!'], ['மிகச் சிறப்பு!', 'Superb!']];
+const PRAISES = TEXT.praise, BIG_PRAISES = TEXT.bigPraise;   // data/messages.js
 const pick = a => a[Math.floor(Math.random() * a.length)];
 
 /* ---------- celebration pop-up ---------- */

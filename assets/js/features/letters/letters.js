@@ -5,7 +5,7 @@
 // floating letters behind the hero
 (function(){
   const f = $('#floaters'); if (!f) return;
-  const ls = ['அ','ஆ','இ','ஈ','உ','க','ங','ச','ஞ','த','ம','ழ','ஃ','கா','மி','பூ'];
+  const ls = FLOATING_LETTERS;
   ls.forEach((l,i)=>{
     const s = document.createElement('span'); s.textContent = l;
     s.style.left = (4 + (i*61)%92) + '%'; s.style.top = (6 + (i*37)%80) + '%';
@@ -16,7 +16,7 @@
 })();
 
 // Kili the parrot
-const HELLO = 'வணக்கம்! வா, தமிழ் கற்போம்!';
+const HELLO = TEXT.hello;
 $('#mascot').addEventListener('click', ()=>{ sparkle($('#mascot .bird')); speak(HELLO); });
 
 /* ---------- Now-playing panel ---------- */
@@ -57,7 +57,7 @@ function makeTile(item, opts={}){
 }
 
 /* ---------- Render letter sections ---------- */
-uyir.forEach(i=>$(i.len==='குறில்' ? '#gKuril' : '#gNedil').appendChild(makeTile(i,{pic:true})));
+uyir.forEach(i=>$(i.len===LETTER_LABELS.short ? '#gKuril' : '#gNedil').appendChild(makeTile(i,{pic:true})));
 ['v','m','i'].forEach(g=>{
   const h = document.createElement('div'); h.className = 'group';
   h.innerHTML = `${GROUPS[g].ta} <span class="chip-s">${GROUPS[g].en} · 6</span>`;
@@ -108,7 +108,7 @@ function renderBuilder(){
   $('#eqM').textContent = CONS[bC].c + PULLI;
   $('#eqU').textContent = VOWELS[bV].l;
   $('#eqR').textContent = item.l;
-  $('#eqNote').textContent = `${item.r}  ·  ${VOWELS[bV].len === 'குறில்' ? 'short (குறில்)' : 'long (நெடில்)'}`;
+  $('#eqNote').textContent = `${item.r}  ·  ${VOWELS[bV].len === LETTER_LABELS.short ? `short (${LETTER_LABELS.short})` : `long (${LETTER_LABELS.long})`}`;
   $$('#pickCons .pick').forEach((b,i)=>b.setAttribute('aria-pressed', i===bC));
   $$('#pickVow .pick').forEach((b,i)=>b.setAttribute('aria-pressed', i===bV));
 }

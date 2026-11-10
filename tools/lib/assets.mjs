@@ -18,7 +18,8 @@ export const STYLES = [
 ].map(n => `${CSS}${n}.css`);
 
 /* Data shared with the build tools (they load these in a Node VM). */
-export const DATA = ['alphabet', 'words', 'stories', 'rhymes', 'festivals'].map(n => `${JS}data/${n}.js`);
+/* All content and every child-facing message (see docs/ARCHITECTURE.md → "Where text lives"). */
+export const DATA = ['alphabet', 'words', 'stories', 'rhymes', 'festivals', 'rewards', 'pictures', 'messages'].map(n => `${JS}data/${n}.js`);
 
 /* Shared by every page: install app, cookie notice + analytics, support card, Ask Kili chat. */
 export const SERVICES = [

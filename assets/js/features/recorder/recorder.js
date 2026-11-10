@@ -1,16 +1,14 @@
 /* Learn Tamil — Letter Recorder */
 'use strict';
 const $ = s=>document.querySelector(s);
-const PULLI='்';
-const VOW = ['அ','ஆ','இ','ஈ','உ','ஊ','எ','ஏ','ஐ','ஒ','ஓ','ஔ'];
-const SIGN = ['','ா','ி','ீ','ு','ூ','ெ','ே','ை','ொ','ோ','ௌ'];
-const CONS = ['க','ங','ச','ஞ','ட','ண','த','ந','ப','ம','ய','ர','ல','வ','ழ','ள','ற','ன'];
-// Same set and order as index.html
+// Letters come from data/alphabet.js (loaded by record.html) — same set and order as the app.
+const VOW = VOWELS.map(v=>v.l), SIGN = VOWELS.map(v=>v.s), CONS_L = CONS.map(k=>k.c), P = LETTER_LABELS.part;
+const HARD = [4,5,9,10];   // உ ஊ ஒ ஓ forms: device voices often get these wrong — record them first
 const LETTERS = [
-  ...VOW.map((l,i)=>({l, how:'உயிர் — say the vowel only', ou:[4,5,9,10].includes(i)})),
-  ...CONS.map(c=>({l:c+PULLI, how:`மெய் — say it the way you teach it (e.g. “இ${c+PULLI}”)`, ou:c==='ஞ'})),
-  {l:'ஃ', how:'ஆய்தம் — say it the way you teach it', ou:false},
-  ...CONS.flatMap(c=>SIGN.map((s,i)=>({l:c+s, how:`உயிர்மெய் — ${c+PULLI} + ${VOW[i]}`, ou:c==='ஞ' || [4,5,9,10].includes(i)})))
+  ...VOW.map((l,i)=>({l, how:`${P.uyir} — say the vowel only`, ou:HARD.includes(i)})),
+  ...CONS_L.map(c=>({l:c+PULLI, how:`${P.mei} — say it the way you teach it (e.g. “${MEI_SAY_PREFIX}${c+PULLI}”)`, ou:c==='ஞ'})),
+  {l:AYTHAM.l, how:`${P.aytham} — say it the way you teach it`, ou:false},
+  ...CONS_L.flatMap(c=>SIGN.map((s,i)=>({l:c+s, how:`${LETTER_LABELS.uyirmei} — ${c+PULLI} + ${VOW[i]}`, ou:c==='ஞ' || HARD.includes(i)})))
 ];
 const keyOf = l => [...l.normalize('NFC')].map(c=>c.codePointAt(0).toString(16).padStart(4,'0')).join('-');
 LETTERS.forEach(x=>x.key = keyOf(x.l));

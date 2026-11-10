@@ -23,7 +23,7 @@ function checkStickers(quiet){
   const [e, w] = STICKERS[n - 1];
   setTimeout(() => {
     const t = document.createElement('button'); t.type = 'button'; t.className = 'sticker-toast';
-    t.innerHTML = `<span class="st-pic" aria-hidden="true">${e}</span><span><small>📒 New sticker! · <span lang="ta">புதிய ஸ்டிக்கர்!</span></small><b lang="ta">${w}</b></span>`;
+    t.innerHTML = `<span class="st-pic" aria-hidden="true">${e}</span><span><small>📒 ${TEXT.newSticker[1]} · <span lang="ta">${TEXT.newSticker[0]}</span></small><b lang="ta">${w}</b></span>`;
     t.onclick = () => { t.remove(); openStickers(); };
     document.body.appendChild(t);
     Rewards.sfx.coin();
@@ -37,7 +37,7 @@ checkStickers(true);   // stickers already earned before this feature existed: u
 function openStickers(){
   const n = stickersEarned(), left = PER_STICKER - (Progress.d.tokensEver % PER_STICKER);
   const d = famDialog('stickerDlg', `
-    <div class="rw-head"><h2>📒 <span lang="ta">என் ஸ்டிக்கர் புத்தகம்</span> · My sticker book</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
+    <div class="rw-head"><h2>📒 <span lang="ta">${TEXT.stickerBook[0]}</span> · ${TEXT.stickerBook[1]}</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
     <p class="st-progress"><b>${n} / ${STICKERS.length}</b> stickers · ${n < STICKERS.length ? `next one in <b>${left} 🪙</b>` : 'the book is full — amazing! 🎉'}</p>
     <div class="st-grid">${STICKERS.map(([e, w], i) => i < n
       ? `<button class="st on" type="button" data-w="${w}"><span aria-hidden="true">${e}</span><b lang="ta">${w}</b></button>`

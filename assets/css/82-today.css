@@ -59,3 +59,39 @@
 .print-card h3{font-family:var(--font-kid);font-size:17px;margin:4px 0 0;line-height:1.3}
 .print-card p{margin:0;font-size:13px!important}
 .print-card .btn{margin-top:auto;text-decoration:none!important;color:#fff!important}
+
+/* 🖨️ Printables promotion: menu item (desktop), header button (phones), promo card, page sections */
+.nav-print{text-decoration:none}
+.print-btn{display:none;place-items:center;text-decoration:none;font-size:20px}
+@media (max-width:760px){
+  .mainnav .nav-print{display:none}          /* the phone bottom bar keeps its 5 app tabs */
+  .print-btn{display:grid}
+}
+.print-promo{display:flex;align-items:center;gap:14px;margin:18px 0 6px;padding:14px 18px;border-radius:20px;text-decoration:none;color:var(--text);
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--edge) border-box;border:1.5px solid transparent;box-shadow:var(--sh-1);transition:transform .15s}
+.print-promo:hover{transform:translateY(-2px)}
+.print-promo .pp-ic{font-size:36px;flex:none}
+.print-promo b{display:block;font-family:var(--font-kid);font-size:17px}
+.print-promo small{display:block;color:var(--text-muted);font-size:13.5px;line-height:1.4}
+.print-promo .pp-go{margin-left:auto;font-size:22px;font-weight:800;color:var(--accent)}
+.print-jump{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.print-jump a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-weight:700;font-size:14px;text-decoration:none;color:var(--text)}
+.print-jump a:hover{background:var(--accent-soft)}
+.print-jump small{background:var(--accent-soft);color:var(--accent-deep);border-radius:999px;padding:0 7px;font-size:12px}
+/* Desktop: the 🖨️ menu item is icon-only (tooltip + label for screen readers) so the brand keeps its room. */
+@media (min-width:761px){ .nav-print .nav-t{display:none} .nav-print{padding:6px 10px} .site-header .brand{flex-shrink:0} }
+/* Phones: a little less space between header buttons so the 🖨️ button fits beside the brand. */
+@media (max-width:760px){ .site-header .wrap{gap:8px} .print-btn{width:38px;height:38px} }
+/* Header fit on desktop (brand + 6 menu items + tokens + install + theme). Measured, not guessed:
+   wide screens get a slightly wider header; narrower ones drop the subtitle, then the brand words (the அ mark stays). */
+@media (min-width:1360px){ .site-header .wrap{max-width:1320px} }
+@media (min-width:761px) and (max-width:1359px){ .brand-name small{display:none} .site-header .nav-item{padding:6px 8px} .site-header .wrap{gap:10px} }
+@media (min-width:761px) and (max-width:1199px){ .brand-name{display:none} }
+/* Tablets: icon above the Tamil label (like the phone bar) and an icon-only Install button. */
+@media (min-width:761px) and (max-width:1099px){
+  .site-header .nav-item{flex-direction:column;gap:0;padding:4px 6px}
+  .site-header .nav-t{text-align:center}
+  .site-header .nav-t .ta{font-size:12px}
+  .install-btn span:last-child{display:none}
+  .install-btn{padding:8px 11px}
+}

@@ -60,3 +60,22 @@ const VOWEL_WORDS = {
   'ஔ':[['💊','ஔடதம்','medicine']]
 };
 const SIGN_TO_VOWEL = Object.fromEntries(VOWELS.map(v=>[v.s,v]));
+
+/* The special letter ஃ (ஆய்த எழுத்து). Read aloud inside a word, because it has no sound on its own. */
+const AYTHAM = { l:'ஃ', say:'எஃகு', r:'ḵ', hint:'soft breathy “kh” — heard here in the word எஃகு', ex:['🔩','எஃகு','steel'] };
+
+/* Names shown with a letter. short/long must match the len values in VOWELS. */
+const LETTER_LABELS = {
+  uyir:'உயிர் எழுத்து', mei:'மெய் எழுத்து', aytham:'ஆய்த எழுத்து · முப்புள்ளி', uyirmei:'உயிர்மெய்',
+  short:'குறில்', long:'நெடில்',
+  part:{ uyir:'உயிர்', mei:'மெய்', aytham:'ஆய்தம்' }      // under each letter in a word breakdown
+};
+
+/* In school a pure consonant is read with a short இ before it: க் is said “ik”. */
+const MEI_SAY_PREFIX = 'இ';
+
+/* Letters that sound alike share a key, so Listen & pick never offers them together. */
+const SOUND_GROUP = {'ந':'N','ன':'N','ண':'N','ல':'L','ள':'L','ழ':'L','ர':'R','ற':'R'};
+
+/* Big faint letters floating behind the home screen (decoration). */
+const FLOATING_LETTERS = ['அ','ஆ','இ','ஈ','உ','க','ங','ச','ஞ','த','ம','ழ','ஃ','கா','மி','பூ'];

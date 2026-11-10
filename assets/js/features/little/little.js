@@ -3,14 +3,7 @@
    a wrong tap just shows and says the right picture again.
    Uses (core/ and features/rewards/): $, $$, uyir, speak, sayItem, sparkle, shuffle, rand, Rewards, Progress, addStar. */
 'use strict';
-const LT_THEMES = [
-  { id: 'animals', ic: '🦁', label: 'Animals' },
-  { id: 'birds', ic: '🦜', label: 'Birds' },
-  { id: 'food', ic: '🍎', label: 'Fruits and food' },
-  { id: 'vehicles', ic: '🚌', label: 'Vehicles' },
-  { id: 'body', ic: '👂', label: 'Body' },
-  { id: 'vowels', ic: 'அ', label: 'Vowels' }
-];
+const LT_THEMES = TEXT.littleThemes;   // data/messages.js
 const LT = { theme: 'animals', mode: 'look', target: null, busy: false };
 // Each card: { pic, word (what is shown and spoken), say(done) }
 function ltCards(){
@@ -73,5 +66,5 @@ function ltPick(c, b){
 })();
 document.addEventListener('lt:section', e => {
   document.body.classList.toggle('little-on', e.detail === 'little');
-  if (e.detail === 'little'){ ltRender(); if (LT.mode === 'look') setTimeout(() => speak('வா, விளையாடலாம்!'), 300); }
+  if (e.detail === 'little'){ ltRender(); if (LT.mode === 'look') setTimeout(() => speak(TEXT.littleHello), 300); }
 });

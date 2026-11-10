@@ -3,7 +3,6 @@
 'use strict';
 
 let mode='build', answer=null, ok=0, tries=0, locked=false;
-const PRAISE = ['அருமை!', 'நன்று!', 'மிகவும் நன்று!', 'சரியான விடை!'];
 
 // Remember recent answers so the same letter does not come back for a long while.
 const recentQ = { build: [], listen: [] };
@@ -21,7 +20,7 @@ function newQuestion(){
     const ci = CONS.indexOf(answer.cons), vi = VOWELS.indexOf(answer.vowel);
     const others = shuffle([...Array(12).keys()].filter(i=>i!==vi)).slice(0,3).map(i=>uyirmei[ci][i]);
     options = shuffle([answer, ...others]);
-    $('#qAsk').innerHTML = 'சரியான எழுத்தைத் தேர்ந்தெடு<small>Pick the letter these two make</small>';
+    $('#qAsk').innerHTML = `${TEXT.buildAsk[0]}<small>${TEXT.buildAsk[1]}</small>`;
     $('#qShow').innerHTML = `<span class="m">${answer.cons.c+PULLI}</span> <span class="op">+</span> <span class="u">${answer.vowel.l}</span> <span class="op">=</span> ?`;
     $('#hear').hidden = true;
   } else {
@@ -30,7 +29,7 @@ function newQuestion(){
     const keys = new Set([soundKey(answer)]); options = [answer];
     while (options.length < 3){ const c = pool[rand(pool.length)]; const k = soundKey(c); if (!keys.has(k)){ keys.add(k); options.push(c); } }
     shuffle(options);
-    $('#qAsk').innerHTML = 'கேட்டுச் சரியான எழுத்தைத் தொடு<small>Listen, then tap the letter you heard</small>';
+    $('#qAsk').innerHTML = `${TEXT.listenAsk[0]}<small>${TEXT.listenAsk[1]}</small>`;
     $('#qShow').innerHTML = '🔊';
     $('#hear').hidden = false;
   }
@@ -56,7 +55,7 @@ function choose(o,b){
   } else {
     b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
     Rewards.miss(); Progress.track('miss', answer.l);
-    $('#feedback').textContent = 'பரவாயில்லை, மீண்டும் முயற்சி செய்! · Try again';
+    $('#feedback').textContent = `${TEXT.tryAgain[0]} · ${TEXT.tryAgain[1]}`;
     $('#feedback').className = 'feedback bad';
     setTimeout(()=>sayItem(o), 300);
   }

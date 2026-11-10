@@ -4,6 +4,8 @@
 
 const $ = s=>document.querySelector(s);
 const $$ = s=>[...document.querySelectorAll(s)];
+// Fill {name}-style placeholders in a message from data/messages.js.
+const fmt = (s, vars = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => k in vars ? vars[k] : m);
 const rand = n => Math.floor(Math.random()*n);
 const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j=rand(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 

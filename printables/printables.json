@@ -1,44 +1,163 @@
 [
  {
   "file": "tamil-uyir-chart",
+  "cat": "letters",
   "title": "Tamil vowels chart (12 uyir ezhuthukal)",
   "landscape": false,
   "pages": 1
  },
  {
   "file": "tamil-mei-chart",
+  "cat": "letters",
   "title": "Tamil consonants chart (18 mei ezhuthukal)",
   "landscape": false,
   "pages": 1
  },
  {
   "file": "tamil-alphabet-chart",
+  "cat": "letters",
   "title": "Tamil alphabet chart — 12 vowels, 18 consonants and ஃ",
   "landscape": false,
   "pages": 1
  },
  {
   "file": "tamil-uyirmei-chart",
+  "cat": "letters",
   "title": "Uyirmei chart — all 216 Tamil letters",
   "landscape": true,
   "pages": 1
  },
  {
   "file": "tamil-numbers-chart",
+  "cat": "words",
   "title": "Tamil numbers 1 to 10 chart",
   "landscape": false,
   "pages": 1
  },
  {
+  "file": "tamil-colours-chart",
+  "cat": "words",
+  "title": "Colours in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-animals-chart",
+  "cat": "words",
+  "title": "Animals in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-birds-chart",
+  "cat": "words",
+  "title": "Birds in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-food-chart",
+  "cat": "words",
+  "title": "Fruits and food in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-body-chart",
+  "cat": "words",
+  "title": "Parts of the body in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-family-chart",
+  "cat": "words",
+  "title": "Family in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-vehicles-chart",
+  "cat": "words",
+  "title": "Vehicles in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-shapes-chart",
+  "cat": "words",
+  "title": "Shapes in Tamil — picture chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-opposites-chart",
+  "cat": "words",
+  "title": "Opposite words in Tamil — chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-days-and-months-chart",
+  "cat": "words",
+  "title": "Days of the week and Tamil months — chart",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "aathichoodi-poster",
+  "cat": "words",
+  "title": "Aathichoodi poster — one line for each Tamil vowel",
+  "landscape": false,
+  "pages": 1
+ },
+ {
   "file": "tamil-uyir-tracing-worksheet",
+  "cat": "tracing",
   "title": "Tamil vowels tracing worksheet (uyir)",
   "landscape": false,
   "pages": 2
  },
  {
   "file": "tamil-mei-tracing-worksheet",
+  "cat": "tracing",
   "title": "Tamil consonants tracing worksheet (mei)",
   "landscape": false,
   "pages": 3
+ },
+ {
+  "file": "tamil-uyirmei-tracing-worksheet",
+  "cat": "tracing",
+  "title": "Uyirmei tracing worksheets — all 216 letters (18 pages)",
+  "landscape": false,
+  "pages": 18
+ },
+ {
+  "file": "tamil-number-words-tracing-worksheet",
+  "cat": "tracing",
+  "title": "Tamil number words tracing worksheet (1–10)",
+  "landscape": false,
+  "pages": 1
+ },
+ {
+  "file": "tamil-picture-word-matching-worksheet",
+  "cat": "activity",
+  "title": "Match the picture to the Tamil word — worksheet",
+  "landscape": false,
+  "pages": 4
+ },
+ {
+  "file": "tamil-missing-letter-worksheet",
+  "cat": "activity",
+  "title": "Missing letter worksheet — with answer key",
+  "landscape": false,
+  "pages": 3
+ },
+ {
+  "file": "tamil-colouring-pages",
+  "cat": "colouring",
+  "title": "Tamil colouring pages — colour and trace the word",
+  "landscape": false,
+  "pages": 6
  }
 ]
