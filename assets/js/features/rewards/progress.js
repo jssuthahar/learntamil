@@ -42,8 +42,17 @@ const BADGE_RULES = {
   cert5: p => Object.keys(p.certs || {}).length >= 5,
   cert10: p => Object.keys(p.certs || {}).length >= 10,
   gift10: p => (p.gifts || 0) >= 10,
-  path: p => Object.keys(LESSONS).some(a => LESSONS[a].every(L => LESSON_RULES[L.id](p)))
+  path: p => Object.keys(LESSONS).some(a => LESSONS[a].every(L => LESSON_RULES[L.id](p))),
+  kural10: p => p.kLearned.length >= 10,
+  kuralCh: p => kuralChaptersDone(p) >= 1,
+  kural100: p => p.kLearned.length >= 100,
+  kural500: p => p.kLearned.length >= 500,
+  kural1330: p => p.kLearned.length >= 1330
 };
+/* Thirukkural chapters (10 Kurals each) with every Kural marked as learned. */
+function kuralChaptersDone(p){ const s = new Set(p.kLearned); let n = 0;
+  for (let c = 0; c < 133; c++){ let all = true; for (let k = c * 10 + 1; k <= c * 10 + 10; k++) if (!s.has(k)){ all = false; break; } if (all) n++; }
+  return n; }
 /* When each lesson on a learning path counts as done (names, order and links: data/rewards.js → LESSONS). */
 const nCerts = p => Object.keys(p.certs || {}).length;
 const LESSON_RULES = {
@@ -81,7 +90,9 @@ function pathOf(age = childAge()){
 const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, letters: [], words: 0, stories: [],
   memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {},
   misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {}, little: 0, gifts: 0, giftDay: '',
-  day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10) });
+  day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10),
+  // Thirukkural (features/kural/): Kurals learned and bookmarked, quiz answers, its own day streak, Kural of the day done, last opened
+  kLearned: [], kMarks: [], kRight: 0, kAsked: 0, kDay: '', kDays: 0, kBestDays: 0, kDaily: '', kLast: 0, kCerts: {}, kLevels: {} });   // kCerts: chapter → { d: date, s: score, id }; kLevels: level → the same
 
 const Progress = {
   d: DEFAULT(),
@@ -115,6 +126,7 @@ const Progress = {
     else if (what === 'rhyme'){ if (!d.rhymes.includes(v)) d.rhymes.push(v); else return; }
     else if (what === 'coloured') d.coloured++;
     else if (what === 'said') d.said++;
+    else if (what === 'kural'){ if (!d.kLearned.includes(v)){ d.kLearned.push(v); this.addTokens(2); } else return; }   // a Thirukkural couplet marked as learned
     else if (what === 'little'){ d.little = (d.little || 0) + 1; this.save(); this.check(); return; }   // a find in Little ones (its 'correct' already counts toward today)
     if (what !== 'streak') this.activity();
     this.save(); this.check();

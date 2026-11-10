@@ -14,6 +14,7 @@ function showGame(g){
   stopBalloon();
   const panelId = (g==='build' || g==='listen') ? 'g-quiz' : MCQ_INFO[g] ? 'g-mcq' : 'g-'+g;
   if (g==='little'){ location.hash = '/little'; return; }
+  if (g==='kural'){ game = 'build'; location.href = 'thirukkural.html#/games'; return; }   // Thirukkural has its own page
   $$('#practice .game').forEach(x=>x.hidden = x.id !== panelId);
   if (g==='build' || g==='listen') setQuizMode(g);
   if (g==='spin') initSpin();
@@ -26,7 +27,7 @@ function showGame(g){
 $$('#gamePick .gcard').forEach(c=>c.addEventListener('click', ()=>{
   showGame(c.dataset.game);
   // Phones: the board sits below 14 game cards, so bring the game into view.
-  if (c.dataset.game !== 'little' && matchMedia('(max-width:760px)').matches)
+  if (c.dataset.game !== 'little' && c.dataset.game !== 'kural' && matchMedia('(max-width:760px)').matches)
     setTimeout(()=>{ const p = [...document.querySelectorAll('#practice .game')].find(x => !x.hidden); if (p) p.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' }); }, 60);
 }));
 document.addEventListener('lt:section', e=>{

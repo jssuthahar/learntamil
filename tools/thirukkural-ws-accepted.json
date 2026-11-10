@@ -1,0 +1,112 @@
+{
+  "_note": "Words the Wikisource check flags only because Wikisource joins or splits them differently (sandhi), or because the Wikisource page itself has a typo. Each was read by hand against the page. Kural number -> { words, why }.",
+  "54": {
+    "words": [
+      "திண்மைஉண்"
+    ],
+    "why": "WS joins it as திண்மையுண்; same words (திண்மை உண்டாக)"
+  },
+  "58": {
+    "words": [
+      "பெறின்பெறுவர்"
+    ],
+    "why": "WS poem பெறிற்பெறுவர், split பெறின் பெறுவர்"
+  },
+  "65": {
+    "words": [
+      "மற்றுஅவர்"
+    ],
+    "why": "WS split: மற்று அவர்"
+  },
+  "68": {
+    "words": [
+      "தம்மின்தம்"
+    ],
+    "why": "WS split: தம்மின் தம்"
+  },
+  "70": {
+    "words": [
+      "மகன்தந்தைக்கு"
+    ],
+    "why": "WS split: மகன் தந்தைக்கு"
+  },
+  "74": {
+    "words": [
+      "அன்புஈனும்",
+      "அதுஈனும்"
+    ],
+    "why": "WS split: அன்பு ஈனும் … அது ஈனும்"
+  },
+  "189": {
+    "words": [
+      "ஆற்றுங்கொல்"
+    ],
+    "why": "WS split: ஆற்றும்கொல்"
+  },
+  "226": {
+    "words": [
+      "அஃதொருவன்"
+    ],
+    "why": "WS joins differently (அஃதொருவன் = அஃது ஒருவன்)"
+  },
+  "233": {
+    "words": [
+      "றில்"
+    ],
+    "why": "traditional split நிற்பதொன் றில் (= நிற்பது ஒன்று இல்), as in WS"
+  },
+  "249": {
+    "words": [
+      "கண்டற்றால்"
+    ],
+    "why": "WS split: கண்டு அற்றால்"
+  },
+  "276": {
+    "words": [
+      "வன்கணார்"
+    ],
+    "why": "WS has வண்கணார்; வன்கணார் (the cruel) is the reading the meaning needs and both copies agree — flagged for teacher review"
+  },
+  "323": {
+    "words": [
+      "மற்றதன்"
+    ],
+    "why": "WS poem has the typo மறறதன்; its split reads மற்று அதன்"
+  },
+  "334": {
+    "words": [
+      "உயிர்ஈரும்"
+    ],
+    "why": "WS split: உயிர் ஈரும் (with a stray mark)"
+  },
+  "816": {
+    "words": [
+      "பெருங்கெழீஇ"
+    ],
+    "why": "WS split: பெரும் கெழீஇ (its poem line has the typo பெருங்கழீஇ)"
+  },
+  "1101": {
+    "words": [
+      "ஒண்தொடி"
+    ],
+    "why": "spelling variant of ஒண்டொடி (ஒள் + தொடி)"
+  },
+  "1174": {
+    "words": [
+      "உய்வில்நோய்"
+    ],
+    "why": "WS split: உய்வு இல் நோய்"
+  },
+  "720": {
+    "words": [
+      "தங்கணத்தார்"
+    ],
+    "why": "WS poem தங்கணத்தர், but its own commentary reads தம் கணத்தார்; both copies agree on தங்கணத்தார் — flagged for teacher review"
+  },
+  "801": {
+    "words": [
+      "கிழமையைக்"
+    ],
+    "why": "WS (Parimelazhagar) reads கிழைமையைக்; both copies and common modern editions read கிழமையைக் — flagged for teacher review"
+  }
+}

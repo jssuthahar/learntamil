@@ -159,11 +159,89 @@ await check('celebrations fill their placeholders', `(async()=>{ celebrate('🎯
   const t = document.querySelector('.badge-pop').innerText; document.querySelectorAll('.badge-pop').forEach(x=>x.remove()); return t.includes('10 things'); })()`);
 await check('certificate levels come from data/rewards.js', `CERT.LEVELS.length === CERT_LEVELS.length && CERT.LEVELS.every(L => L.gen && L.gen.length > 0)`);
 await check('certificate test starts', `(async()=>{ location.hash='/certificate'; await new Promise(r=>setTimeout(r,200)); document.querySelector('#certLevels button')?.click(); return true; })()`);
-for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html']){
+for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html', 'thirukkural-chapters.html', 'thirukkural-chapter-1.html', 'thirukkural-chapter-133.html']){
   const before = errors.length; await open(page);
   if (errors.length > before) fail(`${page}: errors while loading: ${errors.slice(before).join(' | ')}`);
   await check(`${page} loads`, 'document.readyState === "complete"');
 }
+/* Thirukkural: its own page (thirukkural.html) with Learn · Games · Print · Certificate · Parents. */
+await open('index.html');
+await check('index links to the Thirukkural page from the home screen (not the letter tabs), and the games card goes there', `(async()=>{
+  const link = !!document.querySelector('.hero a.kural-promo[href="thirukkural.html"]') && !document.querySelector('#letterTabs a') && !document.getElementById('kural');
+  location.hash = '/practice'; await new Promise(r=>setTimeout(r,200)); return link && !!document.querySelector('.gcard[data-game=kural]'); })()`);
+{ const before = errors.length; await open('thirukkural.html#/');
+  if (errors.length > before) fail('thirukkural.html: errors while loading: ' + errors.slice(before).join(' | ')); }
+const kw = 'await new Promise(r=>setTimeout(r,200));';
+await check('thirukkural: dashboard loads the 1,330 couplets, the three divisions and the 5-item menu', `(async()=>{ for (let i=0;i<40 && !document.querySelector('.k-paal');i++) await new Promise(r=>setTimeout(r,100));
+  return KU.book.k.length === 1330 && KU.book.ch.length === 133 && document.querySelectorAll('.k-paal').length === 3
+    && [...document.querySelectorAll('.mainnav .nav-item')].map(n => n.dataset.kgo).join() === 'learn,games,print,certificate,parents'
+    && !document.getElementById('kAbout').hidden && document.querySelector('.nav-item[data-kgo=learn]').classList.contains('on'); })()`);
+await check('thirukkural: division, chapter and Kural screens open from the URL', `(async()=>{
+  location.hash='/paal/2'; ${kw} const paal = document.querySelectorAll('.k-chap').length === 70 && document.getElementById('kAbout').hidden;
+  location.hash='/ch/1'; ${kw} const ch = document.querySelectorAll('.k-item').length === 10;
+  location.hash='/k/1'; ${kw} const k = document.querySelectorAll('.k-line').length === 2 && !!document.querySelector('#kStepBody .k-words') && document.querySelectorAll('.k-step').length === 5;
+  location.hash='/k/1330'; ${kw} const last = document.querySelectorAll('.k-line').length === 2 && document.querySelectorAll('.k-step').length === 2 && !!document.querySelector('#kStepBody .k-pope');
+  return paal && ch && k && last; })()`);
+await check('thirukkural: every lesson is well formed (scene frames, quiz answers, word lists)', `Object.entries(KURAL_LESSONS).every(([n, L]) => +n >= 1 && +n <= 1330
+  && L.words.length && L.ta && L.en && L.life.length === 2 && L.scene.length >= 3 && L.scene.every(f => f.cap.length === 2 && f.a.every(a => a.length === 5))
+  && L.quiz.length >= 2 && L.quiz.every(q => q[2][q[3]]) && ['draft','reviewed'].includes(L.review))`);
+await check('thirukkural: story plays, learning and bookmarks save per child, badges have rules', `(async()=>{ location.hash='/k/1'; ${kw}
+  kShowStep(2); document.querySelector('#kNarrate').checked = false; document.querySelector('[data-k=scene]').click(); ${kw}
+  const scene = !!document.querySelector('#kScene .ks-stage .ks-a') && document.querySelector('.ks-ta').textContent === KURAL_LESSONS[1].scene[0].cap[0];
+  document.querySelector('.k-actions [data-k=learn]').click(); document.querySelector('.k-star').click();
+  const saved = JSON.parse(Profiles.get('lt-progress')); kStop();
+  return scene && saved.kLearned.includes(1) && saved.kMarks.includes(1) && ['kural10','kuralCh','kural100','kural500','kural1330'].every(id => BADGES.some(b => b.id === id) && typeof BADGE_RULES[id] === 'function'); })()`);
+await check('thirukkural: a guided lesson goes step by step and finishing the quiz marks the Kural learned', `(async()=>{
+  Progress.d.kLearned = Progress.d.kLearned.filter(x => x !== 391); location.hash='/k/391'; ${kw}
+  const names = [...document.querySelectorAll('.k-step')].length === 5;
+  for (let i = 0; i < 4; i++) document.getElementById('kStepNext').click();
+  const quizOn = document.querySelector('.k-step.on') === document.querySelectorAll('.k-step')[4] && document.getElementById('kStepNext').hidden;
+  for (let q = 0; q < 5; q++){ const box = document.getElementById('kQuiz'); if (!box || !box.kq) break;
+    box.querySelectorAll('.k-opt')[box.kq.opts.findIndex(o => o.ok)].click(); box.querySelector('.k-nextq').click(); await new Promise(r=>setTimeout(r,30)); }
+  document.querySelectorAll('.badge-pop').forEach(x=>x.remove()); kStop();
+  return names && quizOn && !!document.querySelector('.k-done') && Progress.d.kLearned.includes(391) && !!document.querySelector('.k-done a[href="#/k/392"]'); })()`);
+await check('thirukkural: 30 lessons ready, and Start here lists their chapters', `(async()=>{ location.hash='/'; ${kw}
+  return Object.keys(KURAL_LESSONS).length >= 30 && document.querySelectorAll('.k-kids .k-kid-ch').length === kLessonChapters().length && kLessonChapters().join() === '1,10,40'; })()`);
+for (const g of ['complete', 'match', 'arrange', 'story', 'listen'])
+  await check(`thirukkural game "${g}" starts and accepts a right answer`, `(async()=>{ location.hash='/games/${g}'; ${kw}
+    if ('${g}' === 'arrange') return document.querySelectorAll('#kgBox .k-wchip').length >= 5 && document.querySelector('.nav-item[data-kgo=games]').classList.contains('on');
+    for (const b of document.querySelectorAll('#kgBox .k-opt')){ b.click(); if (!document.querySelector('#kgBox .k-nextq').hidden) break; }
+    kStop(); return !document.querySelector('#kgBox .k-nextq').hidden; })()`);
+await check('thirukkural: games list and daily Kural open', `(async()=>{ location.hash='/games'; ${kw} const games = document.querySelectorAll('.k-games .gcard').length === 6;
+  location.hash='/daily'; ${kw} kStop(); return games && document.querySelectorAll('.k-line').length === 2; })()`);
+await check('thirukkural: print makes all three sheets for a chapter', `(async()=>{ location.hash='/print/40'; ${kw}
+  const sheet = () => document.getElementById('kpSheet');
+  const couplets = sheet().querySelectorAll('.ks-item').length === 10;
+  document.querySelector('[data-sheet=copy]').click(); const copy = sheet().querySelectorAll('.ks-copy').length === 10 && sheet().querySelectorAll('.ks-trace').length === 20;
+  document.querySelector('[data-sheet=missing]').click(); const missing = sheet().querySelectorAll('.ks-gap').length === 10 && sheet().querySelectorAll('.ks-key li').length === 10;
+  document.querySelector('[data-sheet=couplets]').click();
+  return couplets && copy && missing && document.querySelector('.nav-item[data-kgo=print]').classList.contains('on'); })()`);
+await check('thirukkural: passing a chapter test earns a certificate with a PDF', `(async()=>{ location.hash='/certificate'; ${kw}
+  const list = document.querySelectorAll('.k-chap').length === 108;
+  location.hash='/certificate/1'; ${kw}
+  for (let q = 0; q < 10; q++){ const box = document.getElementById('kcBox');
+    box.querySelectorAll('.k-opt')[box.kq.opts.findIndex(o => o.ok)].click(); box.querySelector('.k-nextq').click(); await new Promise(r=>setTimeout(r,30)); }
+  document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  return list && !!Progress.d.kCerts[1] && !!document.getElementById('kcCanvas') && typeof CERT.jpegToPdf === 'function'; })()`);
+await check('thirukkural page: settings, rewards and child switcher open', `(async()=>{
+  document.getElementById('settingsBtn').click(); const st = document.getElementById('settingsDlg'); const a = !!st && st.open; st.close();
+  document.getElementById('stars').click(); const rw = document.getElementById('rewardsDlg'); const b = rw.open && rw.querySelectorAll('.rw-badge').length === BADGES.length; rw.close();
+  document.getElementById('profileBtn').click(); const pd = document.getElementById('profDlg'); const c = !!pd && pd.open; pd.close();
+  return a && b && c; })()`);
+await check('thirukkural: level exams — level 1 open, level 2 locked until level 1 is passed', `(async()=>{ Progress.d.kLevels = {}; location.hash='/certificate'; ${kw}
+  const cards = document.querySelectorAll('.kc-level'); const shape = cards.length === KURAL_LEVELS.length && !cards[0].classList.contains('locked') && cards[1].classList.contains('locked');
+  location.hash='/certificate/level/1'; ${kw}
+  for (let q = 0; q < 10; q++){ const box = document.getElementById('kcBox');
+    box.querySelectorAll('.k-opt')[box.kq.opts.findIndex(o => o.ok)].click(); box.querySelector('.k-nextq').click(); await new Promise(r=>setTimeout(r,30)); }
+  document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  const passed = !!Progress.d.kLevels[1] && !!document.getElementById('kcCanvas') && !!document.querySelector('#kcBox a[href="#/certificate/level/2"]');
+  location.hash='/certificate'; ${kw}
+  return shape && passed && !document.querySelectorAll('.kc-level')[1].classList.contains('locked')
+    && KURAL_LEVELS.every((L, i) => L.n === i + 1 && L.from >= 1 && L.to <= 1080 && L.from % 10 === 1 && L.to % 10 === 0); })()`);
+await check('thirukkural: home tiles open Games, Certificate, Print and the Kural of the day', `(async()=>{ location.hash='/'; ${kw}
+  return ['daily','games','certificate','print'].every(t => !!document.querySelector('.k-tiles a[href="#/' + t + '"]')) && !!document.querySelector('a.k-continue'); })()`);
+await check('thirukkural: parents screen opens', `(async()=>{ location.hash='/parents'; ${kw} return document.querySelector('.nav-item[data-kgo=parents]').classList.contains('on') && document.querySelectorAll('#kuralView .k-stat').length === 4; })()`);
+
 /* Printables: every PDF and preview listed exists, and the menu promotes the page. */
 const PRINTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'printables/printables.json'), 'utf8'));
 const missingPrints = PRINTS.flatMap(d => [`printables/${d.file}.pdf`, `assets/printables/${d.file}.png`]).filter(f => !fs.existsSync(path.join(ROOT, f)));

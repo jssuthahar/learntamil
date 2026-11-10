@@ -33,7 +33,13 @@ const BADGES = [
   { id: 'cert5', ic: '👑', ta: '5 சான்றிதழ்கள்', en: 'Earned 5 certificates' },
   { id: 'cert10', ic: '🏆', ta: '10 சான்றிதழ்களும்', en: 'Earned all 10 certificates' },
   { id: 'gift10', ic: '🎁', ta: '10 நாள் பரிசுகள்', en: 'Opened 10 daily gifts' },
-  { id: 'path', ic: '🗺️', ta: 'கற்றல் பயணம் முடிந்தது', en: 'Finished a whole learning path' }
+  { id: 'path', ic: '🗺️', ta: 'கற்றல் பயணம் முடிந்தது', en: 'Finished a whole learning path' },
+  /* Thirukkural milestones (#/kural) */
+  { id: 'kural10', ic: '📜', ta: 'முதல் 10 குறள்கள்', en: 'Learned your first 10 Thirukkural couplets' },
+  { id: 'kuralCh', ic: '📗', ta: 'முதல் அதிகாரம்', en: 'Learned a whole Thirukkural chapter' },
+  { id: 'kural100', ic: '🪔', ta: '100 குறள்கள்', en: 'Learned 100 Kurals' },
+  { id: 'kural500', ic: '🏵️', ta: '500 குறள்கள்', en: 'Learned 500 Kurals' },
+  { id: 'kural1330', ic: '👑', ta: '1330 குறள்களும்', en: 'Learned all 1,330 Kurals' }
 ];
 
 /* Age groups 👶🧒🧑‍🎓 — each child picks one; it chooses which learning path they see.

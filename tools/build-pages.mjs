@@ -12,7 +12,7 @@
 */
 import fs from 'node:fs';
 import path from 'node:path';
-import { styleTags, scriptTags, SERVICES, APP_SCRIPTS, PRECACHE_ASSETS, STYLES, STYLE_BUNDLE } from './lib/assets.mjs';
+import { styleTags, scriptTags, SERVICES, APP_SCRIPTS, KURAL_SCRIPTS, PRECACHE_ASSETS, STYLES, STYLE_BUNDLE } from './lib/assets.mjs';
 import { loadData } from './lib/load-data.mjs';
 
 export const SITE = 'https://learntamil.msdevbuild.com/';
@@ -20,8 +20,8 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const TODAY = new Date().toISOString().slice(0, 10);
 
 // Load the same data the app uses.
-const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES, FESTIVALS } =
-  loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'WORDS', 'STORIES', 'TOPICS', 'AATHICHOODI', 'RHYMES', 'FESTIVALS']);
+const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES, FESTIVALS, KURAL_PAALS, KURAL_LESSONS } =
+  loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'WORDS', 'STORIES', 'TOPICS', 'AATHICHOODI', 'RHYMES', 'FESTIVALS', 'KURAL_PAALS', 'KURAL_LESSONS']);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const PUBLISHED = '2026-11-09';
 const ISSUES_URL = 'https://github.com/jssuthahar/learntamil/issues';
@@ -58,6 +58,8 @@ export const GUIDES = [
   { file: 'tamil-rhymes-for-kids.html', ic: '🎵', en: 'Tamil rhymes for kids', ta: 'சிறுவர் பாடல்கள்' },
   { file: 'tamil-festivals-for-kids.html', ic: '🪔', en: 'Tamil festivals for kids', ta: 'பண்டிகைகள்' },
   { file: 'how-to-teach-tamil-to-kids.html', ic: '👪', en: 'How to teach Tamil to kids — parents’ guide', ta: 'பெற்றோருக்கான வழிகாட்டி' },
+  { file: 'thirukkural.html', ic: '📜', en: 'Thirukkural for kids', ta: 'திருக்குறள்' },
+  { file: 'thirukkural-chapters.html', ic: '📗', en: 'All 133 Thirukkural chapters', ta: 'அதிகாரங்கள்' },
   { file: 'tamil-printables.html', ic: '🖨️', en: 'Free printable charts & worksheets', ta: 'அச்சிடும் தாள்கள்' }
 ];
 
@@ -796,6 +798,7 @@ const HELP = [
   ['What is Say it back?', 'Tap 🎤 Say it under the big letter or in Reading. Your child hears the right sound, records themselves saying it, then plays both to compare. The recording stays on the device only and is deleted when the window closes — it is never uploaded.', 'say speak record microphone mic pronounce pronunciation voice compare', ''],
   ['Are there Tamil rhymes and Aathichoodi?', 'Yes. Open Stories → 🎵 Rhymes for நிலா நிலா ஓடி வா, Bharathiyar\'s ஓடி விளையாடு பாப்பா and Avvaiyar\'s ஆத்திசூடி — one wise line for each vowel. Each word lights up as it is sung. A new Aathichoodi line of the day is on the home screen.', 'rhyme rhymes song songs sing aathichoodi athichudi avvaiyar bharathiyar paappa nila poem', './#/stories'],
   ['Are there stories about Tamil festivals?', 'Yes. Open Stories → 🪔 Festivals for Pongal, Tamil New Year, Deepavali and Karthigai Deepam — a short read-aloud story and the special words for each.', 'festival festivals pongal deepavali diwali new year puthandu karthigai deepam culture', './#/stories'],
+  ['Where can my child learn Thirukkural?', 'Tap 📜 திருக்குறள் next to the letter tabs (or open thirukkural.html). All 1,330 Kurals are there by division and chapter. Each Kural can be heard (🔊, 🐢 slowly, or 🔁 say after me), and many have word meanings, a simple Tamil and English meaning, an animated story and a short quiz. There are six Thirukkural games, a Kural of the day, printable worksheets for every chapter and a certificate test for each chapter. Mark a Kural as learned to earn badges.', 'thirukkural kural kurals thiruvalluvar valluvar திருக்குறள் குறள் couplet couplets adhikaram chapter worksheet certificate', 'thirukkural.html'],
   ['Is there a mode for very young children?', 'Yes — 👶 Little ones (ages 3–5). Big pictures, no English text, sounds play by themselves and there is no wrong-answer buzzer. Open it from the home screen or Games → Little ones.', 'little ones toddler young small preschool 3 4 5 year old baby easy mode', './#/little'],
   ['Can brothers and sisters use the same device?', 'Yes. Tap the animal picture on the home screen card to switch child. Add up to 6 children in the 👪 Parent dashboard. Each child has their own tokens, badges, stickers and certificates, saved only on that device.', 'profile profiles child children sibling siblings brother sister switch user kids family', ''],
   ['What is the Parent dashboard?', 'Tap 👪 Parents on the home screen and hold the button for 3 seconds. It shows your child’s age group and learning path (lessons done and what to try next), minutes learned each day, letters heard and traced, stories, certificates and the letters your child misses most. You can also add children and turn on a break reminder.', 'parent parents corner dashboard report progress time screen time break reminder settings', ''],
@@ -806,10 +809,127 @@ const HELP = [
   ['What is the sticker book?', 'Every 10 tokens 🪙 unlock a new picture sticker with its Tamil name. Tap 📒 Stickers on the home screen to see the book and tap a sticker to hear its name.', 'sticker stickers book collect collection reward', ''],
   ['How does reading practice work?', 'Open 📖 Read → Words. Read the word yourself, tap 🐢 to hear it letter by letter, then show the picture to check. There are three levels: 2, 3 and 4+ letter words.', 'reading read practice words level spell', './#/reading']
 ];
+
+/* ---------- 8c. Thirukkural (திருக்குறள்): guide, the 133 chapters, one page per chapter ----------
+   The couplets come from assets/js/data/thirukkural.json (checked by tools/import-thirukkural.mjs); children's
+   meanings from assets/js/data/kural-lessons.js. Nothing here invents a fact: counts and names are read from the data. */
+const KURAL = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/js/data/thirukkural.json'), 'utf8'));
+const kText = n => KURAL.k[n - 1];
+const kChPage = c => `thirukkural-chapter-${c}.html`;
+const kPaalOf = c => KURAL_PAALS.find(p => c >= p.from && c <= p.to);
+const kCouplet = (n, { lesson = true } = {}) => {
+  const [l1, l2, pope] = kText(n), L = lesson && KURAL_LESSONS[n];
+  return `<div class="kd-kural" id="kural-${n}"><a class="kd-n" href="#kural-${n}" aria-label="Kural ${n}">${n}</a><div>
+  <p class="kd-lines ta" lang="ta">${l1}<br>${l2}</p>
+  ${L ? `<p class="kd-mean"><b>Meaning for children:</b> ${esc(L.en)}</p><p class="kd-mean ta" lang="ta">${L.ta}</p>` : ''}
+  <p class="kd-pope"><span class="muted">G. U. Pope (1886):</span> ${esc(pope)}</p></div></div>`;
+};
+const KURAL_FAQ = [
+  ['What is Thirukkural?', 'Thirukkural (திருக்குறள், Thirukkuṟaḷ) is a classic Tamil book of 1,330 short couplets called Kurals (குறள்). Each Kural gives one piece of advice about living well — being kind, honest, hard-working, a good friend and a fair leader. It is one of the most loved works of Tamil literature and is often called உலகப் பொதுமறை (ulaga podhumarai), “the common scripture of the world”.'],
+  ['Who wrote Thirukkural?', 'Thirukkural was written by the poet Thiruvalluvar (திருவள்ளுவர்), also called Valluvar. Very little is known for certain about his life.'],
+  ['How many Kurals are there in Thirukkural?', 'There are 1,330 Kurals in 133 chapters (அதிகாரம், adhikaram). Every chapter has exactly 10 Kurals on one topic, such as கல்வி (learning) or நட்பு (friendship).'],
+  ['What are the three divisions of Thirukkural?', 'Thirukkural has three divisions (பால், paal): அறத்துப்பால் (Arathuppaal, virtue) with 38 chapters and 380 Kurals; பொருட்பால் (Porutpaal, wealth and society) with 70 chapters and 700 Kurals; and காமத்துப்பால் (Kaamathuppaal, love) with 25 chapters and 250 Kurals.'],
+  ['What is the first Kural of Thirukkural?', `The first Kural is “${kText(1)[0]} / ${kText(1)[1]}” — just as all letters begin with அ (a), the world begins with God, the First One. It opens the chapter கடவுள் வாழ்த்து (The Praise of God).`],
+  ['How can children learn Thirukkural?', 'Learn one Kural a day. Listen to it, say it line by line, learn the hard words, then talk about what it means and where you could use it today. Repeat yesterday’s Kural before starting a new one. The free Learn Tamil app reads each Kural aloud, explains the words and has stories, quizzes and games.']
+];
+const kTitle = c => { const [ta, en] = KURAL.ch[c - 1];
+  return [`Thirukkural Chapter ${c}: ${ta} with Meaning`, `Thirukkural Chapter ${c}: ${ta}`, `Thirukkural Chapter ${c} — ${en}`].find(t => t.length <= 60) || `Thirukkural Chapter ${c}`; };
+const kDesc = c => { const [ta, en] = KURAL.ch[c - 1], [l1] = kText(c * 10 - 9);
+  let d = `Thirukkural chapter ${c}, ${ta} (${en}): Kurals ${c * 10 - 9}–${c * 10} in Tamil with English translation. Begins: ${l1}`;
+  if (d.length > 155) d = d.slice(0, 154).replace(/\s+\S*$/, '') + '…';
+  return d; };
+
+/* thirukkural.html is a hand-written app page (like index.html); its guide text and JSON-LD are generated here. */
+const KURAL_ABOUT = `<section class="k-about doc" id="kAbout" aria-labelledby="kAboutT">
+<h2 id="kAboutT"><span class="h-ic" aria-hidden="true">📜</span>What is Thirukkural?</h2>
+<p class="lead-doc"><strong>Thirukkural (${ta('திருக்குறள்')}) is a classic Tamil book of 1,330 two-line couplets, called Kurals, written by the poet Thiruvalluvar (${ta('திருவள்ளுவர்')}).</strong> Each Kural gives one piece of wise advice — be kind, speak the truth, keep learning, choose good friends — in just seven metrical feet: four in the first line and three in the second. The book has 133 chapters of 10 Kurals each, in three divisions.</p>
+${h2('divisions', '🌳', 'The three divisions (பால்)')}
+<div class="kd-paals">${KURAL_PAALS.map(p => { const chs = p.to - p.from + 1;
+  const groups = KURAL.iyal.filter(([, , from]) => from >= p.from && from <= p.to);
+  return `<div class="kd-paal"><span aria-hidden="true">${p.ic}</span><h3>${ta(p.ta)} — ${esc(p.en)}</h3><p><b>${chs} chapters · ${chs * 10} Kurals</b> (chapters ${p.from}–${p.to}).</p><p>${esc(p.intro[1])}</p><p class="muted">Sections (இயல்): ${groups.map(([t, e]) => `${ta(t)} (${esc(e)})`).join(', ')}.</p></div>`; }).join('')}</div>
+<p>See <a href="thirukkural-chapters.html">all 133 chapters with their English names</a>.</p>
+${h2('first', '🔤', 'The first Kural, explained for children')}
+${kCouplet(1)}
+${KURAL_LESSONS[1] ? `<p><b>Word by word:</b> ${KURAL_LESSONS[1].words.map(([w, , en]) => `${ta(w)} — ${esc(en)}`).join('; ')}.</p>
+<p><b>Use it today:</b> ${esc(KURAL_LESSONS[1].life[1])}</p>` : ''}
+${h2('chapter-1', '📗', `Chapter 1: ${ta(KURAL.ch[0][0])} — ${esc(KURAL.ch[0][1])}`)}
+<p>The first chapter has ten Kurals. Each has a simple meaning for children and G. U. Pope’s classic English translation.</p>
+${Array.from({ length: 9 }, (_, i) => kCouplet(i + 2)).join('\n')}
+<p><a href="${kChPage(2)}">Next: chapter 2, ${ta(KURAL.ch[1][0])} (${esc(KURAL.ch[1][1])}) →</a></p>
+${h2('how', '🧒', 'How can children learn Thirukkural?')}
+<ol class="steps">
+  <li><b>One Kural a day.</b> Short and regular beats long and rare. Start with chapter 1, or with a chapter that matches your child’s day — கல்வி (learning, chapter 40) or நட்பு (friendship, chapter 79).</li>
+  <li><b>Listen, then say it line by line.</b> In the app, 🔁 Say after me reads one line and waits for your child to repeat it.</li>
+  <li><b>Learn the hard words.</b> Kurals use old Tamil words; the word-by-word meaning makes them easy.</li>
+  <li><b>Talk about the meaning.</b> Ask: “When could you use this today?” A story or a real example from home or school helps it stick.</li>
+  <li><b>Revise.</b> Say yesterday’s Kural before a new one. Quizzes and games in the app revise the Kurals your child has learned.</li>
+</ol>
+${tip('Kurals 1–380 (அறத்துப்பால்) and 381–1080 (பொருட்பால்) suit children best. காமத்துப்பால் (love) is better read with older children, with a grown-up.')}
+${h2('daily', '📅', 'Thirukkural of the day')}
+<p>The <a href="#/daily">Kural of the day</a> is the same for everyone on a given date and goes through all 1,080 Kurals of அறத்துப்பால் and பொருட்பால் before repeating. Learn it, answer two questions and keep your streak going.</p>
+${h2('about-text', '📚', 'About this text')}
+<p>The Tamil text of all 1,330 Kurals on this site was checked against three independent copies: <a href="https://www.projectmadurai.org/" rel="noopener">Project Madurai</a>, the open <a href="https://github.com/tk120404/thirukkural" rel="noopener">tk120404/thirukkural</a> dataset and <a href="https://ta.wikisource.org/" rel="noopener">Tamil Wikisource</a>. The English verse translation is by Rev. G. U. Pope (1886), which is in the public domain. Meanings for children are written by Learn Tamil to simplify, never change, the traditional meaning. Found a mistake? Please <a href="${ISSUES_URL}" rel="noopener">report it</a>.</p>
+${h2('faq', '❓', 'Questions about Thirukkural')}
+<div class="faq">${faqHtmlFor(KURAL_FAQ)}</div>
+</section>`;
+const KURAL_SCHEMA = { '@context': 'https://schema.org', '@graph': [faqSchemaFor(KURAL_FAQ, 'thirukkural.html'),
+    { '@type': 'Book', '@id': SITE + 'thirukkural.html#book', name: 'திருக்குறள்', alternateName: ['Thirukkural', 'Tirukkural', 'Kural'], inLanguage: 'ta',
+      author: { '@type': 'Person', name: 'Thiruvalluvar', alternateName: 'திருவள்ளுவர்' },
+      hasPart: KURAL_PAALS.map(p => ({ '@type': 'CreativeWork', name: p.ta, alternateName: p.en, position: p.id })) },
+    { '@type': 'HowTo', name: 'How children can learn Thirukkural', step: ['Learn one Kural a day', 'Listen, then say it line by line', 'Learn the hard words', 'Talk about the meaning', 'Revise'].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s })) },
+  { '@type': ['WebApplication', 'LearningResource'], '@id': SITE + 'thirukkural.html#app', name: 'Learn Thirukkural — திருக்குறள் கற்போம்', url: SITE + 'thirukkural.html',
+    applicationCategory: 'EducationalApplication', operatingSystem: 'Any (web browser)', isAccessibleForFree: true, inLanguage: ['ta', 'en'], typicalAgeRange: '5-12',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, author: { '@id': SITE + '#author' }, teaches: 'Thirukkural' }] };
+{
+  const f = path.join(ROOT, 'thirukkural.html'); let h = fs.readFileSync(f, 'utf8');
+  const putK = (name, html) => { const re = new RegExp(`(<!-- ${name}:START -->)[\\s\\S]*?(<!-- ${name}:END -->)`);
+    if (!re.test(h)) throw new Error(`thirukkural.html is missing the ${name} markers`); h = h.replace(re, `$1\n${html}\n$2`); };
+  putK('KURAL-SCHEMA', `<script type="application/ld+json">${JSON.stringify(KURAL_SCHEMA)}</script>`);
+  putK('STYLES', styleTags());
+  putK('KURAL-ABOUT', KURAL_ABOUT);
+  putK('FOOTER', FOOTER);
+  putK('SCRIPTS', scriptTags([...KURAL_SCRIPTS, ...SERVICES]));
+  fs.writeFileSync(f, h);
+}
+
+write('thirukkural-chapters.html', shell({
+  file: 'thirukkural-chapters.html', guide: true, bubble: '133!',
+  title: 'All 133 Thirukkural Chapters (Adhikaram) in Tamil & English',
+  description: `The 133 chapters (அதிகாரம்) of Thirukkural in order, with English names: from ${KURAL.ch[0][0]} (${KURAL.ch[0][1]}) to ${KURAL.ch[132][0]}. Open any chapter for its 10 Kurals.`,
+  h1: 'All 133 Thirukkural chapters — <span class="ta">அதிகாரங்கள்</span>', eyebrow: '3 divisions · 13 sections · 133 chapters · 1,330 Kurals',
+  body: `
+<p class="lead-doc"><strong>Thirukkural has 133 chapters (${ta('அதிகாரம்')}, adhikaram) of exactly 10 Kurals each — 1,330 Kurals in all.</strong> The chapters are grouped into sections (${ta('இயல்')}, iyal) inside three divisions (${ta('பால்')}, paal). Chapter <i>n</i> holds Kurals 10<i>n</i> − 9 to 10<i>n</i>; for example, chapter 40, ${ta(KURAL.ch[39][0])} (${esc(KURAL.ch[39][1])}), holds Kurals 391–400.</p>
+${KURAL_PAALS.map(p => `${h2('paal-' + p.id, p.ic, `${ta(p.ta)} — ${esc(p.en)} (chapters ${p.from}–${p.to})`)}
+${KURAL.iyal.filter(([, , from]) => from >= p.from && from <= p.to).map(([t, e, from, to]) => `<h3>${ta(t)} · ${esc(e)}</h3>
+<ol class="kd-chlist" start="${from}">${Array.from({ length: to - from + 1 }, (_, i) => from + i).map(c => `<li><a href="${kChPage(c)}">${ta(KURAL.ch[c - 1][0])} — ${esc(KURAL.ch[c - 1][1])}</a> <span class="muted">(Kurals ${c * 10 - 9}–${c * 10})</span></li>`).join('')}</ol>`).join('\n')}`).join('\n')}
+<p>New to Thirukkural? Start with <a href="thirukkural.html">Thirukkural for kids</a>, and learn with sound and games in the <a href="thirukkural.html">Thirukkural app</a>.</p>`,
+  schema: [{ '@type': 'ItemList', '@id': SITE + 'thirukkural-chapters.html#chapters', name: 'Thirukkural chapters', numberOfItems: 133,
+    itemListElement: KURAL.ch.map(([t, e], i) => ({ '@type': 'ListItem', position: i + 1, name: `${t} — ${e}`, url: SITE + kChPage(i + 1) })) }]
+}));
+
+for (let c = 1; c <= 133; c++){
+  const [cta, cen, roman] = KURAL.ch[c - 1], p = kPaalOf(c), iy = KURAL.iyal.find(([, , from, to]) => c >= from && c <= to);
+  const file = kChPage(c);
+  write(file, shell({
+    file, title: kTitle(c), description: kDesc(c), ogType: 'article', bubble: `${c}/133`,
+    h1: `Thirukkural chapter ${c}: <span class="ta">${cta}</span>`, eyebrow: `${esc(cen)} · ${p.ta} (${p.en}) · ${iy[0]} · Kurals ${c * 10 - 9}–${c * 10}`,
+    body: `
+<p class="lead-doc"><strong>Chapter ${c} of Thirukkural is ${ta(cta)} (${esc(roman)}, “${esc(cen)}”), with Kurals ${c * 10 - 9} to ${c * 10}.</strong> It belongs to ${ta(p.ta)} (${esc(p.en)}), section ${ta(iy[0])} (${esc(iy[1])}).${p.older ? ' This division is about love; it is best read with older children, with a grown-up.' : ''}</p>
+<p><a class="cta-app" href="thirukkural.html#/ch/${c}"><span aria-hidden="true">🔊</span> Hear these Kurals and play games in the app →</a></p>
+${Array.from({ length: 10 }, (_, i) => kCouplet(c * 10 - 9 + i)).join('\n')}
+<nav class="kd-pn" aria-label="Chapters">${c > 1 ? `<a href="${kChPage(c - 1)}">← ${c - 1}. ${ta(KURAL.ch[c - 2][0])}</a>` : '<span></span>'}<a href="thirukkural-chapters.html">All chapters</a>${c < 133 ? `<a href="${kChPage(c + 1)}">${c + 1}. ${ta(KURAL.ch[c][0])} →</a>` : '<span></span>'}</nav>
+<p class="muted">Tamil text checked against Project Madurai, the tk120404/thirukkural dataset and Tamil Wikisource. English: Rev. G. U. Pope (1886), public domain. See <a href="thirukkural.html">Thirukkural for kids</a>.</p>`,
+    schema: [{ '@type': 'CreativeWork', '@id': SITE + file + '#chapter', name: `${cta} — ${cen}`, position: c, inLanguage: 'ta', isFamilyFriendly: true,
+      isPartOf: { '@type': 'Book', name: 'திருக்குறள்', alternateName: 'Thirukkural', author: { '@type': 'Person', name: 'Thiruvalluvar', alternateName: 'திருவள்ளுவர்' } },
+      text: Array.from({ length: 10 }, (_, i) => kText(c * 10 - 9 + i).slice(0, 2).join('\n')).join('\n\n') }]
+  }));
+}
+const KURAL_PAGES = Array.from({ length: 133 }, (_, i) => kChPage(i + 1));
+
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
   'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
   ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ,
-  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ };
+  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ };
 const KB = [
   ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
   ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))
@@ -818,6 +938,7 @@ write('assets/js/data/faq.js', '/* Generated by tools/build-pages.mjs — knowle
 
 /* ---------- sitemap (with language alternates) ---------- */
 const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
+  ...KURAL_PAGES.map(f => [f, '0.6', 'yearly']),
   ...PRINTS.map(d => ['printables/' + d.file + '.pdf', '0.6', 'monthly']),
   ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
 const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
@@ -840,16 +961,20 @@ Key facts:
 - Grantha letters ஜ ஷ ஸ ஹ க்ஷ ஸ்ரீ are used for borrowed words and are not counted in the 247.
 - The 12 Tamil months, in order: ${topicWords('months').map(([w, , m]) => `${w} (${m.split(' · ')[1]})`).join(', ')}. Tamil New Year is the first day of சித்திரை (usually 14 April); Pongal is the first day of தை (usually 14–15 January).
 - Aathichoodi (ஆத்திசூடி), traditionally attributed to Avvaiyar, begins with one line for each vowel: ${AATHICHOODI.map(l => l[0]).join(' · ')}.
+- Thirukkural (திருக்குறள்) by Thiruvalluvar (திருவள்ளுவர்) has 1,330 Kurals (two-line couplets) in 133 chapters of 10, in three divisions: அறத்துப்பால் (virtue, 38 chapters, 380 Kurals), பொருட்பால் (wealth and society, 70 chapters, 700 Kurals) and காமத்துப்பால் (love, 25 chapters, 250 Kurals). First Kural: ${kText(1)[0]} / ${kText(1)[1]}
 - Order to teach a child: listen and sing first → 12 vowels → 18 consonants → uyirmei one consonant row at a time → two-letter picture words → sentences. About 10 minutes a day.
 
 ## Guides
 ${GUIDES.map(g => `- [${g.en}](${SITE}${g.file})`).join('\n')}
 
+## Thirukkural chapters (Tamil text + G. U. Pope's English translation)
+${KURAL.ch.map(([t, e], i) => `- [${i + 1}. ${t} — ${e}](${SITE}${kChPage(i + 1)})`).join('\n')}
+
 ## Free printables (PDF, A4)
 ${PRINTS.map(d => `- [${d.title}](${SITE}printables/${d.file}.pdf): ${d.pages} page${d.pages > 1 ? 's' : ''}`).join('\n')}
 
 ## Full text
-- [llms-full.txt](${SITE}llms-full.txt): every letter, word list, story, rhyme and festival on this site as plain text.
+- [llms-full.txt](${SITE}llms-full.txt): every letter, word list, story, rhyme and festival on this site, and all 1,330 Kurals of Thirukkural, as plain text.
 
 ## App and policies
 - [Learning app](${SITE}): interactive letters with audio, reading practice, stories and games (requires JavaScript).
@@ -893,6 +1018,10 @@ ${RHYMES.map(r => `### ${r.title} — ${r.en} (${r.by})\n${r.lines.map(([l, e]) 
 
 ## Festivals
 ${FESTIVALS.map(f => `### ${f.title} — ${f.en}\n${f.pages.map(p => `- ${p[1]} — ${p[2]}`).join('\n')}\nWords: ${f.words.map(([w, , m]) => `${w} (${m})`).join(', ')}`).join('\n\n')}
+
+## Thirukkural (திருக்குறள்) by Thiruvalluvar — all 1,330 Kurals
+Tamil text checked against Project Madurai, the tk120404/thirukkural dataset and Tamil Wikisource. English verse translation by Rev. G. U. Pope (1886, public domain).
+${KURAL.ch.map(([t, e], c) => `### Chapter ${c + 1}: ${t} — ${e}\n${Array.from({ length: 10 }, (_, i) => c * 10 + i + 1).map(n => `${n}. ${kText(n)[0]} / ${kText(n)[1]} — ${kText(n)[2]}${KURAL_LESSONS[n] ? ` Meaning for children: ${KURAL_LESSONS[n].en}` : ''}`).join('\n')}`).join('\n\n')}
 `);
 
 /* ---------- Privacy & data ---------- */
@@ -909,7 +1038,7 @@ const privacyBody = `
 <h3 id="microphone">Microphone (“Say it back”)</h3>
 <p>The 🎤 <b>Say it</b> button lets a child record themselves saying a letter or word and play it back. The recording is kept only in the browser’s memory, is <strong>never uploaded or saved</strong>, and is deleted when the window closes. The browser asks for permission first, and nothing is recorded until the child taps 🎤. There is no speech recognition.</p>
 <h3 id="profiles">Child profiles and Parent dashboard</h3>
-<p>Up to six children can each have their own progress on one device. A child’s first name (if you type one), the age group you choose (3–5, 6–8 or 9–12), tokens, badges, daily gifts, lessons done, stickers, minutes learned and the letters they find hard are saved <strong>only in this browser</strong> (localStorage) and are never sent anywhere. You can delete a child’s progress in the Parent dashboard, or clear this site’s data in your browser settings.</p>
+<p>Up to six children can each have their own progress on one device. A child’s first name (if you type one), the age group you choose (3–5, 6–8 or 9–12), tokens, badges, daily gifts, lessons done, Thirukkural couplets learned and bookmarked, stickers, minutes learned and the letters they find hard are saved <strong>only in this browser</strong> (localStorage) and are never sent anywhere. You can delete a child’s progress in the Parent dashboard, or clear this site’s data in your browser settings.</p>
 <h3 id="analytics">Anonymous usage statistics (only if you allow them)</h3>
 <p>When you first visit, a notice asks whether we may count visits. <strong>Nothing is loaded or sent unless you tap “Allow”.</strong> If you allow it, the site uses <strong>Google Analytics for Firebase</strong> to learn which lessons and games are useful. It records pages visited and simple events such as “a game was started”, “a story was finished”, “a badge was earned” or “a certificate level was passed”, together with general technical details (approximate country, device type, browser). It stores a random visitor ID in first-party cookies (<code>_ga</code>, <code>_ga_*</code>) so repeat visits can be counted. We have turned off Google signals, advertising cookies and ad personalisation, and we never send names, the certificate name or anything your child types. Google processes this data under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. If you tap “No thanks”, or change your mind later, the site works exactly the same. Your choice is saved in this browser (localStorage <code>lt-consent</code>).</p>
 <p><strong data-consent-status>Your choice is saved in this browser.</strong> <button type="button" class="btn small" data-consent-open>Change cookie choice</button></p>
@@ -920,7 +1049,7 @@ const privacyBody = `
 <tr><td>Light or dark theme</td><td>localStorage <code>lt-theme</code></td><td>Remembers your colour choice</td></tr>
 <tr><td>⚙️ Settings: text size, high contrast, less movement, voice speed and volume</td><td>localStorage <code>lt-text</code>, <code>lt-contrast</code>, <code>lt-motion</code>, <code>lt-rate</code>, <code>lt-vol</code></td><td>Remembers how you like the app to look and sound on this device</td></tr>
 <tr><td>Children’s first names, pictures and age groups</td><td>localStorage <code>lt-profiles</code>, <code>lt-profile</code></td><td>Lets each child have their own progress and the learning path for their age</td></tr>
-<tr><td>Game progress: tokens, badges, daily gifts, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
+<tr><td>Game progress: tokens, badges, daily gifts, letters heard, words read, stories finished, Thirukkural couplets learned and bookmarked, Thirukkural quiz answers</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
 <tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
 <tr><td>Reminder device token</td><td>localStorage <code>lt-push</code></td><td>Only if you turn reminders on; deleted when you turn them off</td></tr>

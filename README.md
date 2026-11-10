@@ -27,6 +27,7 @@
 | **எழுத்துகள் · Letters** | 12 உயிர், 18 மெய், ஆய்தம், 216 உயிர்மெய் — tap to hear each one, see a picture word, build letters (க் + ஆ = கா), ✍️ trace, 🎤 say it back |
 | **வாசிப்பு · Reading** | picture words in 3 levels and 12 topics (numbers, colours, days, body, family, food, animals, birds, vehicles, shapes, opposites, Tamil months); sound them out letter by letter |
 | **கதைகள் · Stories** | 5 read-aloud stories, sing-along rhymes and Aathichoodi, 4 festival stories — every word can be tapped to see its letters |
+| **திருக்குறள் · Thirukkural** | Its own page, `thirukkural.html`: all 1,330 Kurals (text checked against three sources) with sound, slow and say-after-me reading, Pope's English, 6 games, Kural of the day, printable worksheets, 10 level exams and a test for every chapter (each with a certificate), and milestone badges. Chapters 1, 10 and 40 (30 Kurals) have guided children's lessons with animated stories (drafts awaiting review). See [docs/THIRUKKURAL.md](docs/THIRUKKURAL.md) |
 | **விளையாட்டு · Games** | build a letter, listen & pick, spin wheel, balloon pop, word builder, memory, quiz, picture words, topics, spelling, sentences, trace, colouring, little ones |
 | **சான்றிதழ் · Certificates** | 10 level tests, each giving a downloadable PDF certificate |
 | **👶 Little ones** | ages 3–5: pictures only, big buttons, no wrong-answer buzzer |
@@ -34,7 +35,7 @@
 | **For parents** | child profiles (up to 6), a Parent dashboard (age group, learning path, suggested next steps, time, progress, letters to practise), break reminder, a parents' guide |
 | **Accessibility** | ⚙️ larger text, high contrast, less movement, game sounds on/off, voice speed and volume |
 | **🖨️ Printables** | 23 free PDFs: alphabet and word charts, tracing worksheets for all 247 letters, matching and missing-letter sheets, colouring pages |
-| **Guides** | 24 pages that work without JavaScript (alphabet, vowels, consonants, words, numbers, colours, months, Aathichoodi, rhymes, festivals, how to teach Tamil to kids …) |
+| **Guides** | 26 guide pages plus 133 Thirukkural chapter pages that work without JavaScript (alphabet, vowels, consonants, words, numbers, colours, months, Aathichoodi, rhymes, festivals, how to teach Tamil to kids …) |
 
 Full feature reference: **[docs/FEATURES.md](docs/FEATURES.md)**.
 

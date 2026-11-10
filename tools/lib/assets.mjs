@@ -14,12 +14,14 @@ export const JS = 'assets/js/';
 export const STYLES = [
   '00-tokens', '10-base', '20-letters', '21-stories', '22-practice', '30-motion', '40-navigation',
   '41-reading', '42-games', '50-responsive', '60-pages', '70-rewards', '71-certificate',
-  '80-premium', '81-chat', '82-today', '83-services', '90-kids'
+  '80-premium', '81-chat', '82-today', '83-services', '84-kural', '90-kids'
 ].map(n => `${CSS}${n}.css`);
 
 /* Data shared with the build tools (they load these in a Node VM). */
 /* All content and every child-facing message (see docs/ARCHITECTURE.md → "Where text lives"). */
 export const DATA = ['alphabet', 'words', 'stories', 'rhymes', 'festivals', 'rewards', 'pictures', 'messages'].map(n => `${JS}data/${n}.js`);
+/* Thirukkural lessons — loaded only by thirukkural.html (the 1,330 couplets are thirukkural.json, fetched there). */
+export const KURAL_DATA = [`${JS}data/kural-lessons.js`];
 
 /* Shared by every page: install app, cookie notice + analytics, support card, Ask Kili chat. */
 export const SERVICES = [
@@ -54,6 +56,23 @@ export const APP_SCRIPTS = [
   ].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
 
+/* The Thirukkural page (thirukkural.html), in load order: the shared core, rewards and settings, then its own
+   screens; kural-app.js (its router) is last. certificate.js is here for its PDF writer (CERT.jpegToPdf). */
+export const KURAL_SCRIPTS = [
+  `${JS}core/profiles.js`,
+  'assets/audio/manifest.js',
+  ...DATA, ...KURAL_DATA,
+  ...[
+    'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics',
+    'features/rewards/score', 'features/rewards/progress', 'features/rewards/today',
+    'features/games/game-utils', 'features/certificate/certificate',
+    'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
+    'features/kural/kural-scene', 'features/kural/kural', 'features/kural/kural-games',
+    'features/kural/kural-print', 'features/kural/kural-cert',
+    'features/kural/kural-app'          // router: last
+  ].map(n => `${JS}${n}.js`)
+].map(src => ({ src }));
+
 /* Pages load ONE stylesheet: the files above joined in order by the build (fewer render-blocking
    requests = faster first paint, which search engines measure). Edit the numbered files, never the bundle. */
 export const STYLE_BUNDLE = `${CSS}app.css`;
@@ -64,7 +83,8 @@ export const scriptTags = list => list.map(tag).join('\n');
 
 /* Everything the offline app needs (service worker PRECACHE), besides the HTML pages. */
 export const PRECACHE_ASSETS = [
-  STYLE_BUNDLE, ...APP_SCRIPTS.map(s => s.src), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
+  STYLE_BUNDLE, ...new Set([...APP_SCRIPTS, ...KURAL_SCRIPTS].map(s => s.src)), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
+  'assets/js/data/thirukkural.json',   // the 1,330 couplets, fetched when #/kural opens
   'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'
 ];

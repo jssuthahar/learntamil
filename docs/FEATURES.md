@@ -17,6 +17,8 @@ The router (`app.js`) shows one `<section class="panel">` at a time and fires `l
 
 The **main menu** has exactly 5 items, the same on desktop and the phone bottom bar: 🔤 **Learn** (the letter tabs), 📖 **Read** (`#/reading` and `#/stories`, with a Words · Stories & rhymes switch at the top of both), 🎮 **Play** (games), 🖨️ **Print** (a link to `tamil-printables.html`) and 🎓 **Certificate**. `navOf()` / `lastOf()` in `app.js` map sections to menu items; Read reopens whichever of the two was open last. The phone bar fits exactly 5 items — don't add a 6th.
 
+**Thirukkural** is a separate page, `thirukkural.html` (Learn · Games · Print · Certificate · Parents), linked by a big **📜 திருக்குறள் கற்போம்** card on the home screen and a card in the games hub. See [THIRUKKURAL.md](THIRUKKURAL.md).
+
 The header also has 🪙 My rewards, ⚙️ Settings and the theme button. Below 440px the brand words are hidden (the அ mark stays) so the ⚙️ button fits.
 
 ---

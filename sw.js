@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'e7b1c75287';
+const VERSION = 'd82b41c0e3';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -32,6 +32,8 @@ const PRECACHE = [
   'tamil-rhymes-for-kids.html',
   'tamil-festivals-for-kids.html',
   'how-to-teach-tamil-to-kids.html',
+  'thirukkural.html',
+  'thirukkural-chapters.html',
   'tamil-printables.html',
   'privacy.html',
   'terms.html',
@@ -77,11 +79,19 @@ const PRECACHE = [
   'assets/js/features/family/parent-corner.js',
   'assets/js/features/family/settings.js',
   'assets/js/app.js',
+  'assets/js/data/kural-lessons.js',
+  'assets/js/features/kural/kural-scene.js',
+  'assets/js/features/kural/kural.js',
+  'assets/js/features/kural/kural-games.js',
+  'assets/js/features/kural/kural-print.js',
+  'assets/js/features/kural/kural-cert.js',
+  'assets/js/features/kural/kural-app.js',
   'assets/js/services/pwa.js',
   'assets/js/services/firebase.js',
   'assets/js/services/support.js',
   'assets/js/data/faq.js',
   'assets/js/services/chat.js',
+  'assets/js/data/thirukkural.json',
   'manifest.webmanifest',
   'assets/favicon.svg',
   'assets/icon-192.png',
