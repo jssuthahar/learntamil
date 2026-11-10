@@ -735,16 +735,16 @@ const PRINT_FAQ = [
   ['Are the Tamil worksheets free to print?', 'Yes. All charts and tracing worksheets on this page are free for home and classroom use. Download the PDF and print as many copies as you like.'],
   ['What paper size are the printables?', 'They are made for A4 paper. On US Letter paper, choose “Fit to page” in the print settings.'],
   ['How should a child use the tracing worksheets?', 'Look at the blue letter, say its sound, then trace the grey outline letters from left to right. One row a day is plenty for young children.'],
-  ['Is there an answer key?', 'Yes. The missing-letter worksheet ends with an answer key page for parents and teachers. The matching worksheet checks itself: each picture has exactly one word.'],
+  ['Is there an answer key?', 'Yes. The missing-letter, first-letter, uyirmei joining, word search, count-and-circle and colour-word worksheets end with an answer key page for parents and teachers. The matching worksheet checks itself: each picture has exactly one word.'],
   ['Do the worksheets match the app?', 'Yes. Every chart and worksheet is made from the same words and letters as the Learn Tamil app, so your child sees the same pictures and spellings on paper and on screen.']
 ];
 /* Sections of the printables page, in order (cat comes from tools/build-printables.mjs). */
 const PRINT_CATS = [
   { id: 'letters', ic: '🔤', en: 'Alphabet charts', ta: 'எழுத்து அட்டவணைகள்', note: 'For the wall — every letter with its sound.' },
   { id: 'words', ic: '🍎', en: 'Word charts and posters', ta: 'சொல் அட்டவணைகள்', note: 'Picture words by topic, opposites, days and months, Aathichoodi.' },
-  { id: 'tracing', ic: '✏️', en: 'Tracing worksheets', ta: 'எழுதிப் பழகு', note: 'Trace the letters and words — vowels, consonants, all 216 uyirmei, number words.' },
-  { id: 'activity', ic: '🧩', en: 'Activity worksheets', ta: 'பயிற்சித் தாள்கள்', note: 'Match pictures to words and fill in missing letters (with answer key).' },
-  { id: 'colouring', ic: '🎨', en: 'Colouring pages', ta: 'வண்ணம் தீட்டு', note: 'Colour the picture, then trace its Tamil word.' }
+  { id: 'tracing', ic: '✏️', en: 'Tracing worksheets', ta: 'எழுதிப் பழகு', note: 'Trace the letters and words — vowels, consonants, all 216 uyirmei, picture words, number words, days of the week.' },
+  { id: 'activity', ic: '🧩', en: 'Activity worksheets', ta: 'பயிற்சித் தாள்கள்', note: 'Match pictures to words, missing and first letters, join consonant + vowel, word search, count and circle, short and long vowels (with answer keys).' },
+  { id: 'colouring', ic: '🎨', en: 'Colouring pages', ta: 'வண்ணம் தீட்டு', note: 'Colour the picture, then trace its Tamil word — or read a colour word and colour the box.' }
 ];
 const printCard = d => `<article class="print-card">
   <a class="pc-thumb${d.landscape ? ' land' : ''}" href="printables/${d.file}.pdf" aria-label="Download ${esc(d.title)} (PDF)"><img src="assets/printables/${d.file}.png" alt="Preview of ${esc(d.title)}" loading="lazy" width="${d.landscape ? 520 : 368}" height="${d.landscape ? 368 : 520}"></a>
@@ -755,7 +755,7 @@ const USED_CATS = PRINT_CATS.filter(c => PRINTS.some(d => d.cat === c.id));
 if (PRINTS.length) write('tamil-printables.html', shell({
   file: 'tamil-printables.html', guide: true, bubble: 'Print and practise!',
   title: 'Free Tamil Charts, Tracing & Activity Worksheets (PDF)',
-  description: `${PRINTS.length} free Tamil PDFs for kids: alphabet and word charts, tracing worksheets for all 247 letters, matching and missing-letter sheets, colouring pages.`,
+  description: `${PRINTS.length} free Tamil PDFs for kids: alphabet and word charts, tracing for all 247 letters, word search, matching and colouring sheets.`,
   h1: 'Free printable Tamil charts & worksheets', eyebrow: `${PRINTS.length} free PDFs · ${PRINT_PAGES} pages · A4 · Home & classroom`,
   body: `
 <p class="lead-doc">Free printable PDFs for children learning Tamil — charts for the wall, tracing and activity worksheets for the table, and colouring pages. Print on A4 (or Letter with “Fit to page”).</p>
@@ -790,7 +790,7 @@ const HELP = [
   ['How can I support Learn Tamil?', `Learn Tamil is free with no ads. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
   ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
   ['Where can I read Tamil stories?', 'Open Stories (கதைகள்) in the app to hear five short stories read aloud — tap any word to see its letters. You can also read them as text with English meaning on the [Tamil stories page](tamil-stories-for-kids.html).', 'story stories read kathai கதை moral', './#/stories'],
-  ['Where can I download printable worksheets and charts?', 'Free printable PDFs — alphabet and picture-word charts, tracing worksheets for all 247 letters, matching and missing-letter worksheets and colouring pages — are on the [printables page](tamil-printables.html), or tap 🖨️ Printables in the menu. Print them on A4 or Letter paper.', 'printable print worksheet worksheets pdf chart tracing trace download sheet paper', 'tamil-printables.html'],
+  ['Where can I download printable worksheets and charts?', 'Free printable PDFs — alphabet and picture-word charts, tracing worksheets for all 247 letters, word search, matching, missing-letter and joining worksheets and colouring pages — are on the [printables page](tamil-printables.html), or tap 🖨️ Printables in the menu. Print them on A4 or Letter paper.', 'printable print worksheet worksheets pdf chart tracing trace download sheet paper', 'tamil-printables.html'],
   ['What word topics can my child learn?', 'In Reading (வாசிப்பு) choose a topic: numbers 1–10, colours, days of the week, parts of the body, family, fruits & food, animals, birds, vehicles, shapes, opposites and the 12 Tamil months. Each word shows its picture and letters and can be heard aloud.', 'topic topics numbers colours colors days week body family fruit fruits food vocabulary words', './#/reading'],
   ['How can my child practise writing Tamil letters?', 'Tap ✍️ Trace under the big letter, or open Games → Trace. The letter is shown faintly; your child traces it with a finger, mouse or pen. When enough of the letter is covered it says the letter and gives a token. Printable tracing worksheets are on the [printables page](tamil-printables.html).', 'trace tracing write writing handwriting finger draw pen letter shape', './#/practice'],
   ['What is Say it back?', 'Tap 🎤 Say it under the big letter or in Reading. Your child hears the right sound, records themselves saying it, then plays both to compare. The recording stays on the device only and is deleted when the window closes — it is never uploaded.', 'say speak record microphone mic pronounce pronunciation voice compare', ''],

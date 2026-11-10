@@ -195,6 +195,123 @@ const COLOUR_DOC = { file: 'tamil-colouring-pages', cat: 'colouring', title: 'Ta
       <div class="art"><svg viewBox="0 0 200 200">${P.svg}</svg></div>
       <div class="wr"><span class="L model">${P.w}</span><span class="L tr">${P.w}</span><span class="L tr">${P.w}</span></div>${foot(`Page ${i + 1} of ${PICTURES.length}`)}</div>`).join('')) };
 
+/* ================= More worksheets (all from data; shuffles are seeded) ================= */
+const NAME_ROW = '<div class="name"><span>Name · பெயர்:</span><span>Date · தேதி:</span></div>';
+const hasEmoji = w => /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(w[1]);
+const pagesOf = (list, n) => { const out = []; for (let i = 0; i < list.length; i += n) out.push(list.slice(i, i + n)); return out; };
+const keyPage = (items, total) => `<div class="page">${head('விடைகள்', 'Answer key · for parents and teachers')}<div class="key">${items}</div>${foot(`Page ${total} of ${total}`)}</div>`;
+const KEY_CSS = `.key{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;align-content:start}.key div{border:1.5px solid #e3e8f0;border-radius:10px;padding:6px 8px;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:700;font-size:13pt}.key small{font-family:Inter;color:#6b7385;font-size:8.5pt}`;
+
+/* Picture words to trace: easy words first (2–3 letters), 8 per page. */
+const PW = WORDS.filter(hasEmoji).filter(w => lettersOf(w[0]).length <= 3).slice(0, 24);
+const PW_PAGES = pagesOf(PW, 8);
+const PW_TRACE_DOC = { file: 'tamil-picture-words-tracing-worksheet', cat: 'tracing', title: 'Picture words tracing worksheet — 24 easy Tamil words',
+  html: doc(TRACE_CSS + '.trow{grid-template-columns:70px 1.15fr 1fr 1fr}.trow .L{font-size:30pt;text-align:left;padding-left:6px}.trow .pic{font-size:30pt;text-align:center;line-height:1}.trow .pic small{display:block;font-family:Inter;font-size:8pt;color:#6b7385;font-weight:600}.rows{gap:6px}',
+    PW_PAGES.map((ws, p) => `<div class="page">${head('சொற்கள் — எழுதிப் பழகு', 'Picture words · read, say and trace')}${NAME_ROW}
+      <p class="tip">✏️ Look at the picture, read the blue word aloud, then trace the grey words.</p>
+      <div class="rows">${ws.map(([w, e, m]) => `<div class="trow"><span class="pic">${e}<small>${meaning(m)}</small></span><span class="model L">${w}</span><span class="tr L">${w}</span><span class="tr L">${w}</span></div>`).join('')}</div>${foot(`Page ${p + 1} of ${PW_PAGES.length}`)}</div>`).join('')) };
+
+/* Days of the week to trace. */
+const DAYS_TRACE_DOC = { file: 'tamil-days-tracing-worksheet', cat: 'tracing', title: 'Days of the week tracing worksheet in Tamil',
+  html: doc(TRACE_CSS + '.trow{grid-template-columns:90px 1.2fr 1fr 1fr}.trow .L{font-size:24pt;text-align:left;padding-left:6px}.trow .en{font-size:10pt;font-weight:700;color:#4a5163;text-align:center}.rows{gap:7px}',
+    `<div class="page">${head('கிழமைகள் — எழுதிப் பழகு', 'Days of the week · tracing worksheet')}${NAME_ROW}
+     <p class="tip">✏️ Read the blue day, then trace it twice. Which day is today?</p>
+     <div class="rows">${topic('days').words.map(([w, , m]) => `<div class="trow"><span class="en">${m}</span><span class="model L">${w}</span><span class="tr L">${w}</span><span class="tr L">${w}</span></div>`).join('')}</div>${foot('Learn Tamil · Days of the week')}</div>`) };
+
+/* Consonant + vowel = uyirmei. 24 sums on 2 pages, then the answer key. */
+/* Every vowel twice and every consonant at least once, so the practice is balanced. */
+const SUM_K = [...shuffleBy(CONS, 'sum-k1'), ...shuffleBy(CONS, 'sum-k2').slice(0, 6)];
+const SUMS = shuffleBy([...VOWELS, ...VOWELS].map((v, i) => ({ k: SUM_K[i], v })), 'uyirmei-sums');
+const SUM_CSS = KEY_CSS + `.sums{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,minmax(0,1fr));gap:10px;flex:1;margin-top:6px}
+.sm{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:14px;border:2px solid #e3e8f0;background:#fff;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:800;font-size:30pt;min-height:0}
+.sm .c{color:#0b8a6c}.sm .v{color:#1769d1}.sm .op{color:#94a3b8;font-size:22pt}.sm .bx{width:70px;height:62px;border:2.5px dashed #7c3aed;border-radius:12px}.sm .num{font-family:Inter;font-size:10pt;color:#94a3b8;align-self:flex-start;margin-top:8px}`;
+const sumPage = (items, p, start) => `<div class="page">${head('மெய் + உயிர் = உயிர்மெய்', 'Join the consonant and the vowel · write the new letter in the box')}${NAME_ROW}
+  <p class="tip">✏️ Example: க் + ஆ = கா. Say both sounds, join them, then write the letter.</p>
+  <div class="sums">${items.map((q, i) => `<div class="sm"><span class="num">${start + i}.</span><span class="c">${q.k.c + PULLI}</span><span class="op">+</span><span class="v">${q.v.l}</span><span class="op">=</span><span class="bx"></span></div>`).join('')}</div>${foot(`Page ${p} of 3`)}</div>`;
+const SUM_DOC = { file: 'tamil-uyirmei-joining-worksheet', cat: 'activity', title: 'Uyirmei joining worksheet — consonant + vowel (with answer key)',
+  html: doc(SUM_CSS, sumPage(SUMS.slice(0, 12), 1, 1) + sumPage(SUMS.slice(12), 2, 13) +
+    keyPage(SUMS.map((q, i) => `<div>${i + 1}. ${q.k.c + PULLI} + ${q.v.l} = ${q.k.c + q.v.s}</div>`).join(''), 3)) };
+
+/* First letter: look at the picture, circle and write its first letter. */
+const FL_WORDS = shuffleBy([...new Map([...WORDS, ...TOPICS.filter(t => !['numbers', 'days', 'months', 'opposites', 'colours', 'shapes'].includes(t.id)).flatMap(t => t.words)]
+  .filter(hasEmoji).map(w => [w[0], w])).values()], 'first-letter').slice(0, 20);
+const FIRSTS = [...new Set(FL_WORDS.map(w => lettersOf(w[0])[0]))];
+const FL = FL_WORDS.map((w, i) => { const ans = lettersOf(w[0])[0];
+  return { n: i + 1, w, ans, opts: shuffleBy([ans, ...shuffleBy(FIRSTS.filter(l => l !== ans), 'fl-' + w[0]).slice(0, 2)], 'flo-' + w[0]) }; });
+const FL_CSS = KEY_CSS + `.mq{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,minmax(0,1fr));gap:8px;flex:1;margin-top:6px}
+.mc{border-radius:14px;border:2px solid #e3e8f0;background:#fff;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px 12px;padding:6px 12px;min-height:0}
+.mc .e{font-size:40pt;line-height:1}.mc small{display:block;font-family:Inter;color:#6b7385;font-size:9pt;font-weight:600}.mc .num{font-family:Inter;color:#94a3b8;font-weight:800;font-size:10pt}
+.ops{display:flex;gap:6px;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:700;font-size:18pt}.ops span{border:1.5px solid #c7d2e0;border-radius:999px;padding:0 12px}
+.bx{width:64px;height:58px;border:2.5px dashed #7c3aed;border-radius:12px}`;
+const flPage = (items, p) => `<div class="page">${head('முதல் எழுத்தை எழுது', 'Write the first letter · say the word, circle its first letter, write it in the box')}${NAME_ROW}
+  <div class="mq">${items.map(q => `<div class="mc"><span class="e">${q.w[1]}</span><span><span class="num">${q.n}.</span><small>${meaning(q.w[2])}</small><span class="ops">${q.opts.map(o => `<span>${o}</span>`).join('')}</span></span><span class="bx"></span></div>`).join('')}</div>${foot(`Page ${p} of 3`)}</div>`;
+const FL_DOC = { file: 'tamil-first-letter-worksheet', cat: 'activity', title: 'First letter worksheet — picture sounds (with answer key)',
+  html: doc(FL_CSS, flPage(FL.slice(0, 10), 1) + flPage(FL.slice(10, 20), 2) +
+    keyPage(FL.map(q => `<div>${q.n}. ${q.w[0]} <small>(${q.ans})</small></div>`).join(''), 3)) };
+
+/* Word search: Tamil letters in a grid, words go across (→) or down (↓) only. */
+const SIZE = 8;
+const wordSearch = (id, count) => {
+  const ws = topic(id).words.filter(w => lettersOf(w[0]).length <= SIZE).slice(0, count), r = seeded('ws-' + id);
+  const grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(null)), hit = new Set(), placed = [];
+  for (const w of ws){ const ls = lettersOf(w[0]);
+    for (let tries = 0; tries < 400; tries++){
+      const down = r() < 0.5, row = Math.floor(r() * (down ? SIZE - ls.length + 1 : SIZE)), col = Math.floor(r() * (down ? SIZE : SIZE - ls.length + 1));
+      const cells = ls.map((_, i) => down ? [row + i, col] : [row, col + i]);
+      if (cells.every(([y, x], i) => grid[y][x] === null || grid[y][x] === ls[i])){
+        cells.forEach(([y, x], i) => { grid[y][x] = ls[i]; hit.add(y * SIZE + x); }); placed.push(w); break; } } }
+  const pool = [...new Set(placed.flatMap(w => lettersOf(w[0])))];
+  for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) if (grid[y][x] === null) grid[y][x] = pool[Math.floor(r() * pool.length)];
+  return { t: topic(id), grid, hit, placed };
+};
+const PUZZLES = [wordSearch('animals', 8), wordSearch('birds', 7), wordSearch('food', 7)];
+const wsGrid = (P, key) => `<div class="wg${key ? ' small' : ''}">${P.grid.flat().map((l, i) => `<span${key && P.hit.has(i) ? ' class="on"' : ''}>${l}</span>`).join('')}</div>`;
+const WS_CSS = `.wg{display:grid;grid-template-columns:repeat(${SIZE},1fr);gap:4px;margin:8px auto 0;width:168mm;aspect-ratio:1}
+.wg span{display:grid;place-items:center;border:1.5px solid #d5dfea;border-radius:8px;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:700;font-size:24pt;background:#fff}
+.wg.small{width:78mm;gap:2px;margin:4px 0 0}.wg.small span{font-size:10pt;border-radius:4px;border-width:1px}.wg span.on{background:#ffe9a8;border-color:#f2b705}
+.wl{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.wl div{border:1.5px solid #e3e8f0;border-radius:10px;padding:4px 8px;display:flex;align-items:center;gap:6px;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:700;font-size:14pt}.wl .e{font-size:18pt}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}.keys .gt{margin-top:0}`;
+const WS_DOC = { file: 'tamil-word-search-worksheet', cat: 'activity', title: 'Tamil word search puzzles — animals, birds, food (with answers)',
+  html: doc(WS_CSS, PUZZLES.map((P, p) => `<div class="page">${head(`சொற்களைக் கண்டுபிடி — ${P.t.ta}`, `Word search · ${P.t.en} · find each word going across → or down ↓`)}${NAME_ROW}
+    <p class="tip">🔍 Each box holds one Tamil letter. Find the words below and draw a ring around them.</p>${wsGrid(P)}
+    <div class="wl">${P.placed.map(([w, e]) => `<div><span class="e">${e}</span>${w}</div>`).join('')}</div>${foot(`Page ${p + 1} of ${PUZZLES.length + 1}`)}</div>`).join('') +
+    `<div class="page">${head('விடைகள்', 'Answer key · the hidden words are coloured')}<div class="keys">${PUZZLES.map(P => `<div><div class="gt">${P.t.ta} <span style="font-family:Inter;font-size:9.5pt;color:#6b7385">${P.t.en}</span></div>${wsGrid(P, true)}</div>`).join('')}</div>${foot(`Page ${PUZZLES.length + 1} of ${PUZZLES.length + 1}`)}</div>`) };
+
+/* Count and circle: count the pictures, circle the right Tamil number word. */
+const NUMW = topic('numbers').words.map(w => w[0]);
+const CNT_EMO = ['🍎', '🐟', '⭐', '🎈', '🐤', '🌸', '🍌', '🚗', '⚽', '🦋'];
+const COUNT = shuffleBy(NUMW.map((w, i) => i + 1), 'count').map((n, i) => ({ n, e: CNT_EMO[i],
+  opts: shuffleBy([n, ...shuffleBy(NUMW.map((_, j) => j + 1).filter(x => x !== n && Math.abs(x - n) <= 3), 'cn-' + n).slice(0, 2)], 'co-' + n) }));
+const COUNT_DOC = { file: 'tamil-count-and-circle-worksheet', cat: 'activity', title: 'Count and circle the Tamil number word — worksheet',
+  html: doc(KEY_CSS + `.cq{display:flex;flex-direction:column;gap:6px;flex:1;margin-top:6px}.cr{flex:1;min-height:0;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:10px;border-radius:14px;border:2px solid #e3e8f0;background:#fff;padding:0 12px}
+.cr .pics{font-size:19pt;line-height:1.15;letter-spacing:2px}.ops{display:flex;gap:8px;justify-content:flex-end;font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:700;font-size:15pt}.ops span{border:1.5px solid #c7d2e0;border-radius:999px;padding:0 12px}`,
+    `<div class="page">${head('எண்ணி வட்டமிடு', 'Count and circle · count the pictures, then circle the right number word')}${NAME_ROW}
+     <div class="cq">${COUNT.map(q => `<div class="cr"><span class="pics">${q.e.repeat(q.n)}</span><span class="ops">${q.opts.map(o => `<span>${NUMW[o - 1]}</span>`).join('')}</span></div>`).join('')}</div>${foot('Page 1 of 2')}</div>` +
+    keyPage(COUNT.map(q => `<div>${q.e} × ${q.n} = ${NUMW[q.n - 1]}</div>`).join(''), 2)) };
+
+/* Short or long vowel: sort the 12 vowels into குறில் and நெடில் boxes. */
+const KN_DOC = { file: 'tamil-kuril-nedil-worksheet', cat: 'activity', title: 'Kuril and nedil worksheet — short and long Tamil vowels',
+  html: doc(KEY_CSS + `.vs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}.vs span{width:52px;height:58px;display:grid;place-items:center;border:2px solid #bcd6f5;background:#f3f8fe;border-radius:14px;font-family:'Baloo Thambi 2';font-weight:800;font-size:26pt;color:#1769d1}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;margin-top:6px}.bin{border:3px dashed #c7d2e0;border-radius:18px;padding:10px;display:flex;flex-direction:column}.bin h2{font-family:'Baloo Thambi 2','Noto Sans Tamil';font-size:22pt;text-align:center}.bin p{text-align:center;font-size:9.5pt;color:#6b7385}
+.slots{flex:1;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,1fr);gap:8px;margin-top:8px}.slots span{border-bottom:2px solid #9aa6b8}
+.ans{margin-top:8px;font-size:9pt;color:#6b7385;transform:rotate(180deg);text-align:center}`,
+    `<div class="page">${head('குறிலும் நெடிலும்', 'Short and long vowels · say each vowel, then write it in the right box')}${NAME_ROW}
+     <p class="tip">🗣️ குறில் is a short sound (அ). நெடில் is a long sound (ஆ). Say them both: அ… ஆ…</p>
+     <div class="vs">${shuffleBy(VOWELS, 'kn').map(v => `<span>${v.l}</span>`).join('')}</div>
+     <div class="bins"><div class="bin" style="border-color:#7fb0ea"><h2 style="color:#1769d1">குறில்</h2><p>short sound</p><div class="slots">${'<span></span>'.repeat(8)}</div></div>
+       <div class="bin" style="border-color:#f3a77d"><h2 style="color:#e0480c">நெடில்</h2><p>long sound</p><div class="slots">${'<span></span>'.repeat(8)}</div></div></div>
+     <p class="ans ta">Answers · குறில்: ${VOWELS.filter(v => v.len === 'குறில்').map(v => v.l).join(' ')} · நெடில்: ${VOWELS.filter(v => v.len === 'நெடில்').map(v => v.l).join(' ')}</p>${foot('Learn Tamil · Kuril and nedil')}</div>`) };
+
+/* Read the colour word, colour the box. The answer key shows each colour. */
+const COLW = topic('colours').words;
+const COLW_DOC = { file: 'tamil-colour-words-worksheet', cat: 'colouring', title: 'Read and colour — Tamil colour words worksheet',
+  html: doc(KEY_CSS + `.cw{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,minmax(0,1fr));gap:10px;flex:1;margin-top:6px}.ci{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:10px;border-radius:14px;border:2px solid #e3e8f0;padding:8px 12px;min-height:0}
+.ci .w{font-family:'Baloo Thambi 2','Noto Sans Tamil';font-weight:800;font-size:22pt;text-align:center}.ci .bx{height:100%;border:2.5px solid #1f2937;border-radius:12px}
+.key div{display:flex;align-items:center;gap:8px}.key i{width:22px;height:22px;border-radius:6px;border:1px solid #9aa6b8;flex:none}`,
+    `<div class="page">${head('படித்து வண்ணம் தீட்டு', 'Read and colour · read the colour word, then colour the box in that colour')}${NAME_ROW}
+     <div class="cw">${shuffleBy(COLW, 'colour-words').map(([w]) => `<div class="ci"><span class="w">${w}</span><span class="bx"></span></div>`).join('')}</div>${foot('Page 1 of 2')}</div>` +
+    keyPage(COLW.map(([w, , m]) => `<div><i style="background:${PAINT[w] || '#fff'}"></i>${w} <small>${meaning(m)}</small></div>`).join(''), 2)) };
+
 DOCS.push(
   { file: 'tamil-uyirmei-tracing-worksheet', cat: 'tracing', title: 'Uyirmei tracing worksheets — all 216 letters (18 pages)', html: doc(UM_TRACE_CSS, umTracePages) },
   NUM_TRACE_DOC,
@@ -202,7 +319,8 @@ DOCS.push(
   wordChart('animals', 3), wordChart('birds', 3), wordChart('food', 3), wordChart('body', 2, { css: '--emo:46pt' }),
   wordChart('family', 2, { css: '--emo:60pt;--wsize:24pt' }), wordChart('vehicles', 2, { css: '--emo:60pt;--wsize:22pt' }), wordChart('shapes', 2, { css: '--emo:64pt;--wsize:26pt' }),
   OPP_DOC, DAYS_DOC, AATHI_DOC,
-  MATCH_DOC, MISS_DOC, COLOUR_DOC
+  MATCH_DOC, MISS_DOC, COLOUR_DOC,
+  PW_TRACE_DOC, DAYS_TRACE_DOC, SUM_DOC, FL_DOC, WS_DOC, COUNT_DOC, KN_DOC, COLW_DOC
 );
 // Categories for the printables page (in this order).
 const CAT = { 'tamil-uyir-chart': 'letters', 'tamil-mei-chart': 'letters', 'tamil-alphabet-chart': 'letters', 'tamil-uyirmei-chart': 'letters',

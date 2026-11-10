@@ -140,6 +140,20 @@
   "pages": 1
  },
  {
+  "file": "tamil-picture-words-tracing-worksheet",
+  "cat": "tracing",
+  "title": "Picture words tracing worksheet — 24 easy Tamil words",
+  "landscape": false,
+  "pages": 3
+ },
+ {
+  "file": "tamil-days-tracing-worksheet",
+  "cat": "tracing",
+  "title": "Days of the week tracing worksheet in Tamil",
+  "landscape": false,
+  "pages": 1
+ },
+ {
   "file": "tamil-picture-word-matching-worksheet",
   "cat": "activity",
   "title": "Match the picture to the Tamil word — worksheet",
@@ -154,10 +168,52 @@
   "pages": 3
  },
  {
+  "file": "tamil-uyirmei-joining-worksheet",
+  "cat": "activity",
+  "title": "Uyirmei joining worksheet — consonant + vowel (with answer key)",
+  "landscape": false,
+  "pages": 3
+ },
+ {
+  "file": "tamil-first-letter-worksheet",
+  "cat": "activity",
+  "title": "First letter worksheet — picture sounds (with answer key)",
+  "landscape": false,
+  "pages": 3
+ },
+ {
+  "file": "tamil-word-search-worksheet",
+  "cat": "activity",
+  "title": "Tamil word search puzzles — animals, birds, food (with answers)",
+  "landscape": false,
+  "pages": 4
+ },
+ {
+  "file": "tamil-count-and-circle-worksheet",
+  "cat": "activity",
+  "title": "Count and circle the Tamil number word — worksheet",
+  "landscape": false,
+  "pages": 2
+ },
+ {
+  "file": "tamil-kuril-nedil-worksheet",
+  "cat": "activity",
+  "title": "Kuril and nedil worksheet — short and long Tamil vowels",
+  "landscape": false,
+  "pages": 1
+ },
+ {
   "file": "tamil-colouring-pages",
   "cat": "colouring",
   "title": "Tamil colouring pages — colour and trace the word",
   "landscape": false,
   "pages": 6
+ },
+ {
+  "file": "tamil-colour-words-worksheet",
+  "cat": "colouring",
+  "title": "Read and colour — Tamil colour words worksheet",
+  "landscape": false,
+  "pages": 2
  }
 ]

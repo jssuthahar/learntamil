@@ -59,9 +59,17 @@ Key facts:
 - [Tamil consonants tracing worksheet (mei)](https://learntamil.msdevbuild.com/printables/tamil-mei-tracing-worksheet.pdf): 3 pages
 - [Uyirmei tracing worksheets — all 216 letters (18 pages)](https://learntamil.msdevbuild.com/printables/tamil-uyirmei-tracing-worksheet.pdf): 18 pages
 - [Tamil number words tracing worksheet (1–10)](https://learntamil.msdevbuild.com/printables/tamil-number-words-tracing-worksheet.pdf): 1 page
+- [Picture words tracing worksheet — 24 easy Tamil words](https://learntamil.msdevbuild.com/printables/tamil-picture-words-tracing-worksheet.pdf): 3 pages
+- [Days of the week tracing worksheet in Tamil](https://learntamil.msdevbuild.com/printables/tamil-days-tracing-worksheet.pdf): 1 page
 - [Match the picture to the Tamil word — worksheet](https://learntamil.msdevbuild.com/printables/tamil-picture-word-matching-worksheet.pdf): 4 pages
 - [Missing letter worksheet — with answer key](https://learntamil.msdevbuild.com/printables/tamil-missing-letter-worksheet.pdf): 3 pages
+- [Uyirmei joining worksheet — consonant + vowel (with answer key)](https://learntamil.msdevbuild.com/printables/tamil-uyirmei-joining-worksheet.pdf): 3 pages
+- [First letter worksheet — picture sounds (with answer key)](https://learntamil.msdevbuild.com/printables/tamil-first-letter-worksheet.pdf): 3 pages
+- [Tamil word search puzzles — animals, birds, food (with answers)](https://learntamil.msdevbuild.com/printables/tamil-word-search-worksheet.pdf): 4 pages
+- [Count and circle the Tamil number word — worksheet](https://learntamil.msdevbuild.com/printables/tamil-count-and-circle-worksheet.pdf): 2 pages
+- [Kuril and nedil worksheet — short and long Tamil vowels](https://learntamil.msdevbuild.com/printables/tamil-kuril-nedil-worksheet.pdf): 1 page
 - [Tamil colouring pages — colour and trace the word](https://learntamil.msdevbuild.com/printables/tamil-colouring-pages.pdf): 6 pages
+- [Read and colour — Tamil colour words worksheet](https://learntamil.msdevbuild.com/printables/tamil-colour-words-worksheet.pdf): 2 pages
 
 ## Full text
 - [llms-full.txt](https://learntamil.msdevbuild.com/llms-full.txt): every letter, word list, story, rhyme and festival on this site as plain text.
