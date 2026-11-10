@@ -1,5 +1,5 @@
 /* Learn Tamil — games: 🧩 Word builder.
-    */
+   A picture word's letters are shuffled; tap them in order to build the word. */
 'use strict';
 
 /* ---------- 🧩 Word builder ---------- */

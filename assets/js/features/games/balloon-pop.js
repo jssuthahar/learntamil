@@ -1,5 +1,5 @@
 /* Learn Tamil — games: 🎈 Balloon pop.
-    */
+   Balloons float up for 40 seconds; pop only the ones showing the target letter. The target changes every 3 hits. */
 'use strict';
 
 /* ---------- 🎈 Balloon pop ---------- */

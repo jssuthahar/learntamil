@@ -1,0 +1,151 @@
+# Features: what each one does and where its code lives
+
+Paths are relative to `assets/js/` unless they start with `/`. Text the child sees comes from `data/` (see `docs/CONTENT.md`).
+
+## Sections (URL hash routes)
+
+The router (`app.js`) shows one `<section class="panel">` at a time and fires `lt:section` with its id.
+
+| Route | Section | Code |
+| --- | --- | --- |
+| `#/uyir` `#/mei` `#/aytham` `#/uyirmei` | the four letter tabs | `features/letters/letters.js` |
+| `#/reading` | reading practice | `features/reading/reading.js` |
+| `#/stories` | stories, rhymes, festivals | `features/stories/story-reader.js`, `features/stories/rhymes.js` |
+| `#/practice` | games hub and every game | `features/games/*.js` |
+| `#/certificate` | level tests and certificates | `features/certificate/certificate.js` |
+| `#/little` | Little ones mode | `features/little/little.js` |
+
+The **main menu** has 5 app tabs plus 🖨️ Printables (desktop) or a 🖨️ header button (phone). The phone bottom bar fits exactly 5 tabs.
+
+---
+
+## Letters (`features/letters/letters.js`)
+
+- **Tiles for all 247 letters.** Tapping one plays its sound and shows it in the now-playing panel with romanisation, kind, hint and a picture word.
+- **Vowel sound fallback.** If a vowel has no recording, the device voice says the letter and then its picture word ("ஒ … ஒட்டகம்"), because device voices are weak on a lone vowel. See `core/speech.js`.
+- **Uyirmei table.** ▶ plays a whole row.
+- **Build a letter.** Pick a consonant and a vowel; it shows க் + ஆ = கா.
+- **Buttons under the big letter.** ✍️ Trace opens the tracing game on that letter; 🎤 Say it opens Say it back.
+- **Kili the parrot** says hello when tapped. The letters float in the hero background.
+
+## Speech (`core/speech.js`)
+
+- **Recordings first.** It plays a recording from `/assets/audio/` if `/assets/audio/manifest.js` lists one; otherwise it uses the device's Tamil text-to-speech voice, choosing the best one available (Edge natural, then Google, then enhanced).
+- **Chrome workarounds:** a short delay after `cancel()`, keeping a reference to the utterance so it isn't garbage-collected, and `resume()`.
+- **No Tamil voice.** If the device has none, a notice explains how to install one (Android, Windows, iPhone/Mac).
+- **Recording keys:** a letter's key is its code points in hex, for example கு → `0b95-0bc1`.
+
+**Getting real recordings:**
+- **Azure AI Speech:** `AZURE_SPEECH_KEY=… AZURE_SPEECH_REGION=… python3 /tools/generate_audio.py` (`--only vowels|problem`, `--voice ta-IN-ValluvarNeural`). It never replaces your own recordings without `--force`.
+- **Record them yourself:** open `/record.html` (noindex), record the letters, then **Download audio.zip** and unzip it into `/assets/audio/`. Its code is `features/recorder/recorder.js`; recordings are kept in IndexedDB `lt-recorder` until downloaded.
+
+## Reading (`features/reading/reading.js`)
+- **Levels:** 1–3, by letter count. Or choose a word topic.
+- **Per word:** read it yourself, 🐢 letter by letter, 🔊 whole word, then ❓ show the picture.
+- **Rewards:** "⭐ I read it" gives a token. 🎤 opens Say it back for the word.
+
+## Stories, rhymes, festivals
+
+**Stories** (`features/stories/story-reader.js`)
+- **Reader:** one page at a time. Read aloud with words highlighted as they are spoken (speech `onboundary`).
+- **Word breakdown:** tap a word to hear it and see its letters (`க் + அ`).
+- **Options:** English meaning on/off, auto page turn.
+- **Rewards:** finishing a story gives tokens and counts toward badges.
+
+**Rhymes, Aathichoodi and festivals** (`features/stories/rhymes.js`)
+- **Switch:** the Stories · Rhymes · Festivals control at the top of the Stories section.
+- **Rhymes:** the reader highlights each line's words while singing; tap a word for its breakdown. Finishing a rhyme gives a token.
+- **Festivals:** cards with tappable words; "Read the story" opens the festival in the story reader.
+- **Line of the day:** the same Aathichoodi line for everyone on a given date, on the Today card.
+
+## Games (`features/games/`)
+
+The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every right answer goes through `Rewards.win` (points, a token, praise, sound); every wrong one through `Rewards.miss` (a soft sound, and the streak resets).
+
+| Card | `data-game` | File | What the child does |
+| --- | --- | --- | --- |
+| க் + ஆ = ? | `build` | `letter-quiz.js` | pick the letter a consonant + vowel make |
+| Listen | `listen` | `letter-quiz.js` | hear a letter, tap it; sound-alike letters are never together |
+| Spin wheel | `spin` | `spin-wheel.js` | spin to a vowel, pick the picture that starts with it; remembered per child |
+| Balloon pop | `balloon` | `balloon-pop.js` | 40 s, pop balloons with the target letter |
+| Word builder | `words` | `word-builder.js` | tap letters in order to build a picture word |
+| Memory | `memory` | `memory.js` | match 6 vowels with their picture words |
+| Tamil quiz / Picture words / Topics / Spelling / Sentences | `quiz` `picture` `topics` `spell` `story` | `question-games.js` | multiple-choice questions from the certificate generators; no repeats until all have been asked |
+| Trace | `trace` | `trace.js` | trace a faint letter with a finger: ≥75% covered, ≤35% of ink off the letter, ink ≤ 2× the letter area |
+| Colouring | `colour` | `colouring.js` | tap a colour (its Tamil name is spoken), fill the picture's parts; finishing says the word |
+| Little ones | `little` | → `#/little` | opens Little ones mode |
+
+## Little ones mode (`features/little/little.js`, `#/little`)
+- **For ages 3–5:** pictures only, no English, big buttons, and sounds play by themselves.
+- **Two modes:** 👀 look & listen, and 🎯 find it.
+- **Themes:** animals, birds, food, vehicles, body, vowels.
+- **No buzzer:** a wrong tap makes the right picture wiggle and says its word again.
+
+## Say it back (`features/voice/say-back.js`)
+- **Flow:** it plays the correct sound, the child taps 🎤 and records up to 4 s, then hears their own voice; 🔁 plays both.
+- **Privacy:** `MediaRecorder` in memory only, revoked on close. **Never uploaded or saved.** There is no speech recognition.
+- **Entry points:** under the big letter, in Reading and on the trace board.
+
+## Certificates (`features/certificate/certificate.js`)
+- **Levels:** 10, from vowels up to Tamil champion. Names in `data/rewards.js` → `CERT_LEVELS`; questions in `LEVEL_QUESTIONS`.
+- **Passing:** 8 of 10 (level 10: 12 of 15). Each level unlocks the next.
+- **No repeats:** questions already asked are remembered per child (`lt-cert-seen`).
+- **The certificate:** drawn on a canvas, so Tamil is shaped correctly, then turned into a PDF by a tiny built-in writer. No library, and it works offline.
+- **Also used by games:** `CERT.bank` holds the question generators the question games use.
+
+## Rewards and motivation (`features/rewards/`)
+
+| What | Rule |
+| --- | --- |
+| Tokens 🪙 | +1 per right answer, +5 for a big win, +1 bonus on every 3-in-a-row, +5 per new story, +10 per badge, +10 for the daily goal, +20 for a certificate passed the first time |
+| Badges 🏅 | 28 in `data/rewards.js`; rules in `BADGE_RULES` (`progress.js`) |
+| Kili grows | `STAGES`: egg → … → royal parrot, by tokens ever earned (`today.js`) |
+| Daily goal | 10 things learned today (`GOAL`) |
+| Day streak | consecutive days with any activity |
+| Letter of the day | same letter for everyone on a date (hash of the date) |
+| Score | per game, best score per child (`lt-best-<game>`) |
+
+The 🪙 button in the header opens **My rewards** (stats, badges, reset, and links to stickers and the Parent corner).
+
+## Family (`features/family/`, `core/profiles.js`)
+
+| Feature | Details |
+| --- | --- |
+| Child profiles | Up to 6. The first child uses the plain keys; others use `key@<id>`. Switching reloads the page. Switch from the animal button on the Today card. |
+| Sticker book 📒 | one sticker per 10 tokens ever, from the animals, birds, food, vehicles and shapes topics and the picture words; a toast when a new one unlocks |
+| Parent corner 👪 | opens after a 3-second press-and-hold; shows minutes for the last 7 days, stats, letters missed most often (Listen and Build games), child management, break reminder |
+| Break reminder ⏰ | off by default; every 15/20/30/45 min of visible time it shows a 1-minute rest screen (`lt-break`, device-wide) |
+
+## PWA and offline (`services/pwa.js`, `/sw.js`)
+- **Install:** an "Install app" button where supported, and an iOS "Add to Home Screen" tip.
+- **Offline:** the service worker precaches every page and asset. `PRECACHE` and `VERSION` are generated by `npm run build`. Letter audio is cached separately (`lt-audio`) and kept across versions.
+- **Updates:** a new `VERSION` → the "A new version is ready · Refresh" toast.
+- **Shortcuts:** `/manifest.webmanifest` has long-press shortcuts (Letters, Reading, Stories, Games, Certificate, Printables).
+
+## Services shared by every page
+- **Firebase** (`services/firebase.js`). Nothing loads until a grown-up taps **Allow** on the cookie notice (`lt-consent`).
+  - **Analytics:** with advertising features off, and nothing a child types is sent. Events go through `logEv()` (`core/analytics.js`), queued until Firebase loads.
+  - **Reminders (push):** only after a parent taps "Turn on reminders" (`lt-push`). Notifications are sent from the Firebase console.
+  - **Learning around the world:** visit counts and live presence in the Realtime Database, country and city only. Rules are in `/database.rules.json` and allow only `+1` increments; deploy them with `firebase deploy --only database`.
+  - **App Check** (reCAPTCHA Enterprise) is optional; there is a key slot in the file.
+- **Ask Kili chat** (`services/chat.js`). It answers from `data/faq.js` (generated from every FAQ on the site plus the `HELP` list in `tools/build-pages.mjs`). Matching happens in the browser; no AI service, nothing is sent.
+- **Support note** (`services/support.js`). A gentle "Buy me a coffee" note: never on a first visit, it rests 7/60/120 days after each choice, and it is a plain link with no third-party script.
+
+## Static pages and printables (generated)
+- **24 guide pages, privacy, terms and 404:** built by `/tools/build-pages.mjs`. See `docs/SEO.md`.
+- **23 PDFs (53 pages):** built by `/tools/build-printables.mjs`, in five groups: letters, words, tracing, activity, colouring. The printables page groups them by type. They are promoted in the menu, the phone header, a home chip, in-app cards, a guide-page header button and an app shortcut.
+
+## Storage keys (localStorage unless noted)
+
+| Key | Scope | Holds |
+| --- | --- | --- |
+| `lt-progress` | per child | tokens, badges, letters heard, stories, traced, minutes, misses, stickers, streaks, certificates |
+| `lt-best-<game>` | per child | best score |
+| `lt-cert-name`, `lt-cert-seen` | per child | name for the certificate; questions already asked |
+| `lt-spin-seen` | per child | spin-wheel memory |
+| `lt-profiles`, `lt-profile` | device | the children; who is learning now |
+| `lt-theme`, `lt-sfx`, `lt-break` | device | theme, sound on/off, break reminder |
+| `lt-consent`, `lt-push` | device | cookie choice, push token |
+| `lt-support`, `lt-installed`, `lt-ios-hint` | device | support note timing, install state |
+| `lt-notice`, `lt-counted`, `lt-sid`, `lt-geo`, `lt-located` | session (sessionStorage) | notice closed, visit counted, live session id, approximate town for the world map |
+| IndexedDB `lt-recorder` | device | recordings in `/record.html` until downloaded |

@@ -1,5 +1,5 @@
 /* Learn Tamil — games: 🃏 Memory.
-    */
+   Six vowels and their picture words, face down; turn two cards at a time to find the pairs. */
 'use strict';
 
 /* ---------- 🃏 Memory: vowel ↔ picture word ---------- */

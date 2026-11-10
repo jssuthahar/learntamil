@@ -1,5 +1,7 @@
 # Learn Tamil — architecture
 
+> Related: [DEVELOPMENT.md](DEVELOPMENT.md) (setup, testing, debugging) · [CONTENT.md](CONTENT.md) (data files) · [FEATURES.md](FEATURES.md) (every feature) · [SEO.md](SEO.md) · [../CLAUDE.md](../CLAUDE.md) (rules for Claude Code)
+
 How the app is put together, why, and the rules to follow when you change it. Read this before you add a script, a stylesheet, a page or a game.
 
 ## 1. Principles
@@ -30,7 +32,7 @@ tools/
 ```
 
 | Folder | Contains | May depend on |
-|---|---|---|
+| --- | --- | --- |
 | `data/` | constants only (content and text), no DOM, no logic | other `data/` files |
 | `core/` | `profiles` (storage), `dom` ($, effects), `letter-model`, `speech`, `sound`, `analytics` | `data/` |
 | `features/x/` | one area of the app | `core/`, `data/`, `features/rewards/`; other features only through events or at run time |
@@ -42,7 +44,7 @@ tools/
 **All Tamil content and every word the app says or shows to a child live in `assets/js/data/`.** To change wording, edit only these files. A Tamil teacher can review this one folder.
 
 | File | What to edit there |
-|---|---|
+| --- | --- |
 | `alphabet.js` | the 247 letters, sounds, hints, example words, letter labels (உயிர் எழுத்து, குறில் …), ஃ, sound-alike groups |
 | `words.js` | picture words (`WORDS`) and word topics (`TOPICS`: numbers, colours … months) |
 | `stories.js` | read-aloud stories |
@@ -73,7 +75,7 @@ Keep names that are shared across files few and obvious: `$`, `$$`, `speak`, `sa
 ### Events, for features that should not know about each other
 
 | Event | Fired by | Meaning |
-|---|---|---|
+| --- | --- | --- |
 | `lt:section` (`detail`: section id) | router | a section was opened: start it, or stop sound and timers |
 | `lt:game` (`detail`: game id) | games hub | a game was picked: games in their own files start themselves |
 | `lt:open` (`detail`: `stickers` / `parents`) | buttons anywhere | open a family dialog |
@@ -87,7 +89,7 @@ Each section is a URL hash: `#/uyir`, `#/mei`, `#/aytham`, `#/uyirmei`, `#/readi
 All keys start with `lt-`. Read and write them in a `try`/`catch`, because private browsing can block storage.
 
 | Kind | Keys | How to access |
-|---|---|---|
+| --- | --- | --- |
 | **Per child** | `lt-progress`, `lt-best-<game>`, `lt-cert-name`, `lt-cert-seen`, `lt-spin-seen` | `Profiles.get(k)` / `Profiles.set(k, v)`. The first child uses the plain key; other children use `key@<id>`. |
 | **Per device** | `lt-profiles`, `lt-profile`, `lt-theme`, `lt-sfx`, `lt-break`, `lt-consent`, `lt-push`, `lt-support`, install and notice flags | `localStorage` directly |
 
@@ -133,7 +135,7 @@ all precached files ──► content hash ────────────�
 ## 10. Decisions
 
 | Decision | Why | Revisit when |
-|---|---|---|
+| --- | --- | --- |
 | Classic scripts with shared globals, no bundler | Zero tooling to deploy; works from any static host; easy for contributors | The code grows past what one ordered list can manage. Then move to native ES modules (`<script type="module">`, still no bundler) one folder at a time, starting with `data/` and `core/`. |
 | Site served from the repo root | Keeps GitHub Pages settings and every public URL unchanged | Tools and docs must not be public: move the site into `public/` and deploy it with GitHub Actions |
 | Numbered CSS source files, joined into `app.css` at build | One render-blocking request for a fast first paint; the source stays small, ordered files | — |

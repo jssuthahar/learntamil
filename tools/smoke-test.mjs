@@ -66,7 +66,9 @@ const BASE = `http://127.0.0.1:${server.address().port}/`;
 const port = 9400 + Math.floor(Math.random() * 400);
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'lt-test-'));
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, '--no-first-run',
-  '--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--autoplay-policy=no-user-gesture-required', 'about:blank'], { stdio: 'ignore' });
+  '--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--autoplay-policy=no-user-gesture-required',
+  ...(process.env.CI ? ['--no-sandbox'] : []),   // GitHub's Ubuntu runners block Chrome's sandbox
+  'about:blank'], { stdio: 'ignore' });
 let target;
 for (let i = 0; i < 60 && !target; i++){ try { target = (await (await fetch(`http://127.0.0.1:${port}/json`)).json()).find(t => t.type === 'page'); } catch (e) {} if (!target) await sleep(200); }
 if (!target){ console.error('Could not start Chrome at ' + CHROME); process.exit(2); }

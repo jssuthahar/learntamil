@@ -1,6 +1,6 @@
 /* Learn Tamil — core: speech.
    Plays a recorded letter (assets/audio/) when there is one, otherwise the device Tamil voice.
-   Uses: $, inWord helpers from core/alphabet.js */
+   Uses: $ (core/dom.js) and the letter objects (core/letter-model.js). */
 'use strict';
 
 let tamilVoice = null;
