@@ -30,7 +30,7 @@
 <meta name="apple-mobile-web-app-title" content="Learn Tamil">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="application-name" content="Learn Tamil">
-<script>try{var t=localStorage.getItem('lt-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{var r=document.documentElement,t=localStorage.getItem('lt-theme');if(t)r.setAttribute('data-theme',t);[['text','lt-text'],['contrast','lt-contrast'],['motion','lt-motion']].forEach(function(a){var v=localStorage.getItem(a[1]);if(v)r.setAttribute('data-'+a[0],v)})}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -72,8 +72,8 @@
 <p><strong>No personal information.</strong> The site has no sign-up, no login, no comments and no forms that send information anywhere. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
 <h3 id="microphone">Microphone (“Say it back”)</h3>
 <p>The 🎤 <b>Say it</b> button lets a child record themselves saying a letter or word and play it back. The recording is kept only in the browser’s memory, is <strong>never uploaded or saved</strong>, and is deleted when the window closes. The browser asks for permission first, and nothing is recorded until the child taps 🎤. There is no speech recognition.</p>
-<h3 id="profiles">Child profiles and Parent corner</h3>
-<p>Up to six children can each have their own progress on one device. A child’s first name (if you type one), tokens, badges, stickers, minutes learned and the letters they find hard are saved <strong>only in this browser</strong> (localStorage) and are never sent anywhere. You can delete a child’s progress in the Parent corner, or clear this site’s data in your browser settings.</p>
+<h3 id="profiles">Child profiles and Parent dashboard</h3>
+<p>Up to six children can each have their own progress on one device. A child’s first name (if you type one), the age group you choose (3–5, 6–8 or 9–12), tokens, badges, daily gifts, lessons done, stickers, minutes learned and the letters they find hard are saved <strong>only in this browser</strong> (localStorage) and are never sent anywhere. You can delete a child’s progress in the Parent dashboard, or clear this site’s data in your browser settings.</p>
 <h3 id="analytics">Anonymous usage statistics (only if you allow them)</h3>
 <p>When you first visit, a notice asks whether we may count visits. <strong>Nothing is loaded or sent unless you tap “Allow”.</strong> If you allow it, the site uses <strong>Google Analytics for Firebase</strong> to learn which lessons and games are useful. It records pages visited and simple events such as “a game was started”, “a story was finished”, “a badge was earned” or “a certificate level was passed”, together with general technical details (approximate country, device type, browser). It stores a random visitor ID in first-party cookies (<code>_ga</code>, <code>_ga_*</code>) so repeat visits can be counted. We have turned off Google signals, advertising cookies and ad personalisation, and we never send names, the certificate name or anything your child types. Google processes this data under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. If you tap “No thanks”, or change your mind later, the site works exactly the same. Your choice is saved in this browser (localStorage <code>lt-consent</code>).</p>
 <p><strong data-consent-status>Your choice is saved in this browser.</strong> <button type="button" class="btn small" data-consent-open>Change cookie choice</button></p>
@@ -82,7 +82,9 @@
 <p>To make the site work, a few small values are saved in your browser's own storage. They never leave your device and we cannot see them.</p>
 <div class="tbl"><table><thead><tr><th>What</th><th>Where</th><th>Why</th></tr></thead><tbody>
 <tr><td>Light or dark theme</td><td>localStorage <code>lt-theme</code></td><td>Remembers your colour choice</td></tr>
-<tr><td>Game progress: tokens, badges, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
+<tr><td>⚙️ Settings: text size, high contrast, less movement, voice speed and volume</td><td>localStorage <code>lt-text</code>, <code>lt-contrast</code>, <code>lt-motion</code>, <code>lt-rate</code>, <code>lt-vol</code></td><td>Remembers how you like the app to look and sound on this device</td></tr>
+<tr><td>Children’s first names, pictures and age groups</td><td>localStorage <code>lt-profiles</code>, <code>lt-profile</code></td><td>Lets each child have their own progress and the learning path for their age</td></tr>
+<tr><td>Game progress: tokens, badges, daily gifts, letters heard, words read, stories finished</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
 <tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
 <tr><td>Reminder device token</td><td>localStorage <code>lt-push</code></td><td>Only if you turn reminders on; deleted when you turn them off</td></tr>

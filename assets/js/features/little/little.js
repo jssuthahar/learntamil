@@ -48,7 +48,7 @@ function ltPick(c, b){
   if (c === LT.target){
     LT.busy = true; b.classList.add('right');
     if (!c.big) b.insertAdjacentHTML('beforeend', `<b lang="ta">${c.word}</b>`);
-    Rewards.cheer(b, false); addStar(1); Progress.track('correct');
+    Rewards.cheer(b, false); addStar(1); Progress.track('correct'); Progress.track('little');
     setTimeout(() => c.say(() => setTimeout(ltFindNext, 700)), 500);
   } else {
     // No buzzer: gently show the right one and say it again.

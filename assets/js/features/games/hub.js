@@ -23,8 +23,14 @@ function showGame(g){
   if (MCQ_INFO[g]) startMcq(g);
   document.dispatchEvent(new CustomEvent('lt:game', {detail:g}));   // trace.js, colouring.js … start their own games
 }
-$$('#gamePick .gcard').forEach(c=>c.addEventListener('click', ()=>showGame(c.dataset.game)));
+$$('#gamePick .gcard').forEach(c=>c.addEventListener('click', ()=>{
+  showGame(c.dataset.game);
+  // Phones: the board sits below 14 game cards, so bring the game into view.
+  if (c.dataset.game !== 'little' && matchMedia('(max-width:760px)').matches)
+    setTimeout(()=>{ const p = [...document.querySelectorAll('#practice .game')].find(x => !x.hidden); if (p) p.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' }); }, 60);
+}));
 document.addEventListener('lt:section', e=>{
+  document.body.classList.toggle('games-on', e.detail === 'practice');
   if (e.detail === 'practice') showGame(game); else stopBalloon();
   if (e.detail === 'reading') renderRead();
 });

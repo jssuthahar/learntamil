@@ -32,7 +32,7 @@
 <meta name="apple-mobile-web-app-title" content="Learn Tamil">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="application-name" content="Learn Tamil">
-<script>try{var t=localStorage.getItem('lt-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{var r=document.documentElement,t=localStorage.getItem('lt-theme');if(t)r.setAttribute('data-theme',t);[['text','lt-text'],['contrast','lt-contrast'],['motion','lt-motion']].forEach(function(a){var v=localStorage.getItem(a[1]);if(v)r.setAttribute('data-'+a[0],v)})}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">

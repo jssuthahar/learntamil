@@ -15,7 +15,9 @@ The router (`app.js`) shows one `<section class="panel">` at a time and fires `l
 | `#/certificate` | level tests and certificates | `features/certificate/certificate.js` |
 | `#/little` | Little ones mode | `features/little/little.js` |
 
-The **main menu** has 5 app tabs plus 🖨️ Printables (desktop) or a 🖨️ header button (phone). The phone bottom bar fits exactly 5 tabs.
+The **main menu** has exactly 5 items, the same on desktop and the phone bottom bar: 🔤 **Learn** (the letter tabs), 📖 **Read** (`#/reading` and `#/stories`, with a Words · Stories & rhymes switch at the top of both), 🎮 **Play** (games), 🖨️ **Print** (a link to `tamil-printables.html`) and 🎓 **Certificate**. `navOf()` / `lastOf()` in `app.js` map sections to menu items; Read reopens whichever of the two was open last. The phone bar fits exactly 5 items — don't add a 6th.
+
+The header also has 🪙 My rewards, ⚙️ Settings and the theme button. Below 440px the brand words are hidden (the அ mark stays) so the ⚙️ button fits.
 
 ---
 
@@ -75,6 +77,11 @@ The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every 
 | Colouring | `colour` | `colouring.js` | tap a colour (its Tamil name is spoken), fill the picture's parts; finishing says the word |
 | Little ones | `little` | → `#/little` | opens Little ones mode |
 
+## Age groups and learning paths (`features/rewards/path.js`)
+- **Age cards on the home page:** 👶 3–5, 🧒 6–8, 🧑‍🎓 9–12. The choice is saved on the child's profile (`Profiles.update(id, { age })`, in `lt-profiles`). The first tap on 3–5 opens Little ones; the others open the path.
+- **Learning path dialog:** the lessons for that age, in order, with ✓ for done and a **Next ▶** / **Go** button that opens the activity. Names, order and links: `AGE_GROUPS` and `LESSONS` in `data/rewards.js`; when a lesson counts as done: `LESSON_RULES` in `features/rewards/progress.js` (computed from saved progress, so nothing extra is stored). `go` is `#/section`, `game:<id>` or `rhymes`.
+- **Where it shows:** the 🗺️ button on the Today card (with "Next: …"), a stat in My rewards, and the Parent dashboard. Finishing a whole path earns the 🗺️ badge.
+
 ## Little ones mode (`features/little/little.js`, `#/little`)
 - **For ages 3–5:** pictures only, no English, big buttons, and sounds play by themselves.
 - **Two modes:** 👀 look & listen, and 🎯 find it.
@@ -98,14 +105,15 @@ The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every 
 | What | Rule |
 | --- | --- |
 | Tokens 🪙 | +1 per right answer, +5 for a big win, +1 bonus on every 3-in-a-row, +5 per new story, +10 per badge, +10 for the daily goal, +20 for a certificate passed the first time |
-| Badges 🏅 | 28 in `data/rewards.js`; rules in `BADGE_RULES` (`progress.js`) |
+| Badges 🏅 | 30 in `data/rewards.js`; rules in `BADGE_RULES` (`progress.js`) |
 | Kili grows | `STAGES`: egg → … → royal parrot, by tokens ever earned (`today.js`) |
 | Daily goal | 10 things learned today (`GOAL`) |
+| Daily gift 🎁 | on the Today card; opens once a day after the first thing learned; gives 2 + day streak tokens (max 10). Missing a day never takes anything away. `giftDay`, `gifts` in progress |
 | Day streak | consecutive days with any activity |
 | Letter of the day | same letter for everyone on a date (hash of the date) |
 | Score | per game, best score per child (`lt-best-<game>`) |
 
-The 🪙 button in the header opens **My rewards** (stats, badges, reset, and links to stickers and the Parent corner).
+The 🪙 button in the header opens **My rewards** (stats, badges, reset, and links to the learning path, stickers and the Parent dashboard).
 
 ## Family (`features/family/`, `core/profiles.js`)
 
@@ -113,7 +121,8 @@ The 🪙 button in the header opens **My rewards** (stats, badges, reset, and li
 | --- | --- |
 | Child profiles | Up to 6. The first child uses the plain keys; others use `key@<id>`. Switching reloads the page. Switch from the animal button on the Today card. |
 | Sticker book 📒 | one sticker per 10 tokens ever, from the animals, birds, food, vehicles and shapes topics and the picture words; a toast when a new one unlocks |
-| Parent corner 👪 | opens after a 3-second press-and-hold; shows minutes for the last 7 days, stats, letters missed most often (Listen and Build games), child management, break reminder |
+| Parent dashboard 👪 | opens after a 3-second press-and-hold; age group picker, learning path with ticks and **Suggested next** buttons, minutes for the last 7 days, stats (badges, daily gifts, tokens), letters missed most often (Listen and Build games), child management, break reminder, link to ⚙️ Settings |
+| Settings ⚙️ (`features/family/settings.js`) | header button. Text size (Normal / Large / Extra large), high contrast, less movement, game sounds, voice speed and voice volume. Device-wide: `lt-text`, `lt-contrast`, `lt-motion`, `lt-sfx`, `lt-rate`, `lt-vol`. The inline script in `<head>` (index.html and every guide page) puts text/contrast/motion on `<html data-…>` before the first paint; CSS is in `90-kids.css` → "Accessibility". Larger text uses CSS `zoom` on the reading areas, never on the trace/colouring canvases (zoom would move their touch points). |
 | Break reminder ⏰ | off by default; every 15/20/30/45 min of visible time it shows a 1-minute rest screen (`lt-break`, device-wide) |
 
 ## PWA and offline (`services/pwa.js`, `/sw.js`)
@@ -139,12 +148,13 @@ The 🪙 button in the header opens **My rewards** (stats, badges, reset, and li
 
 | Key | Scope | Holds |
 | --- | --- | --- |
-| `lt-progress` | per child | tokens, badges, letters heard, stories, traced, minutes, misses, stickers, streaks, certificates |
+| `lt-progress` | per child | tokens, badges, letters heard, stories, traced, minutes, misses, stickers, streaks, certificates, Little ones finds, daily gifts |
 | `lt-best-<game>` | per child | best score |
 | `lt-cert-name`, `lt-cert-seen` | per child | name for the certificate; questions already asked |
 | `lt-spin-seen` | per child | spin-wheel memory |
-| `lt-profiles`, `lt-profile` | device | the children; who is learning now |
+| `lt-profiles`, `lt-profile` | device | the children (name, picture, age group); who is learning now |
 | `lt-theme`, `lt-sfx`, `lt-break` | device | theme, sound on/off, break reminder |
+| `lt-text`, `lt-contrast`, `lt-motion`, `lt-rate`, `lt-vol` | device | ⚙️ Settings: text size, high contrast, less movement, voice speed, voice volume |
 | `lt-consent`, `lt-push` | device | cookie choice, push token |
 | `lt-support`, `lt-installed`, `lt-ios-hint` | device | support note timing, install state |
 | `lt-notice`, `lt-counted`, `lt-sid`, `lt-geo`, `lt-located` | session (sessionStorage) | notice closed, visit counted, live session id, approximate town for the world map |

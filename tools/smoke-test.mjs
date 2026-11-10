@@ -119,6 +119,34 @@ await check('stories: rhymes and festivals open', `(async()=>{ location.hash='/s
 await check('rewards, stickers and parent corner open', `(async()=>{ document.getElementById('stars').click(); document.getElementById('rewardsDlg').close();
   document.dispatchEvent(new CustomEvent('lt:open',{detail:'stickers'})); document.getElementById('stickerDlg').close();
   document.dispatchEvent(new CustomEvent('lt:open',{detail:'parents'})); return !!document.querySelector('#parentDlg .gate-btn'); })()`);
+await check('menu: Learn, Read, Play, Print, Certificate — Read holds reading and stories', `(async()=>{
+  const items = [...document.querySelectorAll('.mainnav .nav-item')].map(n => n.dataset.go || 'print');
+  location.hash = '/stories'; await new Promise(r=>setTimeout(r,200));
+  const readOn = document.querySelector('.nav-item[data-go=read]').classList.contains('on') && document.querySelector('#stories .read-switch [data-rs=stories]').getAttribute('aria-current') === 'page';
+  location.hash = '/uyir'; await new Promise(r=>setTimeout(r,200)); document.querySelector('.nav-item[data-go=read]').click(); await new Promise(r=>setTimeout(r,200));
+  return items.join() === 'letters,read,practice,print,certificate' && readOn && location.hash === '#/stories'; })()`);
+await check('age groups: every lesson has a rule, and choosing an age opens its path', `(async()=>{
+  const rulesOk = AGE_GROUPS.every(g => (LESSONS[g.id] || []).length && LESSONS[g.id].every(L => typeof LESSON_RULES[L.id] === 'function' && /^(#\\/|game:|rhymes$)/.test(L.go)));
+  location.hash = '/uyir'; await new Promise(r=>setTimeout(r,200));
+  document.querySelector('.age-card[data-age="6-8"]').click(); await new Promise(r=>setTimeout(r,100));
+  const d = document.getElementById('pathDlg'); const ok = d && d.open && d.querySelectorAll('.path-step').length === LESSONS['6-8'].length
+    && childAge() === '6-8' && document.querySelector('.age-card[data-age="6-8"]').getAttribute('aria-pressed') === 'true';
+  d.close(); return rulesOk && ok; })()`);
+await check('daily gift opens once a day after learning, and gives tokens', `(async()=>{
+  const g = document.getElementById('giftBtn'); const t0 = Progress.d.tokens;
+  Progress.d.giftDay = ''; Progress.d.day = ''; paintQuest(); const locked = g.dataset.state === 'locked';
+  Progress.track('word'); const ready = g.dataset.state === 'ready';
+  g.click(); await new Promise(r=>setTimeout(r,800)); document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  const opened = g.dataset.state === 'opened' && Progress.d.tokens > t0;
+  return locked && ready && opened; })()`);
+await check('settings: text size, contrast and motion reach <html>, and the parent dashboard opens', `(async()=>{
+  document.getElementById('settingsBtn').click(); const d = document.getElementById('settingsDlg');
+  d.querySelector('[data-size=lg]').click(); const c = d.querySelector('#setContrast'); c.checked = true; c.onchange({ target: c });
+  const r = document.documentElement; const ok = r.dataset.text === 'lg' && r.dataset.contrast === 'high' && localStorage.getItem('lt-text') === 'lg';
+  d.querySelector('[data-size=""]').click(); c.checked = false; c.onchange({ target: c }); d.close();
+  const p = document.getElementById('parentDlg'); renderParents(p);
+  const dash = !!p.querySelector('#pcAge') && p.querySelectorAll('.pc-lessons li').length === LESSONS[childAge()].length; p.close();
+  return ok && !r.dataset.text && !r.dataset.contrast && dash; })()`);
 await check('tracing accepts a traced letter', `(async()=>{ showGame('trace'); await renderTrace(); inkCv.getContext('2d').drawImage(maskCv,0,0); drawLetter(inkCv.getContext('2d'), trItem().l, '#000', 14); TR.inked=true; checkTrace(); return TR.done; })()`);
 await check('messages come from data/messages.js', `(async()=>{ location.hash='/practice'; await new Promise(r=>setTimeout(r,200)); showGame('build');
   const ask = document.getElementById('qAsk').textContent;
@@ -143,7 +171,7 @@ missingPrints.length ? fail('missing printable files: ' + missingPrints.join(', 
 await open('tamil-printables.html');
 await check('printables page lists every PDF', `document.querySelectorAll('.print-card').length === ${PRINTS.length}`);
 await open('index.html');
-await check('menu links to the printables', `!!document.querySelector('.mainnav a[href="tamil-printables.html"]') && !!document.querySelector('.print-btn') && document.querySelectorAll('.print-promo').length >= 3`);
+await check('menu links to the printables', `!!document.querySelector('.mainnav a[href="tamil-printables.html"]') && document.querySelectorAll('.print-promo').length >= 3`);
 await open('record.html');
 await check('recorder lists all 247 letters from data/alphabet.js', 'LETTERS.length === 247');
 

@@ -2,7 +2,7 @@
    Tamil first, English second. Edit the words here — not in the code.
    {name}-style placeholders are filled in by fmt() (core/dom.js).
    Not here, on purpose: the page markup in index.html (search engines read it), the certificate
-   question templates (features/certificate/), and grown-up screens (Parent corner, chat, support note). */
+   question templates (features/certificate/), and grown-up screens (Parent dashboard, chat, support note). */
 
 const TEXT = {
   /* Kili and greetings */
@@ -76,6 +76,33 @@ const TEXT = {
   stickerBook: ['என் ஸ்டிக்கர் புத்தகம்', 'My sticker book'],
   breakTime: ['கொஞ்சம் ஓய்வெடு!', 'Time for a little break! Stretch 🙆, drink some water 💧 and rest your eyes 👀.'],
   backToLearning: ['மீண்டும் விளையாடு', 'Back to learning'],
+
+  /* Daily gift 🎁 (Today card): opens once a day, after the first thing learned */
+  giftLocked: ['இன்று ஒன்று கற்றால் பரிசு திறக்கும்', 'Learn one thing today to open your gift'],
+  giftReady: ['இன்றைய பரிசு!', 'Tap to open today’s gift'],
+  giftOpened: ['இன்றைய பரிசு கிடைத்தது!', 'Come back tomorrow for another gift'],
+  giftWon: ['உனக்கு ஒரு பரிசு!', '+{n} 🪙 · {days}-day streak 🔥'],
+
+  /* Learning path 🗺️ (age groups and lessons: data/rewards.js) */
+  myPath: ['என் கற்றல் பயணம்', 'My learning path'],
+  chooseAge: ['உன் வயது என்ன?', 'Choose an age group'],
+  lessonsDone: ['பாடங்கள் முடிந்தன', 'lessons done'],
+  pathNext: ['அடுத்து', 'Next'],
+  pathDone: ['பயணம் முடிந்தது!', 'You finished the ages {ages} path! Try the next one 🚀'],
+  go: ['போ', 'Go'],
+
+  /* Settings ⚙️ (text size, contrast, sound) — used by children and grown-ups */
+  settings: {
+    title: ['அமைப்புகள்', 'Settings'],
+    text: ['எழுத்து அளவு', 'Text size'],
+    sizes: [['சாதாரணம்', 'Normal'], ['பெரியது', 'Large'], ['மிகப் பெரியது', 'Extra large']],
+    contrast: ['உயர் மாறுபாடு', 'High contrast'],
+    motion: ['குறைந்த அசைவு', 'Less movement'],
+    sfx: ['விளையாட்டு ஒலிகள்', 'Game sounds'],
+    rate: ['குரல் வேகம்', 'Voice speed'],
+    volume: ['குரல் ஒலி அளவு', 'Voice volume'],
+    tryVoice: ['குரலைக் கேள்', 'Try the voice']
+  },
 
   /* Certificate (printed on the PDF) */
   certificate: {

@@ -1178,13 +1178,8 @@ body:not(.doc-page) footer{padding-bottom:calc(40px + env(safe-area-inset-bottom
 .print-card p{margin:0;font-size:13px!important}
 .print-card .btn{margin-top:auto;text-decoration:none!important;color:#fff!important}
 
-/* 🖨️ Printables promotion: menu item (desktop), header button (phones), promo card, page sections */
+/* 🖨️ Printables promotion: the Print menu item (one of the 5 tabs, also on the phone bar), promo card, page sections */
 .nav-print{text-decoration:none}
-.print-btn{display:none;place-items:center;text-decoration:none;font-size:20px}
-@media (max-width:760px){
-  .mainnav .nav-print{display:none}          /* the phone bottom bar keeps its 5 app tabs */
-  .print-btn{display:grid}
-}
 .print-promo{display:flex;align-items:center;gap:14px;margin:18px 0 6px;padding:14px 18px;border-radius:20px;text-decoration:none;color:var(--text);
   background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--edge) border-box;border:1.5px solid transparent;box-shadow:var(--sh-1);transition:transform .15s}
 .print-promo:hover{transform:translateY(-2px)}
@@ -1196,11 +1191,10 @@ body:not(.doc-page) footer{padding-bottom:calc(40px + env(safe-area-inset-bottom
 .print-jump a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-weight:700;font-size:14px;text-decoration:none;color:var(--text)}
 .print-jump a:hover{background:var(--accent-soft)}
 .print-jump small{background:var(--accent-soft);color:var(--accent-deep);border-radius:999px;padding:0 7px;font-size:12px}
-/* Desktop: the 🖨️ menu item is icon-only (tooltip + label for screen readers) so the brand keeps its room. */
-@media (min-width:761px){ .nav-print .nav-t{display:none} .nav-print{padding:6px 10px} .site-header .brand{flex-shrink:0} }
-/* Phones: a little less space between header buttons so the 🖨️ button fits beside the brand. */
-@media (max-width:760px){ .site-header .wrap{gap:8px} .print-btn{width:38px;height:38px} }
-/* Header fit on desktop (brand + 6 menu items + tokens + install + theme). Measured, not guessed:
+@media (min-width:761px){ .site-header .brand{flex-shrink:0} }
+/* Phones: a little less space between header buttons so ⚙️ and the theme button fit beside the brand. */
+@media (max-width:760px){ .site-header .wrap{gap:8px} #settingsBtn{width:38px;height:38px} }
+/* Header fit on desktop (brand + 5 menu items + tokens + install + settings + theme). Measured, not guessed:
    wide screens get a slightly wider header; narrower ones drop the subtitle, then the brand words (the அ mark stays). */
 @media (min-width:1360px){ .site-header .wrap{max-width:1320px} }
 @media (min-width:761px) and (max-width:1359px){ .brand-name small{display:none} .site-header .nav-item{padding:6px 8px} .site-header .wrap{gap:10px} }
@@ -1454,3 +1448,160 @@ body.little-on #globalTools,body.little-on .disclaimer{display:none}
 /* ⏰ Break reminder */
 .break-pop{cursor:default}
 .break-pop .btn{margin-top:12px}
+
+/* 🎂 Age groups on the home page (features/rewards/path.js) */
+.ages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+.ages-title{grid-column:1/-1;margin:0;font-size:17px;font-family:var(--font-kid)}
+.ages-title .ta{font-size:14px;color:var(--text-muted);font-weight:600}
+.age-card{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:14px 14px 18px;border-radius:20px;border:2px solid var(--border);background:var(--surface);color:var(--text);text-align:left;cursor:pointer;min-height:64px;box-shadow:var(--sh-1);transition:transform .15s,border-color .15s}
+.age-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.age-card[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.age-ic{font-size:38px;line-height:1;flex:none}
+.age-t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+.age-t b{font-family:var(--font-kid);font-size:19px}
+.age-t .ta{font-weight:700;font-size:15px}
+.age-t small{color:var(--text-muted);font-size:13px}
+.age-t .age-prog{color:var(--accent-deep);font-weight:700}
+.age-t .age-prog:empty{display:none}
+.age-bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--bg-subtle)}
+.age-bar i{display:block;height:100%;width:0;background:var(--brand);transition:width .4s}
+@media (max-width:760px){
+  .ages{gap:8px}
+  .age-card{flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 6px 14px}
+  .age-ic{font-size:30px}
+  .age-t{align-items:center}
+  .age-t b{font-size:16px}
+  .age-t .ta{font-size:12.5px}
+  .age-t small:not(.age-prog){display:none}
+  .age-t .age-prog{font-size:11px}
+}
+
+/* 🎁 Daily gift and 🗺️ learning path buttons on the Today card */
+.today-quest{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.q-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;min-height:56px;border-radius:16px;border:2px solid var(--border);background:var(--surface);color:var(--text);text-align:left;cursor:pointer}
+.q-ic{font-size:26px;line-height:1;flex:none}
+.q-t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+.q-t b{font-size:14px}
+.q-t small{font-size:12px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.gift-btn[data-state="locked"] .q-ic{filter:grayscale(.7);opacity:.7}
+.gift-btn[data-state="ready"]{border-color:#ffb02e;background:color-mix(in srgb,#ffd166 22%,var(--surface))}
+.gift-btn[data-state="ready"] .q-ic{animation:giftHop 1.4s ease-in-out infinite}
+.gift-btn.wiggle{animation:giftWiggle .5s}
+@keyframes giftHop{0%,60%,100%{transform:translateY(0) rotate(0)}70%{transform:translateY(-6px) rotate(-8deg)}80%{transform:translateY(0) rotate(6deg)}}
+@keyframes giftWiggle{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.path-btn{border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
+
+/* 🗺️ Learning path dialog */
+.path-ages{display:flex;width:100%}
+.path-ages{overflow:visible}
+.path-ages .seg-btn{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;white-space:normal;text-align:center;padding:8px 4px}
+.path-ages .seg-btn small{font-size:11px;line-height:1.2}
+.path-ask{text-align:center;font-size:18px;margin:16px 0}
+.path-sum{margin:4px 0 8px;color:var(--text-muted)}
+.path-bar{height:12px;border-radius:999px;background:var(--bg-subtle);overflow:hidden;border:1px solid var(--border)}
+.path-bar i{display:block;height:100%;background:var(--brand);border-radius:999px}
+.path-count{margin:6px 0 10px;font-size:14px}
+.path-done{padding:10px 14px;border-radius:14px;background:color-mix(in srgb,var(--ok) 14%,var(--surface));margin:0 0 10px}
+.path-list,.pc-lessons{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.path-step{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--bg-subtle);border:2px solid transparent}
+.path-step.next{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.path-step.done{opacity:.75}
+.ps-n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--surface);border:2px solid var(--border);font-weight:800;font-size:14px}
+.path-step.done .ps-n{background:var(--ok);border-color:var(--ok);color:#fff}
+.ps-ic{font-size:26px;flex:none}
+.ps-t{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.3}
+.ps-t b{font-size:15px}
+.ps-t small{color:var(--text-muted);font-size:13px}
+.path-step .btn{flex:none;min-height:44px}
+
+/* 👪 Parent dashboard: path summary */
+.pc-path .pc-set select{flex:1 1 220px;min-width:0;max-width:100%}
+.pc-path{padding:12px 14px;border-radius:16px;background:var(--bg-subtle);margin:6px 0 12px;display:flex;flex-direction:column;gap:8px}
+.pc-path-sum{margin:0}
+.pc-lessons{gap:4px;font-size:14px}
+.pc-lessons li.done{color:var(--text-muted)}
+.pc-next{margin:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* 📖 Read: Words · Stories switch (links, aria-current marks the open one) */
+.read-switch{display:flex;width:max-content;max-width:100%;margin-top:16px}
+.read-switch .seg-btn{text-decoration:none;display:flex;flex-direction:column;align-items:center;min-height:44px;justify-content:center}
+.read-switch .seg-btn[aria-current="page"]{background:var(--accent);color:var(--on-accent)}
+
+/* ⚙️ Settings dialog (features/family/settings.js) */
+#settingsBtn{font-size:19px}
+/* Narrow phones: the ⚙️ button needs the room, so the header keeps only the அ brand mark (the link has an aria-label). */
+@media (max-width:440px){ .site-header .brand-name{display:none} }
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid var(--border)}
+.set-l{font-weight:700}
+.set-sw .set-l{flex:1 1 0;min-width:0}
+.set-sizes{margin:0}
+.set-sizes .seg-btn{display:flex;flex-direction:column;align-items:center;min-width:72px;min-height:56px}
+.set-sw input[type=checkbox]{appearance:none;-webkit-appearance:none;width:56px;height:32px;border-radius:999px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
+.set-sw input[type=checkbox]::after{content:'';position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgb(0 0 0 / .3);transition:transform .2s}
+.set-sw input[type=checkbox]:checked{background:var(--accent)}
+.set-sw input[type=checkbox]:checked::after{transform:translateX(24px)}
+.set-sw input[type=checkbox]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.set-row input[type=range]{flex:1 1 160px;max-width:260px;min-height:32px;accent-color:var(--accent)}
+.set-try{text-align:center;margin:14px 0 0}
+
+/* =====================================================================
+   ACCESSIBILITY — set in ⚙️ Settings, mirrored onto <html data-…> (see the inline script in <head>)
+   ===================================================================== */
+/* Larger text. The app sizes text in px, so the reading areas are zoomed (zoom reflows, so nothing
+   overflows sideways). The tracing and colouring canvases are left alone: zoom would move their touch points. */
+:root[data-text="lg"] :is(.sec-head,.player,.grid,table.um,.readcard,.ptext,.rhyme-lines,.ask,.cq-q,.cq-opts,.feedback,.gamepick,.shelf,.today,.ages,.cert-levels,.cert-quiz,.lt-grid,.lt-opts,.read-switch,#storyKinds,.equation,.pickrow,.wb-slots,.wb-tiles,.mem-grid),
+:root[data-text="lg"] dialog > *{zoom:1.15}
+:root[data-text="xl"] :is(.sec-head,.player,.grid,table.um,.readcard,.ptext,.rhyme-lines,.ask,.cq-q,.cq-opts,.feedback,.gamepick,.shelf,.today,.ages,.cert-levels,.cert-quiz,.lt-grid,.lt-opts,.read-switch,#storyKinds,.equation,.pickrow,.wb-slots,.wb-tiles,.mem-grid),
+:root[data-text="xl"] dialog > *{zoom:1.3}
+:root[data-text="lg"] main.doc{font-size:112%}
+:root[data-text="xl"] main.doc{font-size:125%}
+
+/* High contrast: solid surfaces, black/white text, strong borders, no see-through glass. */
+:root[data-contrast="high"]{
+  --bg:#ffffff; --bg-subtle:#ffffff; --border:#000000; --text:#000000; --text-muted:#1a1a1a;
+  --accent:#003c8f; --accent-deep:#002a66; --accent-soft:#d6e4ff; --on-accent:#ffffff;
+  --page-wash:#ffffff; --glass:#ffffff; --glass-line:#000000; --header:#ffffff;
+  --surface:#ffffff; --surface-2:#ffffff; --hairline:#000000; --brand:#003c8f;
+  --grad-text:linear-gradient(#000,#000); --ok:#0a5c0a; --bad:#9e0000;
+  --c-uyir:#00337a; --c-mei:#005a3c; --c-ay:#4b1a99; --c-um:#8f2a00;
+}
+:root[data-contrast="high"][data-theme="dark"]{
+  --bg:#000000; --bg-subtle:#000000; --border:#ffffff; --text:#ffffff; --text-muted:#f0f0f0;
+  --accent:#ffd400; --accent-deep:#ffe866; --accent-soft:#332b00; --on-accent:#000000;
+  --page-wash:#000000; --glass:#000000; --glass-line:#ffffff; --header:#000000;
+  --surface:#000000; --surface-2:#000000; --hairline:#ffffff; --brand:#ffd400;
+  --grad-text:linear-gradient(#fff,#fff); --ok:#7dff7d; --bad:#ff9a9a;
+  --c-uyir:#9fd0ff; --c-mei:#7dffd8; --c-ay:#d9c2ff; --c-um:#ffc09a;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-contrast="high"]:not([data-theme="light"]){
+    --bg:#000000; --bg-subtle:#000000; --border:#ffffff; --text:#ffffff; --text-muted:#f0f0f0;
+    --accent:#ffd400; --accent-deep:#ffe866; --accent-soft:#332b00; --on-accent:#000000;
+    --page-wash:#000000; --glass:#000000; --glass-line:#ffffff; --header:#000000;
+    --surface:#000000; --surface-2:#000000; --hairline:#ffffff; --brand:#ffd400;
+    --grad-text:linear-gradient(#fff,#fff); --ok:#7dff7d; --bad:#ff9a9a;
+    --c-uyir:#9fd0ff; --c-mei:#7dffd8; --c-ay:#d9c2ff; --c-um:#ffc09a;
+  }
+}
+:root[data-contrast="high"] body{background:var(--bg)}
+:root[data-contrast="high"] :is(.glass,.tile,.btn,.seg,.today,.age-card,.q-btn,.gcard,.stat,.chip,.tab,.nav-item,.icon-btn,.stars,dialog){backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--border)!important;box-shadow:none}
+:root[data-contrast="high"] :is(.tile,.gcard,.age-card,.q-btn,.btn,.seg,.today,.stat,.glass){border:2px solid var(--border)}
+:root[data-contrast="high"] .floaters{display:none}
+:root[data-contrast="high"] :is(.muted,small){opacity:1}
+:root[data-contrast="high"] a{text-decoration:underline}
+:root[data-contrast="high"] :is(.nav-item,.seg-btn,.btn,.tab,.read-switch .seg-btn){text-decoration:none}
+:root[data-contrast="high"] :focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+
+/* Less movement: stop decorative animation everywhere (the device's reduce-motion setting already does this). */
+:root[data-motion="less"] *,:root[data-motion="less"] *::before,:root[data-motion="less"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+:root[data-motion="less"] .floaters{display:none}
+
+/* 📱 Games on phones: the floating Ask Kili button would sit on top of the board, and every button gets a 44px target. */
+@media (max-width:760px){
+  body.games-on .kili-fab{display:none}
+  #practice .game .btn,#practice .game .btn.small,#scoreboard .sb-sound{min-height:44px}
+  #trPrev,#trNext,#wbHear{min-width:44px;min-height:44px}
+  #practice .game{scroll-margin-top:64px}
+}
+/* Short phones: keep the colouring picture and its palette on one screen (no scrolling between "pick" and "fill"). */
+@media (max-width:620px) and (max-height:900px){ .col-pic svg{width:auto;height:min(36vh,300px);max-width:100%} }

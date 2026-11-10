@@ -59,7 +59,7 @@ Rules:
 - Code refers to text by name (`TEXT.tryAgain[0]`, `BADGES`, `STAGES`) and never writes Tamil inline. Pairs are `[Tamil, English]`.
 - Placeholders such as `{name}` are filled with `fmt(TEXT.greetName, { name })` (in `core/dom.js`).
 - Data files hold names only, never logic. When a badge is earned is decided by `BADGE_RULES` (`features/rewards/progress.js`); which questions a certificate level asks is set by `LEVEL_QUESTIONS` (`features/certificate/certificate.js`). Their `id` / `n` must match the data.
-- Not in `data/`, on purpose: the page markup in `index.html` (search engines must read it without JavaScript), the certificate **question templates** (a sentence and the logic that fills it belong together), and grown-up screens (Parent corner, Ask Kili chat, the support note).
+- Not in `data/`, on purpose: the page markup in `index.html` (search engines must read it without JavaScript), the certificate **question templates** (a sentence and the logic that fills it belong together), and grown-up screens (Parent dashboard, Ask Kili chat, the support note).
 - `npm test` fails if a text name is wrong (it looks for `undefined` or an unfilled `{placeholder}` on the page).
 
 ## 3. How scripts share code

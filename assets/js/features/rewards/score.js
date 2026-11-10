@@ -96,4 +96,5 @@ document.addEventListener('click', e => {
   const paint = () => { b.textContent = sfxOn ? '🔊' : '🔇'; b.setAttribute('aria-pressed', String(sfxOn)); b.setAttribute('aria-label', sfxOn ? 'Game sounds on — tap to mute' : 'Game sounds off — tap to turn on'); };
   paint();
   b.addEventListener('click', () => { Rewards.setSound(!sfxOn); paint(); if (sfxOn) SFX.tick(); });
+  document.addEventListener('lt:sfx', paint);   // changed in ⚙️ Settings
 })();

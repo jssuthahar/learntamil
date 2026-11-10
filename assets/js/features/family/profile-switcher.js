@@ -32,7 +32,7 @@ function openProfiles(){
     <div class="prof-list">${list.map((p, i) => `<button class="prof-card${p.id === cur ? ' on' : ''}" type="button" data-id="${p.id}" aria-pressed="${p.id === cur}">
       <span class="prof-ic" aria-hidden="true">${p.ic}</span><b>${esc(childName(p, i))}</b><small>${p.id === cur ? 'Learning now' : 'Tap to switch'}</small></button>`).join('')}</div>
     <p class="rw-note">Each child has their own tokens, badges, stickers and certificates.
-      <button class="btn small" type="button" data-open="parents">➕ Add or change children (Parent corner)</button></p>`);
+      <button class="btn small" type="button" data-open="parents">➕ Add or change children (Parent dashboard)</button></p>`);
   d.querySelectorAll('.prof-card').forEach(b => b.onclick = () => { if (b.dataset.id !== cur) Profiles.switchTo(b.dataset.id); else d.close(); });
   d.querySelector('[data-open]').onclick = () => { d.close(); openParents(); };
 }

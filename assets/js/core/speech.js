@@ -29,10 +29,12 @@ function pickVoice(){
 if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 else showNotice('This browser cannot speak. Please open the page in Chrome, Edge or Safari.');
 
+/* Voice volume, 0–1 (device setting "lt-vol", changed in ⚙️ Settings). */
+function voiceVolume(){ try { const v = parseFloat(localStorage.getItem('lt-vol')); return isNaN(v) ? 1 : Math.max(0, Math.min(1, v)); } catch (e) { return 1; } }
 function utter(text){
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'ta-IN'; if (tamilVoice) u.voice = tamilVoice;
-  u.rate = parseFloat($('#rate').value); u.pitch = 1.05;
+  u.rate = parseFloat($('#rate').value); u.pitch = 1.05; u.volume = voiceVolume();
   return u;
 }
 /* ---------- Recorded audio (preferred over the device voice) ----------
@@ -49,7 +51,7 @@ function sayLetter(l, ttsText, onend){
   if (!file){ speak(ttsText || l, onend); return; }
   try{ speechSynthesis.cancel(); }catch(e){}
   stopAudio();
-  const a = new Audio('assets/audio/' + file); audioEl = a;
+  const a = new Audio('assets/audio/' + file); audioEl = a; a.volume = voiceVolume();
   let done = false;
   const fin = ()=>{ if (done) return; done = true; if (audioEl===a) audioEl = null; onend && onend(); };
   a.onended = fin;

@@ -10,7 +10,8 @@ const rand = n => Math.floor(Math.random()*n);
 const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j=rand(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 
 /* ---------- Fun effects: sparkles, confetti, stars ---------- */
-const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Fewer animations: the device asks for reduced motion, or "Less movement" is on in ⚙️ Settings (lt-motion). `let`: Settings can change it.
+let calm = matchMedia('(prefers-reduced-motion: reduce)').matches || (() => { try { return localStorage.getItem('lt-motion') === 'less'; } catch (e) { return false; } })();
 function particle(ch, x, y, dx, dy, dur, size){
   const s = document.createElement('span'); s.className = 'fx'; s.textContent = ch;
   if (size) s.style.fontSize = size + 'px';

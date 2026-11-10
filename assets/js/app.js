@@ -15,17 +15,23 @@ $('#themeBtn').addEventListener('click', ()=>{
 /* =====================================================================
    TABS (hash routing so each section can be bookmarked)
    ===================================================================== */
+/* The main menu groups sections: Learn (the letter tabs), Read (reading + stories), Play (games), Print (a page), Certificate. */
 const LETTER_TABS = ['uyir','mei','aytham','uyirmei'];
-const SECTIONS = [...LETTER_TABS, 'reading', 'stories', 'practice', 'certificate', 'little'];
-let lastLetterTab = 'uyir';
+const READ_TABS = ['reading','stories'];
+const SECTIONS = [...LETTER_TABS, ...READ_TABS, 'practice', 'certificate', 'little'];
+let lastLetterTab = 'uyir', lastReadTab = 'reading';
+const navOf = n => LETTER_TABS.includes(n) || n === 'little' ? 'letters' : READ_TABS.includes(n) ? 'read' : n;
+const lastOf = go => go === 'letters' ? lastLetterTab : go === 'read' ? lastReadTab : go;
 function openTab(name){
-  if (name === 'letters') name = lastLetterTab;
+  name = lastOf(name);
   if (!SECTIONS.includes(name)) name = 'uyir';
   const isLetters = LETTER_TABS.includes(name);
   if (isLetters) lastLetterTab = name;
+  if (READ_TABS.includes(name)) lastReadTab = name;
   stopReading();
-  // main navigation (header on desktop, bottom bar on phones)
-  $$('.nav-item').forEach(n=>{ const on = n.dataset.go === (isLetters ? 'letters' : name); n.classList.toggle('on', on); n.setAttribute('aria-current', on ? 'page' : 'false'); });
+  // main navigation (header on desktop, bottom bar on phones) and the Words · Stories switch inside Read
+  $$('.nav-item[data-go]').forEach(n=>{ const on = n.dataset.go === navOf(name); n.classList.toggle('on', on); n.setAttribute('aria-current', on ? 'page' : 'false'); });
+  $$('.read-switch [data-rs]').forEach(a=>{ if (a.dataset.rs === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   $('#letterTabs').hidden = !isLetters;
   $('.hero').hidden = !isLetters;
   document.dispatchEvent(new CustomEvent('lt:section', {detail:name}));
@@ -45,7 +51,7 @@ function openTab(name){
   if (!isLetters) window.scrollTo({top:0});
 }
 $$('.nav-item[data-go]').forEach(n=>n.addEventListener('click', ()=>{
-  const target = n.dataset.go === 'letters' ? lastLetterTab : n.dataset.go;
+  const target = lastOf(n.dataset.go);
   if (route() !== target) location.hash = '/' + target; else openTab(target);
 }));
 const route = ()=>location.hash.replace(/^#\/?/,'');

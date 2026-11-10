@@ -45,6 +45,7 @@ function paintToday(){
   set('todayGoal', today >= GOAL ? '🎯 Today’s goal done! Come back tomorrow to keep your streak 🔥'
                                  : `🎯 Today’s goal: learn ${GOAL} things — ${GOAL - today} to go!`);
   set('lotdL', letterOfDay().l);
+  if (typeof paintQuest === 'function') paintQuest();   // daily gift and learning path (features/rewards/path.js, loads later)
 }
 (function(){
   const b = document.getElementById('lotd'); if (!b) return;

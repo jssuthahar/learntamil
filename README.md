@@ -30,8 +30,9 @@
 | **விளையாட்டு · Games** | build a letter, listen & pick, spin wheel, balloon pop, word builder, memory, quiz, picture words, topics, spelling, sentences, trace, colouring, little ones |
 | **சான்றிதழ் · Certificates** | 10 level tests, each giving a downloadable PDF certificate |
 | **👶 Little ones** | ages 3–5: pictures only, big buttons, no wrong-answer buzzer |
-| **Motivation** | tokens 🪙, 28 badges, Kili the parrot who grows, a daily goal, a day streak, a sticker book 📒, letter of the day |
-| **For parents** | child profiles (up to 6), Parent corner (time, progress, letters to practise), break reminder, a parents' guide |
+| **Motivation** | tokens 🪙, 30 badges, Kili the parrot who grows, a daily goal, a daily gift 🎁, a day streak, learning paths for ages 3–5, 6–8 and 9–12 🗺️, a sticker book 📒, letter of the day |
+| **For parents** | child profiles (up to 6), a Parent dashboard (age group, learning path, suggested next steps, time, progress, letters to practise), break reminder, a parents' guide |
+| **Accessibility** | ⚙️ larger text, high contrast, less movement, game sounds on/off, voice speed and volume |
 | **🖨️ Printables** | 23 free PDFs: alphabet and word charts, tracing worksheets for all 247 letters, matching and missing-letter sheets, colouring pages |
 | **Guides** | 24 pages that work without JavaScript (alphabet, vowels, consonants, words, numbers, colours, months, Aathichoodi, rhymes, festivals, how to teach Tamil to kids …) |
 

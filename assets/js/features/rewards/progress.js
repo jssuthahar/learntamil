@@ -40,11 +40,47 @@ const BADGE_RULES = {
   colour: p => (p.coloured || 0) >= 1,
   cert1: p => Object.keys(p.certs || {}).length >= 1,
   cert5: p => Object.keys(p.certs || {}).length >= 5,
-  cert10: p => Object.keys(p.certs || {}).length >= 10
+  cert10: p => Object.keys(p.certs || {}).length >= 10,
+  gift10: p => (p.gifts || 0) >= 10,
+  path: p => Object.keys(LESSONS).some(a => LESSONS[a].every(L => LESSON_RULES[L.id](p)))
 };
+/* When each lesson on a learning path counts as done (names, order and links: data/rewards.js → LESSONS). */
+const nCerts = p => Object.keys(p.certs || {}).length;
+const LESSON_RULES = {
+  'k-little': p => (p.little || 0) >= 10,
+  'k-vowels': p => ALL_VOWELS.every(l => p.letters.includes(l)),
+  'k-colour': p => (p.coloured || 0) >= 1,
+  'k-memory': p => p.memoryWins >= 1,
+  'k-rhyme': p => (p.rhymes || []).length >= 1,
+  'k-trace': p => (p.traced || []).length >= 3,
+  'm-vowels': p => ALL_VOWELS.every(l => p.letters.includes(l)),
+  'm-mei': p => ALL_MEI.every(l => p.letters.includes(l)),
+  'm-trace': p => (p.traced || []).length >= 10,
+  'm-correct': p => p.correct >= 25,
+  'm-build': p => p.built >= 5,
+  'm-read': p => p.words >= 10,
+  'm-story': p => p.stories.length >= 1,
+  'm-cert': p => nCerts(p) >= 1,
+  's-letters': p => p.letters.length >= 100,
+  's-read': p => p.words >= 30,
+  's-stories': p => p.stories.length >= 3,
+  's-rhymes': p => (p.rhymes || []).length >= 3,
+  's-say': p => (p.said || 0) >= 10,
+  's-correct': p => p.correct >= 100,
+  's-cert3': p => nCerts(p) >= 3,
+  's-cert6': p => nCerts(p) >= 6
+};
+const lessonDone = (id, p = Progress.d) => !!(LESSON_RULES[id] && LESSON_RULES[id](p));
+/* The current child's age group ('' until chosen) and how far along its path they are. */
+const childAge = () => { const a = (Profiles.current() || {}).age; return LESSONS[a] ? a : ''; };
+function pathOf(age = childAge()){
+  const list = LESSONS[age] || [];
+  const done = list.filter(L => lessonDone(L.id)).length;
+  return { age, list, done, total: list.length, next: list.find(L => !lessonDone(L.id)) || null };
+}
 const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, letters: [], words: 0, stories: [],
   memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {},
-  misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {},
+  misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {}, little: 0, gifts: 0, giftDay: '',
   day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10) });
 
 const Progress = {
@@ -74,11 +110,12 @@ const Progress = {
     else if (what === 'balloon') d.balloonBest = Math.max(d.balloonBest, v || 0);
     else if (what === 'built') d.built++;
     else if (what === 'spin') d.spins++;
-    else if (what === 'miss'){ d.misses[v] = (d.misses[v] || 0) + 1; this.save(); return; }   // letters to practise (Parent corner)
+    else if (what === 'miss'){ d.misses[v] = (d.misses[v] || 0) + 1; this.save(); return; }   // letters to practise (Parent dashboard)
     else if (what === 'traced'){ if (!d.traced.includes(v)) d.traced.push(v); }
     else if (what === 'rhyme'){ if (!d.rhymes.includes(v)) d.rhymes.push(v); else return; }
     else if (what === 'coloured') d.coloured++;
     else if (what === 'said') d.said++;
+    else if (what === 'little'){ d.little = (d.little || 0) + 1; this.save(); this.check(); return; }   // a find in Little ones (its 'correct' already counts toward today)
     if (what !== 'streak') this.activity();
     this.save(); this.check();
   },
@@ -158,8 +195,10 @@ function openRewards(){
       ${stat('🔤', `${d.letters.length}/247`, 'Letters heard')}${stat('📖', d.words, 'Words read')}
       ${stat('📚', `${d.stories.filter(id => STORIES.some(s => s.id === id)).length}/${STORIES.length}`, 'Stories finished')}${stat('🧩', d.built, 'Words built')}
       ${stat('✍️', d.traced.length, 'Letters traced')}${stat('🎤', d.said, 'Said aloud')}${stat('🎨', d.coloured, 'Pictures coloured')}
+      ${(P => P.age ? stat('🗺️', `${P.done}/${P.total}`, `Lessons done · ages ${AGE_GROUPS.find(g => g.id === P.age).ages}`) : '')(pathOf())}
+      ${stat('🎁', d.gifts || 0, 'Daily gifts opened')}
     </div>
-    <p class="rw-links"><button class="btn small" type="button" data-open="stickers">📒 Sticker book</button> <button class="btn small" type="button" data-open="parents">👪 Parent corner</button></p>
+    <p class="rw-links"><button class="btn small" type="button" data-open="path">🗺️ <span lang="ta">${TEXT.myPath[0]}</span> · ${TEXT.myPath[1]}</button> <button class="btn small" type="button" data-open="stickers">📒 Sticker book</button> <button class="btn small" type="button" data-open="parents">👪 Parent dashboard</button></p>
     <h3>Badges <small>${got} / ${BADGES.length}</small></h3>
     <div class="rw-badges">${BADGES.map(b => { const on = d.badges.includes(b.id);
       return `<div class="rw-badge ${on ? 'on' : ''}" title="${b.en}"><span aria-hidden="true">${on ? b.ic : '🔒'}</span><b lang="ta">${b.ta}</b><small>${b.en}</small></div>`; }).join('')}</div>

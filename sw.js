@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = '2008900912';
+const VERSION = 'e7b1c75287';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -54,6 +54,7 @@ const PRECACHE = [
   'assets/js/features/rewards/score.js',
   'assets/js/features/rewards/progress.js',
   'assets/js/features/rewards/today.js',
+  'assets/js/features/rewards/path.js',
   'assets/js/features/letters/letters.js',
   'assets/js/features/stories/story-reader.js',
   'assets/js/features/games/game-utils.js',
@@ -74,6 +75,7 @@ const PRECACHE = [
   'assets/js/features/family/profile-switcher.js',
   'assets/js/features/family/stickers.js',
   'assets/js/features/family/parent-corner.js',
+  'assets/js/features/family/settings.js',
   'assets/js/app.js',
   'assets/js/services/pwa.js',
   'assets/js/services/firebase.js',

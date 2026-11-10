@@ -38,8 +38,9 @@
 
 <!-- FAQ-SCHEMA:END -->
 <script>
-  // Apply saved theme before paint (no flash).
-  try { var t = localStorage.getItem('lt-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  // Apply saved theme and ⚙️ Settings (text size, contrast, less movement) before paint (no flash).
+  try { var r = document.documentElement, t = localStorage.getItem('lt-theme'); if (t) r.setAttribute('data-theme', t);
+    [['text','lt-text'],['contrast','lt-contrast'],['motion','lt-motion']].forEach(function (a) { var v = localStorage.getItem(a[1]); if (v) r.setAttribute('data-' + a[0], v); }); } catch (e) {}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,16 +58,15 @@
       <span class="brand-name">MSDEVBUILD<small>Learn Tamil · <span class="ta">தமிழ் கற்போம்</span></small></span>
     </a>
     <nav class="mainnav" aria-label="Main">
-      <button class="nav-item" data-go="letters"><span class="nav-ic" aria-hidden="true">🔤</span><span class="nav-t"><span class="ta">எழுத்துகள்</span><small>Letters</small></span></button>
-      <button class="nav-item" data-go="reading"><span class="nav-ic" aria-hidden="true">📖</span><span class="nav-t"><span class="ta">வாசிப்பு</span><small>Reading</small></span></button>
-      <button class="nav-item" data-go="stories"><span class="nav-ic" aria-hidden="true">📚</span><span class="nav-t"><span class="ta">கதைகள்</span><small>Stories</small></span></button>
-      <button class="nav-item" data-go="practice"><span class="nav-ic" aria-hidden="true">🎮</span><span class="nav-t"><span class="ta">விளையாட்டு</span><small>Games</small></span></button>
-      <button class="nav-item" data-go="certificate"><span class="nav-ic" aria-hidden="true">🎓</span><span class="nav-t"><span class="ta">சான்றிதழ்</span><small>Certificate</small></span></button>
-      <a class="nav-item nav-print" href="tamil-printables.html" title="Free printable charts and worksheets" aria-label="Printables: free charts and worksheets"><span class="nav-ic" aria-hidden="true">🖨️</span><span class="nav-t"><span class="ta">அச்சிடு</span><small>Printables</small></span></a>
+      <button class="nav-item" data-go="letters" aria-label="Learn: letters"><span class="nav-ic" aria-hidden="true">🔤</span><span class="nav-t"><span class="ta">கற்றல்</span><small>Learn</small></span></button>
+      <button class="nav-item" data-go="read" aria-label="Read: words, stories and rhymes"><span class="nav-ic" aria-hidden="true">📖</span><span class="nav-t"><span class="ta">வாசிப்பு</span><small>Read</small></span></button>
+      <button class="nav-item" data-go="practice" aria-label="Play: games"><span class="nav-ic" aria-hidden="true">🎮</span><span class="nav-t"><span class="ta">விளையாட்டு</span><small>Play</small></span></button>
+      <a class="nav-item nav-print" href="tamil-printables.html" title="Free printable charts and worksheets" aria-label="Print: free charts and worksheets"><span class="nav-ic" aria-hidden="true">🖨️</span><span class="nav-t"><span class="ta">அச்சிடு</span><small>Print</small></span></a>
+      <button class="nav-item" data-go="certificate" aria-label="Certificate"><span class="nav-ic" aria-hidden="true">🎓</span><span class="nav-t"><span class="ta">சான்றிதழ்</span><small>Certificate</small></span></button>
     </nav>
     <span class="spacer"></span>
-    <a class="icon-btn print-btn" href="tamil-printables.html" aria-label="Free printable charts and worksheets" title="Free printables"><span aria-hidden="true">🖨️</span></a>
     <button class="stars" id="stars" type="button" title="My rewards" aria-label="My rewards: tokens and badges"><span aria-hidden="true">🪙</span> <span id="starN">0</span></button>
+    <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings: text size, contrast and sound" title="Settings"><span aria-hidden="true">⚙️</span></button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme" title="Theme">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
@@ -98,6 +98,10 @@
           <div class="today-stat"><b id="streakN">0</b><small>🔥 days in a row</small></div>
           <button class="lotd" id="lotd" type="button" aria-label="Letter of the day"><small>Letter of the day</small><b id="lotdL" lang="ta">அ</b></button>
         </div>
+        <div class="today-quest">
+          <button class="q-btn gift-btn" id="giftBtn" type="button" aria-label="Daily gift"><span class="q-ic" aria-hidden="true">🎁</span><span class="q-t"><b>Daily gift</b></span></button>
+          <button class="q-btn path-btn" id="pathBtn" type="button" aria-label="My learning path: lessons done"><span class="q-ic" aria-hidden="true">🗺️</span><span class="q-t"><b>My learning path</b></span></button>
+        </div>
         <p class="today-goal" id="todayGoal">🎯 Today's goal: learn 10 things</p>
         <button class="today-line" id="lineOfDay" type="button" aria-label="Aathichoodi line of the day — tap to hear"><small>🌺 Line of the day · <span lang="ta">ஆத்திசூடி</span></small><b lang="ta" id="lineTa"></b><span id="lineEn"></span></button>
         <div class="today-chips">
@@ -108,6 +112,12 @@
         </div>
         <p class="push-row"><button type="button" class="btn small push-btn" data-push hidden>🔔 Turn on reminders</button><small class="muted" data-push-note aria-live="polite"></small></p>
       </aside>
+    </div>
+    <div class="ages" role="group" aria-labelledby="agesTitle">
+      <h2 class="ages-title" id="agesTitle">Choose an age group <span class="ta">· வயதைத் தேர்ந்தெடு</span></h2>
+      <button class="age-card" type="button" data-age="3-5" aria-pressed="false"><span class="age-ic" aria-hidden="true">👶</span><span class="age-t"><b>Ages 3–5</b><span class="ta">சின்னஞ்சிறு</span><small>Pictures, sounds and colours</small><small class="age-prog"></small></span><i class="age-bar" aria-hidden="true"><i></i></i></button>
+      <button class="age-card" type="button" data-age="6-8" aria-pressed="false"><span class="age-ic" aria-hidden="true">🧒</span><span class="age-t"><b>Ages 6–8</b><span class="ta">எழுத்தும் சொல்லும்</span><small>Letters, tracing and first words</small><small class="age-prog"></small></span><i class="age-bar" aria-hidden="true"><i></i></i></button>
+      <button class="age-card" type="button" data-age="9-12" aria-pressed="false"><span class="age-ic" aria-hidden="true">🧑‍🎓</span><span class="age-t"><b>Ages 9–12</b><span class="ta">படிப்போம், எழுதுவோம்</span><small>Reading, spelling, stories and certificates</small><small class="age-prog"></small></span><i class="age-bar" aria-hidden="true"><i></i></i></button>
     </div>
     <div class="stats" role="list">
       <div class="stat glass" role="listitem"><b>12</b><span>உயிர்</span></div>
@@ -204,6 +214,10 @@
 
   <!-- கதைகள் -->
   <section class="panel" id="stories" role="tabpanel">
+    <nav class="seg read-switch" aria-label="Read">
+      <a class="seg-btn" href="#/reading" data-rs="reading"><b>📖 Words</b><small class="ta">சொற்கள்</small></a>
+      <a class="seg-btn" href="#/stories" data-rs="stories"><b>📚 Stories &amp; rhymes</b><small class="ta">கதைகள் · பாடல்கள்</small></a>
+    </nav>
     <div class="seg" id="storyKinds" role="group" aria-label="Stories, rhymes or festivals">
       <button class="seg-btn" type="button" data-kind="books" aria-pressed="true"><b>📚 Stories</b><small class="ta">கதைகள்</small></button>
       <button class="seg-btn" type="button" data-kind="rhymes" aria-pressed="false"><b>🎵 Rhymes</b><small class="ta">பாடல்கள்</small></button>
@@ -265,6 +279,10 @@
   <!-- பயிற்சி -->
   <!-- வாசிப்பு -->
   <section class="panel" id="reading" role="tabpanel">
+    <nav class="seg read-switch" aria-label="Read">
+      <a class="seg-btn" href="#/reading" data-rs="reading"><b>📖 Words</b><small class="ta">சொற்கள்</small></a>
+      <a class="seg-btn" href="#/stories" data-rs="stories"><b>📚 Stories &amp; rhymes</b><small class="ta">கதைகள் · பாடல்கள்</small></a>
+    </nav>
     <div class="sec-head">
       <div><h2>வாசிப்புப் பயிற்சி · Reading</h2><p>Read the word yourself, sound it out letter by letter, then check the picture. <a class="guide-link" href="tamil-words-for-kids.html">All words →</a></p></div>
     </div>
@@ -553,6 +571,7 @@
 <script src="assets/js/features/rewards/score.js"></script>
 <script src="assets/js/features/rewards/progress.js"></script>
 <script src="assets/js/features/rewards/today.js"></script>
+<script src="assets/js/features/rewards/path.js"></script>
 <script src="assets/js/features/letters/letters.js"></script>
 <script src="assets/js/features/stories/story-reader.js"></script>
 <script src="assets/js/features/games/game-utils.js"></script>
@@ -573,6 +592,7 @@
 <script src="assets/js/features/family/profile-switcher.js"></script>
 <script src="assets/js/features/family/stickers.js"></script>
 <script src="assets/js/features/family/parent-corner.js"></script>
+<script src="assets/js/features/family/settings.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/services/pwa.js"></script>
 <script type="module" src="assets/js/services/firebase.js"></script>

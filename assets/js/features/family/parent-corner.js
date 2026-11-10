@@ -1,4 +1,5 @@
-/* Learn Tamil — family: 👪 Parent corner (behind a press-and-hold check), ⏱ time spent and ⏰ break reminder.
+/* Learn Tamil — family: 👪 Parent dashboard (behind a press-and-hold check), ⏱ time spent and ⏰ break reminder.
+   The dashboard shows the child's age group and learning path, suggested next steps, time, stats and tricky letters.
    Everything stays on this device. */
 'use strict';
 
@@ -35,11 +36,11 @@ function showBreak(){
 }
 
 /* =====================================================================
-   👪 PARENT CORNER — behind a "press and hold" grown-up check
+   👪 PARENT DASHBOARD — behind a "press and hold" grown-up check
    ===================================================================== */
 function openParents(){
   const d = famDialog('parentDlg', `
-    <div class="rw-head"><h2>👪 Parent corner</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
+    <div class="rw-head"><h2>👪 Parent dashboard</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
     <div class="gate">
       <p><b>For grown-ups.</b> Press and hold the button for 3 seconds.</p>
       <button class="gate-btn" type="button"><span class="gate-fill" aria-hidden="true"></span><span class="gate-t">✋ Hold</span></button>
@@ -69,13 +70,29 @@ function renderParents(d){
   const certs = Object.keys(p.certs || {}).length;
   const stat = (ic, n, label) => `<div class="rw-stat"><span aria-hidden="true">${ic}</span><b>${n}</b><small>${label}</small></div>`;
   const brk = breakMins();
+  const P = pathOf(), G = AGE_GROUPS.find(g => g.id === P.age);
+  const todo = P.list.filter(L => !lessonDone(L.id)).slice(0, 2);
+  const badgesGot = BADGES.filter(b => p.badges.includes(b.id)).length;
   d.innerHTML = `
-    <div class="rw-head"><h2>👪 Parent corner</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
+    <div class="rw-head"><h2>👪 Parent dashboard</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
     <h3>${cur.ic} ${esc(cur.name || 'Child 1')} <small>· learning since ${esc(p.since || '')}</small></h3>
+
+    <div class="pc-path">
+      <label class="pc-set">🎂 Age group
+        <select id="pcAge"><option value="">Not chosen yet</option>${AGE_GROUPS.map(g => `<option value="${g.id}" ${g.id === P.age ? 'selected' : ''}>Ages ${g.ages} · ${g.en}</option>`).join('')}</select></label>
+      ${G ? `<p class="pc-path-sum"><b>🗺️ Learning path: ${P.done} of ${P.total} lessons done</b></p>
+      <div class="path-bar" aria-hidden="true"><i style="width:${Math.round(P.done / P.total * 100)}%"></i></div>
+      <ol class="pc-lessons">${P.list.map(L => `<li class="${lessonDone(L.id) ? 'done' : ''}"><span aria-hidden="true">${lessonDone(L.id) ? '✅' : '⬜'}</span> ${L.en}</li>`).join('')}</ol>
+      ${todo.length ? `<p class="pc-next"><b>Suggested next:</b> ${todo.map(L => `<button class="btn small" type="button" data-lesson="${L.go}">${L.ic} ${L.en}</button>`).join(' ')}</p>`
+                    : '<p class="pc-next">🎉 This path is finished. Try choosing the next age group for new lessons.</p>'}`
+          : '<p class="muted">Choose an age group to see a learning path made for your child: 3–5 (pictures and sounds), 6–8 (letters, tracing, first words) or 9–12 (reading, spelling, stories, certificates).</p>'}
+    </div>
+
     <div class="rw-stats">
       ${stat('⏱', `${mins[t] || 0} min`, 'Today')}${stat('📅', `${weekTotal} min`, 'Last 7 days')}${stat('🔥', `${p.bestDays || 0}`, 'Best day streak')}
       ${stat('🔤', `${p.letters.length}/247`, 'Letters heard')}${stat('✍️', (p.traced || []).length, 'Letters traced')}${stat('📖', p.words, 'Words read')}
       ${stat('📚', p.stories.length, 'Stories & festivals')}${stat('🎵', (p.rhymes || []).length, 'Rhymes sung')}${stat('🎓', `${certs}/10`, 'Certificates')}
+      ${stat('🏅', `${badgesGot}/${BADGES.length}`, 'Badges')}${stat('🎁', p.gifts || 0, 'Daily gifts opened')}${stat('🪙', p.tokensEver, 'Tokens earned')}
     </div>
     <div class="pc-week" role="img" aria-label="Minutes learned on each of the last 7 days">${week.map(x =>
       `<div class="pc-day"><i style="height:${Math.round(x.m / maxM * 100)}%"></i><small>${x.lbl}</small><b>${x.m}</b></div>`).join('')}</div>
@@ -100,7 +117,7 @@ function renderParents(d){
     <label class="pc-set">⏰ Break reminder
       <select id="pcBreak">${[[0, 'Off'], [15, 'Every 15 minutes'], [20, 'Every 20 minutes'], [30, 'Every 30 minutes'], [45, 'Every 45 minutes']]
         .map(([v, l]) => `<option value="${v}" ${v === brk ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-    <p class="pc-links"><a class="btn small" href="#/little">👶 Open Little ones mode (ages 3–5)</a> <button class="btn small" type="button" data-open="rewards">🏅 Badges</button></p>
+    <p class="pc-links"><button class="btn small" type="button" data-open="settings">⚙️ Text size, contrast &amp; sound</button> <a class="btn small" href="#/little">👶 Open Little ones mode (ages 3–5)</a> <button class="btn small" type="button" data-open="rewards">🏅 Badges</button></p>
     <p class="rw-note">🔒 All of this is saved only on this device. Nothing about your child is sent anywhere. Recordings from 🎤 Say it are never saved.</p>`;
   d.querySelector('.rw-x').onclick = () => d.close();
   d.querySelectorAll('.pc-tricky .chip').forEach(c => c.onclick = () => sayLetter(c.dataset.l, spokenForm(c.dataset.l)));
@@ -123,6 +140,9 @@ function renderParents(d){
   };
   d.querySelector('#pcBreak').onchange = e => { try { localStorage.setItem(BREAK_KEY, e.target.value); } catch (er) {} sessionMins = 0; };
   d.querySelector('[data-open="rewards"]').onclick = () => { d.close(); openRewards(); };
+  d.querySelector('[data-open="settings"]').onclick = () => { d.close(); openSettings(); };
+  d.querySelector('#pcAge').onchange = e => { Profiles.update(cur.id, { age: e.target.value }); paintQuest(); renderParents(d); };
+  d.querySelectorAll('[data-lesson]').forEach(b => b.onclick = () => { d.close(); goLesson(b.dataset.lesson); });
   d.querySelectorAll('a[href^="#/"]').forEach(a => a.addEventListener('click', () => d.close()));
 }
 

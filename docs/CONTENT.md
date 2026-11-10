@@ -173,5 +173,5 @@ Everything the app says or shows to a child, other than the learning content. Mo
 | --- | --- | --- |
 | Page headings and buttons in `index.html` | `index.html` | search engines read it without JavaScript |
 | Certificate question templates ("Which letter comes after …?") | `features/certificate/certificate.js` | the sentence and the logic that fills it belong together |
-| Grown-up screens: Parent corner, Ask Kili chat UI, support note, recorder | their feature files | parent-facing copy, mostly English |
+| Grown-up screens: Parent dashboard, Ask Kili chat UI, support note, recorder | their feature files | parent-facing copy, mostly English |
 | Guide pages, FAQs, privacy, printables wording | `tools/build-pages.mjs`, `tools/build-printables.mjs` | page templates |

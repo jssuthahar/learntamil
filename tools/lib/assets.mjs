@@ -37,7 +37,7 @@ export const APP_SCRIPTS = [
   ...DATA,
   ...[
     'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics',
-    'features/rewards/score', 'features/rewards/progress', 'features/rewards/today',
+    'features/rewards/score', 'features/rewards/progress', 'features/rewards/today', 'features/rewards/path',
     'features/letters/letters',
     'features/stories/story-reader',
     'features/games/game-utils', 'features/games/letter-quiz',
@@ -49,7 +49,7 @@ export const APP_SCRIPTS = [
     'features/voice/say-back',
     'features/stories/rhymes',
     'features/little/little',
-    'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner',
+    'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
     'app'                               // router: last, opens the first section
   ].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
