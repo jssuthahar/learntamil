@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = '8ddc6616f6';
+const VERSION = 'e9ae0f19b7';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -22,27 +22,20 @@ const PRECACHE = [
   'tamil-body-parts.html',
   'tamil-family-words.html',
   'tamil-fruits-and-food.html',
+  'tamil-animals.html',
+  'tamil-birds.html',
+  'tamil-vehicles.html',
+  'tamil-shapes.html',
+  'tamil-opposite-words.html',
+  'tamil-months.html',
+  'aathichoodi.html',
+  'tamil-rhymes-for-kids.html',
+  'tamil-festivals-for-kids.html',
+  'how-to-teach-tamil-to-kids.html',
   'tamil-printables.html',
   'privacy.html',
   'terms.html',
-  'assets/css/00-tokens.css',
-  'assets/css/10-base.css',
-  'assets/css/20-letters.css',
-  'assets/css/21-stories.css',
-  'assets/css/22-practice.css',
-  'assets/css/30-motion.css',
-  'assets/css/40-navigation.css',
-  'assets/css/41-reading.css',
-  'assets/css/42-games.css',
-  'assets/css/50-responsive.css',
-  'assets/css/60-pages.css',
-  'assets/css/70-rewards.css',
-  'assets/css/71-certificate.css',
-  'assets/css/80-premium.css',
-  'assets/css/81-chat.css',
-  'assets/css/82-today.css',
-  'assets/css/83-services.css',
-  'assets/css/90-kids.css',
+  'assets/css/app.css',
   'assets/js/core/profiles.js',
   'assets/audio/manifest.js',
   'assets/js/data/alphabet.js',

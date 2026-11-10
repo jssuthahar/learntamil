@@ -212,3 +212,15 @@ footer .foot{display:grid;grid-template-columns:1.4fr 1fr;gap:14px 30px;align-it
   .support-card{grid-template-columns:auto 1fr}
   .coffee-btn{grid-column:1/-1;justify-content:center}
 }
+
+/* Aathichoodi, rhymes, festivals and the parents' guide */
+.aathi{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.aathi-row{display:grid;grid-template-columns:56px 1fr;align-items:center;gap:14px;padding:10px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--border)}
+.aathi-l{font-family:var(--font-kid);font-size:34px;font-weight:800;color:#e0480c;text-align:center;line-height:1}
+.aathi-row b{font-family:var(--font-kid);font-size:21px}
+.aathi-row p{margin:0;color:var(--text-muted)}
+.rhyme-text{padding:6px 16px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 16px 16px 0;margin:8px 0 16px}
+.rhyme-text p{margin:10px 0}
+.rhyme-text b{font-size:19px}
+.steps{padding-left:22px}
+.steps li{margin:8px 0;line-height:1.55}

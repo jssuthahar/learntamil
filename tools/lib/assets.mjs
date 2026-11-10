@@ -54,13 +54,17 @@ export const APP_SCRIPTS = [
   ].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
 
+/* Pages load ONE stylesheet: the files above joined in order by the build (fewer render-blocking
+   requests = faster first paint, which search engines measure). Edit the numbered files, never the bundle. */
+export const STYLE_BUNDLE = `${CSS}app.css`;
+
 export const tag = s => `<script${s.type ? ` type="${s.type}"` : ''} src="${s.src}"${s.defer ? ' defer' : ''}></script>`;
-export const styleTags = () => STYLES.map(h => `<link rel="stylesheet" href="${h}">`).join('\n');
+export const styleTags = () => `<link rel="stylesheet" href="${STYLE_BUNDLE}">`;
 export const scriptTags = list => list.map(tag).join('\n');
 
 /* Everything the offline app needs (service worker PRECACHE), besides the HTML pages. */
 export const PRECACHE_ASSETS = [
-  ...STYLES, ...APP_SCRIPTS.map(s => s.src), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
+  STYLE_BUNDLE, ...APP_SCRIPTS.map(s => s.src), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
   'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'
 ];

@@ -100,6 +100,8 @@ assets/js/data/*.js ──► tools/lib/load-data.mjs ──► build-pages.mjs 
                                                                           sitemap.xml, llms.txt, data/faq.js
 tools/lib/assets.mjs ──────────────────────────────► build-pages.mjs ──► <link>/<script> tags in index.html
                                                                           and guide pages, sw.js PRECACHE
+assets/css/NN-*.css ──► build-pages.mjs ──► assets/css/app.css (the one stylesheet pages load)
+assets/js/data/*.js ──► build-pages.mjs ──► llms.txt (facts + links), llms-full.txt (all content as text)
 all precached files ──► content hash ──────────────────────────────────► sw.js VERSION
 ```
 
@@ -134,6 +136,6 @@ all precached files ──► content hash ────────────�
 |---|---|---|
 | Classic scripts with shared globals, no bundler | Zero tooling to deploy; works from any static host; easy for contributors | The code grows past what one ordered list can manage. Then move to native ES modules (`<script type="module">`, still no bundler) one folder at a time, starting with `data/` and `core/`. |
 | Site served from the repo root | Keeps GitHub Pages settings and every public URL unchanged | Tools and docs must not be public: move the site into `public/` and deploy it with GitHub Actions |
-| Numbered CSS files instead of `@import` | Parallel download, explicit cascade order, no extra request round trip | — |
+| Numbered CSS source files, joined into `app.css` at build | One render-blocking request for a fast first paint; the source stays small, ordered files | — |
 | Images stay in `assets/` root | Their URLs are in social cards, the manifest and installed apps | — |
 | Progress only in `localStorage` | No accounts and no personal data for children | Families ask for sync between devices |

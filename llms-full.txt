@@ -1,0 +1,308 @@
+# Learn Tamil — full content (https://learntamil.msdevbuild.com/)
+
+Free Tamil learning for children by Suthahar Jegatheesan (MSDEVBUILD). This file lists the learning content of the site as plain text. Every Tamil string was checked by hand.
+
+## The Tamil alphabet: 247 letters
+12 vowels (உயிர்) + 18 consonants (மெய்) + 1 ஆய்தம் (ஃ) + 216 uyirmei (உயிர்மெய், 18 × 12) = 247.
+
+### Vowels (உயிர் எழுத்துகள்)
+- அ — a — short (குறில்) — “a” as in “about” — example: அம்மா (mother)
+- ஆ — ā — long (நெடில்) — “aa” as in “father” — example: ஆடு (goat)
+- இ — i — short (குறில்) — “i” as in “sit” — example: இலை (leaf)
+- ஈ — ī — long (நெடில்) — “ee” as in “see” — example: ஈ (housefly)
+- உ — u — short (குறில்) — “u” as in “put” — example: உப்பு (salt)
+- ஊ — ū — long (நெடில்) — “oo” as in “food” — example: ஊசி (needle)
+- எ — e — short (குறில்) — “e” as in “egg” — example: எலி (rat)
+- ஏ — ē — long (நெடில்) — long “e”, like “a” in “gate” — example: ஏணி (ladder)
+- ஐ — ai — long (நெடில்) — “ai” as in “aisle” — example: ஐந்து (five)
+- ஒ — o — short (குறில்) — short “o”, as in “omit” — example: ஒட்டகம் (camel)
+- ஓ — ō — long (நெடில்) — long “o”, as in “open” — example: ஓடம் (small boat)
+- ஔ — au — long (நெடில்) — “au” like “ow” in “cow” — example: ஔவை (Avvaiyar, the poet)
+
+### Consonants (மெய் எழுத்துகள்)
+- க் — k — வல்லினம் (hard sounds) — “k” as in “kite” — example: நாக்கு (tongue)
+- ங் — ng — மெல்லினம் (soft (nasal) sounds) — “ng” as in “sing” — example: சிங்கம் (lion)
+- ச் — ch — வல்லினம் (hard sounds) — “ch” as in “chair”; also “s” — example: பச்சை (green)
+- ஞ் — ny — மெல்லினம் (soft (nasal) sounds) — “ny” as in “canyon” — example: மஞ்சள் (turmeric, yellow)
+- ட் — ṭ — வல்லினம் (hard sounds) — hard “t”, tongue curled back — example: பட்டம் (kite)
+- ண் — ṇ — மெல்லினம் (soft (nasal) sounds) — “n” with the tongue curled back — example: கண் (eye)
+- த் — th — வல்லினம் (hard sounds) — soft “t”, tongue touching the teeth — example: புத்தகம் (book)
+- ந் — n — மெல்லினம் (soft (nasal) sounds) — “n”, tongue at the teeth — mostly at the start of a word or before த — example: பந்து (ball)
+- ப் — p — வல்லினம் (hard sounds) — “p” as in “pen” — example: அப்பா (father)
+- ம் — m — மெல்லினம் (soft (nasal) sounds) — “m” as in “man” — example: மரம் (tree)
+- ய் — y — இடையினம் (medium sounds) — “y” as in “yes” — example: நாய் (dog)
+- ர் — r — இடையினம் (medium sounds) — soft tapped “r” — example: நீர் (water)
+- ல் — l — இடையினம் (medium sounds) — “l” as in “love” — example: பல் (tooth)
+- வ் — v — இடையினம் (medium sounds) — “v” as in “van” — example: செவ்வாய் (Tuesday; the planet Mars)
+- ழ் — zh — இடையினம் (medium sounds) — special to Tamil — tongue curled far back, between “r” and “l” — example: தமிழ் (Tamil)
+- ள் — ḷ — இடையினம் (medium sounds) — “l” with the tongue curled back — example: தேள் (scorpion)
+- ற் — ṟ — வல்லினம் (hard sounds) — strong trilled “r” — example: காற்று (wind)
+- ன் — ṉ — மெல்லினம் (soft (nasal) sounds) — “n”, tongue at the gum — mostly in the middle or end of a word — example: மீன் (fish)
+
+### ஆய்த எழுத்து
+- ஃ — a soft breathy “kh”, heard in எஃகு (steel). Also called அஃகேனம் or முப்புள்ளி.
+
+### Uyirmei (consonant + vowel), one row per consonant
+- க்: க கா கி கீ கு கூ கெ கே கை கொ கோ கௌ
+- ங்: ங ஙா ஙி ஙீ ஙு ஙூ ஙெ ஙே ஙை ஙொ ஙோ ஙௌ
+- ச்: ச சா சி சீ சு சூ செ சே சை சொ சோ சௌ
+- ஞ்: ஞ ஞா ஞி ஞீ ஞு ஞூ ஞெ ஞே ஞை ஞொ ஞோ ஞௌ
+- ட்: ட டா டி டீ டு டூ டெ டே டை டொ டோ டௌ
+- ண்: ண ணா ணி ணீ ணு ணூ ணெ ணே ணை ணொ ணோ ணௌ
+- த்: த தா தி தீ து தூ தெ தே தை தொ தோ தௌ
+- ந்: ந நா நி நீ நு நூ நெ நே நை நொ நோ நௌ
+- ப்: ப பா பி பீ பு பூ பெ பே பை பொ போ பௌ
+- ம்: ம மா மி மீ மு மூ மெ மே மை மொ மோ மௌ
+- ய்: ய யா யி யீ யு யூ யெ யே யை யொ யோ யௌ
+- ர்: ர ரா ரி ரீ ரு ரூ ரெ ரே ரை ரொ ரோ ரௌ
+- ல்: ல லா லி லீ லு லூ லெ லே லை லொ லோ லௌ
+- வ்: வ வா வி வீ வு வூ வெ வே வை வொ வோ வௌ
+- ழ்: ழ ழா ழி ழீ ழு ழூ ழெ ழே ழை ழொ ழோ ழௌ
+- ள்: ள ளா ளி ளீ ளு ளூ ளெ ளே ளை ளொ ளோ ளௌ
+- ற்: ற றா றி றீ று றூ றெ றே றை றொ றோ றௌ
+- ன்: ன னா னி னீ னு னூ னெ னே னை னொ னோ னௌ
+
+## Picture words
+ஆடு (goat), மான் (deer), பால் (milk), மீன் (fish), பூனை (cat), நாய் (dog), கண் (eye), பல் (tooth), இலை (leaf), எலி (rat), பசு (cow), யானை (elephant), கிளி (parrot), தேன் (honey), வீடு (house), நிலா (moon), மழை (rain), ஆமை (tortoise), கோழி (hen), குடை (umbrella), மணி (bell), கொடி (flag), மரம் (tree), பாம்பு (snake), பந்து (ball), கடல் (sea), முயல் (rabbit), தவளை (frog), மேகம் (cloud), குதிரை (horse), கரடி (bear), மயில் (peacock), வாத்து (duck), ரொட்டி (bread), தொப்பி (cap), சிங்கம் (lion), பட்டம் (kite), கப்பல் (ship), சூரியன் (sun), குரங்கு (monkey), தக்காளி (tomato), மிட்டாய் (sweet, candy), மாம்பழம் (mango), புத்தகம் (book), ஒட்டகம் (camel), கடிகாரம் (clock).
+
+## Word topics
+### Numbers 1–10 — எண்கள்
+- ஒன்று — one · 1 · ௧
+- இரண்டு — two · 2 · ௨
+- மூன்று — three · 3 · ௩
+- நான்கு — four · 4 · ௪
+- ஐந்து — five · 5 · ௫
+- ஆறு — six · 6 · ௬
+- ஏழு — seven · 7 · ௭
+- எட்டு — eight · 8 · ௮
+- ஒன்பது — nine · 9 · ௯
+- பத்து — ten · 10 · ௰
+
+### Colours — நிறங்கள்
+- சிவப்பு — red
+- நீலம் — blue
+- பச்சை — green
+- மஞ்சள் — yellow
+- ஆரஞ்சு — orange
+- ஊதா — purple
+- பழுப்பு — brown
+- வெள்ளை — white
+- கறுப்பு — black
+- இளஞ்சிவப்பு — pink
+
+### Days of the week — கிழமைகள்
+- ஞாயிறு — Sunday
+- திங்கள் — Monday
+- செவ்வாய் — Tuesday
+- புதன் — Wednesday
+- வியாழன் — Thursday
+- வெள்ளி — Friday
+- சனி — Saturday
+
+### Parts of the body — உடல் உறுப்புகள்
+- தலை — head
+- கண் — eye
+- காது — ear
+- மூக்கு — nose
+- வாய் — mouth
+- பல் — tooth
+- முடி — hair
+- கை — hand
+- விரல் — finger
+- கால் — leg
+
+### Family — குடும்பம்
+- அம்மா — mother
+- அப்பா — father
+- அண்ணன் — elder brother
+- அக்கா — elder sister
+- தம்பி — younger brother
+- தங்கை — younger sister
+- தாத்தா — grandfather
+- பாட்டி — grandmother
+
+### Fruits and food — பழங்களும் உணவும்
+- மாம்பழம் — mango
+- வாழைப்பழம் — banana
+- திராட்சை — grapes
+- ஆப்பிள் — apple
+- தர்பூசணி — watermelon
+- அன்னாசி — pineapple
+- எலுமிச்சை — lemon
+- தேங்காய் — coconut
+- பால் — milk
+- சோறு — cooked rice
+- முட்டை — egg
+
+### Animals — விலங்குகள்
+- சிங்கம் — lion
+- புலி — tiger
+- யானை — elephant
+- குரங்கு — monkey
+- மான் — deer
+- கரடி — bear
+- நாய் — dog
+- பூனை — cat
+- பசு — cow
+- குதிரை — horse
+- ஆடு — goat
+- முயல் — rabbit
+
+### Birds — பறவைகள்
+- கிளி — parrot
+- மயில் — peacock
+- கோழி — hen
+- வாத்து — duck
+- ஆந்தை — owl
+- புறா — dove, pigeon
+- கழுகு — eagle
+- அன்னம் — swan
+- குருவி — sparrow
+
+### Vehicles — வாகனங்கள்
+- மிதிவண்டி — bicycle
+- பேருந்து — bus
+- மகிழுந்து — car · also கார்
+- தொடர்வண்டி — train · also ரயில்
+- வானூர்தி — aeroplane · also விமானம்
+- கப்பல் — ship
+- படகு — boat
+- சரக்குந்து — lorry, truck
+
+### Shapes — வடிவங்கள்
+- வட்டம் — circle
+- சதுரம் — square
+- முக்கோணம் — triangle
+- செவ்வகம் — rectangle
+- நட்சத்திரம் — star
+- இதயம் — heart
+
+### Opposites — எதிர்ச்சொற்கள்
+- பெரிய — big · opposite of சிறிய
+- சிறிய — small · opposite of பெரிய
+- பகல் — day · opposite of இரவு
+- இரவு — night · opposite of பகல்
+- சூடு — hot · opposite of குளிர்
+- குளிர் — cold · opposite of சூடு
+- மேலே — up · opposite of கீழே
+- கீழே — down · opposite of மேலே
+- உள்ளே — inside · opposite of வெளியே
+- வெளியே — outside · opposite of உள்ளே
+
+### Tamil months — தமிழ் மாதங்கள்
+- சித்திரை — month 1 · mid-April to mid-May
+- வைகாசி — month 2 · mid-May to mid-June
+- ஆனி — month 3 · mid-June to mid-July
+- ஆடி — month 4 · mid-July to mid-August
+- ஆவணி — month 5 · mid-August to mid-September
+- புரட்டாசி — month 6 · mid-September to mid-October
+- ஐப்பசி — month 7 · mid-October to mid-November
+- கார்த்திகை — month 8 · mid-November to mid-December
+- மார்கழி — month 9 · mid-December to mid-January
+- தை — month 10 · mid-January to mid-February
+- மாசி — month 11 · mid-February to mid-March
+- பங்குனி — month 12 · mid-March to mid-April
+
+## Stories (simple Tamil with English meaning)
+### என் காலை — My Morning
+- காலை வந்தது. நான் எழுந்தேன். — Morning came. I woke up.
+- நான் பல் துலக்கினேன். — I brushed my teeth.
+- அம்மா பால் தந்தார். நான் பால் குடித்தேன். — Amma gave me milk. I drank the milk.
+- நான் பையை எடுத்தேன். பள்ளிக்குச் சென்றேன். — I took my bag. I went to school.
+- அம்மா, நன்றி! அப்பா, நன்றி! — Thank you, Amma! Thank you, Appa!
+
+### காகமும் பானையும் — The Thirsty Crow
+- ஒரு காகம் இருந்தது. வெயில் அதிகம். காகத்துக்குத் தாகம் எடுத்தது. — There was a crow. It was very hot. The crow became thirsty.
+- காகம் ஒரு பானையைப் பார்த்தது. பானையில் கொஞ்சம் தண்ணீர் இருந்தது. — The crow saw a pot. There was a little water in the pot.
+- காகத்தின் அலகு தண்ணீரை எட்டவில்லை. — The crow’s beak could not reach the water.
+- காகம் யோசித்தது. கற்களைப் பொறுக்கிப் பானையில் போட்டது. — The crow thought. It picked up pebbles and dropped them into the pot.
+- தண்ணீர் மேலே வந்தது. காகம் தண்ணீர் குடித்தது! — The water came up. The crow drank the water!
+- முயற்சி செய்தால் வெற்றி கிடைக்கும். — If you keep trying, you will succeed.
+
+### சிங்கமும் எலியும் — The Lion and the Mouse
+- காட்டில் ஒரு சிங்கம் தூங்கிக்கொண்டிருந்தது. — In the forest, a lion was sleeping.
+- ஒரு சிறிய எலி சிங்கத்தின் மேல் ஓடியது. சிங்கம் எழுந்தது. — A small mouse ran over the lion. The lion woke up.
+- சிங்கம் கோபத்துடன் எலியைப் பிடித்தது. — The lion angrily caught the mouse.
+- “என்னை விட்டுவிடு. நான் உனக்கு உதவுவேன்” என்றது எலி. — “Let me go. I will help you,” said the mouse.
+- சிங்கம் சிரித்தது. எலியை விட்டுவிட்டது. — The lion laughed. It let the mouse go.
+- ஒரு நாள் சிங்கம் ஒரு வலையில் மாட்டிக்கொண்டது. — One day, the lion was caught in a net.
+- எலி ஓடி வந்தது. வலையைக் கடித்து அறுத்தது. சிங்கம் தப்பித்தது! — The mouse came running. It bit through the net. The lion escaped!
+- சிறியவர்களும் பெரிய உதவி செய்ய முடியும். — Even the small can give big help.
+
+### முயலும் ஆமையும் — The Hare and the Tortoise
+- முயல் வேகமாக ஓடும். ஆமை மெதுவாக நடக்கும். — The hare runs fast. The tortoise walks slowly.
+- “வா, ஓட்டப் பந்தயம் வைப்போம்” என்றது முயல். ஆமையும் சரி என்றது. — “Come, let’s have a race,” said the hare. The tortoise agreed.
+- முயல் வேகமாக ஓடியது. ஆமை மெதுவாகப் பின்னால் வந்தது. — The hare ran fast. The tortoise came slowly behind.
+- “ஆமை வர நேரம் ஆகும்” என்று நினைத்து, முயல் மரத்தடியில் தூங்கியது. — “The tortoise will take a long time,” the hare thought, and slept under a tree.
+- ஆமை நிற்காமல் நடந்துகொண்டே இருந்தது. — The tortoise kept walking without stopping.
+- முயல் எழுந்து பார்த்தது. ஆமை முதலில் வந்து வென்றது! — The hare woke up and looked. The tortoise had reached first and won!
+- நிதானமாகத் தொடர்ந்து செய்தால் வெற்றி நிச்சயம். — Slow and steady wins the race.
+
+### பாட்டியின் மாம்பழம் — Grandma’s Mango
+- பாட்டி வீட்டில் ஒரு மாமரம் இருந்தது. — There was a mango tree at Grandma’s house.
+- மரத்தில் ஒரு பெரிய மாம்பழம் தொங்கியது. — A big mango hung on the tree.
+- அண்ணனும் தங்கையும் அதைப் பார்த்தார்கள். — Big brother and little sister saw it.
+- பாட்டி மாம்பழத்தைப் பறித்து இரண்டாக வெட்டினார். — Grandma picked the mango and cut it in two.
+- “பகிர்ந்து சாப்பிட்டால் இனிமை அதிகம்” என்றார் பாட்டி. — “Food tastes sweeter when we share,” said Grandma.
+
+## Rhymes and Aathichoodi
+### நிலா நிலா ஓடி வா — Moon, moon, come running (Traditional)
+- நிலா நிலா ஓடி வா — Moon, moon, come running.
+- நில்லாமல் ஓடி வா — Come running without stopping.
+- மலை மேலே ஏறி வா — Climb over the hill and come.
+- மல்லிகைப் பூ கொண்டு வா — Bring a jasmine flower.
+
+### ஓடி விளையாடு பாப்பா — Run and play, little one (Mahakavi Bharathiyar · பாப்பா பாட்டு)
+- ஓடி விளையாடு பாப்பா — Run and play, little one.
+- ஓய்ந்திருக்க லாகாது பாப்பா — Do not sit idle, little one.
+- கூடி விளையாடு பாப்பா — Play together with others, little one.
+- ஒரு குழந்தையை வையாதே பாப்பா — Never scold another child, little one.
+- சின்னஞ் சிறு குருவி போலே — Like a tiny little sparrow,
+- நீ திரிந்து பறந்துவா பாப்பா — flutter and fly around, little one.
+- வன்னப் பறவைகளைக் கண்டு — When you see colourful birds,
+- நீ மனதில் மகிழ்ச்சிகொள்ளு பாப்பா — be happy in your heart, little one.
+
+### ஆத்திசூடி — Aathichoodi — one wise line for each vowel (Avvaiyar · ஔவையார்)
+- அறம் செய விரும்பு — Love to do good.
+- ஆறுவது சினம் — Anger must cool down.
+- இயல்வது கரவேல் — Do not hide what you can give.
+- ஈவது விலக்கேல் — Do not stop others from giving.
+- உடையது விளம்பேல் — Do not boast about what you have.
+- ஊக்கமது கைவிடேல் — Never give up trying.
+- எண் எழுத்து இகழேல் — Never look down on numbers and letters.
+- ஏற்பது இகழ்ச்சி — Begging is shameful.
+- ஐயம் இட்டு உண் — Share food with the needy, then eat.
+- ஒப்புரவு ஒழுகு — Live in harmony with everyone.
+- ஓதுவது ஒழியேல் — Never stop learning.
+- ஔவியம் பேசேல் — Do not speak with jealousy.
+- அஃகம் சுருக்கேல் — Do not cheat when measuring grain.
+
+## Festivals
+### பொங்கல் — Pongal
+- தை மாதம் முதல் நாள் பொங்கல் பண்டிகை. — Pongal is on the first day of the month Thai.
+- புதுப் பானையில் பால் பொங்கும். “பொங்கலோ பொங்கல்!” என்போம். — Milk boils over in a new pot. We say “Pongalo Pongal!”
+- சூரியனுக்கு நன்றி சொல்வோம். — We say thank you to the Sun.
+- அடுத்த நாள் மாட்டுப் பொங்கல். மாடுகளுக்கு நன்றி சொல்வோம். — The next day is Maattu Pongal. We thank the cows.
+- இனிப்புப் பொங்கல் சுவையாக இருக்கும்! — Sweet pongal is tasty!
+Words: பொங்கல் (pongal (rice dish)), பானை (pot), கரும்பு (sugarcane), கோலம் (kolam), சூரியன் (sun)
+
+### தமிழ்ப் புத்தாண்டு — Tamil New Year
+- சித்திரை முதல் நாள் தமிழ்ப் புத்தாண்டு. — Tamil New Year is on the first day of Chithirai.
+- வீட்டில் பழங்களும் பூக்களும் வைப்போம். — We place fruits and flowers at home.
+- பெரியவர்களிடம் ஆசி பெறுவோம். — We receive blessings from our elders.
+- “புத்தாண்டு வாழ்த்துகள்!” என்று சொல்வோம். — We say “Happy New Year!”
+Words: புத்தாண்டு (new year), பழம் (fruit), பூ (flower), வாழ்த்து (wishes, greeting)
+
+### தீபாவளி — Deepavali
+- தீபாவளி விளக்குகளின் பண்டிகை. — Deepavali is the festival of lights.
+- காலையில் எண்ணெய் தேய்த்துக் குளிப்போம். — In the morning we have an oil bath.
+- புதுத் துணி அணிவோம். — We wear new clothes.
+- இனிப்புகளை எல்லோருடனும் பகிர்வோம். — We share sweets with everyone.
+- இரவில் வீடு முழுவதும் ஒளிரும்! — At night the whole house shines bright!
+Words: விளக்கு (lamp), இனிப்பு (sweet), புத்தாடை (new clothes), மத்தாப்பு (sparkler)
+
+### கார்த்திகை தீபம் — Karthigai Deepam
+- கார்த்திகை மாதத்தில் கார்த்திகை தீபம் வரும். — Karthigai Deepam comes in the month of Karthigai.
+- வீடு முழுவதும் அகல் விளக்குகளை ஏற்றுவோம். — We light clay lamps all around the house.
+- விளக்குகள் வரிசையாக அழகாக ஒளிரும். — The lamps shine beautifully in rows.
+Words: அகல் விளக்கு (clay lamp), தீபம் (lamp flame), ஒளி (light)

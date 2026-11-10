@@ -8,6 +8,9 @@ Key facts:
 - Consonants: க் ங் ச் ஞ் ட் ண் த் ந் ப் ம் ய் ர் ல் வ் ழ் ள் ற் ன் — வல்லினம் க் ச் ட் த் ப் ற்; மெல்லினம் ங் ஞ் ண் ந் ம் ன்; இடையினம் ய் ர் ல் வ் ழ் ள்.
 - 12 vowels + 18 consonants = 30 முதல் எழுத்துகள் (primary letters). Uyirmei: 90 short (18 × 5) + 126 long (18 × 7).
 - Grantha letters ஜ ஷ ஸ ஹ க்ஷ ஸ்ரீ are used for borrowed words and are not counted in the 247.
+- The 12 Tamil months, in order: சித்திரை (mid-April to mid-May), வைகாசி (mid-May to mid-June), ஆனி (mid-June to mid-July), ஆடி (mid-July to mid-August), ஆவணி (mid-August to mid-September), புரட்டாசி (mid-September to mid-October), ஐப்பசி (mid-October to mid-November), கார்த்திகை (mid-November to mid-December), மார்கழி (mid-December to mid-January), தை (mid-January to mid-February), மாசி (mid-February to mid-March), பங்குனி (mid-March to mid-April). Tamil New Year is the first day of சித்திரை (usually 14 April); Pongal is the first day of தை (usually 14–15 January).
+- Aathichoodi (ஆத்திசூடி), traditionally attributed to Avvaiyar, begins with one line for each vowel: அறம் செய விரும்பு · ஆறுவது சினம் · இயல்வது கரவேல் · ஈவது விலக்கேல் · உடையது விளம்பேல் · ஊக்கமது கைவிடேல் · எண் எழுத்து இகழேல் · ஏற்பது இகழ்ச்சி · ஐயம் இட்டு உண் · ஒப்புரவு ஒழுகு · ஓதுவது ஒழியேல் · ஔவியம் பேசேல் · அஃகம் சுருக்கேல்.
+- Order to teach a child: listen and sing first → 12 vowels → 18 consonants → uyirmei one consonant row at a time → two-letter picture words → sentences. About 10 minutes a day.
 
 ## Guides
 - [Tamil alphabet — all 247 letters](https://learntamil.msdevbuild.com/tamil-alphabet.html)
@@ -23,7 +26,45 @@ Key facts:
 - [Body parts in Tamil](https://learntamil.msdevbuild.com/tamil-body-parts.html)
 - [Family words in Tamil](https://learntamil.msdevbuild.com/tamil-family-words.html)
 - [Fruits and food in Tamil](https://learntamil.msdevbuild.com/tamil-fruits-and-food.html)
+- [Animals in Tamil](https://learntamil.msdevbuild.com/tamil-animals.html)
+- [Birds in Tamil](https://learntamil.msdevbuild.com/tamil-birds.html)
+- [Vehicles in Tamil](https://learntamil.msdevbuild.com/tamil-vehicles.html)
+- [Shapes in Tamil](https://learntamil.msdevbuild.com/tamil-shapes.html)
+- [Opposite words in Tamil](https://learntamil.msdevbuild.com/tamil-opposite-words.html)
+- [Tamil months — the 12 months](https://learntamil.msdevbuild.com/tamil-months.html)
+- [Aathichoodi with meaning](https://learntamil.msdevbuild.com/aathichoodi.html)
+- [Tamil rhymes for kids](https://learntamil.msdevbuild.com/tamil-rhymes-for-kids.html)
+- [Tamil festivals for kids](https://learntamil.msdevbuild.com/tamil-festivals-for-kids.html)
+- [How to teach Tamil to kids — parents’ guide](https://learntamil.msdevbuild.com/how-to-teach-tamil-to-kids.html)
 - [Free printable charts & worksheets](https://learntamil.msdevbuild.com/tamil-printables.html)
+
+## Free printables (PDF, A4)
+- [Tamil vowels chart (12 uyir ezhuthukal)](https://learntamil.msdevbuild.com/printables/tamil-uyir-chart.pdf): 1 page
+- [Tamil consonants chart (18 mei ezhuthukal)](https://learntamil.msdevbuild.com/printables/tamil-mei-chart.pdf): 1 page
+- [Tamil alphabet chart — 12 vowels, 18 consonants and ஃ](https://learntamil.msdevbuild.com/printables/tamil-alphabet-chart.pdf): 1 page
+- [Uyirmei chart — all 216 Tamil letters](https://learntamil.msdevbuild.com/printables/tamil-uyirmei-chart.pdf): 1 page
+- [Tamil numbers 1 to 10 chart](https://learntamil.msdevbuild.com/printables/tamil-numbers-chart.pdf): 1 page
+- [Colours in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-colours-chart.pdf): 1 page
+- [Animals in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-animals-chart.pdf): 1 page
+- [Birds in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-birds-chart.pdf): 1 page
+- [Fruits and food in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-food-chart.pdf): 1 page
+- [Parts of the body in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-body-chart.pdf): 1 page
+- [Family in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-family-chart.pdf): 1 page
+- [Vehicles in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-vehicles-chart.pdf): 1 page
+- [Shapes in Tamil — picture chart](https://learntamil.msdevbuild.com/printables/tamil-shapes-chart.pdf): 1 page
+- [Opposite words in Tamil — chart](https://learntamil.msdevbuild.com/printables/tamil-opposites-chart.pdf): 1 page
+- [Days of the week and Tamil months — chart](https://learntamil.msdevbuild.com/printables/tamil-days-and-months-chart.pdf): 1 page
+- [Aathichoodi poster — one line for each Tamil vowel](https://learntamil.msdevbuild.com/printables/aathichoodi-poster.pdf): 1 page
+- [Tamil vowels tracing worksheet (uyir)](https://learntamil.msdevbuild.com/printables/tamil-uyir-tracing-worksheet.pdf): 2 pages
+- [Tamil consonants tracing worksheet (mei)](https://learntamil.msdevbuild.com/printables/tamil-mei-tracing-worksheet.pdf): 3 pages
+- [Uyirmei tracing worksheets — all 216 letters (18 pages)](https://learntamil.msdevbuild.com/printables/tamil-uyirmei-tracing-worksheet.pdf): 18 pages
+- [Tamil number words tracing worksheet (1–10)](https://learntamil.msdevbuild.com/printables/tamil-number-words-tracing-worksheet.pdf): 1 page
+- [Match the picture to the Tamil word — worksheet](https://learntamil.msdevbuild.com/printables/tamil-picture-word-matching-worksheet.pdf): 4 pages
+- [Missing letter worksheet — with answer key](https://learntamil.msdevbuild.com/printables/tamil-missing-letter-worksheet.pdf): 3 pages
+- [Tamil colouring pages — colour and trace the word](https://learntamil.msdevbuild.com/printables/tamil-colouring-pages.pdf): 6 pages
+
+## Full text
+- [llms-full.txt](https://learntamil.msdevbuild.com/llms-full.txt): every letter, word list, story, rhyme and festival on this site as plain text.
 
 ## App and policies
 - [Learning app](https://learntamil.msdevbuild.com/): interactive letters with audio, reading practice, stories and games (requires JavaScript).

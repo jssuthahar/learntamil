@@ -14,7 +14,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { ROOT } from './lib/load-data.mjs';
-import { APP_SCRIPTS, SERVICES, STYLES } from './lib/assets.mjs';
+import { APP_SCRIPTS, SERVICES, STYLES, STYLE_BUNDLE } from './lib/assets.mjs';
 
 const CHROME = process.env.CHROME || (process.platform === 'darwin'
   ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : 'google-chrome');
@@ -23,9 +23,33 @@ const failures = [];
 const fail = m => { failures.push(m); console.log('  ✗ ' + m); };
 const pass = m => console.log('  ✓ ' + m);
 
-/* 1. every listed asset exists */
+/* 1. every listed asset exists, and the stylesheet bundle is built */
+if (!fs.existsSync(path.join(ROOT, STYLE_BUNDLE))) fail('missing ' + STYLE_BUNDLE + ' — run npm run build');
 for (const f of [...STYLES, ...APP_SCRIPTS.map(s => s.src), ...SERVICES.map(s => s.src)])
   if (!fs.existsSync(path.join(ROOT, f))) fail('missing file ' + f);
+
+/* 1b. SEO / AEO / GEO basics on every page (static checks, no browser needed) */
+{
+  const sitemap = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8'), llms = fs.readFileSync(path.join(ROOT, 'llms.txt'), 'utf8');
+  const seoErrors = [];
+  for (const f of fs.readdirSync(ROOT).filter(f => f.endsWith('.html'))){
+    const h = fs.readFileSync(path.join(ROOT, f), 'utf8');
+    if (/<meta name="robots" content="noindex/.test(h)) continue;          // 404, recorder
+    const g = re => (h.match(re) || [, ''])[1];
+    const title = g(/<title>(.*?)<\/title>/s).replace(/&amp;/g, '&'), desc = g(/<meta name="description" content="(.*?)"/s).replace(/&amp;/g, '&');
+    if (!title || title.length > 60) seoErrors.push(`${f}: title ${title.length} chars (1–60)`);
+    if (!desc || desc.length < 70 || desc.length > 170) seoErrors.push(`${f}: description ${desc.length} chars (70–170)`);
+    if (!/<link rel="canonical"/.test(h)) seoErrors.push(`${f}: no canonical`);
+    if ((h.match(/<h1[\s>]/g) || []).length !== 1) seoErrors.push(`${f}: needs exactly one <h1>`);
+    for (const b of h.match(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g) || [])
+      try { JSON.parse(b.replace(/^<script[^>]*>|<\/script>$/g, '')); } catch (e) { seoErrors.push(`${f}: invalid JSON-LD`); }
+    if (f !== 'privacy.html' && f !== 'terms.html' && f !== 'index.html'){
+      if (!sitemap.includes(f)) seoErrors.push(`${f}: missing from sitemap.xml`);
+      if (!llms.includes(f)) seoErrors.push(`${f}: missing from llms.txt`);
+    }
+  }
+  seoErrors.length ? seoErrors.forEach(fail) : pass('SEO basics: titles, descriptions, canonical, one h1, valid JSON-LD, sitemap and llms.txt');
+}
 
 /* 2. tiny static server */
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
