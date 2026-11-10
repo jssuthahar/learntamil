@@ -146,6 +146,8 @@ const TEXT = {
     learn: ['கற்றுக்கொண்டேன்', 'Mark as learned'],
     learnedOk: ['கற்றுக்கொண்டாய்!', 'Learned!'],
     bookmark: ['சேமி', 'Bookmark'],
+    share: ['பகிர்', 'Share'],
+    shareTitle: ['திருக்குறள் {n}', 'Thirukkural {n}'],
     saved: ['சேமிக்கப்பட்டது', 'Bookmarked'],
     prev: ['முந்தைய குறள்', 'Previous'],
     next: ['அடுத்த குறள்', 'Next'],
@@ -181,6 +183,20 @@ const TEXT = {
     dailyDone: ['இன்றைய சவால் முடிந்தது!', 'Today’s challenge is done! Come back tomorrow for a new Kural.'],
     allChapters: ['133 அதிகாரங்கள்', 'All 133 chapters'],
     divisions: ['மூன்று பால்கள்', 'The 3 divisions'],
+    /* "Read as a book": all 1,330 Kurals, one page at a time */
+    book: {
+      title: ['புத்தகமாகப் படி', 'Read as a book'],
+      sub: ['1,330 குறள்களையும் ஒவ்வொன்றாகப் படி', 'All 1,330 Kurals, one page at a time'],
+      page: ['பக்கம்', 'Page'],
+      prev: ['முந்தைய பக்கம்', 'Previous page'],
+      next: ['அடுத்த பக்கம்', 'Next page'],
+      auto: ['தானாகப் படி', 'Read to me'],
+      pause: ['நிறுத்து', 'Pause'],
+      goTo: ['அதிகாரத்துக்குச் செல்', 'Go to chapter'],
+      learn: ['இந்தக் குறளைக் கற்போம்', 'Learn this Kural'],
+      end: ['நூல் முடிந்தது! வாழ்த்துகள்!', 'You reached the end of the book. Well done!'],
+      swipe: ['பக்கத்தைப் புரட்ட இழு', 'Swipe or use ← → to turn the page']
+    },
     /* the guided lesson on each Kural */
     steps: { words: ['சொற்கள்', 'Words'], meaning: ['பொருள்', 'Meaning'], story: ['கதை', 'Story'], life: ['வாழ்க்கை', 'Use it'], quiz: ['வினா', 'Quiz'] },
     stepNext: ['அடுத்து', 'Next'],

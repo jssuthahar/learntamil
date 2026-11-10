@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'd82b41c0e3';
+const VERSION = 'dc67a4fbc2';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -34,6 +34,7 @@ const PRECACHE = [
   'how-to-teach-tamil-to-kids.html',
   'thirukkural.html',
   'thirukkural-chapters.html',
+  'thirukkural-topics.html',
   'tamil-printables.html',
   'privacy.html',
   'terms.html',
@@ -91,6 +92,7 @@ const PRECACHE = [
   'assets/js/services/support.js',
   'assets/js/data/faq.js',
   'assets/js/services/chat.js',
+  'assets/js/services/share.js',
   'assets/js/data/thirukkural.json',
   'manifest.webmanifest',
   'assets/favicon.svg',

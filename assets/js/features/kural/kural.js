@@ -1,7 +1,7 @@
 /* Learn Tamil — Thirukkural: 📜 the screens of thirukkural.html (its own page; router: kural-app.js).
    Screens, chosen by the URL hash:
      #/ dashboard · #/paal/1 a division's chapters · #/ch/5 a chapter's 10 Kurals · #/k/41 one Kural ·
-     #/daily · #/marks bookmarks · #/parents grown-up view · #/games[/<id>] (kural-games.js) ·
+     #/book[/n] read all 1,330 as a book, one page each · #/daily · #/marks bookmarks · #/parents grown-up view · #/games[/<id>] (kural-games.js) ·
      #/print (kural-print.js) · #/certificate (kural-cert.js)
    The 1,330 couplets (assets/js/data/thirukkural.json) are fetched when the page opens.
    Progress is per child (Progress.d.kLearned, kMarks, kDays …) and never leaves the device. */
@@ -102,6 +102,7 @@ function kGo(path){ location.hash = '/' + (path || ''); }
 
 function kRender(){
   kStop();
+  if (kSub()[0] !== 'book') KU.auto = false;   // "Read to me" only runs inside the book
   const view = $('#kuralView');
   if (!KU.book){
     view.innerHTML = `<p class="k-loading">${kPair(KT.loading)}</p>`;
@@ -114,6 +115,7 @@ function kRender(){
   if (what === 'k' && num >= 1 && num <= K_TOTAL) kKuralView(view, num);
   else if (what === 'ch' && num >= 1 && num <= 133) kChapterView(view, num);
   else if (what === 'paal' && num >= 1 && num <= 3) kPaalView(view, num);
+  else if (what === 'book') kBookView(view, num >= 1 && num <= K_TOTAL ? num : (kd().kBook || 1));
   else if (what === 'marks') kMarksView(view);
   else if (what === 'parents') kParentsView(view);
   else if (what === 'daily') kKuralView(view, kDailyN(), true);
@@ -153,6 +155,9 @@ function kHomeView(view){
       <span class="k-continue-t"><b class="ta" lang="ta">${(learned ? KT.continue : KT.start)[0]}</b><small>${(learned ? KT.continue : KT.start)[1]} · ${KT.kural[1]} ${nextN}</small>
         <span class="k-continue-k" lang="ta">${nl1} …</span></span>
     </a>
+    <a class="k-book-link" href="#/book"><span class="k-book-ic" aria-hidden="true">📖</span>
+      <span class="k-continue-t"><b class="ta" lang="ta">${KT.book.title[0]}</b><small>${KT.book.title[1]} · ${KT.book.sub[1]}</small>
+        <small lang="ta">${KT.book.sub[0]}${d.kBook > 1 ? ` · ${KT.book.page[1]} ${d.kBook}` : ''}</small></span></a>
     <div class="k-tiles">
       ${tile('daily', '📅', KT.today, d.kDaily === todayStr() ? '✅' : `${KT.kural[1]} ${daily}`, 't-today')}
       ${tile('games', '🎮', KT.games, '6', 't-games')}
@@ -239,6 +244,7 @@ function kKuralView(view, n, daily = false){
       <button class="btn primary" type="button" data-k="learn" ${kLearned(n) ? 'disabled' : ''}>✅ ${kPair(kLearned(n) ? KT.learnedOk : KT.learn)}</button>
       <button class="btn" type="button" data-k="mark">⭐ ${kPair(d.kMarks.includes(n) ? KT.saved : KT.bookmark)}</button>
       <button class="btn" type="button" data-k="go" data-to="games/complete/${c}">🎮 ${kPair(KT.practise)}</button>
+      <button class="btn" type="button" data-k="share">📤 ${kPair(KT.share)}</button>
     </div>
     <p class="k-acts k-nav">${n > 1 ? `<a class="btn" href="#/k/${n - 1}">← ${kPair(KT.prev)}</a>` : ''}${n < K_TOTAL ? `<a class="btn primary" href="#/k/${n + 1}">${kPair(KT.next)} →</a>` : ''}</p>`;
   KU.n = n; KU.daily = daily;
@@ -256,7 +262,7 @@ function kSteps(n){
     <dl class="k-words">${L.words.map(([w, ta, en]) => `<div><dt lang="ta"><button class="k-w" type="button" data-k="word" data-w="${w}">🔊 ${w}</button></dt><dd><span lang="ta">${ta}</span><small>${en}</small></dd></div>`).join('')}</dl>` });
   steps.push({ id: 'meaning', ic: '🌱', label: KT.steps.meaning, html: L
     ? `<h4>🌱 ${kPair(KT.meaningTa)}${draft}</h4><p class="k-big-mean ta" lang="ta">${L.ta}</p><button class="btn small" type="button" data-k="saymean">🔊 ${kPair(KT.listen)}</button>
-       <h4>🌍 ${kPair(KT.meaningEn)}</h4><p class="k-big-mean">${L.en}</p><details class="k-pope-box"><summary>🇬🇧 ${KT.pope[1]}</summary><p class="k-pope">${pope}</p></details>`
+       <h4>🌍 ${kPair(KT.meaningEn)}</h4><p class="k-big-mean">${L.en}</p>${L.note ? `<p class="k-note">ℹ️ ${kPair(L.note)}</p>` : ''}<details class="k-pope-box"><summary>🇬🇧 ${KT.pope[1]}</summary><p class="k-pope">${pope}</p></details>`
     : `<p class="muted">${kPair(KT.soon)}</p><h4>🇬🇧 ${KT.pope[1]}</h4><p class="k-pope">${pope}</p>` });
   if (L && L.scene) steps.push({ id: 'story', ic: '🎬', label: KT.steps.story, html: `<h4>🎬 ${kPair(KT.story)}</h4>
     <div class="k-scene" id="kScene"><button class="k-scene-play" type="button" data-k="scene" aria-label="${KT.play[1]}"><span aria-hidden="true">▶</span>${kPair(KT.play)}</button></div>
@@ -309,6 +315,74 @@ function kQuizStart(n, daily){
   next();
 }
 
+/* ---------- "Read as a book": one Kural per page, 1 → 1,330 ----------
+   Turn pages with the buttons, a swipe or the arrow keys. "Read to me" reads each page aloud and turns it.
+   The open page is remembered per child (kBook); reading does not mark a Kural as learned. */
+function kBookView(view, n){
+  const c = kChOf(n), p = kPaalOf(c), [cta, cen] = kCh(c), [l1, l2, pope] = kText(n), L = kLesson(n);
+  const d = kd(); d.kBook = n; Progress.save();
+  const firstOfCh = n % 10 === 1, firstOfPaal = firstOfCh && c === p.from;
+  view.innerHTML = kCrumbs(`📖 ${KT.book.title[1]}`) + `
+    <div class="k-book-bar">
+      <label class="k-book-jump">
+        <select data-kb="jump" aria-label="${KT.book.goTo[1]}">${KU.book.ch.map(([ta], i) => `<option value="${i + 1}" ${i + 1 === c ? 'selected' : ''}>${i + 1}. ${ta}</option>`).join('')}</select></label>
+      <span class="k-book-count">${KT.book.page[1]} <b>${n}</b> / 1,330</span>
+    </div>
+    <i class="k-bar k-book-prog" style="--p:${(n / K_TOTAL * 100).toFixed(2)}%" aria-hidden="true"></i>
+    <article class="k-book-page k-paal-${p.id} ${calm ? '' : 'turn-' + (KU.dir || 'next')}" aria-label="${KT.kural[1]} ${n}">
+      ${firstOfPaal ? `<p class="k-book-paal"><span aria-hidden="true">${p.ic}</span> <span lang="ta">${p.ta}</span> · ${p.en}</p>${p.older ? `<p class="k-older">🧑‍🤝‍🧑 ${kPair(KT.older)}</p>` : ''}` : ''}
+      <header class="k-book-head ${firstOfCh ? 'first' : ''}"><small>${KT.chapter[1]} ${c} · ${n - c * 10 + 10}/10</small>
+        <h3><span lang="ta">${cta}</span> <small>${cen}</small></h3></header>
+      <p class="k-book-num" aria-hidden="true">${n}</p>
+      <div class="k-book-lines" lang="ta"><p class="k-line">${l1}</p><p class="k-line">${l2}</p></div>
+      <p class="k-book-mean">${L ? `<span class="ta" lang="ta">${L.ta}</span><small>${L.en}</small>` : `<small>${pope}</small>`}</p>
+      <div class="k-book-foot"><a href="#/k/${n}">🌱 ${kPair(KT.book.learn)}</a></div>
+    </article>
+    <div class="k-book-ctl" role="group" aria-label="${KT.book.title[1]}">
+      <button class="btn k-book-turn" type="button" data-k="bprev" ${n === 1 ? 'disabled' : ''} aria-label="${KT.book.prev[1]}">←<small class="ta" lang="ta">${KT.book.prev[0]}</small></button>
+      <button class="btn" type="button" data-k="say">🔊 ${kPair(KT.listen)}</button>
+      <button class="btn primary" type="button" data-k="bauto" aria-pressed="${!!KU.auto}">${KU.auto ? `⏸ ${kPair(KT.book.pause)}` : `▶ ${kPair(KT.book.auto)}`}</button>
+      <button class="btn k-book-turn" type="button" data-k="bnext" ${n === K_TOTAL ? 'disabled' : ''} aria-label="${KT.book.next[1]}">→<small class="ta" lang="ta">${KT.book.next[0]}</small></button>
+    </div>
+    ${n === K_TOTAL ? `<p class="k-done"><span class="k-done-ic" aria-hidden="true">🎉</span>${kPair(KT.book.end)}</p>` : ''}
+    <p class="muted k-book-hint">${kPair(KT.book.swipe)}</p>`;
+  KU.n = n; KU.dir = '';
+  if (KU.auto) kBookRead(n);
+}
+function kBookTurn(step){
+  const n = KU.n + step; if (n < 1 || n > K_TOTAL) return false;
+  KU.dir = step > 0 ? 'next' : 'prev'; kGo('book/' + n); return true;
+}
+/* Read this page aloud, wait a moment, then turn to the next page (until Pause, or the last page). */
+function kBookRead(n){
+  kRecite(n, 'normal', () => {
+    if (!KU.auto || KU.n !== n) return;
+    KU.timers.push(setTimeout(() => { if (KU.auto && KU.n === n && !kBookTurn(1)) kBookAuto(false); }, 1800));
+  });
+}
+function kBookAuto(on){
+  KU.auto = on;
+  const b = $('#kuralView [data-k=bauto]');
+  if (b){ b.setAttribute('aria-pressed', on); b.innerHTML = on ? `⏸ ${kPair(KT.book.pause)}` : `▶ ${kPair(KT.book.auto)}`; }
+  if (on) kBookRead(KU.n); else kStop();
+}
+$('#kuralView').addEventListener('change', e => {
+  if (e.target.matches('[data-kb=jump]')){ KU.dir = ''; kGo('book/' + (e.target.value * 10 - 9)); }
+});
+document.addEventListener('keydown', e => {
+  if (kSub()[0] !== 'book' || e.altKey || e.ctrlKey || e.metaKey || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight' && kBookTurn(1)) e.preventDefault();
+  else if (e.key === 'ArrowLeft' && kBookTurn(-1)) e.preventDefault();
+});
+{ let sx = null, sy = 0;
+  $('#kuralView').addEventListener('touchstart', e => { if (kSub()[0] === 'book' && e.touches.length === 1){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; } else sx = null; }, { passive: true });
+  $('#kuralView').addEventListener('touchend', e => {
+    if (sx === null || !e.target.closest('.k-book-page')) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) kBookTurn(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}
+
 function kMarksView(view){
   const m = kd().kMarks.slice().sort((a, b) => a - b);
   view.innerHTML = kCrumbs(`⭐ ${KT.marks[1]}`) + `<h3>⭐ ${kPair(KT.marks)}</h3>` +
@@ -348,7 +422,14 @@ $('#kuralView').addEventListener('click', e => {
   else if (act === 'slow') kRecite(n, 'slow');
   else if (act === 'repeat') kRecite(n, 'repeat');
   else if (act === 'stop') kStop();
+  else if (act === 'bprev') kBookTurn(-1);
+  else if (act === 'bnext') kBookTurn(1);
+  else if (act === 'bauto') kBookAuto(!KU.auto);
   else if (act === 'word'){ kStop(); kSay(b.dataset.w, true); }
+  else if (act === 'share' && window.LTShare){ const [l1, l2] = kText(n);
+    const root = LTShare.info().url.replace(/[^/]*$/, '');   // from the canonical link, so it is always the public site
+    LTShare.open({ url: `${root}thirukkural-chapter-${kChOf(n)}.html#kural-${n}`,
+      title: fmt(KT.shareTitle[1], { n }), text: `${fmt(KT.shareTitle[0], { n })}\n${l1}\n${l2}` }); }
   else if (act === 'mark'){
     const on = kToggleMark(n);
     $$('#kuralView [data-k=mark]').forEach(x => {

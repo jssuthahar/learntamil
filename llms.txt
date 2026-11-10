@@ -1,6 +1,6 @@
 # Learn Tamil (தமிழ் கற்போம்)
 
-> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads. Installable as an app and works offline.
+> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads in lessons or games. Installable as an app and works offline.
 
 Key facts:
 - The Tamil alphabet has 247 letters: 12 vowels (உயிர், uyir), 18 consonants (மெய், mei), 1 special letter ஃ (ஆய்தம், aaytham) and 216 consonant-vowel letters (உயிர்மெய், uyirmei; 18 × 12).
@@ -11,6 +11,7 @@ Key facts:
 - The 12 Tamil months, in order: சித்திரை (mid-April to mid-May), வைகாசி (mid-May to mid-June), ஆனி (mid-June to mid-July), ஆடி (mid-July to mid-August), ஆவணி (mid-August to mid-September), புரட்டாசி (mid-September to mid-October), ஐப்பசி (mid-October to mid-November), கார்த்திகை (mid-November to mid-December), மார்கழி (mid-December to mid-January), தை (mid-January to mid-February), மாசி (mid-February to mid-March), பங்குனி (mid-March to mid-April). Tamil New Year is the first day of சித்திரை (usually 14 April); Pongal is the first day of தை (usually 14–15 January).
 - Aathichoodi (ஆத்திசூடி), traditionally attributed to Avvaiyar, begins with one line for each vowel: அறம் செய விரும்பு · ஆறுவது சினம் · இயல்வது கரவேல் · ஈவது விலக்கேல் · உடையது விளம்பேல் · ஊக்கமது கைவிடேல் · எண் எழுத்து இகழேல் · ஏற்பது இகழ்ச்சி · ஐயம் இட்டு உண் · ஒப்புரவு ஒழுகு · ஓதுவது ஒழியேல் · ஔவியம் பேசேல் · அஃகம் சுருக்கேல்.
 - Thirukkural (திருக்குறள்) by Thiruvalluvar (திருவள்ளுவர்) has 1,330 Kurals (two-line couplets) in 133 chapters of 10, in three divisions: அறத்துப்பால் (virtue, 38 chapters, 380 Kurals), பொருட்பால் (wealth and society, 70 chapters, 700 Kurals) and காமத்துப்பால் (love, 25 chapters, 250 Kurals). First Kural: அகர முதல எழுத்தெல்லாம் ஆதி / பகவன் முதற்றே உலகு.
+- Thirukkural chapters by topic: kindness and gentle words — 8 அன்புடைமை, 25 அருளுடைமை, 10 இனியவை கூறல், 32 இன்னா செய்யாமை; learning and knowledge — 40 கல்வி, 42 கேள்வி, 43 அறிவுடைமை, 41 கல்லாமை; friendship — 79 நட்பு, 80 நட்பாராய்தல், 82 தீ நட்பு, 83 கூடா நட்பு; truth and honesty — 30 வாய்மை, 29 கள்ளாமை; gratitude, giving and helping — 11 செய்ந்நன்றியறிதல், 23 ஈகை, 22 ஒப்புரவறிதல், 9 விருந்தோம்பல்; patience and self-control — 16 பொறையுடைமை, 13 அடக்கம் உடைமை, 31 வெகுளாமை, 17 அழுக்காறாமை; hard work and courage — 62 ஆள்வினை உடைமை, 61 மடி இன்மை, 60 ஊக்கம் உடைமை, 63 இடுக்கண் அழியாமை; family and home — 5 இல்வாழ்க்கை, 7 மக்கட்பேறு; good character and manners — 14 ஒழுக்கம் உடைமை, 100 பண்புடைமை, 99 சான்றாண்மை, 98 பெருமை; leadership and fairness — 39 இறைமாட்சி, 12 நடுவு நிலைமை, 47 தெரிந்து செயல்வகை.
 - Order to teach a child: listen and sing first → 12 vowels → 18 consonants → uyirmei one consonant row at a time → two-letter picture words → sentences. About 10 minutes a day.
 
 ## Guides
@@ -39,6 +40,7 @@ Key facts:
 - [How to teach Tamil to kids — parents’ guide](https://learntamil.msdevbuild.com/how-to-teach-tamil-to-kids.html)
 - [Thirukkural for kids](https://learntamil.msdevbuild.com/thirukkural.html)
 - [All 133 Thirukkural chapters](https://learntamil.msdevbuild.com/thirukkural-chapters.html)
+- [Thirukkural by topic](https://learntamil.msdevbuild.com/thirukkural-topics.html)
 - [Free printable charts & worksheets](https://learntamil.msdevbuild.com/tamil-printables.html)
 
 ## Thirukkural chapters (Tamil text + G. U. Pope's English translation)
@@ -56,7 +58,7 @@ Key facts:
 - [12. நடுவு நிலைமை — Impartiality](https://learntamil.msdevbuild.com/thirukkural-chapter-12.html)
 - [13. அடக்கம் உடைமை — The Possession of Self-restraint](https://learntamil.msdevbuild.com/thirukkural-chapter-13.html)
 - [14. ஒழுக்கம் உடைமை — The Possession of Decorum](https://learntamil.msdevbuild.com/thirukkural-chapter-14.html)
-- [15. பிறனில் விழையாமை — Not coveting another"s Wife](https://learntamil.msdevbuild.com/thirukkural-chapter-15.html)
+- [15. பிறனில் விழையாமை — Not coveting another's Wife](https://learntamil.msdevbuild.com/thirukkural-chapter-15.html)
 - [16. பொறையுடைமை — The Possession of Patience, Forbearance](https://learntamil.msdevbuild.com/thirukkural-chapter-16.html)
 - [17. அழுக்காறாமை — Not Envying](https://learntamil.msdevbuild.com/thirukkural-chapter-17.html)
 - [18. வெஃகாமை — Not Coveting](https://learntamil.msdevbuild.com/thirukkural-chapter-18.html)
@@ -154,7 +156,7 @@ Key facts:
 - [110. குறிப்பறிதல் — Recognition of the Signs](https://learntamil.msdevbuild.com/thirukkural-chapter-110.html)
 - [111. புணர்ச்சி மகிழ்தல் — Rejoicing in the Embrace](https://learntamil.msdevbuild.com/thirukkural-chapter-111.html)
 - [112. நலம் புனைந்து உரைத்தல் — The Praise of her Beauty](https://learntamil.msdevbuild.com/thirukkural-chapter-112.html)
-- [113. காதற் சிறப்புரைத்தல் — Declaration of Love"s special Excellence](https://learntamil.msdevbuild.com/thirukkural-chapter-113.html)
+- [113. காதற் சிறப்புரைத்தல் — Declaration of Love's special Excellence](https://learntamil.msdevbuild.com/thirukkural-chapter-113.html)
 - [114. நாணுத் துறவுரைத்தல் — The Abandonment of Reserve](https://learntamil.msdevbuild.com/thirukkural-chapter-114.html)
 - [115. அலர் அறிவுறுத்தல் — The Announcement of the Rumour](https://learntamil.msdevbuild.com/thirukkural-chapter-115.html)
 - [116. பிரிவு ஆற்றாமை — Separation unendurable](https://learntamil.msdevbuild.com/thirukkural-chapter-116.html)

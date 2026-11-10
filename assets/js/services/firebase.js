@@ -82,7 +82,7 @@ function showNotice(){
   box.innerHTML = `
     <p class="consent-msg"><b>🍪 For parents and teachers</b>
       May we count visits with Google Analytics, using cookies, and show your town on our “learning around
-      the world” map? It is anonymous, has no ads, and helps us see which lessons and games children use. <a href="privacy.html#analytics">Learn more</a></p>
+      the world” map? It is anonymous, has no ad tracking, and helps us see which lessons and games children use. <a href="privacy.html#analytics">Learn more</a></p>
     <div class="consent-btns">
       <button type="button" class="toast-btn" data-c="no">No thanks</button>
       <button type="button" class="toast-btn primary" data-c="yes">Allow</button>

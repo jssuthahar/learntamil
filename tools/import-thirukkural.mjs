@@ -140,6 +140,11 @@ const pm = {};
     prev = l;
   } }
 
+const POPE_CLOSING = [516, 661, 662, 976, 1316];
+const POPE_FIXES = {
+  145: [["'Mere triflel'", "'Mere trifle!'"]], // "l" for "!" — OCR slip; the quoted exclamation is the speaker's words
+};
+
 /* --- choose each couplet --- */
 const problems = [], used = new Set();
 const kurals = tk.map(k => {
@@ -159,8 +164,23 @@ const kurals = tk.map(k => {
     if (/[஀-௿]/.test(ch) && !/[ஂஃஅ-ஊஎ-ஐஒ-கஙசஜஞடணதந-பம-ஹா-ூெ-ைொ-்ௗ]/.test(ch))
       problems.push(`${n}: unassigned or unexpected Tamil code point U+${ch.codePointAt(0).toString(16)}`);
   if (/[^஀-௿ .,;:!?'"]/.test(lines.join(''))) problems.push(`${n}: unexpected characters in ${lines.join(' / ')}`);
-  return [lines[0], lines[1], nfc(k.couplet)];
+  return [lines[0], lines[1], popeText(n, nfc(k.couplet))];
 });
+
+/* Pope's verse: the source joined his two lines with no space ("gainIn bliss", "gain,'Tis hard") and dropped
+   spaces before some quotes. Put a space at every join. A quote straight after a word or punctuation usually
+   OPENS a quotation (", 'Tis"); in POPE_CLOSING it CLOSES one, so the space goes after it ("deed?' Of").
+   POPE_FIXES: scanning slips in the source copy, with the evidence. */
+function popeText(n, s){
+  for (const [wrong, right] of POPE_FIXES[n] || []) {
+    if (s.split(wrong).length !== 2) problems.push(`${n}: Pope fix "${wrong}" does not match exactly once`);
+    s = s.replace(wrong, right);
+  }
+  if (POPE_CLOSING.includes(n)) s = s.replace(/([?,]?')([A-Z])/g, (m, q, c, i) => (i === 0 || s[i - 1] === ' ' ? m : `${q} ${c}`));
+  s = s.replace(/([a-z,;:!?.\-])(['‘]?[A-Z])/g, '$1 $2');
+  if (/[a-z][A-Z]/.test(s)) problems.push(`${n}: Pope's text still has two words joined: ${s}`);
+  return s;
+}
 for (const n of Object.keys(CORRECTIONS)) if (!used.has(+n)) problems.push(`${n}: correction listed but not used`);
 if (kurals.length !== 1330) problems.push(`expected 1330 couplets, got ${kurals.length}`);
 
@@ -172,7 +192,7 @@ for (const p of detail) {
     const from = ch.length + 1;
     for (const c of g.chapters.detail) {
       if (c.number !== ch.length + 1 || c.start !== c.number * 10 - 9 || c.end !== c.number * 10) problems.push(`chapter ${c.number}: unexpected numbering`);
-      ch.push([nfc(c.name), nfc(c.translation), nfc(c.transliteration)]);
+      ch.push([nfc(c.name), nfc(c.translation).replace(/(\w)"(s\b)/g, "$1'$2"), nfc(c.transliteration)]); // source has another"s for another's
     }
     const name = nfc(g.name);
     iyal.push([IYAL_FIX[name] ? IYAL_FIX[name][0] : name, nfc(g.translation), from, ch.length]);

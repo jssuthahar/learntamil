@@ -207,6 +207,16 @@ for (const g of ['complete', 'match', 'arrange', 'story', 'listen'])
     if ('${g}' === 'arrange') return document.querySelectorAll('#kgBox .k-wchip').length >= 5 && document.querySelector('.nav-item[data-kgo=games]').classList.contains('on');
     for (const b of document.querySelectorAll('#kgBox .k-opt')){ b.click(); if (!document.querySelector('#kgBox .k-nextq').hidden) break; }
     kStop(); return !document.querySelector('#kgBox .k-nextq').hidden; })()`);
+await check('thirukkural: read as a book — all 1,330 pages, turn, jump to a chapter, remember the page', `(async()=>{ location.hash='/'; ${kw}
+  const link = !!document.querySelector('.k-book-link[href="#/book"]');
+  location.hash='/book/1'; ${kw} const first = document.querySelector('.k-book-count b').textContent === '1' && document.querySelector('[data-k=bprev]').disabled
+    && document.querySelector('.k-book-lines .k-line').textContent === kText(1)[0];
+  document.querySelector('[data-k=bnext]').click(); ${kw} const turned = location.hash === '#/book/2';
+  const sel = document.querySelector('[data-kb=jump]'); sel.value = '40'; sel.dispatchEvent(new Event('change', { bubbles: true })); ${kw}
+  const jumped = location.hash === '#/book/391' && Progress.d.kBook === 391;
+  location.hash='/book/1330'; ${kw} const last = document.querySelector('[data-k=bnext]').disabled && !!document.querySelector('.k-book-page + .k-book-ctl + .k-done');
+  location.hash='/book'; ${kw} const resume = document.querySelector('.k-book-count b').textContent === '1330';
+  return link && first && turned && jumped && last && resume && !Progress.d.kLearned.includes(1330); })()`);
 await check('thirukkural: games list and daily Kural open', `(async()=>{ location.hash='/games'; ${kw} const games = document.querySelectorAll('.k-games .gcard').length === 6;
   location.hash='/daily'; ${kw} kStop(); return games && document.querySelectorAll('.k-line').length === 2; })()`);
 await check('thirukkural: print makes all three sheets for a chapter', `(async()=>{ location.hash='/print/40'; ${kw}
@@ -241,6 +251,18 @@ await check('thirukkural: level exams — level 1 open, level 2 locked until lev
 await check('thirukkural: home tiles open Games, Certificate, Print and the Kural of the day', `(async()=>{ location.hash='/'; ${kw}
   return ['daily','games','certificate','print'].every(t => !!document.querySelector('.k-tiles a[href="#/' + t + '"]')) && !!document.querySelector('a.k-continue'); })()`);
 await check('thirukkural: parents screen opens', `(async()=>{ location.hash='/parents'; ${kw} return document.querySelector('.nav-item[data-kgo=parents]').classList.contains('on') && document.querySelectorAll('#kuralView .k-stat').length === 4; })()`);
+await check('share: footer has WhatsApp, LinkedIn, Facebook, X, Telegram, email and copy, for this page', `(() => {
+  const row = document.querySelector('footer [data-share-row]'); if (!row) return false;
+  const nets = [...row.querySelectorAll('a[data-net]')].map(a => a.dataset.net).join();
+  const li = row.querySelector('[data-net=linkedin]').href, wa = row.querySelector('[data-net=whatsapp]').href;
+  return nets === 'whatsapp,linkedin,facebook,x,telegram,email' && !!row.querySelector('[data-share-copy]')
+    && li.includes(encodeURIComponent('https://learntamil.msdevbuild.com/thirukkural.html')) && wa.startsWith('https://wa.me/?text=')
+    && [...row.querySelectorAll('a[data-net]')].every(a => a.target === '_blank' && a.rel.includes('noopener') || a.href.startsWith('mailto:')); })()`);
+await check('share: "Share this Kural" opens a sheet with the Kural and its chapter page link', `(async()=>{ location.hash='/k/391'; ${kw}
+  document.querySelector('#kuralView [data-k=share]').click(); const d = document.querySelector('dialog.share-sheet');
+  const ok = !!d && d.open && d.querySelector('.share-preview').textContent.includes('கற்க கசடற')
+    && d.querySelector('[data-net=linkedin]').href.includes(encodeURIComponent('https://learntamil.msdevbuild.com/thirukkural-chapter-40.html#kural-391'));
+  d && d.close(); return ok; })()`);
 
 /* Printables: every PDF and preview listed exists, and the menu promotes the page. */
 const PRINTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'printables/printables.json'), 'utf8'));

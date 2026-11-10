@@ -29,9 +29,34 @@ export const COFFEE_URL = 'https://buymeacoffee.com/jssuthahar';
 /* Support card for parents — a plain link (no widget script), so nothing tracks visitors. */
 export const SUPPORT = `<aside class="support-card" aria-label="Support Learn Tamil">
   <span class="sc-ic" aria-hidden="true">☕</span>
-  <div><b>Keep Learn Tamil free</b><p>Learn Tamil is free, with no ads. If it helps your family or classroom, you can support it with a coffee. <span class="ta">உங்கள் ஆதரவுக்கு நன்றி!</span></p></div>
+  <div><b>Keep Learn Tamil free</b><p>Learn Tamil is free, with no ads in the lessons or games. If it helps your family or classroom, you can support it with a coffee. <span class="ta">உங்கள் ஆதரவுக்கு நன்றி!</span></p></div>
   <a class="coffee-btn" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
 </aside>`;
+
+/* Sponsor slots — only on grown-up guide pages and the parents' area of the home page, never inside
+   the children's lessons or games. Plain HTML: no ad script, no cookies, no tracking, no targeting.
+   Until a sponsor books a slot, each one shows a clearly marked sample that invites advertisers to get in touch.
+   To run a real sponsor, replace the sample in SPONSOR_ADS[place] with { name, text, url, img? }. */
+export const ADVERTISE_URL = 'https://blog.msdevbuild.com/contact/';
+const SPONSOR_ADS = {};   // e.g. { banner: { name: 'Brand', text: 'One line about it', url: 'https://…' } }
+export function SPONSOR(place) {
+  const ad = SPONSOR_ADS[place];
+  if (ad) return `<aside class="sponsor-slot sponsor-${place}" aria-label="Sponsor">
+  <span class="sp-label">Sponsored</span>
+  ${ad.img ? `<img class="sp-img" src="${ad.img}" alt="${esc(ad.name)}" width="96" height="96" loading="lazy">` : '<span class="sp-ic" aria-hidden="true">⭐</span>'}
+  <div><b>${esc(ad.name)}</b><p>${esc(ad.text)}</p></div>
+  <a class="sp-btn" href="${ad.url}" target="_blank" rel="sponsored noopener">Visit →</a>
+</aside>`;
+  const copy = place === 'banner'
+    ? ['Your brand here', 'This space is available for child-safe, family-friendly sponsors.']
+    : ['Advertise on Learn Tamil', 'Reach parents and teachers who are helping children learn Tamil. We accept only child-safe, family-friendly sponsors, shown as a simple image or text link with no tracking.'];
+  return `<aside class="sponsor-slot sponsor-${place} is-sample" aria-label="Advertise with us">
+  <span class="sp-label">Sample ad · this space is available</span>
+  <span class="sp-ic" aria-hidden="true">📣</span>
+  <div><b>${copy[0]}</b><p>${copy[1]}</p></div>
+  <a class="sp-btn" href="${ADVERTISE_URL}" rel="noopener">Advertise with us →</a>
+</aside>`;
+}
 
 /* All guide pages — used for the footer, "More guides" cards, sitemap and llms.txt. */
 export const GUIDES = [
@@ -60,6 +85,7 @@ export const GUIDES = [
   { file: 'how-to-teach-tamil-to-kids.html', ic: '👪', en: 'How to teach Tamil to kids — parents’ guide', ta: 'பெற்றோருக்கான வழிகாட்டி' },
   { file: 'thirukkural.html', ic: '📜', en: 'Thirukkural for kids', ta: 'திருக்குறள்' },
   { file: 'thirukkural-chapters.html', ic: '📗', en: 'All 133 Thirukkural chapters', ta: 'அதிகாரங்கள்' },
+  { file: 'thirukkural-topics.html', ic: '🧭', en: 'Thirukkural by topic', ta: 'தலைப்பு வாரியாக' },
   { file: 'tamil-printables.html', ic: '🖨️', en: 'Free printable charts & worksheets', ta: 'அச்சிடும் தாள்கள்' }
 ];
 
@@ -69,7 +95,7 @@ const floaters = () => FLOAT.map((l, i) =>
 
 /* ---------- shared page shell (kid-friendly hero, schema, footer) ---------- */
 export function shell({ file, title, description, h1, eyebrow, body, schema = [], ogType = 'article',
-                        lang = 'en', alternates = [], bubble = '', guide = false }) {
+                        lang = 'en', alternates = [], bubble = '', guide = false, crumbs = [], share = ogType !== 'website' || guide }) {
   const url = SITE + (file === 'index.html' ? '' : file);
   const plainH1 = h1.replace(/<[^>]+>/g, '');
   const T = lang === 'ta'
@@ -81,7 +107,8 @@ export function shell({ file, title, description, h1, eyebrow, body, schema = []
       primaryImageOfPage: SITE + 'assets/og-image.png' },
     { '@type': 'BreadcrumbList', itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Learn Tamil', item: SITE },
-      { '@type': 'ListItem', position: 2, name: plainH1, item: url } ] },
+      ...crumbs.map(([name, f], i) => ({ '@type': 'ListItem', position: i + 2, name, item: SITE + f })),
+      { '@type': 'ListItem', position: crumbs.length + 2, name: plainH1, item: url } ] },
     ...(guide ? [{ '@type': 'Article', '@id': url + '#article', headline: title.slice(0, 110), description,
       inLanguage: lang, image: SITE + 'assets/og-image.png', datePublished: PUBLISHED, dateModified: TODAY,
       author: { '@type': 'Person', '@id': SITE + '#author', name: 'Suthahar Jegatheesan', url: 'https://blog.msdevbuild.com/about/' },
@@ -162,7 +189,10 @@ ${styleTags()}
       <div class="doc-mascot" aria-hidden="true"><span class="bird">🦜</span>${bubble ? `<span class="bubble">${bubble}</span>` : ''}</div>
     </div>
   </section>
+${guide ? SPONSOR('banner') : ''}
 ${body}
+${guide ? SPONSOR('card') : ''}
+${share ? '<div class="share-row share-inline" data-share-row="Share this page"></div>' : ''}
 ${more}
 </main>
 ${FOOTER}
@@ -173,15 +203,17 @@ ${scriptTags(SERVICES)}
 }
 export const FOOTER = `<footer>
   <div class="wrap foot">
-    <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads.</span></div>
+    <div><b>Learn Tamil</b> · <span class="ta">தமிழ் கற்போம்</span><br><span class="muted">Free Tamil alphabet lessons, reading and games for children. No sign-up, no ads in lessons or games.</span></div>
     <nav class="foot-links" aria-label="Footer">
       <a href="./">Learning app</a>
       <a href="privacy.html">Privacy &amp; data</a>
       <a href="terms.html">Terms</a>
       <a href="${ISSUES_URL}" rel="noopener">Report an issue / feedback</a>
       <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
+      <a href="${ADVERTISE_URL}" rel="noopener">Advertise with us</a>
       <a class="coffee-link" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </nav>
+    <div class="share-row" data-share-row="Share Learn Tamil"></div>
     <nav class="foot-guides" aria-label="Guides"><b>Guides:</b> ${GUIDES.map(g => `<a href="${g.file}">${g.en}</a>`).join(' · ')}</nav>
     <p class="foot-disc"><b>Disclaimer:</b> Sounds are played by your device's text-to-speech voice and may sometimes be incorrect. If you hear any mistake in the voice, please <a href="${ISSUES_URL}" rel="noopener">report it here as an issue</a>.</p>
     <div class="muted">© 2026 <a href="https://blog.msdevbuild.com" rel="noopener">MSDEVBUILD</a> · Suthahar Jegatheesan</div>
@@ -216,7 +248,7 @@ export const FAQ = [
   ['What is the best way for a child to start learning Tamil letters?',
    `Start with the 12 uyir (vowel) letters and their sounds, then learn the 18 mei (consonant) letters. Next, learn uyirmei letters one consonant row at a time (க கா கி கீ …), then read simple two-letter words such as ஆடு (goat) and மீன் (fish). Short daily practice with sound and pictures works best.`],
   ['Is Learn Tamil free to use?',
-   `Yes. Learn Tamil is completely free, needs no sign-up, shows no ads and does not track users. It works in any modern browser on phones, tablets and computers.`]
+   `Yes. Learn Tamil is completely free, needs no sign-up, shows no ads inside the lessons or games and does not track users. It works in any modern browser on phones, tablets and computers.`]
 ];
 /* ---------- generic helpers for guide pages ---------- */
 const faqSchemaFor = (list, file) => ({ '@type': 'FAQPage', '@id': SITE + file + '#faq',
@@ -787,9 +819,9 @@ const HELP = [
   ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
   ['How do I reset progress?', 'Tap 🪙 at the top to open My rewards, then press Reset progress. You can also clear this site’s data in your browser settings.', 'reset clear delete progress start again restart', ''],
   ['Which games are there?', 'Fourteen games: க் + ஆ = ? (build a letter), Listen & pick, Spin wheel, Balloon pop, Word builder, Memory, Tamil quiz, Picture words, Topics, Spelling, Sentences, Trace (write letters with a finger), Colouring (colours in Tamil) and Little ones for ages 3–5. Every right answer gives points, a cheer and tokens; 3 in a row gives a bonus.', 'game games play fun quiz balloon spin memory word builder', './#/practice'],
-  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts and no ads. If a parent allows it, it counts anonymous visits and game use with Google Analytics for Firebase, with advertising features turned off. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
+  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts and no ad tracking. If a parent allows it, it counts anonymous visits and game use with Google Analytics for Firebase, with advertising features turned off. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
   ['How can I report a mistake or give feedback?', `Please open an issue on [GitHub Issues](${ISS}). There are short forms for a wrong sound or Tamil mistake, a bug, or an idea. Issues are public, so please don’t include personal details.`, 'report mistake bug error wrong issue feedback idea suggest problem github', ''],
-  ['How can I support Learn Tamil?', `Learn Tamil is free with no ads. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
+  ['How can I support Learn Tamil?', `Learn Tamil is free, with no ads in the lessons or games. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Businesses can also sponsor the parents’ guide pages: [contact us to advertise](${ADVERTISE_URL}). Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
   ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
   ['Where can I read Tamil stories?', 'Open 📖 Read → Stories & rhymes in the app to hear five short stories read aloud — tap any word to see its letters. You can also read them as text with English meaning on the [Tamil stories page](tamil-stories-for-kids.html).', 'story stories read kathai கதை moral', './#/stories'],
   ['Where can I download printable worksheets and charts?', 'Free printable PDFs — alphabet and picture-word charts, tracing worksheets for all 247 letters, word search, matching, missing-letter and joining worksheets and colouring pages — are on the [printables page](tamil-printables.html), or tap 🖨️ Printables in the menu. Print them on A4 or Letter paper.', 'printable print worksheet worksheets pdf chart tracing trace download sheet paper', 'tamil-printables.html'],
@@ -829,7 +861,16 @@ const KURAL_FAQ = [
   ['Who wrote Thirukkural?', 'Thirukkural was written by the poet Thiruvalluvar (திருவள்ளுவர்), also called Valluvar. Very little is known for certain about his life.'],
   ['How many Kurals are there in Thirukkural?', 'There are 1,330 Kurals in 133 chapters (அதிகாரம், adhikaram). Every chapter has exactly 10 Kurals on one topic, such as கல்வி (learning) or நட்பு (friendship).'],
   ['What are the three divisions of Thirukkural?', 'Thirukkural has three divisions (பால், paal): அறத்துப்பால் (Arathuppaal, virtue) with 38 chapters and 380 Kurals; பொருட்பால் (Porutpaal, wealth and society) with 70 chapters and 700 Kurals; and காமத்துப்பால் (Kaamathuppaal, love) with 25 chapters and 250 Kurals.'],
-  ['What is the first Kural of Thirukkural?', `The first Kural is “${kText(1)[0]} / ${kText(1)[1]}” — just as all letters begin with அ (a), the world begins with God, the First One. It opens the chapter கடவுள் வாழ்த்து (The Praise of God).`],
+  ['What is the first Kural of Thirukkural?', `The first Kural is “${kText(1)[0]} / ${kText(1)[1]}” — just as all letters begin with அ (a), the world has ஆதி பகவன் (Aadhi Bhagavan) as its beginning. Traditional commentators such as Parimelazhagar read ஆதி பகவன் as “God, the First One”; other readings exist, but all agree on the idea of a first source. It opens the chapter கடவுள் வாழ்த்து (The Praise of God).`],
+  ['What does the word Thirukkural mean?', 'திரு (thiru) means sacred or honoured, and குறள் (kural) means short — each Kural is a short two-line verse. So Thirukkural means “the sacred short verses”.'],
+  ['How many chapters are in Thirukkural?', 'Thirukkural has 133 chapters (அதிகாரம்). Chapters 1–38 are அறத்துப்பால் (virtue), 39–108 are பொருட்பால் (wealth and society) and 109–133 are காமத்துப்பால் (love).'],
+  ['Which Thirukkural is easiest for children to start with?', `Many families start with Kural 1, “${kText(1)[0]}…”, because it begins with அ, the first letter children learn. Kural 391, “${kText(391)[0]}…”, about learning well, is another favourite. In the Learn Tamil app, “Start here” has ${Object.keys(KURAL_LESSONS).length} Kurals with pictures, stories and quizzes.`],
+  ['Which Thirukkural chapters teach kindness?', 'Chapter 8 அன்புடைமை (love), chapter 25 அருளுடைமை (compassion), chapter 10 இனியவை கூறல் (pleasant words) and chapter 32 இன்னா செய்யாமை (not harming others). See Thirukkural by topic for friendship, learning, honesty and more.'],
+  ['How can I memorise Thirukkural easily?', 'Learn one Kural a day. Say it aloud line by line, learn what each hard word means, then say the whole Kural without looking. Revise yesterday’s Kural before a new one, and say a few old ones each week. Understanding the meaning makes it far easier to remember.'],
+  ['Can children learn one Thirukkural a day?', 'Yes. One Kural takes about five minutes: listen, repeat, learn the words, talk about the meaning. The app’s Kural of the day gives everyone the same Kural on the same date and keeps a day streak.'],
+  ['Where can I listen to Thirukkural in Tamil?', 'The free Learn Tamil Thirukkural page reads every Kural aloud, line by line and slowly, with “say after me” practice. It uses your device’s Tamil voice, so sound quality depends on the device; nothing is recorded or sent anywhere.'],
+  ['How can teachers teach Thirukkural in class?', 'Take one chapter a week, one or two Kurals a day. Read the Kural together, explain the hard words, ask children for a real-life example, then revise with a quick quiz. The app prints worksheets for every chapter (couplets with meanings, copywork, missing words with answers) and gives chapter tests with certificates.'],
+  ['Is காமத்துப்பால் suitable for children?', 'காமத்துப்பால் (Kurals 1081–1330) is about love between adults. It is classic poetry, not unsafe, but it suits older children reading with a grown-up. The children’s learning path, level exams and Kural of the day use only அறத்துப்பால் and பொருட்பால் (Kurals 1–1080).'],
   ['How can children learn Thirukkural?', 'Learn one Kural a day. Listen to it, say it line by line, learn the hard words, then talk about what it means and where you could use it today. Repeat yesterday’s Kural before starting a new one. The free Learn Tamil app reads each Kural aloud, explains the words and has stories, quizzes and games.']
 ];
 const kTitle = c => { const [ta, en] = KURAL.ch[c - 1];
@@ -847,10 +888,11 @@ ${h2('divisions', '🌳', 'The three divisions (பால்)')}
 <div class="kd-paals">${KURAL_PAALS.map(p => { const chs = p.to - p.from + 1;
   const groups = KURAL.iyal.filter(([, , from]) => from >= p.from && from <= p.to);
   return `<div class="kd-paal"><span aria-hidden="true">${p.ic}</span><h3>${ta(p.ta)} — ${esc(p.en)}</h3><p><b>${chs} chapters · ${chs * 10} Kurals</b> (chapters ${p.from}–${p.to}).</p><p>${esc(p.intro[1])}</p><p class="muted">Sections (இயல்): ${groups.map(([t, e]) => `${ta(t)} (${esc(e)})`).join(', ')}.</p></div>`; }).join('')}</div>
-<p>See <a href="thirukkural-chapters.html">all 133 chapters with their English names</a>.</p>
+<p>See <a href="thirukkural-chapters.html">all 133 chapters with their English names</a>, or <a href="thirukkural-topics.html">Thirukkural by topic</a> — kindness, learning, friendship, honesty and more.</p>
 ${h2('first', '🔤', 'The first Kural, explained for children')}
 ${kCouplet(1)}
 ${KURAL_LESSONS[1] ? `<p><b>Word by word:</b> ${KURAL_LESSONS[1].words.map(([w, , en]) => `${ta(w)} — ${esc(en)}`).join('; ')}.</p>
+${KURAL_LESSONS[1].note ? `<p><b>About “${ta('ஆதி பகவன்')}”:</b> ${esc(KURAL_LESSONS[1].note[1])}</p>` : ''}
 <p><b>Use it today:</b> ${esc(KURAL_LESSONS[1].life[1])}</p>` : ''}
 ${h2('chapter-1', '📗', `Chapter 1: ${ta(KURAL.ch[0][0])} — ${esc(KURAL.ch[0][1])}`)}
 <p>The first chapter has ten Kurals. Each has a simple meaning for children and G. U. Pope’s classic English translation.</p>
@@ -865,9 +907,23 @@ ${h2('how', '🧒', 'How can children learn Thirukkural?')}
   <li><b>Revise.</b> Say yesterday’s Kural before a new one. Quizzes and games in the app revise the Kurals your child has learned.</li>
 </ol>
 ${tip('Kurals 1–380 (அறத்துப்பால்) and 381–1080 (பொருட்பால்) suit children best. காமத்துப்பால் (love) is better read with older children, with a grown-up.')}
+${h2('ages', '🎂', 'Thirukkural by age')}
+<div class="tbl"><table class="kd-ages"><thead><tr><th>Age</th><th>What works</th><th>In the app</th></tr></thead><tbody>
+<tr><td><b>3–5</b></td><td>Listen and repeat one line at a time. Pictures and a short story; no need to understand every word.</td><td>🌟 Start here · 🎬 story · 🔁 Say after me</td></tr>
+<tr><td><b>6–8</b></td><td>One Kural a day: the Kural, its simple Tamil meaning and its English meaning. Talk about one example from the child’s day.</td><td>📅 Kural of the day · 🎮 games · 🌱 levels 1–3</td></tr>
+<tr><td><b>9–12</b></td><td>Word-by-word meanings, quizzes, writing the Kural from memory, whole chapters.</td><td>📖 word meanings · ❓ quiz · 🖨️ copywork · 🎓 level exams</td></tr>
+<tr><td><b>13+</b></td><td>Pope’s English verse, traditional commentaries, discussion of what a Kural means today. காமத்துப்பால் with a grown-up.</td><td>📗 all 133 chapters · 🎓 chapter certificates</td></tr>
+</tbody></table></div>
 ${h2('daily', '📅', 'Thirukkural of the day')}
 <p>The <a href="#/daily">Kural of the day</a> is the same for everyone on a given date and goes through all 1,080 Kurals of அறத்துப்பால் and பொருட்பால் before repeating. Learn it, answer two questions and keep your streak going.</p>
 ${h2('about-text', '📚', 'About this text')}
+<ul class="kd-credits">
+  <li><b>Original work:</b> Thirukkural by Thiruvalluvar (${ta('திருவள்ளுவர்')}).</li>
+  <li><b>Tamil text:</b> checked word by word against three independent sources (below); every correction is documented.</li>
+  <li><b>English verse:</b> Rev. G. U. Pope, <i>The Sacred Kurral</i> (1886), public domain.</li>
+  <li><b>Meanings, stories and quizzes for children:</b> Learn Tamil’s own simplified explanations (${Object.keys(KURAL_LESSONS).length} Kurals so far), being reviewed by a Tamil teacher. Where scholars read a Kural differently, we follow the traditional commentary and say so.</li>
+  <li><b>Published by:</b> Learn Tamil · MSDEVBUILD (Suthahar Jegatheesan). <b>Last updated:</b> <time datetime="${TODAY}">${TODAY}</time>.</li>
+</ul>
 <p>The Tamil text of all 1,330 Kurals on this site was checked against three independent copies: <a href="https://www.projectmadurai.org/" rel="noopener">Project Madurai</a>, the open <a href="https://github.com/tk120404/thirukkural" rel="noopener">tk120404/thirukkural</a> dataset and <a href="https://ta.wikisource.org/" rel="noopener">Tamil Wikisource</a>. The English verse translation is by Rev. G. U. Pope (1886), which is in the public domain. Meanings for children are written by Learn Tamil to simplify, never change, the traditional meaning. Found a mistake? Please <a href="${ISSUES_URL}" rel="noopener">report it</a>.</p>
 ${h2('faq', '❓', 'Questions about Thirukkural')}
 <div class="faq">${faqHtmlFor(KURAL_FAQ)}</div>
@@ -879,7 +935,13 @@ const KURAL_SCHEMA = { '@context': 'https://schema.org', '@graph': [faqSchemaFor
     { '@type': 'HowTo', name: 'How children can learn Thirukkural', step: ['Learn one Kural a day', 'Listen, then say it line by line', 'Learn the hard words', 'Talk about the meaning', 'Revise'].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s })) },
   { '@type': ['WebApplication', 'LearningResource'], '@id': SITE + 'thirukkural.html#app', name: 'Learn Thirukkural — திருக்குறள் கற்போம்', url: SITE + 'thirukkural.html',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any (web browser)', isAccessibleForFree: true, inLanguage: ['ta', 'en'], typicalAgeRange: '5-12',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, author: { '@id': SITE + '#author' }, teaches: 'Thirukkural' }] };
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, author: { '@id': SITE + '#author' }, publisher: { '@id': SITE + '#author' }, teaches: 'Thirukkural',
+    learningResourceType: ['lesson', 'quiz', 'game', 'worksheet'], educationalLevel: 'Beginner', isBasedOn: { '@id': SITE + 'thirukkural.html#book' } },
+  { '@type': 'WebPage', '@id': SITE + 'thirukkural.html#page', url: SITE + 'thirukkural.html', name: 'Thirukkural for Kids — Learn 1,330 Kurals with Meaning',
+    inLanguage: ['en', 'ta'], isPartOf: { '@id': SITE + '#website' }, about: { '@id': SITE + 'thirukkural.html#book' }, mainEntity: { '@id': SITE + 'thirukkural.html#app' },
+    author: { '@id': SITE + '#author' }, dateModified: TODAY, primaryImageOfPage: SITE + 'assets/og-image.png' },
+  { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Learn Tamil', item: SITE },
+    { '@type': 'ListItem', position: 2, name: 'Thirukkural for kids', item: SITE + 'thirukkural.html' }] }] };
 {
   const f = path.join(ROOT, 'thirukkural.html'); let h = fs.readFileSync(f, 'utf8');
   const putK = (name, html) => { const re = new RegExp(`(<!-- ${name}:START -->)[\\s\\S]*?(<!-- ${name}:END -->)`);
@@ -892,8 +954,15 @@ const KURAL_SCHEMA = { '@context': 'https://schema.org', '@graph': [faqSchemaFor
   fs.writeFileSync(f, h);
 }
 
+const CHAPTERS_FAQ = [
+  ['How many chapters are in Thirukkural?', 'Thirukkural has 133 chapters (அதிகாரம், adhikaram), each with exactly 10 Kurals — 1,330 Kurals in all.'],
+  ['What is the first chapter of Thirukkural?', `Chapter 1 is ${KURAL.ch[0][0]} (${KURAL.ch[0][1]}), Kurals 1–10. It begins with “${kText(1)[0]} / ${kText(1)[1]}”.`],
+  ['What is the last chapter of Thirukkural?', `Chapter 133 is ${KURAL.ch[132][0]} (${KURAL.ch[132][1]}), Kurals 1321–1330, at the end of காமத்துப்பால் (love).`],
+  ['How do I find which chapter a Kural is in?', 'Divide the Kural number by 10 and round up. Kural 391 is in chapter 40 (கல்வி, Learning); Kural 1 is in chapter 1. Chapter n holds Kurals 10n − 9 to 10n.'],
+  ['Which chapters of Thirukkural are best for children?', `Chapters 1–108 (அறத்துப்பால் and பொருட்பால், Kurals 1–1080). Good first chapters: 1 ${KURAL.ch[0][0]}, 10 ${KURAL.ch[9][0]} (pleasant words), 40 ${KURAL.ch[39][0]} (learning) and 79 ${KURAL.ch[78][0]} (friendship).`]
+];
 write('thirukkural-chapters.html', shell({
-  file: 'thirukkural-chapters.html', guide: true, bubble: '133!',
+  file: 'thirukkural-chapters.html', guide: true, bubble: '133!', crumbs: [['Thirukkural for kids', 'thirukkural.html']],
   title: 'All 133 Thirukkural Chapters (Adhikaram) in Tamil & English',
   description: `The 133 chapters (அதிகாரம்) of Thirukkural in order, with English names: from ${KURAL.ch[0][0]} (${KURAL.ch[0][1]}) to ${KURAL.ch[132][0]}. Open any chapter for its 10 Kurals.`,
   h1: 'All 133 Thirukkural chapters — <span class="ta">அதிகாரங்கள்</span>', eyebrow: '3 divisions · 13 sections · 133 chapters · 1,330 Kurals',
@@ -902,34 +971,86 @@ write('thirukkural-chapters.html', shell({
 ${KURAL_PAALS.map(p => `${h2('paal-' + p.id, p.ic, `${ta(p.ta)} — ${esc(p.en)} (chapters ${p.from}–${p.to})`)}
 ${KURAL.iyal.filter(([, , from]) => from >= p.from && from <= p.to).map(([t, e, from, to]) => `<h3>${ta(t)} · ${esc(e)}</h3>
 <ol class="kd-chlist" start="${from}">${Array.from({ length: to - from + 1 }, (_, i) => from + i).map(c => `<li><a href="${kChPage(c)}">${ta(KURAL.ch[c - 1][0])} — ${esc(KURAL.ch[c - 1][1])}</a> <span class="muted">(Kurals ${c * 10 - 9}–${c * 10})</span></li>`).join('')}</ol>`).join('\n')}`).join('\n')}
-<p>New to Thirukkural? Start with <a href="thirukkural.html">Thirukkural for kids</a>, and learn with sound and games in the <a href="thirukkural.html">Thirukkural app</a>.</p>`,
-  schema: [{ '@type': 'ItemList', '@id': SITE + 'thirukkural-chapters.html#chapters', name: 'Thirukkural chapters', numberOfItems: 133,
+${h2('faq', '❓', 'Questions about the chapters')}
+<div class="faq">${faqHtmlFor(CHAPTERS_FAQ)}</div>
+<p>New to Thirukkural? Start with <a href="thirukkural.html">Thirukkural for kids</a>, find chapters by subject in <a href="thirukkural-topics.html">Thirukkural by topic</a>, and learn with sound and games in the <a href="thirukkural.html">Thirukkural app</a>.</p>`,
+  schema: [faqSchemaFor(CHAPTERS_FAQ, 'thirukkural-chapters.html'), { '@type': 'ItemList', '@id': SITE + 'thirukkural-chapters.html#chapters', name: 'Thirukkural chapters', numberOfItems: 133,
     itemListElement: KURAL.ch.map(([t, e], i) => ({ '@type': 'ListItem', position: i + 1, name: `${t} — ${e}`, url: SITE + kChPage(i + 1) })) }]
 }));
 
+/* Thirukkural by topic: a real index — each topic names the chapters that are about it (names read from the data)
+   and shows one Kural in full. Chapter numbers follow the traditional order. */
+const KURAL_TOPICS = [
+  { id: 'kindness', ic: '💛', en: 'Kindness and gentle words', ch: [8, 25, 10, 32], intro: 'Love for everyone, compassion for every living thing, sweet words instead of harsh ones, and never hurting others — even those who hurt us.' },
+  { id: 'learning', ic: '📚', en: 'Learning and knowledge', ch: [40, 42, 43, 41], intro: 'Learn well and live by what you learn; listen to wise people; knowledge is a wealth no one can take away.' },
+  { id: 'friendship', ic: '🤝', en: 'Friendship', ch: [79, 80, 82, 83], intro: 'What true friendship is, how to choose friends carefully, and how to recognise false friends.' },
+  { id: 'honesty', ic: '✅', en: 'Truth and honesty', ch: [30, 29], intro: 'Speak the truth, even when it is hard, and never take what belongs to someone else.' },
+  { id: 'gratitude', ic: '🙏', en: 'Gratitude, giving and helping', ch: [11, 23, 22, 9], intro: 'Remember every kindness you receive, give to those in need, help your community and welcome guests warmly.' },
+  { id: 'patience', ic: '🧘', en: 'Patience and self-control', ch: [16, 13, 31, 17], intro: 'Be patient, control your words and temper, and do not be jealous of others.' },
+  { id: 'effort', ic: '💪', en: 'Hard work and courage', ch: [62, 61, 60, 63], intro: 'Keep trying, do not be lazy, stay hopeful and cheerful when things go wrong.' },
+  { id: 'family', ic: '🏡', en: 'Family and home', ch: [5, 7], intro: 'A good home life, and the joy that children bring to their parents.' },
+  { id: 'character', ic: '🌟', en: 'Good character and manners', ch: [14, 100, 99, 98], intro: 'Good conduct, courtesy towards everyone, and what makes a person truly great.' },
+  { id: 'leadership', ic: '👑', en: 'Leadership and fairness', ch: [39, 12, 47], intro: 'What makes a good leader, being fair to everyone, and thinking carefully before acting.' }
+];
+const kTopicsOf = c => KURAL_TOPICS.filter(T => T.ch.includes(c));
+/* Three to four short, stand-alone answers per chapter — every fact read from the data. */
+const kChFaq = c => { const [cta, cen] = KURAL.ch[c - 1], p = kPaalOf(c), first = c * 10 - 9, [l1, l2] = kText(first);
+  const lessons = Array.from({ length: 10 }, (_, i) => first + i).filter(n => KURAL_LESSONS[n]);
+  return [
+    [`What is Thirukkural chapter ${c} about?`, `Chapter ${c} of Thirukkural is ${cta} (${cen}). It has Kurals ${first}–${c * 10} and is part of ${p.ta} (${p.en}).${p.older ? ' This division is about love and is best read by older children with a grown-up.' : ''}`],
+    [`What is the first Kural of chapter ${c}?`, `Kural ${first}: “${l1} / ${l2}” In G. U. Pope’s English: ${kText(first)[2]}${/[.!?'”]$/.test(kText(first)[2]) ? '' : '.'}`],
+    ...lessons.slice(0, 2).map(n => [`What is the meaning of Kural ${n}?`, `Kural ${n} (“${kText(n)[0]}…”) means: ${KURAL_LESSONS[n].en} In simple Tamil: ${KURAL_LESSONS[n].ta}`])
+  ]; };
 for (let c = 1; c <= 133; c++){
   const [cta, cen, roman] = KURAL.ch[c - 1], p = kPaalOf(c), iy = KURAL.iyal.find(([, , from, to]) => c >= from && c <= to);
   const file = kChPage(c);
   write(file, shell({
     file, title: kTitle(c), description: kDesc(c), ogType: 'article', bubble: `${c}/133`,
+    crumbs: [['Thirukkural for kids', 'thirukkural.html'], ['All 133 chapters', 'thirukkural-chapters.html']],
     h1: `Thirukkural chapter ${c}: <span class="ta">${cta}</span>`, eyebrow: `${esc(cen)} · ${p.ta} (${p.en}) · ${iy[0]} · Kurals ${c * 10 - 9}–${c * 10}`,
     body: `
 <p class="lead-doc"><strong>Chapter ${c} of Thirukkural is ${ta(cta)} (${esc(roman)}, “${esc(cen)}”), with Kurals ${c * 10 - 9} to ${c * 10}.</strong> It belongs to ${ta(p.ta)} (${esc(p.en)}), section ${ta(iy[0])} (${esc(iy[1])}).${p.older ? ' This division is about love; it is best read with older children, with a grown-up.' : ''}</p>
 <p><a class="cta-app" href="thirukkural.html#/ch/${c}"><span aria-hidden="true">🔊</span> Hear these Kurals and play games in the app →</a></p>
 ${Array.from({ length: 10 }, (_, i) => kCouplet(c * 10 - 9 + i)).join('\n')}
 <nav class="kd-pn" aria-label="Chapters">${c > 1 ? `<a href="${kChPage(c - 1)}">← ${c - 1}. ${ta(KURAL.ch[c - 2][0])}</a>` : '<span></span>'}<a href="thirukkural-chapters.html">All chapters</a>${c < 133 ? `<a href="${kChPage(c + 1)}">${c + 1}. ${ta(KURAL.ch[c][0])} →</a>` : '<span></span>'}</nav>
+${kTopicsOf(c).length ? `<p>More Kurals on this subject: ${kTopicsOf(c).map(T => `<a href="thirukkural-topics.html#${T.id}">${T.ic} ${esc(T.en)}</a>`).join(' · ')}.</p>` : ''}
+${h2('faq', '❓', `Questions about chapter ${c}`)}
+<div class="faq">${faqHtmlFor(kChFaq(c))}</div>
 <p class="muted">Tamil text checked against Project Madurai, the tk120404/thirukkural dataset and Tamil Wikisource. English: Rev. G. U. Pope (1886), public domain. See <a href="thirukkural.html">Thirukkural for kids</a>.</p>`,
-    schema: [{ '@type': 'CreativeWork', '@id': SITE + file + '#chapter', name: `${cta} — ${cen}`, position: c, inLanguage: 'ta', isFamilyFriendly: true,
+    schema: [faqSchemaFor(kChFaq(c), file), { '@type': 'CreativeWork', '@id': SITE + file + '#chapter', name: `${cta} — ${cen}`, position: c, inLanguage: 'ta', isFamilyFriendly: true,
       isPartOf: { '@type': 'Book', name: 'திருக்குறள்', alternateName: 'Thirukkural', author: { '@type': 'Person', name: 'Thiruvalluvar', alternateName: 'திருவள்ளுவர்' } },
       text: Array.from({ length: 10 }, (_, i) => kText(c * 10 - 9 + i).slice(0, 2).join('\n')).join('\n\n') }]
   }));
 }
 const KURAL_PAGES = Array.from({ length: 133 }, (_, i) => kChPage(i + 1));
 
+const kFeatured = T => { for (const c of T.ch) for (let n = c * 10 - 9; n <= c * 10; n++) if (KURAL_LESSONS[n]) return n; return T.ch[0] * 10 - 9; };
+const TOPIC_FAQ_K = KURAL_TOPICS.slice(0, 5).map(T => [`Which Thirukkural chapters are about ${T.en.toLowerCase()}?`,
+  `${T.ch.map(c => `Chapter ${c}, ${KURAL.ch[c - 1][0]} (${KURAL.ch[c - 1][1]}, Kurals ${c * 10 - 9}–${c * 10})`).join('; ')}. ${T.intro}`]);
+write('thirukkural-topics.html', shell({
+  file: 'thirukkural-topics.html', guide: true, bubble: '🧭', crumbs: [['Thirukkural for kids', 'thirukkural.html']],
+  title: 'Thirukkural by Topic — Kindness, Learning, Friendship',
+  description: 'Thirukkural chapters on kindness, learning, friendship, honesty, gratitude, patience, hard work and leadership — with one Kural explained for each topic.',
+  h1: 'Thirukkural by topic — <span class="ta">தலைப்பு வாரியாகத் திருக்குறள்</span>', eyebrow: `${KURAL_TOPICS.length} topics · chapters from அறத்துப்பால் and பொருட்பால்`,
+  body: `
+<p class="lead-doc"><strong>Every chapter of Thirukkural is about one topic, so finding Kurals about kindness, friendship or learning means finding the right chapters.</strong> Here are ${KURAL_TOPICS.length} topics children and teachers ask about most, with the chapters for each and one Kural explained. Each chapter link opens all 10 of its Kurals with meanings.</p>
+<nav class="kd-topic-nav" aria-label="Topics">${KURAL_TOPICS.map(T => `<a href="#${T.id}"><span aria-hidden="true">${T.ic}</span> ${esc(T.en)}</a>`).join('')}</nav>
+${KURAL_TOPICS.map(T => `${h2(T.id, T.ic, esc(T.en))}
+<p>${esc(T.intro)}</p>
+<ul class="kd-topic-ch">${T.ch.map(c => `<li><a href="${kChPage(c)}">Chapter ${c}: ${ta(KURAL.ch[c - 1][0])} — ${esc(KURAL.ch[c - 1][1])}</a> <span class="muted">(Kurals ${c * 10 - 9}–${c * 10})</span> · <a href="thirukkural.html#/ch/${c}">🔊 learn in the app</a></li>`).join('')}</ul>
+<p class="muted">A Kural from this topic:</p>
+${kCouplet(kFeatured(T))}`).join('\n')}
+${h2('faq', '❓', 'Questions')}
+<div class="faq">${faqHtmlFor(TOPIC_FAQ_K)}</div>
+<p>New to Thirukkural? Start with <a href="thirukkural.html">Thirukkural for kids</a> or see <a href="thirukkural-chapters.html">all 133 chapters</a>.</p>`,
+  schema: [faqSchemaFor(TOPIC_FAQ_K, 'thirukkural-topics.html'), { '@type': 'ItemList', '@id': SITE + 'thirukkural-topics.html#topics', name: 'Thirukkural topics',
+    itemListElement: KURAL_TOPICS.map((T, i) => ({ '@type': 'ListItem', position: i + 1, name: T.en, url: SITE + 'thirukkural-topics.html#' + T.id })) }]
+}));
+
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
   'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
   ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ,
-  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ };
+  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ, 'thirukkural-topics.html': TOPIC_FAQ_K };
 const KB = [
   ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
   ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))
@@ -951,7 +1072,7 @@ write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="htt
 /* ---------- llms.txt (summary for AI assistants) ---------- */
 write('llms.txt', `# Learn Tamil (தமிழ் கற்போம்)
 
-> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads. Installable as an app and works offline.
+> Free website for children and beginners to learn the Tamil alphabet: all 247 letters with sound, picture words, read-along stories, reading practice and games. Made by Suthahar Jegatheesan (MSDEVBUILD). No sign-up, no ads in lessons or games. Installable as an app and works offline.
 
 Key facts:
 - The Tamil alphabet has 247 letters: 12 vowels (உயிர், uyir), 18 consonants (மெய், mei), 1 special letter ஃ (ஆய்தம், aaytham) and 216 consonant-vowel letters (உயிர்மெய், uyirmei; 18 × 12).
@@ -962,6 +1083,7 @@ Key facts:
 - The 12 Tamil months, in order: ${topicWords('months').map(([w, , m]) => `${w} (${m.split(' · ')[1]})`).join(', ')}. Tamil New Year is the first day of சித்திரை (usually 14 April); Pongal is the first day of தை (usually 14–15 January).
 - Aathichoodi (ஆத்திசூடி), traditionally attributed to Avvaiyar, begins with one line for each vowel: ${AATHICHOODI.map(l => l[0]).join(' · ')}.
 - Thirukkural (திருக்குறள்) by Thiruvalluvar (திருவள்ளுவர்) has 1,330 Kurals (two-line couplets) in 133 chapters of 10, in three divisions: அறத்துப்பால் (virtue, 38 chapters, 380 Kurals), பொருட்பால் (wealth and society, 70 chapters, 700 Kurals) and காமத்துப்பால் (love, 25 chapters, 250 Kurals). First Kural: ${kText(1)[0]} / ${kText(1)[1]}
+- Thirukkural chapters by topic: ${KURAL_TOPICS.map(T => `${T.en.toLowerCase()} — ${T.ch.map(c => `${c} ${KURAL.ch[c - 1][0]}`).join(', ')}`).join('; ')}.
 - Order to teach a child: listen and sing first → 12 vowels → 18 consonants → uyirmei one consonant row at a time → two-letter picture words → sentences. About 10 minutes a day.
 
 ## Guides
@@ -1021,20 +1143,22 @@ ${FESTIVALS.map(f => `### ${f.title} — ${f.en}\n${f.pages.map(p => `- ${p[1]} 
 
 ## Thirukkural (திருக்குறள்) by Thiruvalluvar — all 1,330 Kurals
 Tamil text checked against Project Madurai, the tk120404/thirukkural dataset and Tamil Wikisource. English verse translation by Rev. G. U. Pope (1886, public domain).
-${KURAL.ch.map(([t, e], c) => `### Chapter ${c + 1}: ${t} — ${e}\n${Array.from({ length: 10 }, (_, i) => c * 10 + i + 1).map(n => `${n}. ${kText(n)[0]} / ${kText(n)[1]} — ${kText(n)[2]}${KURAL_LESSONS[n] ? ` Meaning for children: ${KURAL_LESSONS[n].en}` : ''}`).join('\n')}`).join('\n\n')}
+${KURAL.ch.map(([t, e], c) => `### Chapter ${c + 1}: ${t} — ${e}\n${Array.from({ length: 10 }, (_, i) => c * 10 + i + 1).map(n => `${n}. ${kText(n)[0]} / ${kText(n)[1]} — ${kText(n)[2]}${KURAL_LESSONS[n] ? ` | Meaning for children: ${KURAL_LESSONS[n].en}` : ''}`).join('\n')}`).join('\n\n')}
 `);
 
 /* ---------- Privacy & data ---------- */
 const CONTACT = '<a href="https://blog.msdevbuild.com/contact/" rel="noopener">contact page</a>';
 const ISSUES = '<a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">GitHub Issues</a>';
 const privacyBody = `
-<div class="callout glass"><b>In short:</b> Learn Tamil does not collect, store or sell any personal information. There are no accounts and no advertising. If you allow it, we count anonymous visits and game use with Google Analytics for Firebase, with all advertising features turned off. Progress and settings are saved only in your own browser.</div>
+<div class="callout glass"><b>In short:</b> Learn Tamil does not collect, store or sell any personal information. There are no accounts and no advertising scripts or ad tracking. Some parents’ guide pages show a simple sponsor box, never inside the children’s lessons or games. If you allow it, we count anonymous visits and game use with Google Analytics for Firebase, with all advertising features turned off. Progress and settings are saved only in your own browser.</div>
 
 <h2>Who runs this website</h2>
 <p>Learn Tamil (<a href="${SITE}">${SITE}</a>) is a free educational website made by Suthahar Jegatheesan under the MSDEVBUILD name. It is a personal, non-commercial project. Questions about privacy can be sent through the ${CONTACT}.</p>
 
 <h2>Information we collect</h2>
 <p><strong>No personal information.</strong> The site has no sign-up, no login, no comments and no forms that send information anywhere. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
+<h3 id="sponsors">Sponsor boxes</h3>
+<p>Some guide pages for parents and teachers (and the parents’ area at the bottom of the home page) may show a small box marked <em>Sponsored</em> or <em>Sample ad</em>. It is plain text or an image with a link, chosen by us — not by an ad network. It loads <strong>no advertising script, sets no cookies, is not personalised or targeted</strong>, and sends nothing about you or your child to the sponsor. Nothing is sent until you tap the link, and then the sponsor’s own website and privacy policy apply. Sponsor boxes never appear inside the children’s lessons, games, stories or certificates. Businesses interested in sponsoring can use the ${CONTACT}.</p>
 <h3 id="microphone">Microphone (“Say it back”)</h3>
 <p>The 🎤 <b>Say it</b> button lets a child record themselves saying a letter or word and play it back. The recording is kept only in the browser’s memory, is <strong>never uploaded or saved</strong>, and is deleted when the window closes. The browser asks for permission first, and nothing is recorded until the child taps 🎤. There is no speech recognition.</p>
 <h3 id="profiles">Child profiles and Parent dashboard</h3>
@@ -1078,6 +1202,7 @@ const privacyBody = `
 <ul>
 <li><strong>GitHub Pages</strong> hosts the site and may keep standard server logs. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Google Analytics for Firebase</strong> (project <code>learntamil-js</code>) receives the anonymous usage statistics described above, only if you allow them.</li>
+<li><strong>Share buttons</strong> (WhatsApp, LinkedIn, Facebook, X, Telegram, email) are plain links: no script or tracking button from those sites loads on our pages. Nothing is sent until you tap one, and then only the page link and title (or the Kural you chose) go to the site you picked, under that site’s own privacy policy. We never include your child’s name or progress.</li>
 <li><strong>Firebase Realtime Database</strong> keeps the anonymous visit totals for the “learning around the world” counter.</li>
 <li><strong>Google reCAPTCHA</strong> (through Firebase App Check) quietly checks that requests to our Firebase services come from this real website and not from automated scripts, to keep the counter and reminders free of spam. It runs in the background, never shows a puzzle, and works under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" rel="noopener">Terms</a>.</li>
 <li><strong>GeoJS</strong> looks up an approximate country and town, only if you allowed the cookie notice (see <a href="#live">the counter</a>).</li>
@@ -1090,7 +1215,7 @@ const privacyBody = `
 </ul>
 
 <h2>Children's privacy</h2>
-<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads, no chat, no sharing features and no links that ask for personal details. We recommend that young children use the site with a parent or teacher.</p>
+<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads inside the lessons or games, no ad tracking, no chat and no links that ask for personal details; sponsor boxes appear only on grown-up guide pages (see <a href="#sponsors">Sponsor boxes</a>). We recommend that young children use the site with a parent or teacher.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the new version will be posted on this page with a new “Updated” date.</p>
@@ -1101,8 +1226,8 @@ const privacyBody = `
 fs.writeFileSync(path.join(ROOT, 'privacy.html'), shell({
   file: 'privacy.html', ogType: 'website',
   title: 'Privacy & Data Policy | Learn Tamil',
-  description: 'Learn Tamil collects no personal data: no accounts and no ads, only anonymous usage statistics. See what is stored on your device and which services the site uses.',
-  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No ads — promise!', body: privacyBody
+  description: 'Learn Tamil collects no personal data: no accounts and no ad tracking, only anonymous usage statistics. See what is stored on your device and which services it uses.',
+  h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No tracking — promise!', body: privacyBody
 }));
 
 /* ---------- Terms ---------- */
@@ -1180,7 +1305,7 @@ put('FAQ-SCHEMA', '');
 put('FOOTER', FOOTER);
 put('STYLES', styleTags());
 put('SCRIPTS', scriptTags([...APP_SCRIPTS, ...SERVICES]));
-put('SUPPORT', SUPPORT);
+put('SUPPORT', SUPPORT + '\n' + SPONSOR('home'));
 put('PRINT-PROMO', `<a class="print-promo" href="tamil-printables.html"><span class="pp-ic" aria-hidden="true">🖨️</span><span><b>Free printables · <span class="ta">அச்சிடும் தாள்கள்</span></b><small>${PRINTS.length} charts, tracing and activity worksheets and colouring pages — print and practise away from the screen.</small></span><span class="pp-go" aria-hidden="true">→</span></a>`);
 put('GUIDES', GUIDES.map(g => `<a class="guide-card" href="${g.file}"><span class="gc-ic" aria-hidden="true">${g.ic}</span><b>${g.en}</b><span class="ta">${g.ta}</span></a>`).join(''));
 fs.writeFileSync(idxPath, idx);

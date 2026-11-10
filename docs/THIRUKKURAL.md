@@ -27,7 +27,7 @@ The Thirukkural module teaches children all 1,330 Kurals. It is **its own page, 
 
 ### Routes
 
-All on `thirukkural.html`: `#/` dashboard (plus the static About text) · `#/paal/1` a division · `#/ch/40` a chapter · `#/k/391` a Kural · `#/daily` Kural of the day · `#/marks` bookmarks · `#/games` and `#/games/<complete|match|arrange|story|listen>[/<chapter>]` · `#/print[/<chapter>]` · `#/certificate[/<chapter>]` · `#/parents`.
+All on `thirukkural.html`: `#/` dashboard (plus the static About text) · `#/paal/1` a division · `#/ch/40` a chapter · `#/k/391` a Kural · `#/book[/<n>]` **Read as a book**: all 1,330 Kurals one per page (buttons, swipe or ← →; chapter picker; "Read to me" reads each page and turns it; the open page is saved per child as `kBook`; reading does not mark a Kural learned) · `#/daily` Kural of the day · `#/marks` bookmarks · `#/games` and `#/games/<complete|match|arrange|story|listen>[/<chapter>]` · `#/print[/<chapter>]` · `#/certificate[/<chapter>]` · `#/parents`.
 
 The page loads only what it needs (`KURAL_SCRIPTS`): the shared core, rewards, family dialogs, settings, `game-utils` (for `fb()`) and `certificate.js` (for its PDF writer), then its own files. The main app does not load any Thirukkural code or lessons.
 

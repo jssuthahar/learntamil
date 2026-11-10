@@ -92,7 +92,7 @@ const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, le
   misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {}, little: 0, gifts: 0, giftDay: '',
   day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10),
   // Thirukkural (features/kural/): Kurals learned and bookmarked, quiz answers, its own day streak, Kural of the day done, last opened
-  kLearned: [], kMarks: [], kRight: 0, kAsked: 0, kDay: '', kDays: 0, kBestDays: 0, kDaily: '', kLast: 0, kCerts: {}, kLevels: {} });   // kCerts: chapter → { d: date, s: score, id }; kLevels: level → the same
+  kLearned: [], kMarks: [], kRight: 0, kAsked: 0, kDay: '', kDays: 0, kBestDays: 0, kDaily: '', kLast: 0, kBook: 0, kCerts: {}, kLevels: {} });   // kCerts: chapter → { d: date, s: score, id }; kLevels: level → the same
 
 const Progress = {
   d: DEFAULT(),

@@ -57,6 +57,9 @@ const KURAL_LESSONS = {
     ],
     ta: 'எல்லா எழுத்துகளும் அ என்ற எழுத்தில் தொடங்குகின்றன. அதுபோல இந்த உலகம் கடவுளை முதலாகக் கொண்டிருக்கிறது.',
     en: 'All letters begin with அ (a). In the same way, the whole world begins with God, the First One.',
+    // ஆதி பகவன் is read in more than one way; say so, kindly and briefly (a Tamil teacher should review the Tamil).
+    note: ['‘ஆதி பகவன்’ என்பதற்குப் பரிமேலழகர் முதலிய உரையாசிரியர்கள் ‘முதல்வனாகிய இறைவன்’ என்று பொருள் கூறுகின்றனர். வேறு விளக்கங்களும் உண்டு; எல்லாவற்றுக்கும் ஒரு முதல் உண்டு என்பதே கருத்து.',
+           'Traditional commentators such as Parimelazhagar read ஆதி பகவன் (Aadhi Bhagavan) as “God, the First One”. Other readings exist; the shared idea is that everything has a first source.'],
     life: ['நாம் தமிழ் படிக்கும்போது அ-வில் தொடங்குகிறோம். எதைச் செய்தாலும் நல்ல தொடக்கமும் நல்ல எண்ணமும் முக்கியம்.',
            'We start learning Tamil with அ. Whatever we do, a good beginning and good thoughts matter most.'],
     scene: [

@@ -44,7 +44,7 @@
         <button type="button" class="sp-x" data-a="later" aria-label="Close">×</button>
         <div class="sp-art" aria-hidden="true"><span class="sp-bird">🦜</span><span class="sp-heart">💛</span><span class="sp-cup">☕</span></div>
         <h2 id="spTitle"><span lang="ta">வணக்கம்!</span> A little note from me</h2>
-        <p>I’m Suthahar. I made Learn Tamil on my own, in my own time, so that every child, wherever they live, can hear, read and love our beautiful language. It’s <b>completely free</b>: no ads, no subscriptions, no sign-up.</p>
+        <p>I’m Suthahar. I made Learn Tamil on my own, in my own time, so that every child, wherever they live, can hear, read and love our beautiful language. It’s <b>completely free</b>: no ads in the lessons or games, no subscriptions, no sign-up.</p>
         ${progressLine()}
         <p>If this little app has helped your child say their first Tamil words, or brought a smile at bedtime, would you buy me a coffee? Every cup keeps the website running and helps me add new letters, stories and games for your kids. ☕</p>
         <p class="sp-ta" lang="ta">உங்கள் அன்புக்கும் ஆதரவுக்கும் நன்றி! 🙏</p>

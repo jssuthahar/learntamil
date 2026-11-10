@@ -135,10 +135,10 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 
 ## Privacy
 
-There are no accounts and no ads. A child's progress, name, stickers and minutes stay **only in the browser**. Microphone recordings (🎤 Say it) are never saved or uploaded. Anonymous visit statistics load only after a parent taps **Allow**, with all advertising features off. Details are on [privacy.html](https://learntamil.msdevbuild.com/privacy.html); its text lives in `tools/build-pages.mjs` and must be updated in the same change as any feature that changes what is stored or sent.
+There are no accounts and no ad tracking. Sponsor boxes (plain link, no script) appear only on grown-up guide pages. A child's progress, name, stickers and minutes stay **only in the browser**. Microphone recordings (🎤 Say it) are never saved or uploaded. Anonymous visit statistics load only after a parent taps **Allow**, with all advertising features off. Details are on [privacy.html](https://learntamil.msdevbuild.com/privacy.html); its text lives in `tools/build-pages.mjs` and must be updated in the same change as any feature that changes what is stored or sent.
 
 ## Support, issues and contributing
 
-- **Support:** Learn Tamil is free with no ads. If it helps your family or classroom: **<https://buymeacoffee.com/jssuthahar>** ☕. The site only links there; it loads no third-party script.
+- **Support:** Learn Tamil is free, with no ads in the lessons or games. Sponsor slots on the guide pages: `SPONSOR()` in `tools/build-pages.mjs`. If it helps your family or classroom: **<https://buymeacoffee.com/jssuthahar>** ☕. The site only links there; it loads no third-party script.
 - **Issues:** wrong sound, Tamil mistake, bug or idea → **<https://github.com/jssuthahar/learntamil/issues>** (short forms for each). Issues are public, so please don't include personal details.
 - **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md). All Tamil text lives in `assets/js/data/` and must be reviewed by a Tamil teacher before publishing.

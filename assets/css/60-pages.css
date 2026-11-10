@@ -224,3 +224,22 @@ footer .foot{display:grid;grid-template-columns:1.4fr 1fr;gap:14px 30px;align-it
 .rhyme-text b{font-size:19px}
 .steps{padding-left:22px}
 .steps li{margin:8px 0;line-height:1.55}
+
+/* Sponsor slots (grown-up pages only — SPONSOR() in tools/build-pages.mjs). Plain link, no script. */
+.sponsor-slot{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin:22px 0;padding:24px 18px 16px;border-radius:22px;
+  background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow)}
+.sponsor-slot.is-sample{border:2px dashed var(--glass-line);background:repeating-linear-gradient(135deg,transparent 0 14px,rgb(0 120 212 / .05) 14px 28px),var(--glass)}
+.sp-label{position:absolute;top:6px;left:18px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.sp-ic{font-size:34px;line-height:1}
+.sp-img{width:72px;height:72px;object-fit:contain;border-radius:12px}
+.sponsor-slot b{font-family:var(--font-kid);font-size:18px}
+.sponsor-slot p{margin:2px 0 0;font-size:14px!important;line-height:1.5!important;color:var(--text-muted)}
+.sp-btn{white-space:nowrap;padding:10px 16px;border-radius:999px;border:1px solid var(--glass-line);font-weight:700;text-decoration:none!important}
+.sp-btn:hover{background:rgb(0 120 212 / .08)}
+.sponsor-banner{padding:20px 16px 10px;margin:14px 0}
+.sponsor-banner .sp-ic{font-size:26px}
+.sponsor-banner b{font-size:16px}
+@media (max-width:760px){
+  .sponsor-slot{grid-template-columns:auto 1fr}
+  .sp-btn{grid-column:1/-1;text-align:center}
+}
