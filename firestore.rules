@@ -2,8 +2,8 @@ rules_version = '2';
 // Learn Tamil — Cloud Firestore rules. Deploy: firebase deploy --only firestore:rules
 // "certificates": one document per certificate, written from the certificate form after a parent
 // or guardian gives consent (assets/js/features/certificate/cert-record.js, services/firebase.js).
-// Nobody can read them from the website (no public verification, no listing of names, emails or phones);
-// the owner reads them in the Firebase console. A document can be created once and never replaced;
+// Nobody can read them from the website (no listing of names, emails or phones); the owner reads them in the
+// Firebase console. The public "Check a certificate" lookup reads certificateVerify (below) instead. A document can be created once and never replaced;
 // only the sharing flags can be switched on afterwards.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -33,6 +33,20 @@ service cloud.firestore {
         && request.resource.data.sharingStatus.keys().hasOnly(['linkedin', 'whatsapp', 'facebook', 'instagram'])
         && request.resource.data.sharingStatus.linkedin is bool && request.resource.data.sharingStatus.whatsapp is bool
         && request.resource.data.sharingStatus.facebook is bool && request.resource.data.sharingStatus.instagram is bool;
+    }
+    // "Check a certificate": only what is printed on the certificate (name, course, date), never the email or phone.
+    // Anyone with an ID can open that one document; nobody can list or search them. Created in the same batch as
+    // certificates/{certId}, and must match it.
+    match /certificateVerify/{certId} {
+      allow get: if true;
+      allow list, update, delete: if false;
+      allow create: if validCertId(certId)
+        && request.resource.data.keys().hasOnly(['certificateId', 'studentName', 'courseName', 'issuedAt'])
+        && request.resource.data.keys().hasAll(['certificateId', 'studentName', 'courseName', 'issuedAt'])
+        && request.resource.data.certificateId == certId
+        && request.resource.data.issuedAt == request.time
+        && getAfter(/databases/$(database)/documents/certificates/$(certId)).data.studentName == request.resource.data.studentName
+        && getAfter(/databases/$(database)/documents/certificates/$(certId)).data.courseName == request.resource.data.courseName;
     }
     match /{document=**} {
       allow read, write: if false;

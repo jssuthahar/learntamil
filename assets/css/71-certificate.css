@@ -114,3 +114,17 @@
 .crc-saved .btn{margin-left:6px}
 .cr-make{align-self:center;min-height:50px;margin-top:8px;padding-inline:22px}
 .crc-note{max-width:560px;margin:10px auto 0;padding:10px 14px;border-radius:14px;background:var(--bg-subtle);font-size:14px;line-height:1.5}
+
+/* 🔎 Check a certificate (cert-record.js → verifyHTML) */
+.crv{margin:18px 0 0;padding:16px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);display:flex;flex-direction:column;gap:6px;text-align:left}
+.crv h3{margin:0;font-size:19px}
+.crv p{margin:0}
+.crv label{font-weight:700;margin-top:4px}
+.crv input{flex:1;min-width:160px;padding:12px 14px;border-radius:14px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:17px;font-family:ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase}
+.crv input:focus{border-color:var(--accent);outline:none}
+.crv .btn{min-height:48px}
+.crv-msg{margin-top:6px !important;font-weight:600;line-height:1.5}
+.crv-card{margin-top:8px;padding:12px 14px;border-radius:16px;border:2px solid color-mix(in srgb,var(--ok) 55%,transparent);background:color-mix(in srgb,var(--ok) 9%,var(--bg))}
+.crv-card dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
+.crv-card dt{font-weight:700;color:var(--text-muted)}
+.crv-card dd{margin:0;overflow-wrap:anywhere}

@@ -222,6 +222,22 @@ await check('passing a level shows the celebration card; sharing is behind the g
   await CertRecord.flush(); const flushed = sent.length === 2 && JSON.parse(localStorage.getItem('lt-cert-outbox')).length === 0;
   window.ltCertStore = store;
   return record && locked && !panel.hidden && nets && ig && noName && remembered && once && queued && flushed && Progress.d.certs[1].id === id1 && !!document.querySelector('#certResult .cs-card'); })()`);
+await check('check a certificate by ID: shows name, course and date only, handles typos, unknown IDs and offline', `(async()=>{
+  const wait = ms => new Promise(r=>setTimeout(r,ms)); const store = window.ltCertStore, asked = [];
+  window.ltCertStore = { available: () => true, verify: id => { asked.push(id); return Promise.resolve(id === 'LT1-AB12CD'
+    ? { certificateId: id, studentName: 'Kavin <b>', courseName: 'Learn Tamil Level 1 · Starter (Tamil vowels)', issuedOn: '2026-11-11', email: 'x@y.zz' } : null); } };
+  location.hash = '/certificate'; await wait(250);
+  const f = document.querySelector('#certLevels [data-crv]'); if (!f) return false;
+  const inp = f.querySelector('[data-crv-id]'), out = f.querySelector('[data-crv-out]');
+  inp.value = 'hello'; f.requestSubmit(); await wait(50); const bad = !asked.length && !!out.querySelector('.crv-msg');
+  inp.value = ' lt1-ab12cd '; f.requestSubmit(); await wait(100);
+  const card = out.querySelector('.crv-card'), t = card ? card.textContent : '';
+  const found = !!card && asked[0] === 'LT1-AB12CD' && t.includes('Kavin <b>') && !card.querySelector('b b') && t.includes('Level 1') && t.includes('11 November 2026') && !t.includes('x@y.zz');
+  inp.value = 'LT2-ZZZZZZ'; f.requestSubmit(); await wait(100); const none = !out.querySelector('.crv-card') && out.textContent.includes('could not find');
+  window.ltCertStore = { available: () => false, verify: () => Promise.reject(new Error('not-live')) };
+  f.requestSubmit(); await wait(100); const off = out.textContent.includes('online');
+  window.ltCertStore = store;
+  return bad && found && none && off; })()`);
 for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html', 'thirukkural-chapters.html', 'thirukkural-chapter-1.html', 'thirukkural-chapter-133.html']){
   const before = errors.length; await open(page);
   if (errors.length > before) fail(`${page}: errors while loading: ${errors.slice(before).join(' | ')}`);

@@ -245,7 +245,8 @@ const CERT = (() => {
         <span class="cl-ic" aria-hidden="true">${open ? L.ic : '🔒'}</span>
         <div class="cl-body"><small>Level ${L.n} · ${L.titleEn}</small><b class="ta">${L.ta}</b><span class="ta cl-t">${L.title}</span>${status}</div>
         <div class="cl-btns">${btns}</div></article>`;
-    }).join('');
+    }).join('') + CertRecord.verifyHTML('cl');
+    CertRecord.wireVerify($('#certLevels [data-crv]'));
     $$('#certLevels [data-start]').forEach(b => b.addEventListener('click', () => start(+b.dataset.start)));
     $$('#certLevels [data-dl]').forEach(b => b.addEventListener('click', () => { const c = certs()[b.dataset.dl]; downloadPdf(LEVELS[b.dataset.dl - 1], c); }));
   }

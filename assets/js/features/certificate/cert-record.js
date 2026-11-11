@@ -116,9 +116,41 @@ const CertRecord = (() => {
   }
   const wasSent = id => load(K_SENT, []).includes(id);
 
+  /* 🔎 "Check a certificate": type an ID, see the name, course and date (certificateVerify — never the email or phone). */
+  function verifyHTML(p){
+    if (!collecting()) return '';
+    const v = TEXT.certificate.verify;
+    return `<form class="crv" data-crv novalidate><h3>${v.head}</h3><p class="muted">${v.intro}</p>
+      <label for="${p}Vid">${v.label}</label>
+      <div class="cr-row"><input id="${p}Vid" data-crv-id maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="${v.placeholder}">
+        <button class="btn primary" type="submit">${v.button}</button></div>
+      <div class="crv-out" data-crv-out role="status" aria-live="polite"></div></form>`;
+  }
+  function wireVerify(form){
+    if (!form) return;
+    const v = TEXT.certificate.verify, out = form.querySelector('[data-crv-out]'), inp = form.querySelector('[data-crv-id]');
+    let busy = false;
+    form.addEventListener('submit', async e => {
+      e.preventDefault(); if (busy) return;
+      const id = inp.value.replace(/\s+/g, '').toUpperCase();
+      if (!/^(LT|TKL|TK)[0-9]{1,3}-[A-Z0-9]{4,12}$/.test(id)){ out.innerHTML = `<p class="crv-msg">${v.bad}</p>`; inp.focus(); return; }
+      busy = true; out.innerHTML = `<p class="crv-msg">${v.checking}</p>`;
+      try {
+        if (!window.ltCertStore) throw new Error('offline');
+        const r = await ltCertStore.verify(id);
+        if (!r){ out.innerHTML = `<p class="crv-msg">${v.notFound}</p>`; return; }
+        const date = r.issuedOn ? new Date(r.issuedOn + 'T12:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+        out.innerHTML = `<div class="crv-card"><b>${v.valid}</b><dl>
+          <dt>${v.name}</dt><dd>${esc(r.studentName)}</dd><dt>${v.course}</dt><dd>${esc(r.courseName)}</dd>
+          ${date ? `<dt>${v.date}</dt><dd>${esc(date)}</dd>` : ''}<dt>${v.label}</dt><dd><code>${esc(id)}</code></dd></dl></div>`;
+      } catch (err) { out.innerHTML = `<p class="crv-msg">${v.offline}</p>`; }
+      finally { busy = false; }
+    });
+  }
+
   document.addEventListener('lt:certstore', () => setTimeout(flush, 3000));
   addEventListener('online', () => setTimeout(flush, 2000));
   if (window.ltCertStore) setTimeout(flush, 3000);
 
-  return { collecting, fieldsHTML, wire, read, submit, flush, shared, wasSent, cleanPhone, okPhone, okEmail, CONSENT_VERSION };
+  return { collecting, fieldsHTML, wire, read, submit, flush, shared, wasSent, verifyHTML, wireVerify, cleanPhone, okPhone, okEmail, CONSENT_VERSION };
 })();

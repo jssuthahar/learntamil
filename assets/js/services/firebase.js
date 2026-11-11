@@ -111,30 +111,44 @@ function showNotice(){
 window.ltConsent = { show: showNotice, choice: getChoice };
 
 /* =====================================================================
-   🎓 CERTIFICATE RECORDS (Cloud Firestore, collection "certificates")
+   🎓 CERTIFICATE RECORDS (Cloud Firestore)
    Only after a parent or guardian fills in the certificate form and ticks the consent box
    (features/certificate/cert-record.js). Not tied to the cookie choice: the form is its own consent.
-   One document per certificate, its ID = the certificate ID, so a certificate is never stored twice.
-   Rules (firestore.rules): create once, nobody can read, only the sharing flags can change.
-   Never in the Google Play app, never on localhost.
+   Two documents per certificate, both keyed by the certificate ID and written together in one batch:
+     certificates/{id}        the full record (name, parent's email and phone, …) — nobody can read it from the website
+     certificateVerify/{id}   only what is printed on the certificate (name, course, date) — anyone with the ID can
+                              look it up with "Check a certificate"; it never holds the email or phone
+   Rules (firestore.rules): create once; only the sharing flags can change. Never in the Google Play app, never on localhost.
    ===================================================================== */
 const FS = () => import(SDK + 'firebase-firestore.js');
 const withTimeout = (p, ms) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error('timeout')), ms))]);
+const fsDb = async () => { const [app, fs] = await Promise.all([getApp(), FS()]); return [fs, fs.getFirestore(app)]; };
 window.ltCertStore = {
   available: () => live && !inApp,
   async save(rec){
     if (!live || inApp) throw new Error('not-live');
-    const [app, fs] = await Promise.all([getApp(), FS()]);
-    const db = fs.getFirestore(app);
-    await withTimeout(fs.setDoc(fs.doc(db, 'certificates', rec.certificateId), {
+    const [fs, db] = await fsDb(), id = rec.certificateId;
+    const b = fs.writeBatch(db);
+    b.set(fs.doc(db, 'certificates', id), {
       ...rec, certificateUrl: '', issuedAt: fs.serverTimestamp(), status: 'issued',
       sharingStatus: { linkedin: false, whatsapp: false, facebook: false, instagram: false }
-    }), 15000);
+    });
+    b.set(fs.doc(db, 'certificateVerify', id), { certificateId: id, studentName: rec.studentName, courseName: rec.courseName, issuedAt: fs.serverTimestamp() });
+    await withTimeout(b.commit(), 15000);
   },
   async shared(certificateId, net){
     if (!live || inApp) return;
-    const [app, fs] = await Promise.all([getApp(), FS()]);
-    await withTimeout(fs.updateDoc(fs.doc(fs.getFirestore(app), 'certificates', certificateId), { ['sharingStatus.' + net]: true }), 15000);
+    const [fs, db] = await fsDb();
+    await withTimeout(fs.updateDoc(fs.doc(db, 'certificates', certificateId), { ['sharingStatus.' + net]: true }), 15000);
+  },
+  /* "Check a certificate": the public part only. Resolves to { studentName, courseName, issuedOn } or null. */
+  async verify(certificateId){
+    if (!live || inApp) throw new Error('not-live');
+    const [fs, db] = await fsDb();
+    const snap = await withTimeout(fs.getDoc(fs.doc(db, 'certificateVerify', certificateId)), 15000);
+    if (!snap.exists()) return null;
+    const d = snap.data(), t = d.issuedAt && d.issuedAt.toDate ? d.issuedAt.toDate() : null;
+    return { certificateId: d.certificateId, studentName: d.studentName, courseName: d.courseName, issuedOn: t ? t.toISOString().slice(0, 10) : '' };
   }
 };
 document.dispatchEvent(new Event('lt:certstore'));

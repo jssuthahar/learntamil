@@ -333,6 +333,20 @@ const TEXT = {
       errConsent: 'Please tick the box to agree, so we can make the certificate.',
       notSaved: 'Your certificate is ready. We could not save the record just now, so we will try again the next time you are online.'
     },
+    /* "Check a certificate" by its ID (cert-record.js). Shows only what is printed on the certificate. */
+    verify: {
+      head: '🔎 Check a certificate',
+      intro: 'Type the certificate ID printed at the bottom of a Learn Tamil certificate to see its details.',
+      label: 'Certificate ID',
+      placeholder: 'e.g. LT1-AB12CD',
+      button: 'Check',
+      checking: 'Checking…',
+      bad: 'Please type the ID as it is printed, for example LT1-AB12CD or TKL2-…',
+      valid: '✅ This is a real Learn Tamil certificate',
+      name: 'Name', course: 'For', date: 'Date',
+      notFound: 'We could not find a certificate with this ID. Please check each letter and number. Certificates made in the Android app, or before this check existed, are not listed.',
+      offline: 'Could not check right now. Please make sure you are online and try again.'
+    },
     /* Celebration card under a new certificate (features/certificate/cert-share.js).
        The share part is a grown-up surface (behind press-and-hold), so it is English like share.js.
        Share messages never contain the child's name: it is only in the image a parent chooses to share. */

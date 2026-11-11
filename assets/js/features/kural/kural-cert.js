@@ -40,7 +40,8 @@ const KC = (() => {
       KURAL_PAALS.filter(p => !p.older).map(p => `<h4 class="k-iyal"><span lang="ta">${p.ta}</span> · ${p.en}</h4>
         <div class="k-chapters">${range(p.from, p.to).map(ch => { const got = d.kCerts[ch];
           return `<a class="k-chap ${got ? 'done' : ''}" href="#/certificate/${ch}"><b>${ch} ${got ? '🎓' : ''}</b><span class="ta" lang="ta">${kCh(ch)[0]}</span><small>✅ ${kChapterLearned(ch)}/10${got ? ` · ${got.s}/10` : ''}</small></a>`;
-        }).join('')}</div>`).join('');
+        }).join('')}</div>`).join('') + CertRecord.verifyHTML('kh');
+    CertRecord.wireVerify(view.querySelector('[data-crv]'));
   }
 
   /* ---------- question makers (verified text only) ---------- */
