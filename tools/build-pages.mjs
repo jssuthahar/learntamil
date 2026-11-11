@@ -293,6 +293,7 @@ export const FOOTER = `<footer>
       <a href="terms.html">Terms</a>
       <a href="${ISSUES_URL}" rel="noopener">Report an issue / feedback</a>
       <a href="${REPO_URL}" rel="noopener" title="Learn Tamil is open source: see the code or contribute">Open source on GitHub</a>
+      <a href="share-learn-tamil.html">Share &amp; promo kit</a>
       <a href="${ADVERTISE_URL}" rel="noopener">Advertise with us</a>
     </nav>
     ${CONNECT('footer')}
@@ -1604,11 +1605,101 @@ ${h2('faq', '❓', 'Questions from advertisers')}
   schema: [faqSchemaFor(AD_FAQ, ADV)]
 }));
 
+/* ---------- Share & promo kit (share-learn-tamil.html) ----------
+   Ready-made videos, posts and QR codes that parents, teachers and partners can download and share.
+   Grown-up page: linked from the footer, never from inside the children's lessons or games.
+   Media lives in assets/promo/ (made outside the build; see docs). The service worker lets
+   /assets/promo/ requests go straight to the network (big files and video byte ranges). */
+const SHARE = 'share-learn-tamil.html', PROMO = 'assets/promo/';
+const SHARE_VIDEOS = [
+  ['15-short-vowels', 'The 12 Tamil vowels', '33 s · Tamil voice says each vowel and its picture word', 'Learn the 12 Tamil vowels in 30 seconds 🔊 Say them out loud together! Scan the QR code on screen or visit learntamil.msdevbuild.com to hear all 247 letters. #LearnTamil #TamilForKids #உயிர்எழுத்துகள்'],
+  ['16-short-numbers', 'Count to 10 in Tamil', '29 s · ஒன்று to பத்து, with Tamil numerals ௧–௰', 'Count to 10 in Tamil! 🔢 Count along with your little one. More Tamil words and games at learntamil.msdevbuild.com #LearnTamil #TamilNumbers #TamilForKids'],
+  ['17-short-animals-quiz', 'Guess the animal', '37 s · a quiz: see the animal, then hear its Tamil name', 'Guess the animal, then say it in Tamil! 🐾 Comment how many your child got right. Play 14 Tamil games at learntamil.msdevbuild.com #LearnTamil #TamilAnimals #TamilForKids'],
+  ['18-short-colours', 'Colours in Tamil', '26 s · six colours, each word said twice', 'Colours in Tamil 🎨 Point to something that colour! More at learntamil.msdevbuild.com #LearnTamil #TamilColours #TamilForKids'],
+  ['19-short-parents-promo', 'Learn Tamil for parents', '35 s · English voice-over with real app screens', 'Want your child to learn Tamil? 💛 Learn Tamil is free for children aged 3–12: 247 letters with sound, stories, rhymes and 14 games. No sign-up and no ads in lessons. learntamil.msdevbuild.com #LearnTamil #TamilParents'],
+  ['13-reel-learn-tamil', 'Learn Tamil in 20 seconds', '22 s · no voice: add your own music', 'Can your child read Tamil? 🦜 Free app for kids aged 3–12: all 247 letters with sound, stories, rhymes and 14 games. learntamil.msdevbuild.com #LearnTamil #TamilForKids'],
+];
+const SHARE_POSTS = [
+  ['01-hero', 'Let’s learn Tamil together'], ['07-vowels', 'Vowels with picture words'], ['08-parents-trust', 'Safe by design'],
+  ['09-printables', '23 free printables'], ['02-carousel-1', 'Carousel 1 of 5'], ['03-carousel-2', 'Carousel 2 of 5'],
+  ['04-carousel-3', 'Carousel 3 of 5'], ['05-carousel-4', 'Carousel 4 of 5'], ['06-carousel-5', 'Carousel 5 of 5'],
+];
+const SHARE_STORIES = [['11-story-app', 'Story: free Tamil learning for kids'], ['12-story-advertise', 'Story: advertise with Learn Tamil'], ['10-advertise-with-us', 'Post: advertise with Learn Tamil']];
+const SHARE_FAQ = [
+  ['Can I share Learn Tamil videos and posters?', 'Yes. Parents, teachers, Tamil schools and community groups can download the Learn Tamil videos, Instagram posts, stories and QR codes on this page and share them for free on WhatsApp, Instagram, Facebook, YouTube, in newsletters or on notice boards. Please keep them as they are and link to learntamil.msdevbuild.com.'],
+  ['Where does the QR code go?', 'The QR code in the videos and on this page opens the Learn Tamil website, learntamil.msdevbuild.com, where children aged 3–12 can learn all 247 Tamil letters with sound, stories, rhymes and games. It is free and needs no sign-up.'],
+  ['Who made the voices and music in the videos?', 'The Tamil and English voices are computer voices, and the music and sound effects were made for Learn Tamil, so the videos are free to share. If you hear a word that sounds wrong, please report it so we can fix it.'],
+  ['Can I put the Learn Tamil QR code on a school notice board?', 'Yes. Download the QR code from this page and print it on a poster or newsletter. Scanning it opens the free Learn Tamil website. Our free printable charts and worksheets are also on the Tamil printables page.'],
+];
+const cover = f => PROMO + (f === '13-reel-learn-tamil' ? '14-reel-cover' : f + '-cover') + '.jpg';
+const dl = (href, label) => `<a class="pk-dl" href="${href}" download>⬇ ${label}</a>`;
+write(SHARE, shell({
+  file: SHARE, ogType: 'website', share: true, bubble: 'Share with friends!',
+  title: 'Share Learn Tamil – Free Videos, Posts & QR Code',
+  description: 'Free Learn Tamil videos, Instagram posts and QR codes for parents, teachers and Tamil schools to download and share, with ready-made captions.',
+  h1: 'Share Learn Tamil – Videos, Posts and QR Codes', eyebrow: 'For parents, teachers &amp; partners · Promo kit',
+  body: `
+<p class="lead-doc"><strong>You can download and share these free Learn Tamil videos, Instagram posts and QR codes with any Tamil family, teacher or community group.</strong> Each video has a QR code that opens learntamil.msdevbuild.com, where children aged 3–12 learn all 247 Tamil letters with sound, stories, rhymes and 14 games. Every file is free to share. Please keep it as it is.</p>
+<ul class="adk-facts" aria-label="At a glance">
+  <li><span aria-hidden="true">🎬</span><b>6 short videos</b><small>Vertical 1080×1920, for Reels, Shorts and WhatsApp Status</small></li>
+  <li><span aria-hidden="true">🖼️</span><b>12 posts &amp; stories</b><small>Instagram-ready images</small></li>
+  <li><span aria-hidden="true">📱</span><b>QR codes</b><small>Scan to open the website or the install page</small></li>
+  <li><span aria-hidden="true">💛</span><b>Free to share</b><small>Use them to tell others about Learn Tamil</small></li>
+</ul>
+
+${h2('videos', '🎬', 'Short videos with voice and QR code')}
+<p>Each video is a vertical MP4 with a Tamil voice, an English voice, music and a “Scan to open” QR code. Tap ⬇ to save it, then post it as an Instagram Reel, a YouTube Short or a WhatsApp Status. A caption you can copy is under each video.</p>
+<div class="pk-grid pk-videos">${SHARE_VIDEOS.map(([f, t, s, cap]) => `
+  <figure class="pk-card glass">
+    <video src="${PROMO}${f}.mp4" poster="${cover(f)}" controls playsinline preload="none" width="1080" height="1920"></video>
+    <figcaption><b>${t}</b><small>${s}</small>
+      <details><summary>Caption to copy</summary><p class="pk-cap">${esc(cap)}</p></details>
+      ${dl(`${PROMO}${f}.mp4`, 'Download video')}</figcaption>
+  </figure>`).join('')}
+</div>
+
+${h2('posts', '🖼️', 'Instagram posts')}
+<p>Square-ish 1080×1350 images. Post the five “Carousel” images together, in order, as one swipeable post.</p>
+<div class="pk-grid pk-posts">${SHARE_POSTS.map(([f, t]) => `
+  <figure class="pk-card glass"><img src="${PROMO}${f}.jpg" alt="${esc(t)} – Learn Tamil post" width="1080" height="1350" loading="lazy"><figcaption><b>${t}</b>${dl(`${PROMO}${f}.jpg`, 'Download')}</figcaption></figure>`).join('')}
+</div>
+
+${h2('stories', '📲', 'Stories and partner posts')}
+<p>Stories are 1080×1920. Add Instagram’s link sticker over the button at the bottom. The two “advertise” images are for <a href="${ADVERTISE_URL}">businesses that want to sponsor</a> our guide pages.</p>
+<div class="pk-grid pk-posts">${SHARE_STORIES.map(([f, t]) => `
+  <figure class="pk-card glass"><img src="${PROMO}${f}.jpg" alt="${esc(t)}" loading="lazy"><figcaption><b>${t}</b>${dl(`${PROMO}${f}.jpg`, 'Download')}</figcaption></figure>`).join('')}
+</div>
+
+${h2('qr', '📱', 'QR codes')}
+<div class="pk-qr">
+  <figure class="pk-card glass"><img src="assets/qr/learntamil-app.svg" alt="QR code that opens learntamil.msdevbuild.com" width="220" height="220"><figcaption><b>Open the website</b><small>learntamil.msdevbuild.com</small>${dl('assets/qr/learntamil-app.svg', 'Download QR')}</figcaption></figure>
+  <figure class="pk-card glass"><img src="assets/qr/learntamil-install.svg" alt="QR code that opens the Learn Tamil install page" width="220" height="220"><figcaption><b>Install the app</b><small>Step-by-step install page</small>${dl('assets/qr/learntamil-install.svg', 'Download QR')}</figcaption></figure>
+</div>
+<p>Print a QR code on a school newsletter, a class notice board or a Pongal event poster. For charts and worksheets to print, see the <a href="tamil-printables.html">free Tamil printables</a>.</p>
+
+${h2('how', '🤝', 'How to share')}
+<ul>
+  <li><b>WhatsApp:</b> send a video to your family or school group with the link <a href="./">learntamil.msdevbuild.com</a>.</li>
+  <li><b>Instagram:</b> post a video as a Reel and keep “Original audio” on so the voice stays. Tag <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">our Instagram page</a> so we can say thank you.</li>
+  <li><b>Tamil schools and sangams:</b> show a video at the start of class, or put the QR code in your newsletter.</li>
+  <li><b>Please keep the files as they are</b> (Tamil text, QR code and website address), and don’t add children’s photos or names to them.</li>
+</ul>
+
+${h2('faq', '❓', 'Questions about sharing')}
+<div class="faq">${faqHtmlFor(SHARE_FAQ)}</div>
+<p class="adk-final"><a class="btn primary adk-big" href="./">🎮 Open the free learning app</a></p>`,
+  schema: [faqSchemaFor(SHARE_FAQ, SHARE),
+    { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Learn Tamil short videos', itemListElement: SHARE_VIDEOS.map(([f, t, s], i) => ({
+      '@type': 'ListItem', position: i + 1, item: { '@type': 'VideoObject', name: t, description: s.replace(/^\d+ s · /, ''),
+        thumbnailUrl: SITE + cover(f), contentUrl: SITE + PROMO + f + '.mp4',
+        uploadDate: '2026-11-11', duration: 'PT' + parseInt(s) + 'S' } })) }]
+}));
+
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
   'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
   ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ,
   'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ, 'thirukkural-topics.html': TOPIC_FAQ_K,
-  'learn-tamil-online.html': ONLINE_FAQ, 'tamil-pronunciation-guide.html': PRON_FAQ, 'tamil-phrases-for-beginners.html': PHRASE_FAQ, 'install-app.html': INSTALL_FAQ };
+  'learn-tamil-online.html': ONLINE_FAQ, 'tamil-pronunciation-guide.html': PRON_FAQ, 'tamil-phrases-for-beginners.html': PHRASE_FAQ, 'install-app.html': INSTALL_FAQ, 'share-learn-tamil.html': SHARE_FAQ };
 const KB = [
   ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
   ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))
@@ -1619,7 +1710,7 @@ write('assets/js/data/faq.js', '/* Generated by tools/build-pages.mjs — knowle
 const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
   ...KURAL_PAGES.map(f => [f, '0.6', 'yearly']),
   ...PRINTS.map(d => ['printables/' + d.file + '.pdf', '0.6', 'monthly']),
-  ['advertise.html', '0.4', 'monthly'], ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
+  ['share-learn-tamil.html', '0.5', 'monthly'], ['advertise.html', '0.4', 'monthly'], ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
 const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
   ? ALT.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}"/>`).join('') : '';
 const imgXml = p => p === 'tamil-printables.html' ? PRINTS.map(d =>
@@ -1660,6 +1751,7 @@ ${PRINTS.map(d => `- [${d.title}](${SITE}printables/${d.file}.pdf): ${d.pages} p
 - [Learning app](${SITE}): interactive letters with audio, reading practice, stories and games (requires JavaScript).
 - [Privacy & data](${SITE}privacy.html): no accounts and no ad tracking; certificate records (child’s name, parent’s email and phone) only with a parent’s consent, never public.
 - [Terms](${SITE}terms.html)
+- [Share Learn Tamil](${SITE}share-learn-tamil.html): free short videos (with a QR code), Instagram posts, stories and QR codes for parents, teachers and Tamil schools to download and share.
 - [Advertise with us](${SITE}advertise.html): sponsor formats for businesses, shown only on parents’ and teachers’ pages, booked directly with no ad network or tracking.
 - [Report an issue](${ISSUES_URL})
 `);
@@ -1900,7 +1992,7 @@ import('node:crypto').then(({ createHash }) => {
   const swPath = path.join(ROOT, 'sw.js');
   let sw = fs.readFileSync(swPath, 'utf8');
   // PRECACHE = every page + every asset in tools/lib/assets.mjs (one list, never edited by hand).
-  const pages = ['index.html', ...GUIDES.map(g => g.file), 'advertise.html', 'privacy.html', 'terms.html'];
+  const pages = ['index.html', ...GUIDES.map(g => g.file), 'share-learn-tamil.html', 'advertise.html', 'privacy.html', 'terms.html'];
   const list = ['./', ...pages, ...PRECACHE_ASSETS];
   sw = sw.replace(/const PRECACHE = \[[\s\S]*?\];/, `const PRECACHE = [\n  ${list.map(f => `'${f}'`).join(',\n  ')}\n];`);
   const h = createHash('sha256');

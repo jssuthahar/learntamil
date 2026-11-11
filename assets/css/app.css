@@ -1093,6 +1093,23 @@ footer .fc-bmc{background:#ffdd00;color:#0b1020!important}
 .adk-final{text-align:center;margin:26px 0}
 @media (prefers-reduced-motion:reduce){.adk-wire .w-ad,.adk-hero i,.adk-cta-deco i{animation:none}.adk-pkg:hover,.adk-benefit:hover{transform:none}}
 
+/* Share & promo kit page (share-learn-tamil.html) */
+.pk-grid{display:grid;gap:14px;margin:14px 0 8px}
+.pk-videos{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
+.pk-posts{grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr))}
+.pk-card{margin:0;padding:10px;border-radius:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pk-card video,.pk-card img{display:block;width:100%;height:auto;border-radius:14px;background:var(--bg-subtle)}
+.pk-videos video{aspect-ratio:9/16;object-fit:cover}
+.pk-card figcaption{display:flex;flex-direction:column;gap:4px;padding:0 4px 4px;min-width:0}
+.pk-card figcaption small{color:var(--text-muted);font-size:13px;line-height:1.4}
+.pk-card details{font-size:14px}
+.pk-card summary{cursor:pointer;font-weight:700;color:var(--accent-deep)}
+.pk-cap{margin:6px 0 0!important;font-size:14px!important;line-height:1.5!important;user-select:all;overflow-wrap:anywhere}
+.pk-dl{align-self:flex-start;margin-top:4px;padding:6px 14px;border-radius:999px;background:var(--accent);color:var(--on-accent)!important;font-weight:700;font-size:14px;text-decoration:none!important}
+.pk-dl:hover{background:var(--accent-deep)}
+.pk-qr{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),260px));gap:14px;margin:14px 0}
+.pk-qr img{background:#fff;padding:10px}
+
 /* ===== 70-rewards.css ===== */
 /* Learn Tamil — Game rewards: scoreboard, cheer pop-up, badges, rewards panel.
    Order matters: files load in number order (see tools/lib/assets.mjs). */

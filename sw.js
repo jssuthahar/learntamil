@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = '81f670d2da';
+const VERSION = '850dc72080';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -41,6 +41,7 @@ const PRECACHE = [
   'install-app.html',
   'learn-tamil-faq.html',
   'tamil-printables.html',
+  'share-learn-tamil.html',
   'advertise.html',
   'privacy.html',
   'terms.html',
@@ -186,6 +187,10 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
+
+  // Promo kit videos and images (share-learn-tamil.html): straight to the network. They are large, not needed
+  // offline, and video players ask for byte ranges, which the stale-while-revalidate cache below cannot store.
+  if (url.origin === location.origin && url.pathname.includes('/assets/promo/')) return;
 
   // Letter audio: cache first. Safari asks for byte ranges, so answer those from the cached copy.
   if (url.origin === location.origin && url.pathname.includes('/audio/') && !url.pathname.endsWith('.js')) {

@@ -1,38 +1,38 @@
 {
  "404.html": {
-  "hash": "11bdbdbf20524c72",
+  "hash": "82a15d36273912ce",
   "date": "2026-11-11"
  },
  "aathichoodi.html": {
-  "hash": "3c440483f42d44ec",
+  "hash": "30f8e8e5d8c03e94",
   "date": "2026-11-11"
  },
  "advertise.html": {
-  "hash": "38081d9fa8af3d29",
+  "hash": "89b5daa2c93409f5",
   "date": "2026-11-11"
  },
  "ezhuthukal.html": {
-  "hash": "7c0cf7ada434c7b3",
+  "hash": "63774d92aa23c837",
   "date": "2026-11-11"
  },
  "how-to-teach-tamil-to-kids.html": {
-  "hash": "7bd0ceeed4111a5f",
+  "hash": "fb0bc28a713e113d",
   "date": "2026-11-11"
  },
  "index.html": {
-  "hash": "a1cc9a769fbd458c",
+  "hash": "1aee4f785d8de696",
   "date": "2026-11-11"
  },
  "install-app.html": {
-  "hash": "4045f02a483ddb69",
+  "hash": "afb11c99ae9e356f",
   "date": "2026-11-11"
  },
  "learn-tamil-faq.html": {
-  "hash": "c9fa139386982f83",
+  "hash": "3a1f7ebb7165e1fb",
   "date": "2026-11-11"
  },
  "learn-tamil-online.html": {
-  "hash": "8c50f2e9f9a379e2",
+  "hash": "40376d02e98c4b1e",
   "date": "2026-11-11"
  },
  "llms-full.txt": {
@@ -40,7 +40,7 @@
   "date": "2026-11-11"
  },
  "llms.txt": {
-  "hash": "70a3e902e427282f",
+  "hash": "5162e6044d1fc8d5",
   "date": "2026-11-11"
  },
  "printables/aathichoodi-poster.pdf": {
@@ -168,647 +168,651 @@
   "date": "2026-11-11"
  },
  "privacy.html": {
-  "hash": "ec06943b21ca31d0",
+  "hash": "131d900d8ec89cb4",
+  "date": "2026-11-11"
+ },
+ "share-learn-tamil.html": {
+  "hash": "1e3761b03eaed3e1",
   "date": "2026-11-11"
  },
  "tamil-alphabet.html": {
-  "hash": "d100e47bfe1eee58",
+  "hash": "727749fbe8a8c46f",
   "date": "2026-11-11"
  },
  "tamil-animals.html": {
-  "hash": "4dffc6084dc0254d",
+  "hash": "93f22f260cf820e6",
   "date": "2026-11-11"
  },
  "tamil-birds.html": {
-  "hash": "24f65dd2cab0d92d",
+  "hash": "8f4638a51183863f",
   "date": "2026-11-11"
  },
  "tamil-body-parts.html": {
-  "hash": "8a313670601dfd16",
+  "hash": "21de2ad1258f61cc",
   "date": "2026-11-11"
  },
  "tamil-colours.html": {
-  "hash": "b65c6831bc75f85e",
+  "hash": "ea8efaae7ffff13a",
   "date": "2026-11-11"
  },
  "tamil-consonants.html": {
-  "hash": "e648819a52b19631",
+  "hash": "85b19bad32281daf",
   "date": "2026-11-11"
  },
  "tamil-days-of-the-week.html": {
-  "hash": "5bb0a27bc981e7bf",
+  "hash": "03810b0b63333b5b",
   "date": "2026-11-11"
  },
  "tamil-family-words.html": {
-  "hash": "321251c28ecc5a85",
+  "hash": "d3f2f13fe8e437b5",
   "date": "2026-11-11"
  },
  "tamil-festivals-for-kids.html": {
-  "hash": "8fade60b1101f884",
+  "hash": "b25b045d2b415eb2",
   "date": "2026-11-11"
  },
  "tamil-fruits-and-food.html": {
-  "hash": "05de280d434fe3ba",
+  "hash": "1b4fc6ed1fc6b5b1",
   "date": "2026-11-11"
  },
  "tamil-months.html": {
-  "hash": "350549fcaceafb7c",
+  "hash": "5b994d294b39b9c9",
   "date": "2026-11-11"
  },
  "tamil-numbers.html": {
-  "hash": "cf7403581f21be21",
+  "hash": "2cb9fb1202f8088f",
   "date": "2026-11-11"
  },
  "tamil-opposite-words.html": {
-  "hash": "f4c6866b608c3054",
+  "hash": "0656158fc353b9cb",
   "date": "2026-11-11"
  },
  "tamil-phrases-for-beginners.html": {
-  "hash": "c1bf9b9338687991",
+  "hash": "eafe304208490648",
   "date": "2026-11-11"
  },
  "tamil-printables.html": {
-  "hash": "f2119871c9cf3a07",
+  "hash": "eab17993dce96df6",
   "date": "2026-11-11"
  },
  "tamil-pronunciation-guide.html": {
-  "hash": "e720b3e205a089ee",
+  "hash": "9ff003a80163f9a6",
   "date": "2026-11-11"
  },
  "tamil-rhymes-for-kids.html": {
-  "hash": "ac0877c8fc0f231c",
+  "hash": "32dfbc543084e004",
   "date": "2026-11-11"
  },
  "tamil-shapes.html": {
-  "hash": "2923f381a9c68c22",
+  "hash": "011b2e2fd83b720e",
   "date": "2026-11-11"
  },
  "tamil-stories-for-kids.html": {
-  "hash": "c5fc160c0ee08a2f",
+  "hash": "c545d8974b5ba5ec",
   "date": "2026-11-11"
  },
  "tamil-vehicles.html": {
-  "hash": "3e72eeb7d3ae5935",
+  "hash": "2ba5d1dbcebcb1a8",
   "date": "2026-11-11"
  },
  "tamil-vowels.html": {
-  "hash": "e2f05f09c83b8ef2",
+  "hash": "08994a954050ce87",
   "date": "2026-11-11"
  },
  "tamil-words-for-kids.html": {
-  "hash": "edab5c097b500dd1",
+  "hash": "c9bd09d87301ef35",
   "date": "2026-11-11"
  },
  "terms.html": {
-  "hash": "93d0e496e58207f0",
+  "hash": "dd3c98eebbd2c35b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-1.html": {
-  "hash": "0786c4de824a06fd",
+  "hash": "03768d5485726144",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-10.html": {
-  "hash": "b2122fbaa96cdb42",
+  "hash": "52deeebdac0257c1",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-100.html": {
-  "hash": "a14465de540ad75b",
+  "hash": "f9ebe47b1b4542e7",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-101.html": {
-  "hash": "825810d0b93f5326",
+  "hash": "c4e6732d7bcc227a",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-102.html": {
-  "hash": "530a3aa39064a8fb",
+  "hash": "87849a065e7a4eaf",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-103.html": {
-  "hash": "40c3ab054b9144dd",
+  "hash": "509320ff4c3ffb68",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-104.html": {
-  "hash": "44298349bdf57af0",
+  "hash": "abe19bd28b6ba814",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-105.html": {
-  "hash": "ab14ea7a7d5ad471",
+  "hash": "b3ae0087910740b8",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-106.html": {
-  "hash": "8c74af340c1cd895",
+  "hash": "4abb1c3f0592b43e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-107.html": {
-  "hash": "c685a2aaf26d35df",
+  "hash": "d58541a1a97701c7",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-108.html": {
-  "hash": "62e49fa59ac16ee1",
+  "hash": "d24f7f2d90e56fbb",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-109.html": {
-  "hash": "17166e7aef4812e0",
+  "hash": "b830db38b28f0ca6",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-11.html": {
-  "hash": "84221c694d7a8710",
+  "hash": "c52f52e23b2ceb50",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-110.html": {
-  "hash": "17f241fb50dfaf92",
+  "hash": "0f2d36950af18f85",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-111.html": {
-  "hash": "04548b7e035e29dc",
+  "hash": "dce4df2f7233c1b8",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-112.html": {
-  "hash": "4a6c2b33604a519e",
+  "hash": "62bdcbcab2c2e7a0",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-113.html": {
-  "hash": "c2885ea68ef4ef3f",
+  "hash": "8a2bd28b11288adc",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-114.html": {
-  "hash": "176f736d7607e5e5",
+  "hash": "2e6c108489b96451",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-115.html": {
-  "hash": "b39b5f8cb35b0a67",
+  "hash": "9bbcd732716a3394",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-116.html": {
-  "hash": "cba55dc85247a56c",
+  "hash": "5e67bd9fecc4892b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-117.html": {
-  "hash": "811feaa06f447570",
+  "hash": "fa49359684aa825f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-118.html": {
-  "hash": "54559ad70da719fd",
+  "hash": "cd3a241028b98b9f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-119.html": {
-  "hash": "860fe2b34fa5be28",
+  "hash": "98fe7fa6c088ace4",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-12.html": {
-  "hash": "57729a3959a80a5c",
+  "hash": "9dbe77fc3a0ed937",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-120.html": {
-  "hash": "9fe511b28380ac08",
+  "hash": "1a70e018b92a944e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-121.html": {
-  "hash": "d608c0f12d71a6c1",
+  "hash": "a2706a0a63960f8b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-122.html": {
-  "hash": "d239c12cca4d76fd",
+  "hash": "45a9b62fed39a144",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-123.html": {
-  "hash": "46ae9c7e7b02e046",
+  "hash": "02a540e3bd7e537e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-124.html": {
-  "hash": "0d3248872fbada14",
+  "hash": "10904fcbc46ab81d",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-125.html": {
-  "hash": "502037d285986e0f",
+  "hash": "f75550d33a98bc41",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-126.html": {
-  "hash": "933ca0b47c38623b",
+  "hash": "eee5e8a751f39b46",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-127.html": {
-  "hash": "ed21b2c68eec9aa5",
+  "hash": "318ea28c736fbac6",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-128.html": {
-  "hash": "77ea4c17be938fb3",
+  "hash": "d52a374340cd0af0",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-129.html": {
-  "hash": "deccab1aff44e74a",
+  "hash": "12181bc0522a1df1",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-13.html": {
-  "hash": "55e8edfe95cbd750",
+  "hash": "14621d5930143ce2",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-130.html": {
-  "hash": "df23810f2bcaed4b",
+  "hash": "84b63c1aefcd2b76",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-131.html": {
-  "hash": "2a921b59d218b269",
+  "hash": "63b72537a187cdbe",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-132.html": {
-  "hash": "3f227b92cb69da03",
+  "hash": "364a03083b909832",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-133.html": {
-  "hash": "fe5d552f33a45b95",
+  "hash": "96933f70acf45ddf",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-14.html": {
-  "hash": "e0984f3d1e69d360",
+  "hash": "5788276ad38ad704",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-15.html": {
-  "hash": "0c1ab325836bdd8f",
+  "hash": "3f5ce86d74c80890",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-16.html": {
-  "hash": "e36e67f55433388d",
+  "hash": "21f691643ceb16c0",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-17.html": {
-  "hash": "5198a3b12c2cb315",
+  "hash": "f54dc350c36ef6c0",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-18.html": {
-  "hash": "62cb949e43076dfa",
+  "hash": "c9bbe1207fe8cbfe",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-19.html": {
-  "hash": "9e91744d45e453f6",
+  "hash": "1f285486e91cf20a",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-2.html": {
-  "hash": "58dc746b4b2f7ab3",
+  "hash": "29bb58650dcc2a8d",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-20.html": {
-  "hash": "283751023247443f",
+  "hash": "60d03ede6ac05f8c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-21.html": {
-  "hash": "bd7320010dde3e97",
+  "hash": "281305db1dccb799",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-22.html": {
-  "hash": "d03d00a3386a8b3d",
+  "hash": "3fa092ef8ee8e05f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-23.html": {
-  "hash": "b584048b0ee05373",
+  "hash": "cc4c84574f1c3e16",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-24.html": {
-  "hash": "2c88f0cf369748c0",
+  "hash": "bcd4b9a24483a996",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-25.html": {
-  "hash": "5caa67daf7bec198",
+  "hash": "9e04508e907d3efa",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-26.html": {
-  "hash": "ddd3a2a04f242ed9",
+  "hash": "bfd3928a8db8d4ce",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-27.html": {
-  "hash": "aeab71e04dcc825a",
+  "hash": "4f20aa011be0029e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-28.html": {
-  "hash": "d7d27e80e71e5274",
+  "hash": "6cc5f2e1696e16d0",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-29.html": {
-  "hash": "561c6b7d00811f8f",
+  "hash": "fb54aba0a5cb40ea",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-3.html": {
-  "hash": "bc65fbbd3ab417f8",
+  "hash": "86e74c39759cfb43",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-30.html": {
-  "hash": "bcbf37228547f6c9",
+  "hash": "83b011b1c698738b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-31.html": {
-  "hash": "fd7872ccc609aff0",
+  "hash": "7f56e8b1f0e27571",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-32.html": {
-  "hash": "83ff9a0e678af299",
+  "hash": "e205fb6330a213ee",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-33.html": {
-  "hash": "5b17a6d3b24d9abc",
+  "hash": "165919f134e0f515",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-34.html": {
-  "hash": "bacd3bb7a454c325",
+  "hash": "d26880676ceac449",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-35.html": {
-  "hash": "c441832587aa6802",
+  "hash": "67c023a71a2f152c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-36.html": {
-  "hash": "21c796c65149c21f",
+  "hash": "d9bdf02f0fabc5ca",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-37.html": {
-  "hash": "f161f9710d702e06",
+  "hash": "a80917e5ee631362",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-38.html": {
-  "hash": "f0aa1961e4ae77c0",
+  "hash": "92494dd16a06de65",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-39.html": {
-  "hash": "aaaffce92cebeac9",
+  "hash": "6696b91bce6ad5e3",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-4.html": {
-  "hash": "f10ab997fc907720",
+  "hash": "824c12d6dd87975c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-40.html": {
-  "hash": "d8d09d3227fc2931",
+  "hash": "4fc964471b2eb18c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-41.html": {
-  "hash": "f6708b5051e385f5",
+  "hash": "d83906c349ca1f09",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-42.html": {
-  "hash": "39efdd13d2a9452e",
+  "hash": "4e49445126754221",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-43.html": {
-  "hash": "38ad716039b38220",
+  "hash": "8318d4ec18d5fa9e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-44.html": {
-  "hash": "c0e95d1011e4721a",
+  "hash": "92ff3b68561d1feb",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-45.html": {
-  "hash": "51a835418fa63e1c",
+  "hash": "2440b58bc1d577cb",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-46.html": {
-  "hash": "c77fc7e4f0cd3b50",
+  "hash": "04ec862f2c028f1c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-47.html": {
-  "hash": "d556f31537b10e95",
+  "hash": "df8f9cbf95571505",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-48.html": {
-  "hash": "307231af963bb846",
+  "hash": "7c0c5abf589465b1",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-49.html": {
-  "hash": "f03d77b169574bdf",
+  "hash": "f73f84c03badaf7f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-5.html": {
-  "hash": "b1539ce20c0611cf",
+  "hash": "9b77ca68f2ed7637",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-50.html": {
-  "hash": "d0d1b764d697539e",
+  "hash": "539192047b747c2a",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-51.html": {
-  "hash": "35695e1562ad9cdf",
+  "hash": "59969a26a40cec3e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-52.html": {
-  "hash": "9148b2042cb818df",
+  "hash": "ab0d9acec0fba374",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-53.html": {
-  "hash": "de61ed59560647b9",
+  "hash": "ff4bd85f0b7f72f3",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-54.html": {
-  "hash": "90c1d36910f75cd6",
+  "hash": "a082cb6fca78ffd5",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-55.html": {
-  "hash": "fc9bb9a1c01ec436",
+  "hash": "71299ca7cda77d21",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-56.html": {
-  "hash": "ce95d693ef7172f0",
+  "hash": "a16937be819b049e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-57.html": {
-  "hash": "fb1047e451cbad5a",
+  "hash": "8df1905be9bc140f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-58.html": {
-  "hash": "ef971fd17f82c738",
+  "hash": "1654179889c69d07",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-59.html": {
-  "hash": "5f57818f3224ff05",
+  "hash": "f8b22d25533f8804",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-6.html": {
-  "hash": "5199ce64abe49b66",
+  "hash": "5ffed48c2d8c9902",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-60.html": {
-  "hash": "05554c3270e27124",
+  "hash": "44854a4d2d1f9d0e",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-61.html": {
-  "hash": "dca252244a58b97c",
+  "hash": "efefe203fcf7c8fd",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-62.html": {
-  "hash": "68169249a623d138",
+  "hash": "431f28d17c3e3684",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-63.html": {
-  "hash": "afeaf95ef1e7c5c3",
+  "hash": "5a783b84a0e7d16f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-64.html": {
-  "hash": "660cb95b1f8ecc8f",
+  "hash": "5640021465847c02",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-65.html": {
-  "hash": "b94f3e6d25e78a65",
+  "hash": "18481a2abe879baa",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-66.html": {
-  "hash": "5990a209546b42e4",
+  "hash": "90a32cadc6eee5c4",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-67.html": {
-  "hash": "8fb33e4a0f75c340",
+  "hash": "ace78ed5c0338c76",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-68.html": {
-  "hash": "f5a2ca2ae944ce45",
+  "hash": "620a3b73dd1e9be5",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-69.html": {
-  "hash": "63891eb6089bdb64",
+  "hash": "b0ff433f9c50f79f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-7.html": {
-  "hash": "9e7269f030bfa5bd",
+  "hash": "1d0c00a3987e2deb",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-70.html": {
-  "hash": "8bd0b8232700b39a",
+  "hash": "233d05c2a708f438",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-71.html": {
-  "hash": "f4b0c11c8b200222",
+  "hash": "cdb6a5df22e0eb9c",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-72.html": {
-  "hash": "0393437b9634f943",
+  "hash": "db8dd1a7ad485fa3",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-73.html": {
-  "hash": "6ad2578f7ef839dd",
+  "hash": "108f8122f2c3b281",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-74.html": {
-  "hash": "dd8ee3729f306f08",
+  "hash": "1e45d978c4a8746f",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-75.html": {
-  "hash": "e53cdb63c545a0d5",
+  "hash": "292835a3b5e45b14",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-76.html": {
-  "hash": "4161fe67c36c854b",
+  "hash": "135a875faf8901ab",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-77.html": {
-  "hash": "c7e215fa1b8426f2",
+  "hash": "b39418a417b0e0d6",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-78.html": {
-  "hash": "85d95fb05514d8e2",
+  "hash": "40991367ecb9df0b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-79.html": {
-  "hash": "4044597b03ece8e1",
+  "hash": "45636a1e04b6ce53",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-8.html": {
-  "hash": "11c16654def78b69",
+  "hash": "2b05c5b5befc7031",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-80.html": {
-  "hash": "502e83e476b864df",
+  "hash": "e7cda85f413da5e4",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-81.html": {
-  "hash": "24b1e0f2eca4232c",
+  "hash": "9573e3adf666f646",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-82.html": {
-  "hash": "a1a078f5d5f35f4e",
+  "hash": "237513237c89c6f8",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-83.html": {
-  "hash": "ca1bff8c4b64b5eb",
+  "hash": "4ec6b1bcdd312f98",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-84.html": {
-  "hash": "6256ca086a36f535",
+  "hash": "38cfc5b072baad25",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-85.html": {
-  "hash": "5ffc7bbd643f84ad",
+  "hash": "490a674611b39ef8",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-86.html": {
-  "hash": "a3a25a75f335b128",
+  "hash": "49863f2d8b289dbd",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-87.html": {
-  "hash": "535362a4914365ef",
+  "hash": "5459ca5dcb3fe354",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-88.html": {
-  "hash": "7cd6b4471406e8cf",
+  "hash": "31f5bedde57ec89d",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-89.html": {
-  "hash": "cb0c50b5c5716ca9",
+  "hash": "885141a5b362502b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-9.html": {
-  "hash": "67f415b96d0e24f9",
+  "hash": "d6d86a84ac6a406d",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-90.html": {
-  "hash": "8002557e291946d0",
+  "hash": "80c3667583e31724",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-91.html": {
-  "hash": "b6ff83cb651b64f4",
+  "hash": "d8ec5db3cf791d6d",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-92.html": {
-  "hash": "92c4a5dba764af5d",
+  "hash": "d1c1632b5206dfbd",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-93.html": {
-  "hash": "e7db594c62a9fa8c",
+  "hash": "1823d3e96db70f33",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-94.html": {
-  "hash": "56df3b2d857f273b",
+  "hash": "9c5219484ed86cff",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-95.html": {
-  "hash": "19b28ed3f5b51000",
+  "hash": "28c762d904a370b8",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-96.html": {
-  "hash": "8a2c295c2ec08e7f",
+  "hash": "00280409bff1ca0b",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-97.html": {
-  "hash": "404d7a635aa70d62",
+  "hash": "6792014b52c05332",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-98.html": {
-  "hash": "e8e95874700bb4a5",
+  "hash": "34b15d340a2f27d4",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-99.html": {
-  "hash": "8710217146a23add",
+  "hash": "d79e3a9804811aad",
   "date": "2026-11-11"
  },
  "thirukkural-chapters.html": {
-  "hash": "000853fd810a7df8",
+  "hash": "e47e9080a6835605",
   "date": "2026-11-11"
  },
  "thirukkural-topics.html": {
-  "hash": "3c03ab3f07437c68",
+  "hash": "c38906b5d9681140",
   "date": "2026-11-11"
  },
  "thirukkural.html": {
-  "hash": "181217404857d836",
+  "hash": "fe263cc5d6fad7a4",
   "date": "2026-11-11"
  },
  "uyirmei-ezhuthukal.html": {
-  "hash": "3637c97f2b8b5c19",
+  "hash": "079fab4b1348702e",
   "date": "2026-11-11"
  }
 }
