@@ -25,7 +25,8 @@ const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES
   loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'WORDS', 'STORIES', 'TOPICS', 'AATHICHOODI', 'RHYMES', 'FESTIVALS', 'KURAL_PAALS', 'KURAL_LESSONS']);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const PUBLISHED = '2026-11-09';
-const ISSUES_URL = 'https://github.com/jssuthahar/learntamil/issues';
+const REPO_URL = 'https://github.com/jssuthahar/learntamil';
+const ISSUES_URL = `${REPO_URL}/issues`;
 export const COFFEE_URL = 'https://buymeacoffee.com/jssuthahar';
 /* The yellow "Buy me a coffee" button in every page header (index.html and thirukkural.html carry the same markup by hand). */
 const COFFEE_TOP = `<a class="coffee-top" href="${COFFEE_URL}" target="_blank" rel="noopener" title="Support Learn Tamil with a coffee" aria-label="Buy me a coffee: support Learn Tamil (opens a new tab)"><span class="ct-cup" aria-hidden="true">☕</span><span class="ct-t">Buy me a coffee</span></a>`;
@@ -228,6 +229,7 @@ export const FOOTER = `<footer>
       <a href="privacy.html">Privacy &amp; data</a>
       <a href="terms.html">Terms</a>
       <a href="${ISSUES_URL}" rel="noopener">Report an issue / feedback</a>
+      <a href="${REPO_URL}" rel="noopener" title="Learn Tamil is open source: see the code or contribute">Open source on GitHub</a>
       <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
       <a href="${ADVERTISE_URL}" rel="noopener">Advertise with us</a>
       <a class="coffee-link" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
