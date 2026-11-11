@@ -41,7 +41,7 @@ export const SUPPORT = `<aside class="support-card" aria-label="Support Learn Ta
    the children's lessons or games. Plain HTML: no ad script, no cookies, no tracking, no targeting.
    Until a sponsor books a slot, each one shows a clearly marked sample that invites advertisers to get in touch.
    To run a real sponsor, replace the sample in SPONSOR_ADS[place] with { name, text, url, img? }. */
-export const ADVERTISE_URL = 'https://blog.msdevbuild.com/contact/';
+export const ADVERTISE_URL = 'advertise.html';   // the media-kit page; it sends enquiries on to CONTACT_URL
 const SPONSOR_ADS = {};   // e.g. { banner: { name: 'Brand', text: 'One line about it', url: 'https://…' } }
 export function SPONSOR(place) {
   const ad = SPONSOR_ADS[place];
@@ -1377,6 +1377,208 @@ ${h2('faq', '❓', 'Questions about the app')}
         itemListElement: steps.map((s, j) => ({ '@type': 'HowToStep', position: j + 1, text: s.replace(/<[^>]+>/g, '') })) })) }]
 }));
 
+/* ---------- Advertise with us (media kit for businesses — grown-ups only) ----------
+   A plain information page: no form, no payment, no ad script. Every enquiry goes to CONTACT_URL.
+   The previews are fictional demo businesses, drawn with CSS only. The formats map to the real
+   SPONSOR() places above (banner, card, home, vertical); nothing here changes what those places show. */
+const AD_FORMATS = [
+  { id: 'compact', ic: '🏷️', size: 'Small', name: 'Compact banner', place: 'banner',
+    where: 'A slim strip near the top of the parents’ and teachers’ guide pages, just under the page heading.',
+    best: 'Local businesses, Tamil classes, community events and short promotions.',
+    gets: ['Your logo or an icon', 'Business name and one short line', 'One link to your website or contact page'] },
+  { id: 'featured', ic: '🖼️', size: 'Medium', name: 'Featured banner', place: 'card',
+    where: 'A larger card at the end of each guide, where a reader has just finished the page.',
+    best: 'Product promotions, services, seasonal offers and new launches.',
+    gets: ['An image', 'Business name and a short description', 'A clear call-to-action button'] },
+  { id: 'premium', ic: '🌟', size: 'Large', name: 'Premium banner', place: 'home',
+    where: 'The parents’ area of the home page, next to the “Keep Learn Tamil free” card — the most prominent sponsor place on the site.',
+    best: 'Established businesses and brand campaigns.',
+    gets: ['A larger visual', 'A promotional message', 'Contact details or a website link'] },
+  { id: 'business', ic: '💼', size: 'Featured', name: 'Featured business card', place: 'vertical',
+    where: 'A tall card beside the guide text on wide desktop screens. It stays in view while the reader scrolls.',
+    best: 'Schools, tutors, bookshops and family services that want steady visibility.',
+    gets: ['Logo or promotional image', 'Business name and description', 'Website or contact link'] },
+  { id: 'listing', ic: '📌', size: 'Listing', name: 'Sponsored listing', place: 'on request',
+    where: 'A short listing on the guide that matches your offer — for example a Tamil book on a reading guide, or a class on the parents’ guide. We agree the page with you.',
+    best: 'Products, services, events and special offers that fit one topic.',
+    gets: ['Title and one or two lines of text', 'Optional small image', 'One link, always marked “Sponsored”'] }
+];
+const AD_BENEFITS = [
+  ['👪', 'Reach families learning Tamil', 'Parents, grandparents and teachers who read our guides to help children learn Tamil.'],
+  ['📣', 'Build brand awareness', 'Show your name to a focused, family audience on a trusted, ad-light site.'],
+  ['🛍️', 'Promote products and services', 'Books, classes, clothing, events and family services that fit a learning site.'],
+  ['✉️', 'Invite enquiries', 'Every ad links straight to your own website or contact page.'],
+  ['🎯', 'Relevant placement', 'Choose the guide pages that match what you offer.'],
+  ['🎉', 'Offers and new launches', 'Run a seasonal message for a festival, a new term or a launch.'],
+  ['🧩', 'Flexible placements', 'Small, medium or large; one page or every guide; short or long runs.'],
+  ['🤝', 'Talk to a real person', 'You deal directly with the maker of Learn Tamil — no ad network in between.']
+];
+const AD_STEPS = [
+  ['Get in touch', 'Send us a message through the contact page with your business details and the format you like.'],
+  ['Plan it together', 'We discuss the placement, size, dates and price, and agree the terms in writing.'],
+  ['Send your ad', 'You send the image, text and link. We check that it suits a family website.'],
+  ['Goes live', 'Once approved, your ad is published as a plain image or text link, marked “Sponsored”.']
+];
+const AD_FAQ = [
+  ['How do I advertise on Learn Tamil?', 'Contact us through the contact page at blog.msdevbuild.com/contact with your business name, contact details and the ad format you are interested in. We reply to discuss placement, dates and price. There is no online booking or payment on the site.'],
+  ['Where do sponsor ads appear on Learn Tamil?', 'Only in grown-up areas: the parents’ and teachers’ guide pages and the parents’ area of the home page. Ads never appear inside the children’s lessons, games, stories or certificates, and the Learn Tamil Android app shows no ads at all.'],
+  ['Does Learn Tamil use Google Ads or track visitors for advertisers?', 'No. Learn Tamil does not use Google AdSense or any ad network. Sponsor ads are plain images or text with a link. They load no advertising script, set no cookies and are not personalised, and no visitor data is shared with advertisers.'],
+  ['What kinds of businesses can advertise?', 'Child-safe, family-friendly businesses, such as bookshops, Tamil classes, schools, tutors, children’s clothing, cultural events and family services. Every ad is reviewed and must be approved before it goes live.'],
+  ['How much does advertising cost?', 'Prices depend on the format, the pages and how long the ad runs. Contact us and we will share the current options and price for your campaign. Price, dates, renewal and cancellation are agreed with you before anything is published.']
+];
+const demoTag = '<span class="adk-demo">Demo ad · fictional business</span>';
+const AD_PREVIEW = {
+  compact: `<div class="adk-ad adk-compact">${demoTag}<span class="adk-sp">Sponsored</span>
+    <span class="adk-logo" style="--a:#0b8a6c;--b:#16b38a" aria-hidden="true">📗</span>
+    <div><b>Kolam Books</b><p>Picture books for young readers — new arrivals every month.</p></div>
+    <span class="adk-cta">Visit →</span></div>`,
+  featured: `<div class="adk-ad adk-featured">${demoTag}
+    <div class="adk-img" style="--a:#ff9a3c;--b:#e0480c" aria-hidden="true"><span>🎨</span></div>
+    <div class="adk-body"><span class="adk-sp">Sponsored</span><b>Little Kolam Art Studio</b>
+      <p>Weekend art and craft classes for ages 5–12. Small groups, friendly teachers.</p>
+      <span class="adk-cta">Book a free trial →</span></div></div>`,
+  premium: `<div class="adk-ad adk-premium">${demoTag}
+    <div class="adk-hero" style="--a:#1769d1;--b:#7c3aed" aria-hidden="true"><span>🎵</span><i>🎶</i><i>✨</i></div>
+    <div class="adk-body"><span class="adk-sp">Sponsored</span><b>Yaazh Music Academy</b>
+      <p>Veena, violin and vocal lessons for children and adults. Online and in person — new batches start every month.</p>
+      <div class="adk-row"><span class="adk-cta">Visit our website →</span><span class="adk-contact">✉️ hello@example.com</span></div></div></div>`,
+  business: `<div class="adk-ad adk-business">${demoTag}<span class="adk-sp">Sponsored</span>
+    <span class="adk-logo big" style="--a:#7c3aed;--b:#b05cff" aria-hidden="true">🏫</span>
+    <b>Thendral Tuition Centre</b>
+    <p>Maths, English and science support for primary school children.</p>
+    <span class="adk-cta wide">Learn more →</span></div>`,
+  listing: `<div class="adk-ad adk-listing">${demoTag}
+    <ul class="adk-list">
+      <li><span class="adk-li-ic" aria-hidden="true">📘</span><div><b>Free Tamil letters chart</b><small>Learn Tamil printable</small></div></li>
+      <li class="is-sp"><span class="adk-li-ic" style="--a:#e0480c;--b:#ff9a3c" aria-hidden="true">🪔</span><div><b>Pongal family craft fair <span class="adk-sp inline">Sponsored</span></b><small>Malar Events · Saturday workshops for families</small></div><span class="adk-cta">Details →</span></li>
+      <li><span class="adk-li-ic" aria-hidden="true">📗</span><div><b>Tamil stories for kids</b><small>Learn Tamil guide</small></div></li>
+    </ul></div>`
+};
+/* A tiny page sketch with the ad's place highlighted. */
+const AD_WIRE = {
+  compact: '<i class="w-h"></i><i class="w-ad w-strip"></i><i class="w-t"></i><i class="w-t"></i><i class="w-t s"></i>',
+  featured: '<i class="w-h"></i><i class="w-t"></i><i class="w-t"></i><i class="w-t s"></i><i class="w-ad w-card"></i>',
+  premium: '<i class="w-h tall"></i><i class="w-t"></i><i class="w-ad w-big"></i><i class="w-t s"></i>',
+  business: '<i class="w-h"></i><span class="w-cols"><span><i class="w-t"></i><i class="w-t"></i><i class="w-t"></i><i class="w-t s"></i></span><i class="w-ad w-rail"></i></span>',
+  listing: '<i class="w-h"></i><i class="w-t"></i><i class="w-li"></i><i class="w-ad w-li"></i><i class="w-li"></i>'
+};
+const PLACE_LABEL = { banner: 'Guide pages · top', card: 'Guide pages · end', home: 'Home page · parents’ area', vertical: 'Guide pages · desktop side', 'on request': 'Matching guide · agreed with you' };
+const adCard = f => `<article class="adk-pkg glass" id="ad-${f.id}" aria-labelledby="ad-${f.id}-h">
+  <div class="adk-pkg-top">
+    <span class="adk-size">${f.ic} ${f.size}</span>
+    <h3 id="ad-${f.id}-h">${f.name}</h3>
+    <p class="adk-where"><span class="adk-wire" aria-hidden="true">${AD_WIRE[f.id]}</span><span><b>Where:</b> ${f.where}</span></p>
+  </div>
+  <div class="adk-preview" role="img" aria-label="Demo preview of a ${f.name.toLowerCase()} for a fictional business">${AD_PREVIEW[f.id]}</div>
+  <div class="adk-pkg-info">
+    <p><b>Best for:</b> ${f.best}</p>
+    <ul class="adk-ticks">${f.gets.map(g => `<li>${g}</li>`).join('')}</ul>
+  </div>
+</article>`;
+const yes = '<span class="adk-yes" aria-label="Yes">✓</span>', no = '<span class="adk-no" aria-label="No">—</span>';
+const AD_TABLE = [
+  ['Size on the page', 'Slim strip', 'Card', 'Large banner', 'Tall card', 'Short listing'],
+  ['Where', ...AD_FORMATS.map(f => PLACE_LABEL[f.place])],
+  ['Image', 'Logo or icon', yes, yes, yes, 'Small, optional'],
+  ['Text', 'One line', 'Short description', 'Message + contact', 'Short description', '1–2 lines'],
+  ['Link to your site', yes, yes, yes, yes, yes],
+  ['Phones and tablets', yes, yes, yes, 'Desktop only', yes],
+  ['Marked “Sponsored”', yes, yes, yes, yes, yes]
+];
+const ADV = 'advertise.html';
+write(ADV, shell({
+  file: ADV, ogType: 'website', share: false, bubble: 'Grow with us!',
+  title: 'Advertise With Us – Grow Your Business | Learn Tamil',
+  description: 'Sponsor Learn Tamil’s guides for parents and teachers: banners, featured cards and listings. No ad networks, no tracking. Contact us to plan your ad.',
+  h1: 'Advertise With Us – Grow Your Business With Our Audience', eyebrow: 'For businesses · Media kit',
+  body: `
+<section class="adk-intro">
+  <p class="adk-sub">Reach more potential customers by promoting your business through our application. Connect with our growing audience and showcase your products, services and brand.</p>
+  <div class="adk-actions">
+    <a class="btn primary adk-big" href="${CONTACT_URL}" target="_blank" rel="noopener">✉️ Contact us to advertise <span aria-hidden="true">↗</span></a>
+    <a class="btn adk-big" href="#formats">See ad formats ↓</a>
+  </div>
+</section>
+<p class="lead-doc"><strong>Businesses can advertise on Learn Tamil by booking a sponsor space directly with our team: we do not use Google Ads or any ad network.</strong> Ads appear only on the pages for parents and teachers, never inside the children’s lessons or games. We review every ad, publish it as a plain image or text link marked “Sponsored”, and agree price and dates with you before anything goes live.</p>
+<ul class="adk-facts" aria-label="At a glance">
+  <li><span aria-hidden="true">👪</span><b>Grown-up pages only</b><small>Guides and the parents’ area — never in lessons or games</small></li>
+  <li><span aria-hidden="true">🚫</span><b>No ad networks</b><small>No AdSense, no ad scripts, no cookies, no tracking</small></li>
+  <li><span aria-hidden="true">✅</span><b>Every ad reviewed</b><small>Child-safe, family-friendly businesses only</small></li>
+  <li><span aria-hidden="true">🤝</span><b>Booked directly</b><small>No online payment — we agree terms with you</small></li>
+</ul>
+
+${h2('audience', '👪', 'Who you will reach')}
+<p>Learn Tamil is a free website and app that helps children aged 3 to 12 learn the Tamil alphabet, words, stories and rhymes. The people who read our guide pages are mostly <b>parents, grandparents and teachers</b> — in Tamil-speaking homes and in Tamil families around the world — who are looking for ways to help children learn the language. When you enquire, we can share recent visit numbers, counted anonymously and only in total.</p>
+<div class="adk-benefits">${AD_BENEFITS.map(([ic, t, d]) => `<div class="adk-benefit glass"><span class="adk-b-ic" aria-hidden="true">${ic}</span><b>${t}</b><p>${d}</p></div>`).join('')}</div>
+<p class="muted adk-note">We do not promise a number of views, clicks, enquiries or sales. Results depend on your offer and many other things outside our control.</p>
+
+${h2('formats', '🖼️', 'Ad formats and sizes')}
+<p>Every format below is a real place on the site. The previews use <b>fictional demo businesses</b> to show how an ad looks; your own ad is designed with your logo, words and link.</p>
+<div class="adk-pkgs">${AD_FORMATS.map(adCard).join('')}</div>
+
+${h2('compare', '📊', 'Compare the formats')}
+<div class="table-wrap adk-table-wrap"><table class="adk-table">
+  <thead><tr><th scope="col">Feature</th>${AD_FORMATS.map(f => `<th scope="col">${f.ic} ${f.name}</th>`).join('')}</tr></thead>
+  <tbody>${AD_TABLE.slice(1).concat([AD_TABLE[0]]).map(([k, ...v]) => `<tr><th scope="row">${k}</th>${v.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+</table></div>
+<p class="muted adk-note">Prices, dates and the exact pages are agreed with you. Ask us about running more than one format together.</p>
+
+${h2('never', '🛡️', 'Where ads will never appear')}
+<div class="callout glass adk-never"><p>To keep Learn Tamil safe for children, sponsor ads are <b>never</b> shown in the learning app’s lessons, games, stories, rhymes, quizzes or certificates, and the Learn Tamil Android app shows <b>no ads at all</b>. This is a promise we make to parents, and it is part of what makes the guide pages a trusted place for your brand.</p></div>
+
+${h2('how', '🪜', 'How it works')}
+<ol class="adk-steps">${AD_STEPS.map(([t, d], i) => `<li class="glass"><span class="adk-n" aria-hidden="true">${i + 1}</span><b>${t}</b><p>${d}</p></li>`).join('')}</ol>
+
+<section class="adk-cta-box" id="contact" aria-labelledby="adk-cta-h">
+  <span class="adk-cta-deco" aria-hidden="true"><i>📣</i><i>✨</i><i>💛</i></span>
+  <h2 id="adk-cta-h">Interested in Advertising With Us?</h2>
+  <p>Let’s discuss how we can help promote your business. Contact our team to learn more about available advertising spaces, package sizes, pricing and campaign opportunities.</p>
+  <div class="adk-actions center">
+    <a class="btn adk-big adk-white" href="${CONTACT_URL}" target="_blank" rel="noopener">✉️ Contact us <span aria-hidden="true">↗</span></a>
+    <a class="btn adk-big adk-ghost" href="${CONTACT_URL}" target="_blank" rel="noopener">💼 Advertising enquiry <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="adk-checklist">
+    <b>To help us reply quickly, please include in your message:</b>
+    <ul>
+      <li>Business name</li><li>Contact person’s name</li><li>Email address</li><li>Phone number</li>
+      <li>Business website (optional)</li><li>The ad format you are interested in</li><li>A short message about what you would like to promote</li>
+    </ul>
+    <p class="adk-small">Your message goes to the MSDEVBUILD contact page, run by the maker of Learn Tamil. This page itself has no form and sends nothing. We use the details you send only to reply to your enquiry and to arrange your advertisement, and we do not share them with anyone else.</p>
+  </div>
+</section>
+
+${h2('policy', '📜', 'Advertising policy')}
+<p>These rules apply to every sponsor on Learn Tamil. Price, placement, dates and other terms are agreed with each business in writing before an ad is published.</p>
+<div class="adk-policy">
+  <section class="glass"><h3>✅ Advertisement approval</h3><ul>
+    <li>All advertisements are subject to our review and approval before they are published.</li>
+    <li>We may reject, pause or remove any advertisement that does not follow this policy.</li>
+    <li>Advertisers must give accurate business and promotional information.</li></ul></section>
+  <section class="glass"><h3>📝 Advertising content</h3><ul>
+    <li>Advertisers are responsible for the legality and accuracy of their advertising, and must own or have a licence for every image, logo and word they send.</li>
+    <li>We only accept child-safe, family-friendly advertising. We do not accept misleading, fraudulent, illegal or inappropriate advertising, or advertising for adult content, gambling, alcohol, tobacco or vaping, weapons, or dating services.</li>
+    <li>Ads must not ask children to buy anything or to give personal details.</li></ul></section>
+  <section class="glass"><h3>🔒 User privacy</h3><ul>
+    <li>We never share our visitors’ personal information, email addresses, phone numbers or other private data with advertisers.</li>
+    <li>Advertisers have no access to any user data. Learn Tamil has no accounts and collects no personal information.</li>
+    <li>Ads are plain images or text with a link: no advertising scripts, tracking pixels or cookies, and no targeting or personalisation.</li>
+    <li>Business details sent to us in an enquiry are used only to handle that enquiry and the advertisement, and are kept private.</li></ul></section>
+  <section class="glass"><h3>⚖️ Advertisement disclaimer</h3><ul>
+    <li>Every paid placement is clearly labelled “Sponsored”, and its link is marked as sponsored for search engines.</li>
+    <li>We do not guarantee sales, leads, traffic or any other business result.</li>
+    <li>Advertisers are responsible for their own products, services, offers and customer transactions.</li></ul></section>
+  <section class="glass adk-wide"><h3>🤝 Terms and conditions</h3><ul>
+    <li>Pricing, placement, duration, renewal, cancellation and refunds are agreed directly with the business before publication. There is no online booking or payment on this site.</li>
+    <li>We may update our advertising formats and this policy from time to time. The current version is always on this page.</li></ul></section>
+</div>
+<p>Please also read our <a href="privacy.html">Privacy &amp; data policy</a> (see <a href="privacy.html#sponsors">Sponsor boxes</a>), our <a href="terms.html">Terms &amp; conditions</a> and this <a href="#policy">Advertising policy</a>.</p>
+
+${h2('faq', '❓', 'Questions from advertisers')}
+<div class="faq">${faqHtmlFor(AD_FAQ)}</div>
+<p class="adk-final"><a class="btn primary adk-big" href="${CONTACT_URL}" target="_blank" rel="noopener">✉️ Contact us to advertise <span aria-hidden="true">↗</span></a></p>`,
+  schema: [faqSchemaFor(AD_FAQ, ADV)]
+}));
+
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
   'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
   ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ,
@@ -1392,7 +1594,7 @@ write('assets/js/data/faq.js', '/* Generated by tools/build-pages.mjs — knowle
 const pages = [['', '1.0', 'weekly'], ...GUIDES.map(g => [g.file, g.file === 'tamil-alphabet.html' ? '0.9' : '0.8', 'monthly']),
   ...KURAL_PAGES.map(f => [f, '0.6', 'yearly']),
   ...PRINTS.map(d => ['printables/' + d.file + '.pdf', '0.6', 'monthly']),
-  ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
+  ['advertise.html', '0.4', 'monthly'], ['privacy.html', '0.3', 'yearly'], ['terms.html', '0.3', 'yearly']];
 const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
   ? ALT.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}"/>`).join('') : '';
 const imgXml = p => p === 'tamil-printables.html' ? PRINTS.map(d =>
@@ -1433,6 +1635,7 @@ ${PRINTS.map(d => `- [${d.title}](${SITE}printables/${d.file}.pdf): ${d.pages} p
 - [Learning app](${SITE}): interactive letters with audio, reading practice, stories and games (requires JavaScript).
 - [Privacy & data](${SITE}privacy.html): no personal data is collected.
 - [Terms](${SITE}terms.html)
+- [Advertise with us](${SITE}advertise.html): sponsor formats for businesses, shown only on parents’ and teachers’ pages, booked directly with no ad network or tracking.
 - [Report an issue](${ISSUES_URL})
 `);
 
@@ -1489,7 +1692,7 @@ const privacyBody = `
 <h2>Information we collect</h2>
 <p><strong>No personal information.</strong> The site has no sign-up, no login, no comments and no forms that send information anywhere. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
 <h3 id="sponsors">Sponsor boxes</h3>
-<p>Some guide pages for parents and teachers (and the parents’ area at the bottom of the home page) may show a small box marked <em>Sponsored</em> or <em>Sample ad</em>. It is plain text or an image with a link, chosen by us — not by an ad network. It loads <strong>no advertising script, sets no cookies, is not personalised or targeted</strong>, and sends nothing about you or your child to the sponsor. Nothing is sent until you tap the link, and then the sponsor’s own website and privacy policy apply. Sponsor boxes never appear inside the children’s lessons, games, stories or certificates. Businesses interested in sponsoring can use the ${CONTACT}.</p>
+<p>Some guide pages for parents and teachers (and the parents’ area at the bottom of the home page) may show a small box marked <em>Sponsored</em> or <em>Sample ad</em>. It is plain text or an image with a link, chosen by us — not by an ad network. It loads <strong>no advertising script, sets no cookies, is not personalised or targeted</strong>, and sends nothing about you or your child to the sponsor. Nothing is sent until you tap the link, and then the sponsor’s own website and privacy policy apply. Sponsor boxes never appear inside the children’s lessons, games, stories or certificates. Businesses interested in sponsoring can read <a href="advertise.html">Advertise with us</a> and our <a href="advertise.html#policy">advertising policy</a>.</p>
 <h3 id="microphone">Microphone (“Say it back”)</h3>
 <p>The 🎤 <b>Say it</b> button lets a child record themselves saying a letter or word and play it back. The recording is kept only in the browser’s memory, is <strong>never uploaded or saved</strong>, and is deleted when the window closes. The browser asks for permission first, and nothing is recorded until the child taps 🎤. There is no speech recognition.</p>
 <h3 id="profiles">Child profiles and Parent dashboard</h3>
@@ -1594,8 +1797,8 @@ const termsBody = `
 <h2>6. Children</h2>
 <p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information, only anonymous usage statistics; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
 
-<h2>7. Links to other websites</h2>
-<p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). We are not responsible for their content or practices.</p>
+<h2>7. Links to other websites and sponsors</h2>
+<p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). Some parents’ guide pages show sponsor boxes marked “Sponsored”; sponsors are responsible for their own products, services and offers (see our <a href="advertise.html#policy">advertising policy</a>). We are not responsible for the content or practices of other websites.</p>
 
 <h2>8. No warranty</h2>
 <p>The site is provided “as is” and “as available”, without warranties of any kind, express or implied, including fitness for a particular purpose and uninterrupted or error-free operation.</p>
@@ -1651,7 +1854,7 @@ import('node:crypto').then(({ createHash }) => {
   const swPath = path.join(ROOT, 'sw.js');
   let sw = fs.readFileSync(swPath, 'utf8');
   // PRECACHE = every page + every asset in tools/lib/assets.mjs (one list, never edited by hand).
-  const pages = ['index.html', ...GUIDES.map(g => g.file), 'privacy.html', 'terms.html'];
+  const pages = ['index.html', ...GUIDES.map(g => g.file), 'advertise.html', 'privacy.html', 'terms.html'];
   const list = ['./', ...pages, ...PRECACHE_ASSETS];
   sw = sw.replace(/const PRECACHE = \[[\s\S]*?\];/, `const PRECACHE = [\n  ${list.map(f => `'${f}'`).join(',\n  ')}\n];`);
   const h = createHash('sha256');

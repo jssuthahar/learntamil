@@ -223,4 +223,5 @@ Key facts:
 - [Learning app](https://learntamil.msdevbuild.com/): interactive letters with audio, reading practice, stories and games (requires JavaScript).
 - [Privacy & data](https://learntamil.msdevbuild.com/privacy.html): no personal data is collected.
 - [Terms](https://learntamil.msdevbuild.com/terms.html)
+- [Advertise with us](https://learntamil.msdevbuild.com/advertise.html): sponsor formats for businesses, shown only on parents’ and teachers’ pages, booked directly with no ad network or tracking.
 - [Report an issue](https://github.com/jssuthahar/learntamil/issues)

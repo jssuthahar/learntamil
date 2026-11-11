@@ -388,3 +388,134 @@ footer .fc-bmc{background:#ffdd00;color:#0b1020!important}
 /* Google Play app (services/pwa.js sets html.in-app): no sponsor boxes, donation links, install button or reminders. */
 .in-app .sponsor-slot,.in-app .sky-rail,.in-app .support-card,.in-app .coffee-top,.in-app .coffee-btn,.in-app .fc-bmc,
 .in-app .pc-coffee,.in-app .install-btn,.in-app .push-row{display:none!important}
+
+/* Advertise with us (advertise.html) — media kit for businesses. Demo ads are drawn with CSS only. */
+.adk-intro{margin:6px 0 4px}
+.adk-sub{font-size:clamp(17px,2.4vw,20px)!important;line-height:1.55!important;color:var(--text-muted);max-width:62ch}
+.adk-actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.adk-actions.center{justify-content:center}
+.adk-big{text-decoration:none!important;min-height:48px;padding:12px 20px;font-size:16px;border-radius:999px}
+.adk-facts{list-style:none;padding:0;margin:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.adk-facts li{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:start;padding:14px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow)}
+.adk-facts li>span{grid-row:1/3;grid-column:1;font-size:26px;line-height:1}
+.adk-facts b{grid-column:2}
+.adk-facts small{grid-column:2;text-align:left;color:var(--text-muted);line-height:1.4}
+.adk-benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.adk-benefit{padding:16px;border-radius:18px;transition:transform .2s ease,box-shadow .2s ease}
+.adk-benefit:hover{transform:translateY(-3px)}
+.adk-b-ic{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);font-size:22px;margin-bottom:6px}
+.adk-benefit b{display:block;font-size:16px}
+.adk-benefit p{margin:4px 0 0;font-size:14px!important;line-height:1.5!important;color:var(--text-muted)}
+.adk-note{font-size:14px!important}
+
+/* Format cards */
+.adk-pkgs{display:grid;gap:18px;margin:16px 0}
+.adk-pkg{display:grid;gap:14px;padding:18px;border-radius:24px;scroll-margin-top:80px;transition:transform .2s ease}
+.adk-pkg:hover{transform:translateY(-2px)}
+.adk-size{display:inline-block;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent-deep);font-size:13px;font-weight:700}
+.adk-pkg h3{margin:8px 0 6px;font-family:var(--font-kid);font-size:22px}
+.adk-where{display:flex;gap:12px;align-items:flex-start;margin:0;font-size:15px!important;line-height:1.5!important}
+.adk-pkg-info p{margin:0 0 6px}
+.adk-ticks{margin:0;padding:0;list-style:none}
+.adk-ticks li{position:relative;padding-left:24px;margin:4px 0}
+.adk-ticks li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+@media (min-width:900px){
+  .adk-pkg{grid-template-columns:1fr 1.25fr;grid-template-areas:"top prev" "info prev";align-items:start}
+  .adk-pkg-top{grid-area:top}.adk-preview{grid-area:prev}.adk-pkg-info{grid-area:info}
+}
+/* Mini page sketch with the ad place highlighted */
+.adk-wire{flex:0 0 58px;display:flex;flex-direction:column;gap:3px;padding:6px;border-radius:8px;background:var(--bg);border:1px solid var(--border)}
+.adk-wire i{display:block;height:4px;border-radius:2px;background:var(--border)}
+.adk-wire .w-h{height:9px;background:var(--accent-soft)}
+.adk-wire .w-h.tall{height:14px}
+.adk-wire .w-t.s{width:60%}
+.adk-wire .w-ad{background:#f0a400;animation:adk-pulse 2.4s ease-in-out infinite}
+.adk-wire .w-strip{height:6px}.adk-wire .w-card{height:12px}.adk-wire .w-big{height:16px}
+.adk-wire .w-li{height:6px}
+.adk-wire .w-cols{display:flex;gap:3px}.adk-wire .w-cols>span{flex:1;display:flex;flex-direction:column;gap:3px}
+.adk-wire .w-rail{width:12px;height:auto}
+@keyframes adk-pulse{50%{opacity:.55}}
+
+/* Preview stage + demo ads */
+.adk-preview{position:relative;padding:28px 14px 16px;border-radius:18px;background:repeating-linear-gradient(135deg,transparent 0 12px,rgb(0 120 212 / .05) 12px 24px),var(--bg-subtle);border:1px dashed var(--border);overflow:hidden}
+.adk-ad{position:relative;color:#1b2232;background:#fff;border-radius:16px;box-shadow:0 10px 26px -12px rgb(0 40 90 / .35);border:1px solid #e3e9f2}
+.adk-demo{position:absolute;top:-22px;right:0;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
+.adk-sp{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#5b6475}
+.adk-sp.inline{margin-left:6px;padding:1px 6px;border-radius:6px;background:#fff1c7;color:#7a5600;vertical-align:middle}
+.adk-ad b{display:block;font-family:var(--font-kid);font-size:17px;line-height:1.25;color:#0b1020}
+.adk-ad p{margin:3px 0 0;font-size:13.5px!important;line-height:1.45!important;color:#4a5163}
+.adk-logo,.adk-li-ic{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--a,#0078d4),var(--b,#63b1ee));font-size:22px;flex:0 0 auto}
+.adk-logo.big{width:64px;height:64px;font-size:32px;border-radius:18px}
+.adk-cta{display:inline-block;white-space:nowrap;padding:8px 14px;border-radius:999px;background:#0078d4;color:#fff;font-weight:700;font-size:13.5px}
+.adk-cta.wide{display:block;text-align:center}
+.adk-compact{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:20px 14px 12px}
+.adk-compact>.adk-sp{position:absolute;top:5px;left:14px}
+.adk-featured{display:grid;grid-template-columns:120px 1fr;overflow:hidden}
+.adk-img,.adk-hero{position:relative;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:44px}
+.adk-featured .adk-body,.adk-premium .adk-body{padding:14px 16px}
+.adk-featured .adk-cta{margin-top:10px}
+.adk-premium{overflow:hidden}
+.adk-hero{height:130px;font-size:58px}
+.adk-hero i{position:absolute;font-style:normal;font-size:26px;opacity:.85;animation:adk-float 4s ease-in-out infinite}
+.adk-hero i:nth-of-type(1){left:18%;top:20%}.adk-hero i:nth-of-type(2){right:16%;bottom:18%;animation-delay:-2s}
+@keyframes adk-float{50%{transform:translateY(-8px)}}
+.adk-premium b{font-size:21px}
+.adk-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.adk-contact{font-size:13px;color:#4a5163}
+.adk-business{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;max-width:220px;margin:0 auto;padding:16px 14px}
+.adk-business .adk-cta{align-self:stretch}
+.adk-listing{padding:6px}
+.adk-list{list-style:none;margin:0;padding:0}
+.adk-list li{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px}
+.adk-list li+li{border-top:1px solid #edf1f6}
+.adk-list li>div{flex:1;min-width:0}
+.adk-list small{color:#5b6475}
+.adk-list .adk-li-ic{width:36px;height:36px;font-size:18px;background:linear-gradient(135deg,var(--a,#deecf9),var(--b,#deecf9))}
+.adk-list li.is-sp{background:#fffaf0;outline:1px solid #f5d27a}
+@media (max-width:520px){
+  .adk-compact{grid-template-columns:auto 1fr}.adk-compact .adk-cta{grid-column:1/-1;text-align:center}
+  .adk-featured{grid-template-columns:1fr}.adk-img{height:90px}
+  .adk-list li.is-sp{display:grid;grid-template-columns:auto 1fr;gap:6px 12px}.adk-list li.is-sp .adk-cta{grid-column:2;justify-self:start}
+}
+
+/* Comparison table */
+.adk-table-wrap{overflow-x:auto;margin:12px 0;border-radius:18px;border:1px solid var(--border);background:var(--glass)}
+.adk-table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+.adk-table th,.adk-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+.adk-table thead th{background:var(--accent-soft);color:var(--accent-deep);white-space:nowrap}
+.adk-table tbody th{position:sticky;left:0;background:var(--bg);font-weight:700}
+.adk-table tr:last-child>*{border-bottom:0}
+.adk-yes{color:var(--ok);font-weight:800;font-size:17px}
+.adk-no{color:var(--text-muted)}
+
+.adk-never p{margin:0}
+.adk-steps{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;counter-reset:none}
+.adk-steps li{position:relative;padding:16px;border-radius:18px}
+.adk-n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:800;margin-bottom:6px}
+.adk-steps b{display:block}
+.adk-steps p{margin:4px 0 0;font-size:14px!important;line-height:1.5!important;color:var(--text-muted)}
+
+/* Big call to action */
+.adk-cta-box{position:relative;overflow:hidden;margin:34px 0;padding:30px 20px;border-radius:28px;text-align:center;color:#fff;
+  background:radial-gradient(500px 240px at 10% 0%,rgb(255 255 255 / .18),transparent 60%),linear-gradient(135deg,#0063b1,#5b2bd6 60%,#c2410c);box-shadow:0 20px 50px -20px rgb(40 30 120 / .6);scroll-margin-top:80px}
+.adk-cta-box h2{justify-content:center;margin:0 0 8px;color:#fff;font-size:clamp(24px,4vw,32px)}
+.adk-cta-box>p{max-width:60ch;margin:0 auto;color:#eef2ff;font-size:17px!important}
+.adk-cta-deco i{position:absolute;font-style:normal;font-size:30px;opacity:.35;animation:adk-float 5s ease-in-out infinite}
+.adk-cta-deco i:nth-child(1){left:5%;top:14%}.adk-cta-deco i:nth-child(2){right:7%;top:20%;animation-delay:-1.5s}.adk-cta-deco i:nth-child(3){right:14%;bottom:12%;animation-delay:-3s}
+.adk-cta-box .btn.adk-white{background:#fff;color:#0b3a7a!important;border-color:#fff}
+.adk-cta-box .btn.adk-ghost{background:transparent;color:#fff!important;border:2px solid rgb(255 255 255 / .8)}
+.adk-cta-box .btn:hover{transform:translateY(-2px)}
+.adk-checklist{max-width:640px;margin:18px auto 0;padding:16px 18px;border-radius:18px;background:rgb(255 255 255 / .12);border:1px solid rgb(255 255 255 / .25);text-align:left}
+.adk-checklist ul{margin:8px 0;padding-left:20px;columns:2 220px;column-gap:20px}
+.adk-checklist li{margin:3px 0;break-inside:avoid}
+.adk-small{margin:8px 0 0;font-size:13px!important;line-height:1.5!important;color:#e6e9ff}
+
+/* Policy */
+.adk-policy{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.adk-policy section{padding:16px 18px;border-radius:20px}
+.adk-policy h3{margin:0 0 6px;font-size:18px}
+.adk-policy ul{margin:0;padding-left:20px}
+.adk-policy li{margin:5px 0;line-height:1.5;font-size:15px}
+.adk-wide{grid-column:1/-1}
+.adk-final{text-align:center;margin:26px 0}
+@media (prefers-reduced-motion:reduce){.adk-wire .w-ad,.adk-hero i,.adk-cta-deco i{animation:none}.adk-pkg:hover,.adk-benefit:hover{transform:none}}
