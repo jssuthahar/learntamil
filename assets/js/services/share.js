@@ -3,7 +3,8 @@
    and then only the page link and its title go to the site they chose. Never pass a child's name or progress here.
    This is a grown-up surface, so the labels are network names in English (like the parent screens).
 
-   Pages:  <div data-share-row></div> is filled with buttons for this page (canonical URL, og:title).
+   Pages:  <div data-share-row></div> is filled with buttons for this page (canonical URL, og:title),
+           or for data-share-url / data-share-title when given.
    Code:   LTShare.open({ url, title, text }) opens a small share sheet (used for "Share this Kural"). */
 (function(){
   const enc = encodeURIComponent;
@@ -59,8 +60,10 @@
   function fill(){
     const info = pageInfo();
     document.querySelectorAll('[data-share-row]').forEach(el => {
-      el.shareInfo = info; el.setAttribute('data-share-for', '');
-      el.innerHTML = `<b class="share-label">${attr(el.dataset.shareRow || 'Share')}</b><div class="share-list">${buttons(info)}</div>`;
+      // data-share-url / data-share-title share another page (the install page shares the app's home page)
+      const mine = el.dataset.shareUrl ? { url: el.dataset.shareUrl, title: el.dataset.shareTitle || info.title } : info;
+      el.shareInfo = mine; el.setAttribute('data-share-for', '');
+      el.innerHTML = `<b class="share-label">${attr(el.dataset.shareRow || 'Share')}</b><div class="share-list">${buttons(mine)}</div>`;
     });
   }
   function open(info){

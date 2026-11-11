@@ -89,7 +89,7 @@ function pathOf(age = childAge()){
 }
 const DEFAULT = () => ({ tokens: 0, tokensEver: 0, correct: 0, bestStreak: 0, letters: [], words: 0, stories: [],
   memoryWins: 0, balloonBest: 0, built: 0, spins: 0, badges: [], certs: {},
-  misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {}, little: 0, gifts: 0, giftDay: '',
+  misses: {}, traced: [], rhymes: [], coloured: 0, said: 0, stickers: 0, mins: {}, little: 0, gifts: 0, giftDay: '', classroom: 0, classroomDone: [],
   day: '', today: 0, goalDay: '', streakDays: 0, bestDays: 0, stage: 0, since: new Date().toISOString().slice(0, 10),
   // Thirukkural (features/kural/): Kurals learned and bookmarked, quiz answers, its own day streak, Kural of the day done, last opened
   kLearned: [], kMarks: [], kRight: 0, kAsked: 0, kDay: '', kDays: 0, kBestDays: 0, kDaily: '', kLast: 0, kBook: 0, kCerts: {}, kLevels: {} });   // kCerts: chapter → { d: date, s: score, id }; kLevels: level → the same
@@ -127,6 +127,7 @@ const Progress = {
     else if (what === 'coloured') d.coloured++;
     else if (what === 'said') d.said++;
     else if (what === 'kural'){ if (!d.kLearned.includes(v)){ d.kLearned.push(v); this.addTokens(2); } else return; }   // a Thirukkural couplet marked as learned
+    else if (what === 'classroom'){ d.classroom = (d.classroom || 0) + 1; if (!d.classroomDone.includes(v)) d.classroomDone.push(v); }   // a Classroom lesson finished (v: lesson id)
     else if (what === 'little'){ d.little = (d.little || 0) + 1; this.save(); this.check(); return; }   // a find in Little ones (its 'correct' already counts toward today)
     if (what !== 'streak') this.activity();
     this.save(); this.check();

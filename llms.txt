@@ -15,6 +15,7 @@ Key facts:
 - Order to teach a child: listen and sing first → 12 vowels → 18 consonants → uyirmei one consonant row at a time → two-letter picture words → sentences. About 10 minutes a day.
 
 ## Guides
+- [Learn Tamil online — free beginner’s guide](https://learntamil.msdevbuild.com/learn-tamil-online.html)
 - [Tamil alphabet — all 247 letters](https://learntamil.msdevbuild.com/tamil-alphabet.html)
 - [Tamil vowels (uyir ezhuthukal)](https://learntamil.msdevbuild.com/tamil-vowels.html)
 - [Tamil consonants (mei ezhuthukal)](https://learntamil.msdevbuild.com/tamil-consonants.html)
@@ -34,6 +35,8 @@ Key facts:
 - [Shapes in Tamil](https://learntamil.msdevbuild.com/tamil-shapes.html)
 - [Opposite words in Tamil](https://learntamil.msdevbuild.com/tamil-opposite-words.html)
 - [Tamil months — the 12 months](https://learntamil.msdevbuild.com/tamil-months.html)
+- [Tamil pronunciation guide](https://learntamil.msdevbuild.com/tamil-pronunciation-guide.html)
+- [Basic Tamil phrases](https://learntamil.msdevbuild.com/tamil-phrases-for-beginners.html)
 - [Aathichoodi with meaning](https://learntamil.msdevbuild.com/aathichoodi.html)
 - [Tamil rhymes for kids](https://learntamil.msdevbuild.com/tamil-rhymes-for-kids.html)
 - [Tamil festivals for kids](https://learntamil.msdevbuild.com/tamil-festivals-for-kids.html)
@@ -41,6 +44,8 @@ Key facts:
 - [Thirukkural for kids](https://learntamil.msdevbuild.com/thirukkural.html)
 - [All 133 Thirukkural chapters](https://learntamil.msdevbuild.com/thirukkural-chapters.html)
 - [Thirukkural by topic](https://learntamil.msdevbuild.com/thirukkural-topics.html)
+- [Install the app · QR code · share](https://learntamil.msdevbuild.com/install-app.html)
+- [Learn Tamil FAQ & help](https://learntamil.msdevbuild.com/learn-tamil-faq.html)
 - [Free printable charts & worksheets](https://learntamil.msdevbuild.com/tamil-printables.html)
 
 ## Thirukkural chapters (Tamil text + G. U. Pope's English translation)

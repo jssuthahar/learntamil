@@ -18,9 +18,9 @@ $('#themeBtn').addEventListener('click', ()=>{
 /* The main menu groups sections: Learn (the letter tabs), Read (reading + stories), Play (games), Print (a page), Certificate. */
 const LETTER_TABS = ['uyir','mei','aytham','uyirmei'];
 const READ_TABS = ['reading','stories'];
-const SECTIONS = [...LETTER_TABS, ...READ_TABS, 'practice', 'certificate', 'little'];
+const SECTIONS = [...LETTER_TABS, ...READ_TABS, 'practice', 'certificate', 'little', 'classroom'];
 let lastLetterTab = 'uyir', lastReadTab = 'reading';
-const navOf = n => LETTER_TABS.includes(n) || n === 'little' ? 'letters' : READ_TABS.includes(n) ? 'read' : n;
+const navOf = n => LETTER_TABS.includes(n) || n === 'little' || n === 'classroom' ? 'letters' : READ_TABS.includes(n) ? 'read' : n;
 const lastOf = go => go === 'letters' ? lastLetterTab : go === 'read' ? lastReadTab : go;
 function openTab(name){
   name = lastOf(name);

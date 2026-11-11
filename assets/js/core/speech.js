@@ -31,10 +31,10 @@ else showNotice('This browser cannot speak. Please open the page in Chrome, Edge
 
 /* Voice volume, 0–1 (device setting "lt-vol", changed in ⚙️ Settings). */
 function voiceVolume(){ try { const v = parseFloat(localStorage.getItem('lt-vol')); return isNaN(v) ? 1 : Math.max(0, Math.min(1, v)); } catch (e) { return 1; } }
-function utter(text){
+function utter(text, pitch){
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'ta-IN'; if (tamilVoice) u.voice = tamilVoice;
-  u.rate = parseFloat($('#rate').value); u.pitch = 1.05; u.volume = voiceVolume();
+  u.rate = parseFloat($('#rate').value); u.pitch = pitch || 1.05; u.volume = voiceVolume();
   return u;
 }
 /* ---------- Recorded audio (preferred over the device voice) ----------
@@ -81,14 +81,15 @@ const sayItem = (item, onend)=>{
    - an utterance can be garbage-collected before it ends (no sound / no onend) → keep a reference;
    - the engine can get stuck paused → resume(). */
 let liveUtter = null, speakT = 0;
-function speak(text, onend){
+/* pitch (optional): the Classroom's children speak a little higher than the teacher. */
+function speak(text, onend, pitch){
   stopAudio();
   clearTimeout(speakT);
   if (!('speechSynthesis' in window)) { onend && onend(); return; }
   try{
     const busy = speechSynthesis.speaking || speechSynthesis.pending;
     speechSynthesis.cancel();
-    const u = utter(text); liveUtter = u;
+    const u = utter(text, pitch); liveUtter = u;
     let done = false;
     const fin = ()=>{ if (done) return; done = true; if (liveUtter===u) liveUtter = null; onend && onend(); };
     u.onend = fin; u.onerror = fin;

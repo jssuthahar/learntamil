@@ -647,6 +647,29 @@ footer .foot{display:grid;grid-template-columns:1.4fr 1fr;gap:14px 30px;align-it
    ===================================================================== */
 .install-btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 14px;background:linear-gradient(135deg,#1769d1,#7c3aed);color:#fff;font-weight:700;font-size:14px;cursor:pointer;margin-right:8px;box-shadow:0 6px 16px -6px rgb(23 105 209 / .6);animation:pop .4s ease}
 .install-btn:hover{transform:translateY(-1px)}
+.install-btn{white-space:nowrap;flex:none}
+/* App pages: the header also holds the menu and the ☕ cup, so Install shows only its icon (its name is in title + aria-label). */
+body:not(.doc-page) .install-btn span:last-child{display:none}
+body:not(.doc-page) .install-btn{padding:8px 11px;margin-right:0}
+
+/* ☕ "Buy me a coffee" in every page header: bright yellow pill, a little steam and a wiggle now and then.
+   Full label on wide screens; just the cup when the header is busy (tablets with the menu, phones). */
+.coffee-top{position:relative;display:inline-flex;align-items:center;gap:7px;flex:none;border-radius:999px;padding:8px 15px 8px 12px;background:linear-gradient(180deg,#ffe24d,#ffc800);color:#1b1300;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap;border:1px solid #e0a800;box-shadow:0 6px 16px -6px rgb(224 168 0 / .75),inset 0 1px 0 rgb(255 255 255 / .6);transition:transform .15s ease,box-shadow .15s ease}
+.coffee-top:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 10px 22px -8px rgb(224 168 0 / .9),inset 0 1px 0 rgb(255 255 255 / .6)}
+.coffee-top:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ct-cup{position:relative;font-size:18px;line-height:1;display:inline-block;animation:ctWiggle 6s ease-in-out infinite;transform-origin:50% 90%}
+.ct-cup::before,.ct-cup::after{content:"";position:absolute;bottom:88%;width:3px;height:9px;border-radius:3px;background:rgb(120 80 0 / .35);animation:ctSteam 2.4s ease-in-out infinite}
+.ct-cup::before{left:30%}
+.ct-cup::after{left:58%;animation-delay:1.2s}
+@keyframes ctWiggle{0%,86%,100%{transform:rotate(0)}89%{transform:rotate(-14deg)}92%{transform:rotate(12deg)}95%{transform:rotate(-6deg)}}
+@keyframes ctSteam{0%{opacity:0;transform:translateY(4px) scaleY(.6)}40%{opacity:1}100%{opacity:0;transform:translateY(-7px) scaleY(1.1)}}
+/* App pages (index, Thirukkural): the menu fills the header, so the button is a round cup there; guide pages keep the label. */
+body:not(.doc-page) .coffee-top .ct-t{display:none}
+body:not(.doc-page) .coffee-top{padding:0;width:42px;height:42px;justify-content:center}
+body:not(.doc-page) .coffee-top .ct-cup{font-size:20px}
+/* Thirukkural header: its menu has six items + the child switcher; drop the brand word so everything fits. */
+@media (min-width:761px){ .kural-page .site-header .brand-name{display:none} }
+@media (max-width:760px){ .coffee-top .ct-t{display:none} .coffee-top{padding:0;width:38px;height:38px;justify-content:center} }
 .toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,140%);z-index:60;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:min(560px,calc(100vw - 24px));background:var(--text);color:var(--bg);border-radius:16px;padding:12px 14px;box-shadow:0 18px 40px -12px rgb(0 0 0 / .45);transition:transform .35s cubic-bezier(.3,1.4,.5,1);font-size:15px}
 .toast.show{transform:translate(-50%,0)}
 .toast-msg{flex:1;min-width:200px;line-height:1.45}
@@ -816,6 +839,55 @@ footer .foot{display:grid;grid-template-columns:1.4fr 1fr;gap:14px 30px;align-it
   .sponsor-slot{grid-template-columns:auto 1fr}
   .sp-btn{grid-column:1/-1;text-align:center}
 }
+/* Vertical sponsor rail: sits in the right-hand gutter beside the guide text on wide screens, sticky while reading.
+   Hidden where there is no gutter (phones, tablets) — the banner and card slots cover those. */
+.doc{position:relative}
+.sky-rail{display:none}
+@media (min-width:1300px){
+  .sky-rail{display:block;position:absolute;top:20px;bottom:40px;left:calc(100% + 16px);width:170px}
+  .sponsor-vertical{position:sticky;top:90px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;margin:0;padding:30px 14px 16px}
+  .sponsor-vertical.is-sample{background:radial-gradient(160px 200px at 50% 0%,rgb(0 120 212 / .22),transparent 70%),var(--glass)}
+  .sv-brand{font-size:46px;line-height:1}
+  .sponsor-vertical b{font-size:19px;line-height:1.2}
+  .sponsor-vertical p{font-size:13.5px!important}
+  .sponsor-vertical .sp-btn{width:100%;padding:10px 8px;text-align:center;background:#0078d4;color:#fff!important;border-color:#0078d4}
+  .sponsor-vertical .sp-btn:hover{background:#106ebe}
+  .sv-adv{font-size:12px;color:var(--text-muted)!important}
+}
+/* Install, share & QR page (install-app.html) */
+.install-now{margin:18px 0;padding:18px 20px;border-radius:22px}
+.install-now h2{margin-top:0}
+.install-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.qr-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:14px 0}
+.qr-card{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px;border-radius:22px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);text-align:center}
+.qr-card img{width:220px;height:220px;max-width:100%;border-radius:14px;background:#fff;padding:6px}
+.qr-card figcaption{display:flex;flex-direction:column;align-items:center;gap:6px}
+.qr-card b{font-family:var(--font-kid);font-size:18px}
+.qr-card small{color:var(--text-muted)}
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:14px 0}
+.device-card{position:relative;padding:16px 18px;border-radius:20px}
+.device-card h3{margin:0 0 2px;font-size:18px}
+.device-card p{margin:0 0 8px}
+.device-card ol{margin:0;padding-left:20px}
+.device-card li{margin:4px 0;line-height:1.5}
+.device-card.is-you{outline:3px solid #0078d4;outline-offset:2px}
+.device-card.is-you::before{content:"This device";position:absolute;top:-11px;right:14px;padding:2px 10px;border-radius:999px;background:#0078d4;color:#fff;font-size:12px;font-weight:700}
+.share-big .share-btn{min-height:46px;padding:10px 16px}
+@media print{
+  body:has(.qr-row) main > :not(.qr-row){display:none!important}
+  body:has(.qr-row) .qr-row{grid-template-columns:1fr 1fr}
+  body:has(.qr-row) .qr-card{box-shadow:none;border:1px solid #999;background:#fff;color:#000}
+  body:has(.qr-row) .qr-card .btn,.sky-rail{display:none!important}
+}
+
+/* ☕ Support card at the top of the Parent dashboard (behind the grown-up "Hold" gate). */
+.pc-coffee{display:flex;align-items:center;gap:12px;margin:10px 0 14px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg,#fff6c2,#ffe27a);border:1px solid #f0c400;color:#1b1300;text-decoration:none;box-shadow:0 8px 20px -10px rgb(224 168 0 / .8)}
+.pc-coffee:hover{transform:translateY(-1px)}
+.pc-coffee-ic{font-size:30px;flex:none}
+.pc-coffee-t{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.pc-coffee-t small{color:#4a3a00;font-size:13px}
+.pc-coffee-go{font-weight:800;font-size:20px}
+@media (min-width:761px) and (max-width:859px){ .kural-page .coffee-top{display:none} }   /* no room beside the Thirukkural menu */
 
 /* ===== 70-rewards.css ===== */
 /* Learn Tamil — Game rewards: scoreboard, cheer pop-up, badges, rewards panel.
@@ -2043,3 +2115,148 @@ body.little-on #globalTools,body.little-on .disclaimer{display:none}
 .share-preview{font-family:inherit;background:var(--bg-subtle);border-radius:12px;padding:10px 12px;margin:0 0 12px;line-height:1.6}
 @media (max-width:420px){ .share-btn span{font-size:.8rem} .share-btn{padding:8px 10px} }
 @media print{ .share-row,.share-sheet{display:none !important} }
+
+/* ===================== 🍎 Classroom (#/classroom, features/classroom/) =====================
+   Teacher on the left, chalkboard (the lesson) on the right, classmates in a row below the board.
+   Characters sit beside the content in the grid, never on top of it. */
+.classroom{--cr-wall:linear-gradient(180deg,#fff4e0 0%,#ffe9cf 72%,#f4c995 72%,#e9b77d 100%);--cr-chalk:#1f5c45;--cr-wood:#a8672f;--cr-bubble:#ffffff;--cr-bubble-text:#1b1b2e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .classroom{--cr-wall:linear-gradient(180deg,#26324a 0%,#1d2a40 72%,#4a3324 72%,#3b281c 100%);--cr-bubble:#f5f7fb}}
+:root[data-theme="dark"] .classroom{--cr-wall:linear-gradient(180deg,#26324a 0%,#1d2a40 72%,#4a3324 72%,#3b281c 100%);--cr-bubble:#f5f7fb}
+.classroom .cr-head{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px}
+.classroom .cr-head h2{margin:0;font-family:var(--font-kid);font-size:28px}
+.classroom .cr-head h2 small{font-size:15px;font-weight:600;color:var(--text-muted)}
+.cr-room{background:var(--cr-wall);border-radius:24px;padding:16px 16px 12px;border:1px solid var(--border);box-shadow:var(--glass-shadow);overflow:hidden}
+.cr-stage{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:12px;align-items:end}
+.cr-char{margin:0;position:relative}
+.cr-svg{display:block;width:100%;height:auto;overflow:visible}
+.cr-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+
+/* Speech bubble: who is speaking, the Tamil line, and English under it. */
+.cr-bubble{position:relative;background:var(--cr-bubble);color:var(--cr-bubble-text);border-radius:18px;padding:10px 14px 10px;min-height:72px;box-shadow:0 6px 18px -6px rgb(0 0 0 / .25);display:flex;flex-direction:column;gap:2px}
+.cr-bubble:empty{visibility:hidden}
+.cr-bubble::after{content:"";position:absolute;width:18px;height:18px;background:inherit;transform:rotate(45deg);left:-7px;bottom:22px;border-radius:3px}
+.cr-bubble.from-k::after{left:auto;right:40%;bottom:-7px}
+.cr-bubble.pop{animation:crPop .3s ease-out}
+.cr-who{display:flex;align-items:center;gap:6px;font-size:13px;color:#4a5163}
+.cr-who small{font-weight:500}
+.cr-dot{display:inline-block;width:12px;height:12px;border-radius:50%}
+.cr-ta{font-family:var(--font-kid);font-size:clamp(19px,2.6vw,24px);font-weight:700;line-height:1.35}
+.cr-en{color:#4a5163;font-size:14px}
+
+/* Chalkboard */
+.cr-board{min-width:0;background:var(--cr-chalk);border:10px solid var(--cr-wood);border-radius:14px;min-height:250px;padding:14px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgb(0 0 0 / .35)}
+.cr-item{display:flex;flex-direction:column;align-items:center;text-align:center;animation:crIn .45s ease-out both}
+.cr-pic{font-size:clamp(54px,9vw,84px);line-height:1.1}
+.cr-big{font-family:var(--font-ta);font-size:clamp(64px,11vw,108px);line-height:1;color:#fff8c7;text-shadow:0 2px 0 rgb(0 0 0 / .25)}
+.cr-word{font-family:var(--font-kid),var(--font-ta);font-size:clamp(26px,4vw,36px);font-weight:700}
+.cr-word-en{color:#cfe9dc;font-size:15px}
+.cr-turn{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.cr-turn span{font-size:64px;animation:crPulse 1s ease-in-out infinite}
+.cr-turn b{font-family:var(--font-kid),var(--font-ta);font-size:28px}
+.cr-turn small{color:#cfe9dc}
+.cr-menu-t{margin:0 0 10px;text-align:center;font-family:var(--font-kid),var(--font-ta);font-size:22px;display:flex;flex-direction:column}
+.cr-menu-t small{font-family:var(--font-ui);font-size:13px;font-weight:500;color:#cfe9dc}
+.cr-menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;width:100%}
+.cr-lesson{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:96px;padding:8px 6px;border-radius:14px;border:2px dashed rgb(255 255 255 / .45);background:rgb(255 255 255 / .08);color:#fff;cursor:pointer;font:inherit}
+.cr-lesson:hover,.cr-lesson:focus-visible{background:rgb(255 255 255 / .18);border-style:solid}
+.cr-l-ic{font-size:32px;line-height:1.1}
+.cr-lesson.is-letters .cr-l-ic{font-family:var(--font-ta);color:#fff8c7}
+.cr-lesson b{font-family:var(--font-ta);font-size:16px}
+.cr-lesson small{font-size:12px;color:#cfe9dc}
+.cr-l-done{position:absolute;top:4px;right:6px;font-style:normal;background:#ffd34d;color:#1f5c45;border-radius:50%;width:20px;height:20px;font-size:13px;font-weight:800;display:grid;place-items:center}
+.cr-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.cr-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:120px;border-radius:16px;border:3px solid rgb(255 255 255 / .6);background:#fffdf5;color:#1b1b2e;cursor:pointer;font:inherit;animation:crIn .4s ease-out both}
+.cr-opt .cr-pic{font-size:clamp(44px,7vw,64px)}
+.cr-opt b{font-family:var(--font-ta);font-size:clamp(20px,3vw,28px)}
+.cr-opt.is-letter b{font-size:clamp(40px,7vw,60px)}
+.cr-opt.right{border-color:#ffd34d;background:#fff6c9;box-shadow:0 0 0 4px #ffd34d}
+.cr-opt.nope{animation:crNope .4s}
+.cr-opt.hint{animation:crHint .7s ease-in-out 2}
+.cr-opts.is-small .cr-opt{min-height:96px}
+.cr-opts.is-yn{grid-template-columns:repeat(2,minmax(0,1fr));max-width:420px}
+.cr-yn small{font-size:12px;color:#4a5163}
+.cr-read{font-family:var(--font-kid);font-size:clamp(36px,6vw,56px);font-weight:700;color:#fff8c7;margin:0 0 12px;text-align:center;line-height:1.2;animation:crIn .4s ease-out both}
+.cr-row{display:flex;justify-content:center;gap:clamp(8px,3vw,24px);margin:0 0 12px}
+.cr-cell{display:grid;place-items:center;width:clamp(64px,10vw,96px);aspect-ratio:1;border-radius:16px;background:rgb(255 255 255 / .12);border:2px dashed rgb(255 255 255 / .5);font-size:clamp(38px,6vw,56px);animation:crIn .4s ease-out both}
+.cr-curtain{font-size:96px;animation:crPulse 1s ease-in-out infinite}
+.cr-kid.cover .cr-arm-l{transform:rotate(160deg)}
+.cr-kid.cover .cr-arm-r{transform:rotate(-160deg)}
+.cr-kid.cover .cr-eyes{display:none}
+.cr-kid.cover .cr-eyes-happy{display:inline}
+.cr-end{display:flex;flex-direction:column;align-items:center;gap:12px}
+.cr-trophy{font-size:72px;animation:crIn .5s ease-out both}
+.cr-end-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.cr-end-btns .btn{min-height:44px}
+.cr-end-btns small{font-weight:500;opacity:.85}
+
+/* Classmates */
+.cr-kids{display:flex;justify-content:flex-end;gap:clamp(8px,3vw,28px);margin-top:4px;padding-right:4%}
+.cr-kid{width:clamp(70px,12vw,110px);text-align:center;cursor:pointer}
+.cr-kid figcaption{font-size:13px;font-weight:700;color:var(--text);margin-top:-2px}
+.cr-kid figcaption small{font-weight:500;color:var(--text-muted)}
+.cr-ctrl{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.cr-ctrl .btn{min-height:44px}
+
+/* Character motion: idle breathing + blinking; talk, gestures and moods are classes on .cr-char. */
+.cr-char .cr-body{transform-origin:50% 100%;transform-box:fill-box;animation:crBreathe 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.cr-char .cr-eyes{animation:crBlink 4.6s infinite;animation-delay:var(--d,0s)}
+.cr-char .cr-eyes-happy,.cr-char .cr-mouth-open{display:none}
+.cr-char .cr-arm{transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.cr-char .cr-head{transition:transform .4s ease}
+.cr-teacher .cr-arm-l{transform:rotate(14deg)}
+.cr-teacher .cr-arm-r{transform:rotate(-10deg)}
+.cr-kid .cr-arm-l{transform:rotate(10deg)}
+.cr-kid .cr-arm-r{transform:rotate(-10deg)}
+.cr-char.talk .cr-mouth-smile{display:none}
+.cr-char.talk .cr-mouth-open{display:inline;animation:crTalk .28s ease-in-out infinite alternate}
+.cr-char.talk .cr-head{animation:crNod 1.4s ease-in-out infinite}
+.cr-teacher.wave .cr-arm-l{transform:rotate(145deg);animation:crWave .5s ease-in-out infinite alternate}
+.cr-teacher.point .cr-arm-r{transform:rotate(-102deg)}
+.cr-teacher.point .cr-head{transform:rotate(5deg)}
+.cr-teacher.open .cr-arm-l{transform:rotate(58deg)}
+.cr-teacher.open .cr-arm-r{transform:rotate(-58deg)}
+.cr-char.happy .cr-eyes,.cr-char.cheer .cr-eyes{display:none}
+.cr-char.happy .cr-eyes-happy,.cr-char.cheer .cr-eyes-happy{display:inline}
+.cr-teacher.happy .cr-arm-l{transform:rotate(150deg)}
+.cr-teacher.happy .cr-arm-r{transform:rotate(-150deg)}
+.cr-teacher.happy .cr-body{animation:crHop .55s ease-in-out 3}
+.cr-kid.raise .cr-arm-r{transform:rotate(-168deg);animation:crWave .45s ease-in-out infinite alternate}
+.cr-kid.raise .cr-head{transform:rotate(-6deg)}
+.cr-kid.cheer .cr-arm-l{transform:rotate(150deg)}
+.cr-kid.cheer .cr-arm-r{transform:rotate(-150deg)}
+.cr-kid.cheer .cr-body{animation:crHop .5s ease-in-out infinite}
+.cr-kid.talk figcaption,.cr-kid.raise figcaption{color:var(--accent)}
+.cr-char.talk::before{content:"";position:absolute;inset:auto 10% -4px;height:10px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 211 77 / .7),transparent);pointer-events:none}
+@keyframes crBreathe{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1px) scaleY(1.012)}}
+@keyframes crBlink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes crTalk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+@keyframes crNod{0%,100%{transform:rotate(0)}30%{transform:rotate(-3deg)}70%{transform:rotate(3deg)}}
+@keyframes crWave{from{rotate:-12deg}to{rotate:12deg}}
+@keyframes crHop{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes crPop{from{transform:scale(.94);opacity:.4}to{transform:none;opacity:1}}
+@keyframes crIn{from{transform:translateY(10px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes crPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes crNope{0%,100%{transform:none}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
+@keyframes crHint{0%,100%{transform:none;box-shadow:none}50%{transform:scale(1.07);box-shadow:0 0 0 5px #ffd34d}}
+
+/* Phones: a smaller teacher next to the bubble; board full width; classmates in a row under it. */
+@media (max-width:600px){
+  .cr-room{padding:10px 10px 8px;border-radius:18px}
+  .cr-stage{grid-template-columns:96px 1fr;gap:8px;align-items:start}
+  .cr-main{display:contents}
+  .cr-teacher{grid-column:1;grid-row:1}
+  .cr-bubble{grid-column:2;grid-row:1;align-self:center;min-height:0}
+  .cr-bubble::after{bottom:auto;top:40%}
+  .cr-board{grid-column:1 / -1;grid-row:2;min-height:210px;border-width:7px;padding:10px}
+  .cr-ta{font-size:18px}
+  .cr-en{font-size:12.5px}
+  .cr-board{min-width:0}
+  .cr-menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .cr-lesson b{font-size:13.5px;line-height:1.3}
+  .cr-lesson small{font-size:11px}
+  .cr-l-ic{font-size:26px}
+  .cr-lesson{min-height:84px;padding:6px 4px}
+  .cr-opt{min-height:96px}
+  .cr-kids{justify-content:center}
+  body.classroom-on .kili-fab{display:none}
+}

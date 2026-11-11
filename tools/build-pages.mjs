@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { styleTags, scriptTags, SERVICES, APP_SCRIPTS, KURAL_SCRIPTS, PRECACHE_ASSETS, STYLES, STYLE_BUNDLE } from './lib/assets.mjs';
 import { loadData } from './lib/load-data.mjs';
+import { qrSvg } from './lib/qr.mjs';
 
 export const SITE = 'https://learntamil.msdevbuild.com/';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -26,6 +27,8 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const PUBLISHED = '2026-11-09';
 const ISSUES_URL = 'https://github.com/jssuthahar/learntamil/issues';
 export const COFFEE_URL = 'https://buymeacoffee.com/jssuthahar';
+/* The yellow "Buy me a coffee" button in every page header (index.html and thirukkural.html carry the same markup by hand). */
+const COFFEE_TOP = `<a class="coffee-top" href="${COFFEE_URL}" target="_blank" rel="noopener" title="Support Learn Tamil with a coffee" aria-label="Buy me a coffee: support Learn Tamil (opens a new tab)"><span class="ct-cup" aria-hidden="true">☕</span><span class="ct-t">Buy me a coffee</span></a>`;
 /* Support card for parents — a plain link (no widget script), so nothing tracks visitors. */
 export const SUPPORT = `<aside class="support-card" aria-label="Support Learn Tamil">
   <span class="sc-ic" aria-hidden="true">☕</span>
@@ -47,6 +50,16 @@ export function SPONSOR(place) {
   <div><b>${esc(ad.name)}</b><p>${esc(ad.text)}</p></div>
   <a class="sp-btn" href="${ad.url}" target="_blank" rel="sponsored noopener">Visit →</a>
 </aside>`;
+  // Vertical rail (desktop only, beside the guide text): a sample ad for the MSDEVBUILD blog,
+  // so advertisers can see what a filled tall slot looks like.
+  if (place === 'vertical') return `<div class="sky-rail"><aside class="sponsor-slot sponsor-vertical is-sample" aria-label="Sample ad">
+  <span class="sp-label">Sample ad</span>
+  <span class="sv-brand" aria-hidden="true">💻</span>
+  <b>MSDEVBUILD Blog</b>
+  <p>Real engineering stories on .NET, MAUI, Flutter, Azure and AI by Suthahar Jegatheesan.</p>
+  <a class="sp-btn" href="https://blog.msdevbuild.com/" target="_blank" rel="noopener">Read the blog →</a>
+  <a class="sv-adv" href="${ADVERTISE_URL}" rel="noopener">Your ad here? Advertise with us</a>
+</aside></div>`;
   const copy = place === 'banner'
     ? ['Your brand here', 'This space is available for child-safe, family-friendly sponsors.']
     : ['Advertise on Learn Tamil', 'Reach parents and teachers who are helping children learn Tamil. We accept only child-safe, family-friendly sponsors, shown as a simple image or text link with no tracking.'];
@@ -60,6 +73,7 @@ export function SPONSOR(place) {
 
 /* All guide pages — used for the footer, "More guides" cards, sitemap and llms.txt. */
 export const GUIDES = [
+  { file: 'learn-tamil-online.html', ic: '🚀', en: 'Learn Tamil online — free beginner’s guide', ta: 'தமிழ் கற்போம்' },
   { file: 'tamil-alphabet.html', ic: '🔤', en: 'Tamil alphabet — all 247 letters', ta: 'தமிழ் எழுத்துகள்' },
   { file: 'tamil-vowels.html', ic: '🌱', en: 'Tamil vowels (uyir ezhuthukal)', ta: 'உயிர் எழுத்துகள்' },
   { file: 'tamil-consonants.html', ic: '🧱', en: 'Tamil consonants (mei ezhuthukal)', ta: 'மெய் எழுத்துகள்' },
@@ -79,6 +93,8 @@ export const GUIDES = [
   { file: 'tamil-shapes.html', ic: '🔺', en: 'Shapes in Tamil', ta: 'வடிவங்கள்' },
   { file: 'tamil-opposite-words.html', ic: '↔️', en: 'Opposite words in Tamil', ta: 'எதிர்ச்சொற்கள்' },
   { file: 'tamil-months.html', ic: '🗓️', en: 'Tamil months — the 12 months', ta: 'தமிழ் மாதங்கள்' },
+  { file: 'tamil-pronunciation-guide.html', ic: '👂', en: 'Tamil pronunciation guide', ta: 'உச்சரிப்பு' },
+  { file: 'tamil-phrases-for-beginners.html', ic: '💬', en: 'Basic Tamil phrases', ta: 'அன்றாடச் சொற்றொடர்கள்' },
   { file: 'aathichoodi.html', ic: '🌺', en: 'Aathichoodi with meaning', ta: 'ஆத்திசூடி' },
   { file: 'tamil-rhymes-for-kids.html', ic: '🎵', en: 'Tamil rhymes for kids', ta: 'சிறுவர் பாடல்கள்' },
   { file: 'tamil-festivals-for-kids.html', ic: '🪔', en: 'Tamil festivals for kids', ta: 'பண்டிகைகள்' },
@@ -86,6 +102,8 @@ export const GUIDES = [
   { file: 'thirukkural.html', ic: '📜', en: 'Thirukkural for kids', ta: 'திருக்குறள்' },
   { file: 'thirukkural-chapters.html', ic: '📗', en: 'All 133 Thirukkural chapters', ta: 'அதிகாரங்கள்' },
   { file: 'thirukkural-topics.html', ic: '🧭', en: 'Thirukkural by topic', ta: 'தலைப்பு வாரியாக' },
+  { file: 'install-app.html', ic: '📲', en: 'Install the app · QR code · share', ta: 'செயலியை நிறுவுதல்' },
+  { file: 'learn-tamil-faq.html', ic: '❓', en: 'Learn Tamil FAQ & help', ta: 'கேள்வி பதில்' },
   { file: 'tamil-printables.html', ic: '🖨️', en: 'Free printable charts & worksheets', ta: 'அச்சிடும் தாள்கள்' }
 ];
 
@@ -172,6 +190,7 @@ ${styleTags()}
       <span class="brand-name">MSDEVBUILD<small>Learn Tamil · <span class="ta">தமிழ் கற்போம்</span></small></span>
     </a>
     <span class="spacer"></span>
+    ${COFFEE_TOP}
     ${file !== 'tamil-printables.html' ? '<a class="btn small" href="tamil-printables.html"><span aria-hidden="true">🖨️</span> <span class="hide-sm">Printables</span></a>' : ''}
     <a class="btn primary small" href="./"><span aria-hidden="true">🎮</span> <span class="hide-sm">${T.open} </span>→</a>
   </div>
@@ -189,7 +208,7 @@ ${styleTags()}
       <div class="doc-mascot" aria-hidden="true"><span class="bird">🦜</span>${bubble ? `<span class="bubble">${bubble}</span>` : ''}</div>
     </div>
   </section>
-${guide ? SPONSOR('banner') : ''}
+${guide ? SPONSOR('vertical') + SPONSOR('banner') : ''}
 ${body}
 ${guide ? SPONSOR('card') : ''}
 ${share ? '<div class="share-row share-inline" data-share-row="Share this page"></div>' : ''}
@@ -813,7 +832,7 @@ const ISS = ISSUES_URL;
 const HELP = [
   ['How do I hear a letter?', 'Open 🔤 Learn (கற்றல்) and tap any letter tile. The big letter, its sound and a picture word appear at the top; press 🔊 to hear it again. Vowels play the letter and then their picture word.', 'sound hear listen play letter tap audio', './#/uyir'],
   ['The sound is wrong or there is no sound', `Sounds come from your device's Tamil text-to-speech voice, which can mispronounce single letters. To get a Tamil voice — Android: Settings → Text-to-speech → Google → install Tamil. Windows: Settings → Time & language → Speech → add Tamil. iPhone/Mac: Settings → Accessibility → Spoken Content → Voices → Tamil. Microsoft Edge has clearer Tamil voices. If you hear a mistake, please [report it on GitHub Issues](${ISS}).`, 'sound voice wrong no not working mute silent pronounce pronunciation audio speaker tts', ''],
-  ['How do I install Learn Tamil as an app?', 'On Android, Chrome or Edge, tap the ⬇ Install app button at the top. On iPhone or iPad, open the site in Safari, tap Share and then Add to Home Screen. The app opens full screen and has shortcuts to Letters, Reading, Stories, Games and Certificate.', 'install app download home screen phone mobile iphone android pwa', ''],
+  ['How do I install Learn Tamil as an app?', 'On Android, Chrome or Edge, tap the ⬇ Install app button at the top. On iPhone or iPad, open the site in Safari, tap Share and then Add to Home Screen. The app opens full screen and has shortcuts to Letters, Reading, Stories, Games and Certificate. Steps for every device and a QR code to scan are on the [install page](install-app.html).', 'install app download home screen phone mobile iphone android pwa qr code scan share', 'install-app.html'],
   ['Does it work offline?', 'Yes. After your first visit, letters, reading, stories, games, certificates and the guide pages work without internet. Sounds from the device voice work offline only if the voice is stored on the device.', 'offline internet wifi network connection data', ''],
   ['How do I get a certificate?', 'Open 🎓 Certificate, choose one of the 10 levels and answer the questions (10 questions, pass with 8; the Champion level has 15, pass with 12). Type the name and download the certificate as a PDF. Each level unlocks the next, and every test asks new questions. Certificates are for encouragement, not an official qualification.', 'certificate cert pdf level test exam pass download சான்றிதழ்', './#/certificate'],
   ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
@@ -1047,10 +1066,261 @@ ${h2('faq', '❓', 'Questions')}
     itemListElement: KURAL_TOPICS.map((T, i) => ({ '@type': 'ListItem', position: i + 1, name: T.en, url: SITE + 'thirukkural-topics.html#' + T.id })) }]
 }));
 
+/* ---------- 8d. Entry pages for anyone searching "learn Tamil": beginner's guide, pronunciation, phrases, FAQ & help ----------
+   Defined here (after HELP) because the FAQ & help page renders the HELP list. */
+const taWrap = s => s.replace(/[\u0B80-\u0BFF]+(?:[ ,+=]+[\u0B80-\u0BFF]+)*/g, m => ta(m));   // Tamil runs inside English prose get the Tamil font
+const mdLinks = s => esc(s).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+
+/* Learn Tamil online — the main landing page for "learn Tamil" searches */
+const ONLINE_FAQ = [
+  ['Can I learn Tamil online for free?', 'Yes. Learn Tamil (learntamil.msdevbuild.com) is completely free with no sign-up. It teaches all 247 Tamil letters with sound, picture words, reading practice, read-aloud stories, rhymes, Thirukkural, 14 games, printable worksheets and certificate tests, on any phone, tablet or computer.'],
+  ['Can adults and beginners use Learn Tamil?', 'Yes. Learn Tamil is made for children aged 3 to 12, but the path is the same for any beginner: hear the letters, learn the 12 vowels and 18 consonants, then the 216 uyirmei letters, then read words and short stories. Adults often use it alongside their children.'],
+  ['What is the best way to start learning Tamil?', 'Start with the sounds. Learn the 12 vowels (உயிர், uyir) and the 18 consonants (மெய், mei) first, then join them into uyirmei letters such as க் + ஆ = கா. Practise about 10 to 15 minutes every day, listen to Tamil often, and read simple picture words as soon as you know a few letters.'],
+  ['Can I learn Tamil from English?', 'Yes. Every letter on Learn Tamil has a romanised sound (for example அ = a, கா = kaa) and an English hint, and every word and story line has an English meaning, so English speakers can follow without knowing any Tamil.'],
+  ['Does Learn Tamil work on a phone and offline?', 'Yes. It works in any modern browser and can be installed as an app on Android, iPhone, iPad and computers. After the first visit, the letters, games, stories and guides work without internet.']
+];
+const ONLINE_STEPS = [
+  ['Hear the letters', 'Open the <a href="./">learning app</a> and tap any letter to hear it. Start with the <a href="tamil-vowels.html">12 vowels (உயிர்)</a>.'],
+  ['Learn the consonants', 'Learn the <a href="tamil-consonants.html">18 consonants (மெய்)</a> in their three groups. The <a href="tamil-pronunciation-guide.html">pronunciation guide</a> explains the sounds English does not have, such as ழ.'],
+  ['Join them into uyirmei letters', 'A consonant plus a vowel makes a new letter: க் + ஆ = கா. Learn one row of the <a href="uyirmei-ezhuthukal.html">uyirmei chart</a> at a time.'],
+  ['Write the letters', 'Trace letters on screen (Games → Trace), then on paper with the free <a href="tamil-printables.html">tracing worksheets</a>.'],
+  ['Read your first words', 'Read two-letter <a href="tamil-words-for-kids.html">picture words</a>, then words by topic: <a href="tamil-numbers.html">numbers</a>, <a href="tamil-colours.html">colours</a>, <a href="tamil-animals.html">animals</a> and more.'],
+  ['Say simple phrases', 'Use everyday <a href="tamil-phrases-for-beginners.html">Tamil phrases</a> such as வணக்கம் (hello) and நன்றி (thank you) at home.'],
+  ['Read stories, rhymes and Thirukkural', 'Move on to <a href="tamil-stories-for-kids.html">stories</a>, <a href="tamil-rhymes-for-kids.html">rhymes</a>, <a href="aathichoodi.html">Aathichoodi</a> and <a href="thirukkural.html">Thirukkural</a>.'],
+  ['Test yourself', 'Take the 10 <a href="./#/certificate">certificate levels</a> to check what you have learned.']
+];
+write('learn-tamil-online.html', shell({
+  file: 'learn-tamil-online.html', guide: true, bubble: 'வணக்கம்! Let’s start!',
+  title: 'Learn Tamil Online Free — Step-by-Step Beginner’s Guide',
+  description: 'Learn Tamil online free: hear all 247 letters, read words like அம்மா and வணக்கம், play games and earn certificates. A step-by-step path for beginners.',
+  h1: 'Learn Tamil online — free, step by step', eyebrow: 'For kids · parents · beginners of any age',
+  body: `
+<p class="lead-doc"><strong>You can learn Tamil online for free on Learn Tamil: start by hearing the 12 vowels and 18 consonants, join them into uyirmei letters, then read picture words, phrases and short stories — about 10 to 15 minutes a day.</strong> Everything below is free, needs no sign-up and works on phones, tablets and computers.</p>
+${h2('path', '🪜', 'The learning path, step by step')}
+<ol class="steps">${ONLINE_STEPS.map(([t, d]) => `<li><b>${t}.</b> ${taWrap(d)}</li>`).join('')}</ol>
+${h2('basics', '🔤', 'Tamil script in one minute')}
+<p>Tamil has <strong>247 letters</strong>: 12 vowels (${ta('உயிர்')}), 18 consonants (${ta('மெய்')}), 1 special letter ${ta('ஃ')} and 216 consonant-vowel letters (${ta('உயிர்மெய்')}, 18 × 12). That sounds like a lot, but the 216 follow a pattern: each consonant takes the same vowel sign, so once you know the 30 main letters and the 12 signs, you can read them all. See the <a href="tamil-alphabet.html">full Tamil alphabet chart</a>.</p>
+${h2('free', '🎁', 'What you get for free')}
+<ul>
+  <li><b>🔤 Letters with sound:</b> all 247 letters, each with a romanised sound, a tip and a picture word.</li>
+  <li><b>📖 Reading:</b> ${WORDS.length} picture words in three levels, 12 word topics, ${STORIES.length} read-aloud stories, rhymes and festival stories.</li>
+  <li><b>🎮 14 games:</b> build a letter, listen and pick, balloon pop, memory, spelling, sentences, tracing, colouring and more.</li>
+  <li><b>📜 Thirukkural:</b> all 1,330 Kurals with meanings, stories, games and printable sheets.</li>
+  <li><b>🖨️ Printables:</b> ${PRINTS.length} free PDFs — charts, tracing and activity worksheets.</li>
+  <li><b>🎓 Certificates:</b> 10 levels, from first letters to champion.</li>
+</ul>
+${h2('who', '👪', 'Who it is for')}
+<ul>
+  <li><b>Children aged 3–12</b>, with an age group and learning path for 3–5, 6–8 and 9–12.</li>
+  <li><b>Parents</b> who want to teach Tamil at home, even if they cannot read it — see <a href="how-to-teach-tamil-to-kids.html">how to teach Tamil to kids</a>.</li>
+  <li><b>Families living outside Tamil Nadu and Sri Lanka</b>, Tamil school teachers and any beginner who wants to read Tamil.</li>
+</ul>
+${tip('Learn a little every day. Ten minutes daily, with lots of listening, works better than one long lesson a week. Have a question? See the <a href="learn-tamil-faq.html">Learn Tamil FAQ &amp; help</a>.')}
+${h2('faq', '❓', 'Questions about learning Tamil online')}
+<div class="faq">${faqHtmlFor(ONLINE_FAQ)}</div>`,
+  schema: [faqSchemaFor(ONLINE_FAQ, 'learn-tamil-online.html'),
+    { '@type': 'HowTo', '@id': SITE + 'learn-tamil-online.html#howto', name: 'How to learn Tamil online for free', inLanguage: 'en',
+      step: ONLINE_STEPS.map(([t, d], i) => ({ '@type': 'HowToStep', position: i + 1, name: t, text: d.replace(/<[^>]+>/g, '') })) }]
+}));
+
+/* Pronunciation guide — sounds and hints come from data/alphabet.js */
+const byC = c => CONS.find(k => k.c === c);
+const SOUND_SETS = [
+  ['n', 'Three kinds of “n”: ந ன ண', ['ந', 'ன', 'ண'], 'ந and ன sound almost the same; the difference is mainly where they are written. ண is said with the tongue curled back.'],
+  ['l', 'Three kinds of “l”: ல ள ழ', ['ல', 'ள', 'ழ'], 'ல is like English “l”. For ள curl the tongue back and touch the roof of the mouth. For ழ curl it back further without touching, and let the sound flow — it is the sound in தமிழ் (Tamizh).'],
+  ['r', 'Two kinds of “r”: ர ற', ['ர', 'ற'], 'ர is a light tap of the tongue. ற is stronger and rolled. When it is doubled, ற்ற sounds close to “tr”, as in காற்று (kaatru, wind).'],
+  ['t', 'Two kinds of “t”: த ட', ['த', 'ட'], 'For த the tongue touches the back of the upper teeth (a soft t). For ட the tongue curls back (a hard t).']
+];
+const soundRows = list => list.map(c => { const k = byC(c);
+  return `<tr><td class="L ta">${k.c + PULLI}</td><td>${k.r}</td><td>${esc(k.hint)}</td><td><span class="ta">${k.ex[1]}</span> — ${esc(k.ex[2])}</td></tr>`; }).join('');
+const vowelPairs = [['அ', 'ஆ'], ['இ', 'ஈ'], ['உ', 'ஊ'], ['எ', 'ஏ'], ['ஒ', 'ஓ']].map(p => p.map(l => VOWELS.find(v => v.l === l)));
+const PRON_FAQ = [
+  ['How do you pronounce ழ (zha) in Tamil?', 'To say ழ (zha), curl the tip of your tongue far back towards the roof of your mouth without touching it, and let the sound flow. It sounds between “r” and “l”. It is the last sound of தமிழ் (Tamizh), the name of the language, and is often written “zh” in English.'],
+  ['What is the difference between ல, ள and ழ?', 'ல (la) is like the English “l”, with the tongue just behind the upper teeth. ள (ḷa) is said with the tongue curled back so it touches the roof of the mouth. ழ (zha) is said with the tongue curled back even further, without touching. Practise them in pairs: பல் (tooth), தேள் (scorpion), தமிழ் (Tamil).'],
+  ['What is the difference between ர and ற?', 'ர (ra) is a soft, quick tap of the tongue, as in நீர் (water). ற (ṟa) is a stronger, rolled r, as in காற்று (wind). When ற is doubled (ற்ற) it sounds close to “tr”.'],
+  ['Why are there three n letters in Tamil?', 'Tamil has ந, ன and ண. ந is usually written at the start of a word or before த (பந்து, ball), ன in the middle or at the end (மீன், fish), and ண is said with the tongue curled back (கண், eye). ந and ன sound almost the same.'],
+  ['Do short and long vowels change the meaning in Tamil?', 'Yes. Tamil has five short vowels (அ இ உ எ ஒ) and their long partners (ஆ ஈ ஊ ஏ ஓ). Holding a vowel longer can make a different word, so practise each short–long pair together.']
+];
+write('tamil-pronunciation-guide.html', shell({
+  file: 'tamil-pronunciation-guide.html', guide: true, bubble: 'ழ — say தமிழ்!',
+  title: 'Tamil Pronunciation Guide — ழ, ள, ல, ற, ர, ண, ன, ந',
+  description: 'How to pronounce Tamil letters: the special ழ in தமிழ், the three l and three n sounds, ர and ற, and short and long vowels, with example words.',
+  h1: 'Tamil pronunciation guide', eyebrow: 'Sounds that sound alike · Tips · Example words',
+  body: `
+<p class="lead-doc"><strong>Most Tamil sounds are easy for English speakers; the ones that need practice are the special ${ta('ழ')} (zha), the three “l” sounds ${ta('ல ள ழ')}, the three “n” sounds ${ta('ந ன ண')}, the two “r” sounds ${ta('ர ற')}, and the difference between short and long vowels.</strong> This guide explains each one with an example word. To hear them, tap the letters in the <a href="./#/mei">learning app</a>.</p>
+${SOUND_SETS.map(([id, title, list, note]) => `${h2(id, '👂', title)}
+<p>${taWrap(note)}</p>
+<div class="tbl"><table><thead><tr><th scope="col">Letter</th><th scope="col">Sound</th><th scope="col">How to say it</th><th scope="col">Example</th></tr></thead><tbody>${soundRows(list)}</tbody></table></div>`).join('\n')}
+${h2('vowels', '🌱', 'Short and long vowels')}
+<p>Five Tamil vowels come in short (${ta('குறில்')}) and long (${ta('நெடில்')}) pairs. A long vowel is held about twice as long.</p>
+<div class="tbl"><table><thead><tr><th scope="col">Short</th><th scope="col">Sound</th><th scope="col">Long</th><th scope="col">Sound</th></tr></thead><tbody>${vowelPairs.map(([s, l]) =>
+  `<tr><td class="L ta">${s.l}</td><td>${s.r} — ${esc(s.hint)}</td><td class="L ta">${l.l}</td><td>${l.r} — ${esc(l.hint)}</td></tr>`).join('')}</tbody></table></div>
+${h2('soft', '🔁', 'Letters that soften inside a word')}
+<p>Some hard letters are said more softly between vowels or after a nasal sound. For example ${ta('க')} in ${ta('புத்தகம்')} (book) sounds like “g” — <i>puththagam</i> — and ${ta('த')} in ${ta('பந்து')} (ball) sounds like “dh” — <i>pandhu</i>. ${ta('ச')} can be “ch” or “s”. You will pick these up naturally by listening to words.</p>
+${tip('Practise sounds that sound alike in pairs, and listen before you speak. The app’s 🎤 Say it button lets you record yourself and compare with the right sound — the recording never leaves your device.')}
+<p>Next: the <a href="tamil-alphabet.html">full alphabet chart</a>, <a href="tamil-consonants.html">consonants</a> and <a href="tamil-phrases-for-beginners.html">basic phrases</a>.</p>
+${h2('faq', '❓', 'Questions about Tamil pronunciation')}
+<div class="faq">${faqHtmlFor(PRON_FAQ)}</div>`,
+  schema: [faqSchemaFor(PRON_FAQ, 'tamil-pronunciation-guide.html')]
+}));
+
+/* Basic phrases — NEW Tamil text: needs review by a Tamil teacher */
+const PHRASES = [
+  ['greet', '👋', 'Greetings', [
+    ['வணக்கம்', 'vanakkam', 'Hello / greetings (said with folded hands)'],
+    ['காலை வணக்கம்', 'kaalai vanakkam', 'Good morning'],
+    ['போய் வருகிறேன்', 'poi varugiren', 'Goodbye (literally “I will go and come back”)'],
+    ['நன்றி', 'nandri', 'Thank you'],
+    ['மன்னிக்கவும்', 'mannikkavum', 'Sorry / excuse me'],
+    ['தயவுசெய்து', 'thayavuseydhu', 'Please']]],
+  ['about', '🧒', 'About me', [
+    ['உங்கள் பெயர் என்ன?', 'ungal peyar enna?', 'What is your name?'],
+    ['என் பெயர் …', 'en peyar …', 'My name is …'],
+    ['எப்படி இருக்கிறீர்கள்?', 'eppadi irukkireergal?', 'How are you?'],
+    ['நான் நன்றாக இருக்கிறேன்', 'naan nandraaga irukkiren', 'I am fine'],
+    ['நான் தமிழ் கற்கிறேன்', 'naan thamizh karkiren', 'I am learning Tamil']]],
+  ['everyday', '🏠', 'Everyday words', [
+    ['ஆம்', 'aam', 'Yes'],
+    ['இல்லை', 'illai', 'No'],
+    ['சரி', 'sari', 'OK / all right'],
+    ['இது என்ன?', 'idhu enna?', 'What is this?'],
+    ['எங்கே?', 'engae?', 'Where?'],
+    ['தண்ணீர் வேண்டும்', 'thanneer vendum', 'I want water'],
+    ['எனக்குப் பசிக்கிறது', 'enakku pasikkiradhu', 'I am hungry']]],
+  ['learn', '📚', 'While learning', [
+    ['எனக்குப் புரியவில்லை', 'enakku puriyavillai', 'I don’t understand'],
+    ['மெதுவாகப் பேசுங்கள்', 'medhuvaaga pesungal', 'Please speak slowly'],
+    ['மீண்டும் சொல்லுங்கள்', 'meendum sollungal', 'Please say it again'],
+    ['இதைத் தமிழில் எப்படிச் சொல்வது?', 'idhai thamizhil eppadi solvadhu?', 'How do you say this in Tamil?']]]
+];
+const PHRASE_FAQ = [
+  ['How do you say hello in Tamil?', 'Hello in Tamil is “வணக்கம்” (vanakkam). It is said with the palms pressed together and works at any time of day, with anyone. “காலை வணக்கம்” (kaalai vanakkam) means good morning.'],
+  ['How do you say thank you in Tamil?', 'Thank you in Tamil is “நன்றி” (nandri). To say “thank you very much”, say “மிக்க நன்றி” (mikka nandri).'],
+  ['How do you say “What is your name?” in Tamil?', '“What is your name?” in Tamil is “உங்கள் பெயர் என்ன?” (ungal peyar enna?). To answer, say “என் பெயர் …” (en peyar …), which means “My name is …”.'],
+  ['How do you say yes and no in Tamil?', 'Yes is “ஆம்” (aam) and no is “இல்லை” (illai). “சரி” (sari) means OK or all right.']
+];
+write('tamil-phrases-for-beginners.html', shell({
+  file: 'tamil-phrases-for-beginners.html', guide: true, bubble: 'வணக்கம்!',
+  title: 'Basic Tamil Phrases for Kids & Beginners (with Meaning)',
+  description: 'Easy Tamil phrases with meaning and pronunciation: வணக்கம் (hello), நன்றி (thank you), உங்கள் பெயர் என்ன? (what is your name?) and more for everyday use.',
+  h1: 'Basic Tamil phrases for kids &amp; beginners', eyebrow: `${PHRASES.reduce((n, g) => n + g[3].length, 0)} phrases · Tamil · Pronunciation · English`,
+  body: `
+<p class="lead-doc"><strong>The most useful Tamil phrases to start with are ${ta('வணக்கம்')} (vanakkam, hello), ${ta('நன்றி')} (nandri, thank you), ${ta('ஆம்')} (aam, yes), ${ta('இல்லை')} (illai, no) and ${ta('உங்கள் பெயர் என்ன?')} (ungal peyar enna?, what is your name?).</strong> Below are easy everyday phrases with how to say them and what they mean. Use one new phrase at home every day.</p>
+<nav class="toc glass" aria-label="Phrase groups"><b>Groups</b>${PHRASES.map(([id, , t]) => `<a href="#${id}">${t}</a>`).join('')}</nav>
+${PHRASES.map(([id, ic, t, list]) => `${h2(id, ic, t)}
+<div class="tbl"><table><thead><tr><th scope="col">Tamil</th><th scope="col">Say it</th><th scope="col">Meaning</th></tr></thead><tbody>${list.map(([tm, r, en]) =>
+  `<tr><td class="ta"><b>${tm}</b></td><td><i>${esc(r)}</i></td><td>${esc(en)}</td></tr>`).join('')}</tbody></table></div>`).join('\n')}
+${tip(taWrap('Polite Tamil uses “நீங்கள்” (neengal, you) and verbs ending in “-ங்கள்”, such as “சொல்லுங்கள்” (please say). Children learn these best by hearing grown-ups use them every day.'))}
+<p>Learn the letters these phrases are made of on the <a href="tamil-alphabet.html">Tamil alphabet</a> page, and more words on <a href="tamil-family-words.html">family words</a> and <a href="tamil-words-for-kids.html">Tamil words for kids</a>. Not sure how to say a sound? See the <a href="tamil-pronunciation-guide.html">pronunciation guide</a>.</p>
+${h2('faq', '❓', 'Questions about Tamil phrases')}
+<div class="faq">${faqHtmlFor(PHRASE_FAQ)}</div>`,
+  schema: [faqSchemaFor(PHRASE_FAQ, 'tamil-phrases-for-beginners.html'),
+    DTS('tamil-phrases-for-beginners.html', 'Basic Tamil phrases', PHRASES.flatMap(g => g[3].map(([tm, r, en]) => [tm, `${en} — pronounced “${r}”.`])))]
+}));
+
+/* FAQ & help hub — the HELP answers (also used by Ask Kili) as a crawlable page */
+const HUB = [
+  ['start', '🚀', 'Start here', [
+    ['learn-tamil-online.html', 'How do I start learning Tamil online?'],
+    ['how-to-teach-tamil-to-kids.html', 'How do I teach Tamil to my child at home?'],
+    ['tamil-alphabet.html', 'How many letters are in the Tamil alphabet?'],
+    ['tamil-pronunciation-guide.html', 'How do I pronounce ழ, ள and ல?'],
+    ['tamil-phrases-for-beginners.html', 'How do I say hello and thank you in Tamil?'],
+    ['tamil-printables.html', 'Where are the free Tamil worksheets?']]]
+];
+write('learn-tamil-faq.html', shell({
+  file: 'learn-tamil-faq.html', guide: true, bubble: 'Ask me anything!',
+  title: 'Learn Tamil FAQ & Help for Parents and Learners',
+  description: 'Answers about learning Tamil and the free Learn Tamil app: sound, offline use, games, certificates, worksheets, Thirukkural and privacy.',
+  h1: 'Learn Tamil — FAQ &amp; help', eyebrow: `${HELP.length + HUB[0][3].length} answers · For parents, teachers and learners`,
+  body: `
+<p class="lead-doc"><strong>Learn Tamil is a free website and app that teaches all 247 Tamil letters with sound, reading, stories, rhymes, Thirukkural, 14 games, printable worksheets and certificates, for children aged 3–12 and beginners of any age.</strong> Here are answers to the questions parents, teachers and learners ask most. You can also ask 🦜 Kili, the help chat in the corner of every page.</p>
+${HUB.map(([id, ic, t, list]) => `${h2(id, ic, t)}
+<ul>${list.map(([f, q]) => `<li><a href="${f}">${esc(q)}</a></li>`).join('')}</ul>`).join('\n')}
+${h2('faq', '❓', 'Using Learn Tamil')}
+<div class="faq">${HELP.map(([q, a, , link]) => `<details class="faq-item"><summary>${esc(q)}</summary><p>${mdLinks(a)}${link ? ` <a href="${link}">Open →</a>` : ''}</p></details>`).join('\n')}</div>
+${h2('more', '📬', 'Still need help?')}
+<p>Report a wrong sound, a Tamil mistake or a bug on <a href="${ISSUES_URL}" rel="noopener">GitHub Issues</a> (issues are public, so please don’t include personal details). For private questions, use the <a href="https://blog.msdevbuild.com/contact/" rel="noopener">contact page</a>.</p>`,
+  schema: [faqSchemaFor(HELP.map(([q, a]) => [q, a.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')]), 'learn-tamil-faq.html')]
+}));
+
+/* Install, share and QR page (install-app.html). QR codes are drawn here at build time (tools/lib/qr.mjs):
+   no QR script or service, and the codes are plain links with no tracking parameters.
+   pwa.js wires the [data-install] button and marks the visitor's device card ([data-device]) — all on the device. */
+const QR_PAGE = SITE + 'install-app.html', QR_APP = SITE;
+fs.mkdirSync(path.join(ROOT, 'assets/qr'), { recursive: true });
+write('assets/qr/learntamil-install.svg', qrSvg(QR_PAGE, { title: 'Scan to install Learn Tamil', px: 600 }));
+write('assets/qr/learntamil-app.svg', qrSvg(QR_APP, { title: 'Scan to open Learn Tamil', px: 600 }));
+const DEVICES = [
+  ['android', '🤖', 'Android phone or tablet', 'Chrome, Edge or Samsung Internet', [
+    'Open <b>learntamil.msdevbuild.com</b> in Chrome (or scan the QR code).',
+    'Tap <b>⬇ Install app</b> at the top of the page — or the <b>Install now</b> button here.',
+    'No button? Tap the <b>⋮</b> menu and choose <b>Install app</b> or <b>Add to Home screen</b>. In Samsung Internet, tap <b>☰</b> → <b>Add page to</b> → <b>Home screen</b>.',
+    'Open <b>Learn Tamil</b> from your home screen. It opens full screen, like any app.']],
+  ['ios', '🍎', 'iPhone or iPad', 'Safari', [
+    'Open <b>learntamil.msdevbuild.com</b> in <b>Safari</b> (or scan the QR code with the Camera app).',
+    'Tap the <b>Share</b> button <span aria-hidden="true">⬆︎</span> (at the bottom on iPhone, at the top on iPad).',
+    'Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.',
+    'Open <b>Learn Tamil</b> from your home screen.']],
+  ['windows', '🪟', 'Windows computer', 'Microsoft Edge or Google Chrome', [
+    'Open <b>learntamil.msdevbuild.com</b> in Edge or Chrome.',
+    'Click the <b>install icon</b> at the right end of the address bar — or the <b>Install now</b> button here.',
+    'No icon? Open the browser menu (<b>⋯</b> or <b>⋮</b>) and look for <b>Install Learn Tamil</b> (in Edge under <b>Apps</b>; in Chrome under <b>Cast, save and share</b>).',
+    'Learn Tamil appears in the Start menu and can be pinned to the taskbar.']],
+  ['mac', '💻', 'Mac', 'Safari, Chrome or Edge', [
+    '<b>Safari</b> (macOS Sonoma or later): open the site, then choose <b>File</b> → <b>Add to Dock</b>.',
+    '<b>Chrome or Edge</b>: click the <b>install icon</b> in the address bar, or the <b>Install now</b> button here.',
+    'Learn Tamil opens in its own window from the Dock or Launchpad.']],
+  ['chromebook', '🧑‍💻', 'Chromebook', 'Chrome', [
+    'Open <b>learntamil.msdevbuild.com</b> in Chrome.',
+    'Click the <b>install icon</b> in the address bar, or the <b>Install now</b> button here.',
+    'Find Learn Tamil in the launcher with your other apps.']]
+];
+const INSTALL_FAQ = [
+  ['Is the Learn Tamil app free?', 'Yes. The Learn Tamil app is completely free, needs no account and has no in-app purchases. You install it straight from your web browser, so you do not need an app store.'],
+  ['How do I install Learn Tamil on iPhone or iPad?', 'Open learntamil.msdevbuild.com in Safari, tap the Share button, choose Add to Home Screen and tap Add. Learn Tamil then opens from the home screen like any other app.'],
+  ['How do I install Learn Tamil on Android?', 'Open learntamil.msdevbuild.com in Chrome and tap Install app at the top of the page, or open the ⋮ menu and choose Install app or Add to Home screen.'],
+  ['Does the app work offline?', 'Yes. After the first visit, the letters, reading, stories, games, certificates and guides work without internet. Letter sounds offline need a Tamil voice stored on the device.'],
+  ['How do I remove the app?', 'On a phone or tablet, press and hold the Learn Tamil icon and choose Remove or Uninstall. On a computer, open the app, click the ⋯ menu in its title bar and choose Uninstall. Removing the app does not change the website.']
+];
+const qrFig = (file, cap, sub) => `<figure class="qr-card"><img src="assets/qr/${file}" width="220" height="220" alt="QR code: ${esc(cap)}" loading="lazy"><figcaption><b>${cap}</b><small>${sub}</small><a class="btn small" href="assets/qr/${file}" download>⬇ Download QR</a></figcaption></figure>`;
+write('install-app.html', shell({
+  file: 'install-app.html', guide: true, share: false, bubble: 'Scan me! 📲',
+  title: 'Install the Learn Tamil App — QR Code, Android, iPhone, PC',
+  description: 'Install the free Learn Tamil app on Android, iPhone, iPad, Windows, Mac or Chromebook in two taps. Scan the QR code, then share the app with family and friends.',
+  h1: 'Install the Learn Tamil app &amp; share it', eyebrow: 'Free · No app store · Works offline · All devices',
+  body: `
+<p class="lead-doc"><strong>To install Learn Tamil, open learntamil.msdevbuild.com on your phone, tablet or computer and choose “Install app” (Android, Windows, Mac, Chromebook) or Share → “Add to Home Screen” (iPhone and iPad).</strong> It is free, needs no app store or account, and works offline after the first visit. Scan the QR code below to open it on another device.</p>
+<section class="install-now glass" aria-labelledby="nowT">
+  <h2 id="nowT"><span class="h-ic" aria-hidden="true">⬇</span>Install on this device</h2>
+  <p data-install-ready hidden>Your browser can install Learn Tamil right now.</p>
+  <p data-install-done hidden>✅ You are already using the installed app.</p>
+  <p data-install-hint>Follow the steps for your device below — your device is marked <b>This device</b>.</p>
+  <div class="install-actions"><button type="button" class="btn primary" data-install hidden>⬇ Install now</button><a class="btn" href="./">🎮 Open the learning app</a></div>
+</section>
+${h2('qr', '📷', 'Scan to install on another device')}
+<p>Point the phone or tablet camera at a code and tap the link that appears. Both codes are plain links to this website, with nothing added to track you.</p>
+<div class="qr-row">${qrFig('learntamil-install.svg', 'Install Learn Tamil', 'Opens this page with the steps for that device')}${qrFig('learntamil-app.svg', 'Open the learning app', 'Goes straight to the letters and games')}</div>
+<p><button type="button" class="btn small" data-print>🖨️ Print the QR codes</button> Stick them on a classroom wall, a Tamil school notice board or the fridge.</p>
+${h2('devices', '📱', 'Step by step for every device')}
+<div class="device-grid">${DEVICES.map(([id, ic, name, br, steps]) => `<article class="device-card glass" data-device="${id}" id="${id}"><h3><span aria-hidden="true">${ic}</span> ${name}</h3><p class="muted">${br}</p><ol>${steps.map(s => `<li>${s}</li>`).join('')}</ol></article>`).join('')}</div>
+${tip('The exact menu names can change a little between browser versions. If you can’t find the option, look in the browser menu for “Install” or “Add to Home Screen”.')}
+${h2('share', '💛', 'Share Learn Tamil with family and friends')}
+<p>Know a family, teacher or Tamil school that would like it? Send them the link. Sharing opens the app you choose with a ready-made message, and nothing is sent until you tap.</p>
+<div class="share-row share-inline share-big" data-share-row="Share Learn Tamil" data-share-url="${SITE}" data-share-title="Learn Tamil — free Tamil letters, words, stories and games for kids (தமிழ் கற்போம்)"></div>
+${h2('faq', '❓', 'Questions about the app')}
+<div class="faq">${faqHtmlFor(INSTALL_FAQ)}</div>`,
+  schema: [faqSchemaFor(INSTALL_FAQ, 'install-app.html'),
+    { '@type': 'HowTo', '@id': SITE + 'install-app.html#howto', name: 'How to install the Learn Tamil app', inLanguage: 'en',
+      step: DEVICES.map(([, , name, , steps], i) => ({ '@type': 'HowToSection', position: i + 1, name,
+        itemListElement: steps.map((s, j) => ({ '@type': 'HowToStep', position: j + 1, text: s.replace(/<[^>]+>/g, '') })) })) }]
+}));
+
 const LINKS = { 'tamil-vowels.html': VOWEL_FAQ, 'tamil-consonants.html': CONS_FAQ, 'uyirmei-ezhuthukal.html': UM_FAQ,
   'tamil-words-for-kids.html': WORD_FAQ, 'tamil-stories-for-kids.html': STORY_FAQ, 'tamil-alphabet.html': FAQ, 'ezhuthukal.html': TA_FAQ,
   ...Object.fromEntries(TOPIC_PAGES.map(T => [T.file, T.faq])), 'tamil-printables.html': PRINT_FAQ,
-  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ, 'thirukkural-topics.html': TOPIC_FAQ_K };
+  'aathichoodi.html': AATHI_FAQ, 'tamil-rhymes-for-kids.html': RHYME_FAQ, 'tamil-festivals-for-kids.html': FEST_FAQ, 'how-to-teach-tamil-to-kids.html': PARENT_FAQ, 'thirukkural.html': KURAL_FAQ, 'thirukkural-topics.html': TOPIC_FAQ_K,
+  'learn-tamil-online.html': ONLINE_FAQ, 'tamil-pronunciation-guide.html': PRON_FAQ, 'tamil-phrases-for-beginners.html': PHRASE_FAQ, 'install-app.html': INSTALL_FAQ };
 const KB = [
   ...HELP.map(([q, a, tags, link]) => ({ q, a, tags, link, lang: 'en', help: 1 })),
   ...Object.entries(LINKS).flatMap(([file, list]) => list.map(([q, a]) => ({ q, a, tags: '', link: file, lang: file === 'ezhuthukal.html' ? 'ta' : 'en' })))

@@ -52,6 +52,7 @@ export const APP_SCRIPTS = [
     'features/voice/say-back',
     'features/stories/rhymes',
     'features/little/little',
+    'features/classroom/characters', 'features/classroom/classroom',
     'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
     'app'                               // router: last, opens the first section
   ].map(n => `${JS}${n}.js`)

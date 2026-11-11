@@ -34,6 +34,10 @@ How Learn Tamil is found in Google and Bing (**SEO**), quoted in answer boxes an
 | `tamil-stories-for-kids.html` | tamil moral stories for kids |
 | `how-to-teach-tamil-to-kids.html` | how to teach tamil to kids at home |
 | `tamil-printables.html` | tamil alphabet chart pdf, tamil tracing worksheet |
+| `learn-tamil-online.html` | learn tamil online free, learn tamil for beginners, how to learn tamil |
+| `tamil-pronunciation-guide.html` | how to pronounce zha, ழ pronunciation, difference between ல ள ழ |
+| `tamil-phrases-for-beginners.html` | hello in tamil, thank you in tamil, what is your name in tamil |
+| `learn-tamil-faq.html` | learn tamil app help, tamil sound not working, tamil worksheets free |
 
 ## Adding a page (checklist)
 

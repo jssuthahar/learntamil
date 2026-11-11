@@ -41,28 +41,44 @@
       b = document.createElement('button');
       b.id = 'installBtn'; b.type = 'button'; b.className = 'install-btn'; b.hidden = true;
       b.innerHTML = '<span aria-hidden="true">⬇</span><span>Install app</span>';
-      b.setAttribute('aria-label', 'Install Learn Tamil as an app');
+      b.setAttribute('aria-label', 'Install Learn Tamil as an app'); b.title = 'Install app';
       const theme = document.getElementById('themeBtn');
       theme ? header.insertBefore(b, theme) : header.appendChild(b);
     }
     return b;
   }
+  /* Install page (install-app.html): [data-install] buttons, [data-install-ready|done|hint] notes, [data-device] cards. */
+  const all = sel => document.querySelectorAll(sel);
+  const showNotes = state => {        // state: 'ready' | 'done' | 'hint'
+    all('[data-install-ready]').forEach(el => { el.hidden = state !== 'ready'; });
+    all('[data-install-done]').forEach(el => { el.hidden = state !== 'done'; });
+    all('[data-install-hint]').forEach(el => { el.hidden = state === 'done'; });
+  };
+  async function install(){
+    if (!deferred) return;
+    deferred.prompt();
+    const choice = await deferred.userChoice.catch(() => ({}));
+    deferred = null;
+    const b = document.getElementById('installBtn'); if (b) b.hidden = true;
+    all('[data-install]').forEach(el => { el.hidden = true; });
+    if (choice.outcome === 'accepted') toast('🎉 Learn Tamil is being added to your home screen.', [], 4000);
+  }
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault(); deferred = e;
+    all('[data-install]').forEach(el => { el.hidden = false; el.onclick = install; });
+    showNotes('ready');
     const b = installButton(); if (!b) return;
-    b.hidden = false;
-    b.onclick = async () => {
-      if (!deferred) return;
-      deferred.prompt();
-      const choice = await deferred.userChoice.catch(() => ({}));
-      deferred = null; b.hidden = true;
-      if (choice.outcome === 'accepted') toast('🎉 Learn Tamil is being added to your home screen.', [], 4000);
-    };
+    b.hidden = false; b.onclick = install;
   });
   window.addEventListener('appinstalled', () => {
     const b = document.getElementById('installBtn'); if (b) b.hidden = true;
+    all('[data-install]').forEach(el => { el.hidden = true; });
     store.set('lt-installed', '1');
   });
+  if (standalone) showNotes('done');
+  const device = isIOS ? 'ios' : /android/i.test(ua) ? 'android' : /CrOS/.test(ua) ? 'chromebook' : /Mac/.test(ua) ? 'mac' : /Win/.test(ua) ? 'windows' : '';
+  if (device) all('[data-device="' + device + '"]').forEach(el => el.classList.add('is-you'));
+  document.addEventListener('click', e => { if (e.target.closest('[data-print]')) window.print(); });
 
   /* ---------- iPhone / iPad: Safari has no install prompt, so explain the two taps ---------- */
   if (isIOS && !standalone && !store.get('lt-ios-hint')){

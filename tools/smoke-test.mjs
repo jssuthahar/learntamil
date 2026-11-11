@@ -107,10 +107,30 @@ await open('index.html#/uyir');
 // Errors thrown while the page loads (a script in the wrong order, a renamed name) happen before any check runs.
 if (errors.length) fail('errors while the page loaded: ' + errors.join(' | '));
 await check('app loads with no errors', `document.querySelectorAll('#gKuril .tile').length === 5`);
-for (const s of ['mei', 'aytham', 'uyirmei', 'reading', 'stories', 'certificate', 'little', 'practice'])
+for (const s of ['mei', 'aytham', 'uyirmei', 'reading', 'stories', 'certificate', 'little', 'classroom', 'practice'])
   await check(`section #/${s} opens`, `(async()=>{ location.hash='/${s}'; await new Promise(r=>setTimeout(r,300)); return document.getElementById('${s}').classList.contains('on'); })()`);
 for (const g of ['build', 'listen', 'spin', 'balloon', 'words', 'memory', 'quiz', 'picture', 'topics', 'spell', 'story', 'trace', 'colour'])
   await check(`game "${g}" starts`, `(async()=>{ showGame('${g}'); await new Promise(r=>setTimeout(r,250)); return true; })()`);
+await check('classroom: teacher, 3 classmates, lessons on the board, a lesson starts and stops', `(async()=>{
+  location.hash = '/classroom'; await new Promise(r=>setTimeout(r,500));
+  const ok1 = !!document.querySelector('#crTeacher svg') && document.querySelectorAll('#crKids .cr-kid svg').length === 3 && document.querySelectorAll('#crBoard .cr-lesson').length >= 10;
+  document.querySelector('#crBoard .cr-lesson').click(); await new Promise(r=>setTimeout(r,400));
+  const ok2 = !document.getElementById('crCtrl').hidden && document.querySelector('#crBubble .cr-ta').textContent.length > 0 && !!document.querySelector('#crBoard .cr-item');
+  document.getElementById('crEnd').click(); await new Promise(r=>setTimeout(r,300));
+  const ok3 = document.getElementById('crCtrl').hidden && !!document.querySelector('#crBoard .cr-lesson');
+  location.hash = '/uyir'; await new Promise(r=>setTimeout(r,200));
+  return ok1 && ok2 && ok3; })()`);
+for (const g of ['find', 'read', 'missing', 'truth'])
+  await check(`classroom game "${g}" starts and accepts a right answer`, `(async()=>{
+    location.hash = '/classroom'; await new Promise(r=>setTimeout(r,400));
+    crStop(); const my = CR.run, L = crList()[${g === 'read' ? 0 : 4}], items = L.items(); let done = false;
+    CR_GAMES['${g}'](my, items[0], items, L.pool()).then(() => done = true).catch(() => {});
+    for (let i = 0; i < 80 && !document.querySelector('#crBoard .cr-opt'); i++) await new Promise(r=>setTimeout(r,150));
+    const opts = document.querySelectorAll('#crBoard .cr-opt').length;
+    document.querySelector('#crBoard .cr-opt[data-k="' + CR.right + '"]').click();
+    for (let i = 0; i < 80 && !done; i++) await new Promise(r=>setTimeout(r,150));
+    crStop(); location.hash = '/uyir'; await new Promise(r=>setTimeout(r,200));
+    return opts >= 2 && done; })()`);
 await check('stories: rhymes and festivals open', `(async()=>{ location.hash='/stories'; await new Promise(r=>setTimeout(r,200));
   document.querySelector('[data-kind=rhymes]').click(); document.querySelector('#rhymeList .book').click();
   const ok1 = document.querySelectorAll('#rhymeLines .rline').length > 0;

@@ -70,6 +70,54 @@ const TEXT = {
     { id: 'vowels', ic: 'அ', label: 'Vowels' }
   ],
 
+  /* Classroom (#/classroom): Malar Akka teaches, three classmates listen, ask and help.
+     [Tamil (spoken + shown), English (shown under it)]. Placeholders: {topic} {topicEn} {word} {en} {l} {r}. */
+  classroom: {
+    teacher: ['மலர் அக்கா', 'Malar Akka'],
+    kids: [['நிலா', 'Nila'], ['கவின்', 'Kavin'], ['யாழினி', 'Yazhini']],
+    all: ['எல்லோரும்', 'Everyone'],
+    you: ['நீ', 'You'],
+    vowelsTopic: ['உயிர் எழுத்துகள்', 'vowels'],
+    pick: ['இன்று என்ன கற்போம்?', 'What shall we learn today?'],
+    hello: ['வணக்கம் குழந்தைகளே!', 'Hello, children!'],
+    kidsHello: ['வணக்கம் அக்கா!', 'Hello, Akka!'],
+    today: ['இன்று நாம் {topic} கற்போம்.', 'Today we will learn {topicEn}.'],
+    kidAsk: ['அக்கா, இது என்ன?', 'Akka, what is this?'],
+    letterIs: ['இது {l}. {l} — {word}.', 'This is “{r}”, as in {word} — {en}.'],
+    wordIs: ['இது {word}.', 'This is {word} — {en}.'],
+    kidAgain: ['அக்கா, மீண்டும் சொல்லுங்கள்!', 'Akka, please say it again!'],
+    sureAgain: ['சரி, கேளுங்கள்.', 'Sure, listen.'],
+    kidSays: ['நான் சொல்கிறேன்: {word}!', 'Let me say it: {word}!'],
+    together: ['எல்லோரும் சேர்ந்து சொல்லுங்கள்!', 'Everyone, say it together!'],
+    youSay: ['நீயும் சொல்!', 'Now you say it too!'],
+    gameTime: ['இப்போது ஒரு சின்ன விளையாட்டு!', 'Now, a little game!'],
+    whereIs: ['{word} எங்கே? தொட்டுக் காட்டு!', 'Where is {word}? Tap it!'],
+    kidHint: ['பரவாயில்லை! இதோ, இங்கே இருக்கிறது.', 'That’s okay! Look, it’s here.'],
+    kidYay: ['ஹைய்யா!', 'Yay!'],
+    // games: read and pick
+    readWhich: ['இதைப் படி! இது எந்தப் படம்?', 'Read this! Which picture is it?'],
+    letterWhich: ['இந்த எழுத்தில் தொடங்கும் படம் எது?', 'Which picture starts with this letter?'],
+    kidReads: ['நான் படிக்கிறேன்: {word}', 'Let me read it: {word}'],
+    // games: what's missing?
+    lookCarefully: ['நன்றாகப் பாருங்கள்!', 'Look carefully!'],
+    closeEyes: ['கண்களை மூடுங்கள்!', 'Close your eyes!'],
+    whatMissing: ['கண்களைத் திறங்கள்! எது காணவில்லை?', 'Open your eyes! What is missing?'],
+    // games: is my friend right?
+    kidClaim: ['இது {word}!', 'This is {word}!'],
+    isRight: ['{name} சொல்வது சரியா?', 'Is {name} right?'],
+    yes: ['சரி', 'Right'],
+    no: ['தவறு', 'Not right'],
+    kidWasRight: ['ஆம், {name} சொன்னது சரி!', 'Yes, {name} is right!'],
+    actually: ['இது {word}.', 'This is {word} — {en}.'],
+    kidThanks: ['ஓ! நன்றி!', 'Oh! Thank you!'],
+    moreGames: ['இன்னும் விளையாடு', 'More games'],
+    done: ['இன்றைய பாடம் முடிந்தது! நீ நன்றாகச் செய்தாய்!', 'Today’s lesson is finished! You did very well!'],
+    kidsBye: ['நன்றி அக்கா!', 'Thank you, Akka!'],
+    again: ['மீண்டும்', 'Again'],
+    next: ['அடுத்த பாடம்', 'Next lesson'],
+    lessons: ['பாடங்கள்', 'Lessons']
+  },
+
   /* Family */
   whoIsLearning: ['யார் படிக்கிறார்கள்?', 'Who is learning?'],
   newSticker: ['புதிய ஸ்டிக்கர்!', 'New sticker!'],

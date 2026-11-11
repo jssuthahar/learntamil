@@ -76,6 +76,11 @@ function renderParents(d){
   d.innerHTML = `
     <div class="rw-head"><h2>👪 Parent dashboard</h2><button class="rw-x" type="button" aria-label="Close">✕</button></div>
     <h3>${cur.ic} ${esc(cur.name || 'Child 1')} <small>· learning since ${esc(p.since || '')}</small></h3>
+    <a class="pc-coffee" href="https://buymeacoffee.com/jssuthahar" target="_blank" rel="noopener">
+      <span class="pc-coffee-ic" aria-hidden="true">☕</span>
+      <span class="pc-coffee-t"><b>Enjoying Learn Tamil? Buy me a coffee</b><small>It is free, with no ads in the lessons or games. Your support keeps it that way. <span class="ta">நன்றி!</span></small></span>
+      <span class="pc-coffee-go" aria-hidden="true">→</span>
+    </a>
 
     <div class="pc-path">
       <label class="pc-set">🎂 Age group

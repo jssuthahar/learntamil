@@ -348,3 +348,148 @@ body.little-on #globalTools,body.little-on .disclaimer{display:none}
 .share-preview{font-family:inherit;background:var(--bg-subtle);border-radius:12px;padding:10px 12px;margin:0 0 12px;line-height:1.6}
 @media (max-width:420px){ .share-btn span{font-size:.8rem} .share-btn{padding:8px 10px} }
 @media print{ .share-row,.share-sheet{display:none !important} }
+
+/* ===================== 🍎 Classroom (#/classroom, features/classroom/) =====================
+   Teacher on the left, chalkboard (the lesson) on the right, classmates in a row below the board.
+   Characters sit beside the content in the grid, never on top of it. */
+.classroom{--cr-wall:linear-gradient(180deg,#fff4e0 0%,#ffe9cf 72%,#f4c995 72%,#e9b77d 100%);--cr-chalk:#1f5c45;--cr-wood:#a8672f;--cr-bubble:#ffffff;--cr-bubble-text:#1b1b2e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .classroom{--cr-wall:linear-gradient(180deg,#26324a 0%,#1d2a40 72%,#4a3324 72%,#3b281c 100%);--cr-bubble:#f5f7fb}}
+:root[data-theme="dark"] .classroom{--cr-wall:linear-gradient(180deg,#26324a 0%,#1d2a40 72%,#4a3324 72%,#3b281c 100%);--cr-bubble:#f5f7fb}
+.classroom .cr-head{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px}
+.classroom .cr-head h2{margin:0;font-family:var(--font-kid);font-size:28px}
+.classroom .cr-head h2 small{font-size:15px;font-weight:600;color:var(--text-muted)}
+.cr-room{background:var(--cr-wall);border-radius:24px;padding:16px 16px 12px;border:1px solid var(--border);box-shadow:var(--glass-shadow);overflow:hidden}
+.cr-stage{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:12px;align-items:end}
+.cr-char{margin:0;position:relative}
+.cr-svg{display:block;width:100%;height:auto;overflow:visible}
+.cr-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+
+/* Speech bubble: who is speaking, the Tamil line, and English under it. */
+.cr-bubble{position:relative;background:var(--cr-bubble);color:var(--cr-bubble-text);border-radius:18px;padding:10px 14px 10px;min-height:72px;box-shadow:0 6px 18px -6px rgb(0 0 0 / .25);display:flex;flex-direction:column;gap:2px}
+.cr-bubble:empty{visibility:hidden}
+.cr-bubble::after{content:"";position:absolute;width:18px;height:18px;background:inherit;transform:rotate(45deg);left:-7px;bottom:22px;border-radius:3px}
+.cr-bubble.from-k::after{left:auto;right:40%;bottom:-7px}
+.cr-bubble.pop{animation:crPop .3s ease-out}
+.cr-who{display:flex;align-items:center;gap:6px;font-size:13px;color:#4a5163}
+.cr-who small{font-weight:500}
+.cr-dot{display:inline-block;width:12px;height:12px;border-radius:50%}
+.cr-ta{font-family:var(--font-kid);font-size:clamp(19px,2.6vw,24px);font-weight:700;line-height:1.35}
+.cr-en{color:#4a5163;font-size:14px}
+
+/* Chalkboard */
+.cr-board{min-width:0;background:var(--cr-chalk);border:10px solid var(--cr-wood);border-radius:14px;min-height:250px;padding:14px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgb(0 0 0 / .35)}
+.cr-item{display:flex;flex-direction:column;align-items:center;text-align:center;animation:crIn .45s ease-out both}
+.cr-pic{font-size:clamp(54px,9vw,84px);line-height:1.1}
+.cr-big{font-family:var(--font-ta);font-size:clamp(64px,11vw,108px);line-height:1;color:#fff8c7;text-shadow:0 2px 0 rgb(0 0 0 / .25)}
+.cr-word{font-family:var(--font-kid),var(--font-ta);font-size:clamp(26px,4vw,36px);font-weight:700}
+.cr-word-en{color:#cfe9dc;font-size:15px}
+.cr-turn{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.cr-turn span{font-size:64px;animation:crPulse 1s ease-in-out infinite}
+.cr-turn b{font-family:var(--font-kid),var(--font-ta);font-size:28px}
+.cr-turn small{color:#cfe9dc}
+.cr-menu-t{margin:0 0 10px;text-align:center;font-family:var(--font-kid),var(--font-ta);font-size:22px;display:flex;flex-direction:column}
+.cr-menu-t small{font-family:var(--font-ui);font-size:13px;font-weight:500;color:#cfe9dc}
+.cr-menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;width:100%}
+.cr-lesson{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:96px;padding:8px 6px;border-radius:14px;border:2px dashed rgb(255 255 255 / .45);background:rgb(255 255 255 / .08);color:#fff;cursor:pointer;font:inherit}
+.cr-lesson:hover,.cr-lesson:focus-visible{background:rgb(255 255 255 / .18);border-style:solid}
+.cr-l-ic{font-size:32px;line-height:1.1}
+.cr-lesson.is-letters .cr-l-ic{font-family:var(--font-ta);color:#fff8c7}
+.cr-lesson b{font-family:var(--font-ta);font-size:16px}
+.cr-lesson small{font-size:12px;color:#cfe9dc}
+.cr-l-done{position:absolute;top:4px;right:6px;font-style:normal;background:#ffd34d;color:#1f5c45;border-radius:50%;width:20px;height:20px;font-size:13px;font-weight:800;display:grid;place-items:center}
+.cr-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.cr-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:120px;border-radius:16px;border:3px solid rgb(255 255 255 / .6);background:#fffdf5;color:#1b1b2e;cursor:pointer;font:inherit;animation:crIn .4s ease-out both}
+.cr-opt .cr-pic{font-size:clamp(44px,7vw,64px)}
+.cr-opt b{font-family:var(--font-ta);font-size:clamp(20px,3vw,28px)}
+.cr-opt.is-letter b{font-size:clamp(40px,7vw,60px)}
+.cr-opt.right{border-color:#ffd34d;background:#fff6c9;box-shadow:0 0 0 4px #ffd34d}
+.cr-opt.nope{animation:crNope .4s}
+.cr-opt.hint{animation:crHint .7s ease-in-out 2}
+.cr-opts.is-small .cr-opt{min-height:96px}
+.cr-opts.is-yn{grid-template-columns:repeat(2,minmax(0,1fr));max-width:420px}
+.cr-yn small{font-size:12px;color:#4a5163}
+.cr-read{font-family:var(--font-kid);font-size:clamp(36px,6vw,56px);font-weight:700;color:#fff8c7;margin:0 0 12px;text-align:center;line-height:1.2;animation:crIn .4s ease-out both}
+.cr-row{display:flex;justify-content:center;gap:clamp(8px,3vw,24px);margin:0 0 12px}
+.cr-cell{display:grid;place-items:center;width:clamp(64px,10vw,96px);aspect-ratio:1;border-radius:16px;background:rgb(255 255 255 / .12);border:2px dashed rgb(255 255 255 / .5);font-size:clamp(38px,6vw,56px);animation:crIn .4s ease-out both}
+.cr-curtain{font-size:96px;animation:crPulse 1s ease-in-out infinite}
+.cr-kid.cover .cr-arm-l{transform:rotate(160deg)}
+.cr-kid.cover .cr-arm-r{transform:rotate(-160deg)}
+.cr-kid.cover .cr-eyes{display:none}
+.cr-kid.cover .cr-eyes-happy{display:inline}
+.cr-end{display:flex;flex-direction:column;align-items:center;gap:12px}
+.cr-trophy{font-size:72px;animation:crIn .5s ease-out both}
+.cr-end-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.cr-end-btns .btn{min-height:44px}
+.cr-end-btns small{font-weight:500;opacity:.85}
+
+/* Classmates */
+.cr-kids{display:flex;justify-content:flex-end;gap:clamp(8px,3vw,28px);margin-top:4px;padding-right:4%}
+.cr-kid{width:clamp(70px,12vw,110px);text-align:center;cursor:pointer}
+.cr-kid figcaption{font-size:13px;font-weight:700;color:var(--text);margin-top:-2px}
+.cr-kid figcaption small{font-weight:500;color:var(--text-muted)}
+.cr-ctrl{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.cr-ctrl .btn{min-height:44px}
+
+/* Character motion: idle breathing + blinking; talk, gestures and moods are classes on .cr-char. */
+.cr-char .cr-body{transform-origin:50% 100%;transform-box:fill-box;animation:crBreathe 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.cr-char .cr-eyes{animation:crBlink 4.6s infinite;animation-delay:var(--d,0s)}
+.cr-char .cr-eyes-happy,.cr-char .cr-mouth-open{display:none}
+.cr-char .cr-arm{transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.cr-char .cr-head{transition:transform .4s ease}
+.cr-teacher .cr-arm-l{transform:rotate(14deg)}
+.cr-teacher .cr-arm-r{transform:rotate(-10deg)}
+.cr-kid .cr-arm-l{transform:rotate(10deg)}
+.cr-kid .cr-arm-r{transform:rotate(-10deg)}
+.cr-char.talk .cr-mouth-smile{display:none}
+.cr-char.talk .cr-mouth-open{display:inline;animation:crTalk .28s ease-in-out infinite alternate}
+.cr-char.talk .cr-head{animation:crNod 1.4s ease-in-out infinite}
+.cr-teacher.wave .cr-arm-l{transform:rotate(145deg);animation:crWave .5s ease-in-out infinite alternate}
+.cr-teacher.point .cr-arm-r{transform:rotate(-102deg)}
+.cr-teacher.point .cr-head{transform:rotate(5deg)}
+.cr-teacher.open .cr-arm-l{transform:rotate(58deg)}
+.cr-teacher.open .cr-arm-r{transform:rotate(-58deg)}
+.cr-char.happy .cr-eyes,.cr-char.cheer .cr-eyes{display:none}
+.cr-char.happy .cr-eyes-happy,.cr-char.cheer .cr-eyes-happy{display:inline}
+.cr-teacher.happy .cr-arm-l{transform:rotate(150deg)}
+.cr-teacher.happy .cr-arm-r{transform:rotate(-150deg)}
+.cr-teacher.happy .cr-body{animation:crHop .55s ease-in-out 3}
+.cr-kid.raise .cr-arm-r{transform:rotate(-168deg);animation:crWave .45s ease-in-out infinite alternate}
+.cr-kid.raise .cr-head{transform:rotate(-6deg)}
+.cr-kid.cheer .cr-arm-l{transform:rotate(150deg)}
+.cr-kid.cheer .cr-arm-r{transform:rotate(-150deg)}
+.cr-kid.cheer .cr-body{animation:crHop .5s ease-in-out infinite}
+.cr-kid.talk figcaption,.cr-kid.raise figcaption{color:var(--accent)}
+.cr-char.talk::before{content:"";position:absolute;inset:auto 10% -4px;height:10px;border-radius:50%;background:radial-gradient(closest-side,rgb(255 211 77 / .7),transparent);pointer-events:none}
+@keyframes crBreathe{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1px) scaleY(1.012)}}
+@keyframes crBlink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes crTalk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+@keyframes crNod{0%,100%{transform:rotate(0)}30%{transform:rotate(-3deg)}70%{transform:rotate(3deg)}}
+@keyframes crWave{from{rotate:-12deg}to{rotate:12deg}}
+@keyframes crHop{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes crPop{from{transform:scale(.94);opacity:.4}to{transform:none;opacity:1}}
+@keyframes crIn{from{transform:translateY(10px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes crPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes crNope{0%,100%{transform:none}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
+@keyframes crHint{0%,100%{transform:none;box-shadow:none}50%{transform:scale(1.07);box-shadow:0 0 0 5px #ffd34d}}
+
+/* Phones: a smaller teacher next to the bubble; board full width; classmates in a row under it. */
+@media (max-width:600px){
+  .cr-room{padding:10px 10px 8px;border-radius:18px}
+  .cr-stage{grid-template-columns:96px 1fr;gap:8px;align-items:start}
+  .cr-main{display:contents}
+  .cr-teacher{grid-column:1;grid-row:1}
+  .cr-bubble{grid-column:2;grid-row:1;align-self:center;min-height:0}
+  .cr-bubble::after{bottom:auto;top:40%}
+  .cr-board{grid-column:1 / -1;grid-row:2;min-height:210px;border-width:7px;padding:10px}
+  .cr-ta{font-size:18px}
+  .cr-en{font-size:12.5px}
+  .cr-board{min-width:0}
+  .cr-menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .cr-lesson b{font-size:13.5px;line-height:1.3}
+  .cr-lesson small{font-size:11px}
+  .cr-l-ic{font-size:26px}
+  .cr-lesson{min-height:84px;padding:6px 4px}
+  .cr-opt{min-height:96px}
+  .cr-kids{justify-content:center}
+  body.classroom-on .kili-fab{display:none}
+}

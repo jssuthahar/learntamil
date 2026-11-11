@@ -1,7 +1,7 @@
 /* Learn Tamil — service worker: offline support and fast loading.
    VERSION is updated automatically by `node tools/build-pages.mjs` whenever a cached file changes,
    so every deploy reaches users. */
-const VERSION = 'dc67a4fbc2';
+const VERSION = 'ee8412501f';
 const CORE = `lt-core-${VERSION}`;   // the app itself, refreshed on every new version
 const RUNTIME = 'lt-runtime';        // fonts and other files fetched while using the app
 const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
@@ -9,6 +9,7 @@ const AUDIO = 'lt-audio';            // letter sounds (kept across versions)
 const PRECACHE = [
   './',
   'index.html',
+  'learn-tamil-online.html',
   'tamil-alphabet.html',
   'tamil-vowels.html',
   'tamil-consonants.html',
@@ -28,6 +29,8 @@ const PRECACHE = [
   'tamil-shapes.html',
   'tamil-opposite-words.html',
   'tamil-months.html',
+  'tamil-pronunciation-guide.html',
+  'tamil-phrases-for-beginners.html',
   'aathichoodi.html',
   'tamil-rhymes-for-kids.html',
   'tamil-festivals-for-kids.html',
@@ -35,6 +38,8 @@ const PRECACHE = [
   'thirukkural.html',
   'thirukkural-chapters.html',
   'thirukkural-topics.html',
+  'install-app.html',
+  'learn-tamil-faq.html',
   'tamil-printables.html',
   'privacy.html',
   'terms.html',
@@ -75,6 +80,8 @@ const PRECACHE = [
   'assets/js/features/voice/say-back.js',
   'assets/js/features/stories/rhymes.js',
   'assets/js/features/little/little.js',
+  'assets/js/features/classroom/characters.js',
+  'assets/js/features/classroom/classroom.js',
   'assets/js/features/family/profile-switcher.js',
   'assets/js/features/family/stickers.js',
   'assets/js/features/family/parent-corner.js',

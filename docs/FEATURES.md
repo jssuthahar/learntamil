@@ -14,6 +14,7 @@ The router (`app.js`) shows one `<section class="panel">` at a time and fires `l
 | `#/practice` | games hub and every game | `features/games/*.js` |
 | `#/certificate` | level tests and certificates | `features/certificate/certificate.js` |
 | `#/little` | Little ones mode | `features/little/little.js` |
+| `#/classroom` | Classroom with Malar Akka | `features/classroom/classroom.js` |
 
 The **main menu** has exactly 5 items, the same on desktop and the phone bottom bar: 🔤 **Learn** (the letter tabs), 📖 **Read** (`#/reading` and `#/stories`, with a Words · Stories & rhymes switch at the top of both), 🎮 **Play** (games), 🖨️ **Print** (a link to `tamil-printables.html`) and 🎓 **Certificate**. `navOf()` / `lastOf()` in `app.js` map sections to menu items; Read reopens whichever of the two was open last. The phone bar fits exactly 5 items — don't add a 6th.
 
@@ -78,6 +79,7 @@ The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every 
 | Trace | `trace` | `trace.js` | trace a faint letter with a finger: ≥75% covered, ≤35% of ink off the letter, ink ≤ 2× the letter area |
 | Colouring | `colour` | `colouring.js` | tap a colour (its Tamil name is spoken), fill the picture's parts; finishing says the word |
 | Little ones | `little` | → `#/little` | opens Little ones mode |
+| Classroom | `classroom` | → `#/classroom` | opens the Classroom |
 
 ## Age groups and learning paths (`features/rewards/path.js`)
 - **Age cards on the home page:** 👶 3–5, 🧒 6–8, 🧑‍🎓 9–12. The choice is saved on the child's profile (`Profiles.update(id, { age })`, in `lt-profiles`). The first tap on 3–5 opens Little ones; the others open the path.
@@ -89,6 +91,15 @@ The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every 
 - **Two modes:** 👀 look & listen, and 🎯 find it.
 - **Themes:** animals, birds, food, vehicles, body, vowels.
 - **No buzzer:** a wrong tap makes the right picture wiggle and says its word again.
+
+## Classroom (`features/classroom/`, `#/classroom`)
+- **Who:** Malar Akka (teacher) and three classmates, Nila, Kavin and Yazhini. They are inline SVG in `characters.js`, with named parts (arms, eyes, mouth, head) that CSS moves. The `talk`, `wave`, `point`, `open`, `happy`, `raise` and `cheer` states are classes on `.cr-char`.
+- **Layout:** the teacher, a speech bubble, the chalkboard and the classmates sit in a grid. The characters never cover the board or the navigation. On phones the Ask Kili button is hidden here.
+- **Lessons:** 4 vowel groups (3 vowels each, from `uyir`) and 9 word topics (3 random words from `TOPICS`). Each lesson goes: greeting → each item on the board (a classmate asks, the teacher explains, "say it again", everyone repeats, "your turn" pause) → three game rounds on the board → praise and thank-you.
+- **Games** (`CR_GAMES`, all built on `crQuiz`): 🎯 `find` (where is it? always first), 📖 `read` (only the written word, or for vowels the letter, is shown, so the child picks the picture without hearing it), 🔍 `missing` (look, close your eyes, one picture goes, find it among two new ones from the same set) and 👍👎 `truth` (a classmate names the picture, sometimes wrongly; the child says சரி or தவறு). Each lesson plays `find` plus two of the others. **More games** on the end screen plays three new rounds with the same items. Decoys come from the lesson's `pool()`.
+- **Voices:** every line is spoken with `speak()`. The children use a higher `pitch` (the third argument of `speak`). Letters use `sayItem`, so recordings are used when they exist. Again (🔁), Next (⏭️) and Lessons (📚) control the flow. A safety timer moves on if a browser never reports the end of speech.
+- **Kindness:** a wrong tap gives the soft miss sound, and a classmate says "பரவாயில்லை! இதோ, இங்கே இருக்கிறது." while the right card glows. Nothing is recorded.
+- **Saved:** `classroom` (lessons finished) and `classroomDone` (lesson ids, shown as ✓ on the board) in `lt-progress`. Vowels taught count as letters heard. All text is in `TEXT.classroom`.
 
 ## Say it back (`features/voice/say-back.js`)
 - **Flow:** it plays the correct sound, the child taps 🎤 and records up to 4 s, then hears their own voice; 🔁 plays both.
@@ -150,7 +161,7 @@ The 🪙 button in the header opens **My rewards** (stats, badges, reset, and li
 
 | Key | Scope | Holds |
 | --- | --- | --- |
-| `lt-progress` | per child | tokens, badges, letters heard, stories, traced, minutes, misses, stickers, streaks, certificates, Little ones finds, daily gifts |
+| `lt-progress` | per child | tokens, badges, letters heard, stories, traced, minutes, misses, stickers, streaks, certificates, Little ones finds, Classroom lessons, daily gifts |
 | `lt-best-<game>` | per child | best score |
 | `lt-cert-name`, `lt-cert-seen` | per child | name for the certificate; questions already asked |
 | `lt-spin-seen` | per child | spin-wheel memory |
