@@ -1,0 +1,814 @@
+{
+ "404.html": {
+  "hash": "11bdbdbf20524c72",
+  "date": "2026-11-11"
+ },
+ "aathichoodi.html": {
+  "hash": "3c440483f42d44ec",
+  "date": "2026-11-11"
+ },
+ "advertise.html": {
+  "hash": "38081d9fa8af3d29",
+  "date": "2026-11-11"
+ },
+ "ezhuthukal.html": {
+  "hash": "7c0cf7ada434c7b3",
+  "date": "2026-11-11"
+ },
+ "how-to-teach-tamil-to-kids.html": {
+  "hash": "7bd0ceeed4111a5f",
+  "date": "2026-11-11"
+ },
+ "index.html": {
+  "hash": "a1cc9a769fbd458c",
+  "date": "2026-11-11"
+ },
+ "install-app.html": {
+  "hash": "4045f02a483ddb69",
+  "date": "2026-11-11"
+ },
+ "learn-tamil-faq.html": {
+  "hash": "c9fa139386982f83",
+  "date": "2026-11-11"
+ },
+ "learn-tamil-online.html": {
+  "hash": "8c50f2e9f9a379e2",
+  "date": "2026-11-11"
+ },
+ "llms-full.txt": {
+  "hash": "efd2a4dbb65aa05a",
+  "date": "2026-11-11"
+ },
+ "llms.txt": {
+  "hash": "70a3e902e427282f",
+  "date": "2026-11-11"
+ },
+ "printables/aathichoodi-poster.pdf": {
+  "hash": "d98cf5e3ef0154e7",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-alphabet-chart.pdf": {
+  "hash": "50f6d0184970c770",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-animals-chart.pdf": {
+  "hash": "20963192c62781bb",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-birds-chart.pdf": {
+  "hash": "5faad018a0c8d516",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-body-chart.pdf": {
+  "hash": "a93471b6efab94dd",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-colour-words-worksheet.pdf": {
+  "hash": "a9e8150edc183375",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-colouring-pages.pdf": {
+  "hash": "f6646c20559c0164",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-colours-chart.pdf": {
+  "hash": "242be45df2b9a166",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-count-and-circle-worksheet.pdf": {
+  "hash": "8da951ab1b921db3",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-days-and-months-chart.pdf": {
+  "hash": "be8978143bc9e1f5",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-days-tracing-worksheet.pdf": {
+  "hash": "3d9c24b394b2585e",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-family-chart.pdf": {
+  "hash": "d3026e7bb8d5de2d",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-first-letter-worksheet.pdf": {
+  "hash": "71d819d90145ca38",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-food-chart.pdf": {
+  "hash": "534d7715180318d8",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-kuril-nedil-worksheet.pdf": {
+  "hash": "cb71c90800b471b5",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-mei-chart.pdf": {
+  "hash": "68f67a5e658d07c6",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-mei-tracing-worksheet.pdf": {
+  "hash": "297a6a04969af852",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-missing-letter-worksheet.pdf": {
+  "hash": "3f173f4cc95681ca",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-number-words-tracing-worksheet.pdf": {
+  "hash": "dba9f52ae47ce2dc",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-numbers-chart.pdf": {
+  "hash": "889130e9db69deb8",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-opposites-chart.pdf": {
+  "hash": "cd42d3b674602a7c",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-picture-word-matching-worksheet.pdf": {
+  "hash": "99bc56ac1f04c0c2",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-picture-words-tracing-worksheet.pdf": {
+  "hash": "684b0f9854f70364",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-shapes-chart.pdf": {
+  "hash": "d49c7d6b3239feee",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-uyir-chart.pdf": {
+  "hash": "098c3695e8e72fb8",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-uyir-tracing-worksheet.pdf": {
+  "hash": "ce06d32b0a8732fe",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-uyirmei-chart.pdf": {
+  "hash": "e809f9d30f075b04",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-uyirmei-joining-worksheet.pdf": {
+  "hash": "29bd6e5dfce6c364",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-uyirmei-tracing-worksheet.pdf": {
+  "hash": "6537f43733752e52",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-vehicles-chart.pdf": {
+  "hash": "212a8114ede600f4",
+  "date": "2026-11-11"
+ },
+ "printables/tamil-word-search-worksheet.pdf": {
+  "hash": "40d3577c29e47d8c",
+  "date": "2026-11-11"
+ },
+ "privacy.html": {
+  "hash": "ec06943b21ca31d0",
+  "date": "2026-11-11"
+ },
+ "tamil-alphabet.html": {
+  "hash": "d100e47bfe1eee58",
+  "date": "2026-11-11"
+ },
+ "tamil-animals.html": {
+  "hash": "4dffc6084dc0254d",
+  "date": "2026-11-11"
+ },
+ "tamil-birds.html": {
+  "hash": "24f65dd2cab0d92d",
+  "date": "2026-11-11"
+ },
+ "tamil-body-parts.html": {
+  "hash": "8a313670601dfd16",
+  "date": "2026-11-11"
+ },
+ "tamil-colours.html": {
+  "hash": "b65c6831bc75f85e",
+  "date": "2026-11-11"
+ },
+ "tamil-consonants.html": {
+  "hash": "e648819a52b19631",
+  "date": "2026-11-11"
+ },
+ "tamil-days-of-the-week.html": {
+  "hash": "5bb0a27bc981e7bf",
+  "date": "2026-11-11"
+ },
+ "tamil-family-words.html": {
+  "hash": "321251c28ecc5a85",
+  "date": "2026-11-11"
+ },
+ "tamil-festivals-for-kids.html": {
+  "hash": "8fade60b1101f884",
+  "date": "2026-11-11"
+ },
+ "tamil-fruits-and-food.html": {
+  "hash": "05de280d434fe3ba",
+  "date": "2026-11-11"
+ },
+ "tamil-months.html": {
+  "hash": "350549fcaceafb7c",
+  "date": "2026-11-11"
+ },
+ "tamil-numbers.html": {
+  "hash": "cf7403581f21be21",
+  "date": "2026-11-11"
+ },
+ "tamil-opposite-words.html": {
+  "hash": "f4c6866b608c3054",
+  "date": "2026-11-11"
+ },
+ "tamil-phrases-for-beginners.html": {
+  "hash": "c1bf9b9338687991",
+  "date": "2026-11-11"
+ },
+ "tamil-printables.html": {
+  "hash": "f2119871c9cf3a07",
+  "date": "2026-11-11"
+ },
+ "tamil-pronunciation-guide.html": {
+  "hash": "e720b3e205a089ee",
+  "date": "2026-11-11"
+ },
+ "tamil-rhymes-for-kids.html": {
+  "hash": "ac0877c8fc0f231c",
+  "date": "2026-11-11"
+ },
+ "tamil-shapes.html": {
+  "hash": "2923f381a9c68c22",
+  "date": "2026-11-11"
+ },
+ "tamil-stories-for-kids.html": {
+  "hash": "c5fc160c0ee08a2f",
+  "date": "2026-11-11"
+ },
+ "tamil-vehicles.html": {
+  "hash": "3e72eeb7d3ae5935",
+  "date": "2026-11-11"
+ },
+ "tamil-vowels.html": {
+  "hash": "e2f05f09c83b8ef2",
+  "date": "2026-11-11"
+ },
+ "tamil-words-for-kids.html": {
+  "hash": "edab5c097b500dd1",
+  "date": "2026-11-11"
+ },
+ "terms.html": {
+  "hash": "93d0e496e58207f0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-1.html": {
+  "hash": "0786c4de824a06fd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-10.html": {
+  "hash": "b2122fbaa96cdb42",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-100.html": {
+  "hash": "a14465de540ad75b",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-101.html": {
+  "hash": "825810d0b93f5326",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-102.html": {
+  "hash": "530a3aa39064a8fb",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-103.html": {
+  "hash": "40c3ab054b9144dd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-104.html": {
+  "hash": "44298349bdf57af0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-105.html": {
+  "hash": "ab14ea7a7d5ad471",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-106.html": {
+  "hash": "8c74af340c1cd895",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-107.html": {
+  "hash": "c685a2aaf26d35df",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-108.html": {
+  "hash": "62e49fa59ac16ee1",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-109.html": {
+  "hash": "17166e7aef4812e0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-11.html": {
+  "hash": "84221c694d7a8710",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-110.html": {
+  "hash": "17f241fb50dfaf92",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-111.html": {
+  "hash": "04548b7e035e29dc",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-112.html": {
+  "hash": "4a6c2b33604a519e",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-113.html": {
+  "hash": "c2885ea68ef4ef3f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-114.html": {
+  "hash": "176f736d7607e5e5",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-115.html": {
+  "hash": "b39b5f8cb35b0a67",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-116.html": {
+  "hash": "cba55dc85247a56c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-117.html": {
+  "hash": "811feaa06f447570",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-118.html": {
+  "hash": "54559ad70da719fd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-119.html": {
+  "hash": "860fe2b34fa5be28",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-12.html": {
+  "hash": "57729a3959a80a5c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-120.html": {
+  "hash": "9fe511b28380ac08",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-121.html": {
+  "hash": "d608c0f12d71a6c1",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-122.html": {
+  "hash": "d239c12cca4d76fd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-123.html": {
+  "hash": "46ae9c7e7b02e046",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-124.html": {
+  "hash": "0d3248872fbada14",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-125.html": {
+  "hash": "502037d285986e0f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-126.html": {
+  "hash": "933ca0b47c38623b",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-127.html": {
+  "hash": "ed21b2c68eec9aa5",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-128.html": {
+  "hash": "77ea4c17be938fb3",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-129.html": {
+  "hash": "deccab1aff44e74a",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-13.html": {
+  "hash": "55e8edfe95cbd750",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-130.html": {
+  "hash": "df23810f2bcaed4b",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-131.html": {
+  "hash": "2a921b59d218b269",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-132.html": {
+  "hash": "3f227b92cb69da03",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-133.html": {
+  "hash": "fe5d552f33a45b95",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-14.html": {
+  "hash": "e0984f3d1e69d360",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-15.html": {
+  "hash": "0c1ab325836bdd8f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-16.html": {
+  "hash": "e36e67f55433388d",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-17.html": {
+  "hash": "5198a3b12c2cb315",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-18.html": {
+  "hash": "62cb949e43076dfa",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-19.html": {
+  "hash": "9e91744d45e453f6",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-2.html": {
+  "hash": "58dc746b4b2f7ab3",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-20.html": {
+  "hash": "283751023247443f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-21.html": {
+  "hash": "bd7320010dde3e97",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-22.html": {
+  "hash": "d03d00a3386a8b3d",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-23.html": {
+  "hash": "b584048b0ee05373",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-24.html": {
+  "hash": "2c88f0cf369748c0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-25.html": {
+  "hash": "5caa67daf7bec198",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-26.html": {
+  "hash": "ddd3a2a04f242ed9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-27.html": {
+  "hash": "aeab71e04dcc825a",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-28.html": {
+  "hash": "d7d27e80e71e5274",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-29.html": {
+  "hash": "561c6b7d00811f8f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-3.html": {
+  "hash": "bc65fbbd3ab417f8",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-30.html": {
+  "hash": "bcbf37228547f6c9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-31.html": {
+  "hash": "fd7872ccc609aff0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-32.html": {
+  "hash": "83ff9a0e678af299",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-33.html": {
+  "hash": "5b17a6d3b24d9abc",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-34.html": {
+  "hash": "bacd3bb7a454c325",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-35.html": {
+  "hash": "c441832587aa6802",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-36.html": {
+  "hash": "21c796c65149c21f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-37.html": {
+  "hash": "f161f9710d702e06",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-38.html": {
+  "hash": "f0aa1961e4ae77c0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-39.html": {
+  "hash": "aaaffce92cebeac9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-4.html": {
+  "hash": "f10ab997fc907720",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-40.html": {
+  "hash": "d8d09d3227fc2931",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-41.html": {
+  "hash": "f6708b5051e385f5",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-42.html": {
+  "hash": "39efdd13d2a9452e",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-43.html": {
+  "hash": "38ad716039b38220",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-44.html": {
+  "hash": "c0e95d1011e4721a",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-45.html": {
+  "hash": "51a835418fa63e1c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-46.html": {
+  "hash": "c77fc7e4f0cd3b50",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-47.html": {
+  "hash": "d556f31537b10e95",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-48.html": {
+  "hash": "307231af963bb846",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-49.html": {
+  "hash": "f03d77b169574bdf",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-5.html": {
+  "hash": "b1539ce20c0611cf",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-50.html": {
+  "hash": "d0d1b764d697539e",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-51.html": {
+  "hash": "35695e1562ad9cdf",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-52.html": {
+  "hash": "9148b2042cb818df",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-53.html": {
+  "hash": "de61ed59560647b9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-54.html": {
+  "hash": "90c1d36910f75cd6",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-55.html": {
+  "hash": "fc9bb9a1c01ec436",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-56.html": {
+  "hash": "ce95d693ef7172f0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-57.html": {
+  "hash": "fb1047e451cbad5a",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-58.html": {
+  "hash": "ef971fd17f82c738",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-59.html": {
+  "hash": "5f57818f3224ff05",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-6.html": {
+  "hash": "5199ce64abe49b66",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-60.html": {
+  "hash": "05554c3270e27124",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-61.html": {
+  "hash": "dca252244a58b97c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-62.html": {
+  "hash": "68169249a623d138",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-63.html": {
+  "hash": "afeaf95ef1e7c5c3",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-64.html": {
+  "hash": "660cb95b1f8ecc8f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-65.html": {
+  "hash": "b94f3e6d25e78a65",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-66.html": {
+  "hash": "5990a209546b42e4",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-67.html": {
+  "hash": "8fb33e4a0f75c340",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-68.html": {
+  "hash": "f5a2ca2ae944ce45",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-69.html": {
+  "hash": "63891eb6089bdb64",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-7.html": {
+  "hash": "9e7269f030bfa5bd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-70.html": {
+  "hash": "8bd0b8232700b39a",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-71.html": {
+  "hash": "f4b0c11c8b200222",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-72.html": {
+  "hash": "0393437b9634f943",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-73.html": {
+  "hash": "6ad2578f7ef839dd",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-74.html": {
+  "hash": "dd8ee3729f306f08",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-75.html": {
+  "hash": "e53cdb63c545a0d5",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-76.html": {
+  "hash": "4161fe67c36c854b",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-77.html": {
+  "hash": "c7e215fa1b8426f2",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-78.html": {
+  "hash": "85d95fb05514d8e2",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-79.html": {
+  "hash": "4044597b03ece8e1",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-8.html": {
+  "hash": "11c16654def78b69",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-80.html": {
+  "hash": "502e83e476b864df",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-81.html": {
+  "hash": "24b1e0f2eca4232c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-82.html": {
+  "hash": "a1a078f5d5f35f4e",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-83.html": {
+  "hash": "ca1bff8c4b64b5eb",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-84.html": {
+  "hash": "6256ca086a36f535",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-85.html": {
+  "hash": "5ffc7bbd643f84ad",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-86.html": {
+  "hash": "a3a25a75f335b128",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-87.html": {
+  "hash": "535362a4914365ef",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-88.html": {
+  "hash": "7cd6b4471406e8cf",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-89.html": {
+  "hash": "cb0c50b5c5716ca9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-9.html": {
+  "hash": "67f415b96d0e24f9",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-90.html": {
+  "hash": "8002557e291946d0",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-91.html": {
+  "hash": "b6ff83cb651b64f4",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-92.html": {
+  "hash": "92c4a5dba764af5d",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-93.html": {
+  "hash": "e7db594c62a9fa8c",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-94.html": {
+  "hash": "56df3b2d857f273b",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-95.html": {
+  "hash": "19b28ed3f5b51000",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-96.html": {
+  "hash": "8a2c295c2ec08e7f",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-97.html": {
+  "hash": "404d7a635aa70d62",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-98.html": {
+  "hash": "e8e95874700bb4a5",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapter-99.html": {
+  "hash": "8710217146a23add",
+  "date": "2026-11-11"
+ },
+ "thirukkural-chapters.html": {
+  "hash": "000853fd810a7df8",
+  "date": "2026-11-11"
+ },
+ "thirukkural-topics.html": {
+  "hash": "3c03ab3f07437c68",
+  "date": "2026-11-11"
+ },
+ "thirukkural.html": {
+  "hash": "181217404857d836",
+  "date": "2026-11-11"
+ },
+ "uyirmei-ezhuthukal.html": {
+  "hash": "3637c97f2b8b5c19",
+  "date": "2026-11-11"
+ }
+}

@@ -12,6 +12,7 @@
 */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { styleTags, scriptTags, SERVICES, APP_SCRIPTS, KURAL_SCRIPTS, PRECACHE_ASSETS, STYLES, STYLE_BUNDLE } from './lib/assets.mjs';
 import { loadData } from './lib/load-data.mjs';
 import { qrSvg } from './lib/qr.mjs';
@@ -19,6 +20,7 @@ import { qrSvg } from './lib/qr.mjs';
 export const SITE = 'https://learntamil.msdevbuild.com/';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const TODAY = new Date().toISOString().slice(0, 10);
+const fmtDay = (d, lang) => new Date(d).toLocaleDateString(lang === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Load the same data the app uses.
 const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES, FESTIVALS, KURAL_PAALS, KURAL_LESSONS } =
@@ -238,7 +240,8 @@ ${guide ? `<meta property="article:published_time" content="${PUBLISHED}">\n<met
 <script>try{var r=document.documentElement,t=localStorage.getItem('lt-theme');if(t)r.setAttribute('data-theme',t);[['text','lt-text'],['contrast','lt-contrast'],['motion','lt-motion']].forEach(function(a){var v=localStorage.getItem(a[1]);if(v)r.setAttribute('data-'+a[0],v)})}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&family=Baloo+Thambi+2:wght@600;700;800&family=Inter:wght@400;600;700&display=swap"></noscript>
 ${styleTags()}
 <script type="application/ld+json">${JSON.stringify(graph)}</script>
 </head>
@@ -263,7 +266,7 @@ ${styleTags()}
         <nav class="crumbs" aria-label="Breadcrumb"><a href="./">Learn Tamil</a> › <span>${plainH1}</span></nav>
         ${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}
         <h1>${h1}</h1>
-        <p class="doc-meta">${T.updated} <time datetime="${TODAY}">${new Date(TODAY).toLocaleDateString(lang === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · ${T.by} <a href="https://blog.msdevbuild.com/about/" rel="author">Suthahar Jegatheesan</a></p>
+        <p class="doc-meta">${T.updated} <time datetime="${TODAY}">${fmtDay(TODAY, lang)}</time> · ${T.by} <a href="https://blog.msdevbuild.com/about/" rel="author">Suthahar Jegatheesan</a></p>
       </div>
       <div class="doc-mascot" aria-hidden="true"><span class="bird">🦜</span>${bubble ? `<span class="bubble">${bubble}</span>` : ''}</div>
     </div>
@@ -350,7 +353,29 @@ const cards = arr => `<div class="lcards">${arr.join('')}</div>`;
 const DTS = (file, name, terms) => ({ '@type': 'DefinedTermSet', '@id': SITE + file + '#terms', name,
   hasDefinedTerm: terms.map(([n, d]) => ({ '@type': 'DefinedTerm', name: n, description: d, inDefinedTermSet: SITE + file + '#terms' })) });
 const ALT = [{ hreflang: 'en', file: 'tamil-alphabet.html' }, { hreflang: 'ta', file: 'ezhuthukal.html' }, { hreflang: 'x-default', file: 'tamil-alphabet.html' }];
-const write = (file, html) => fs.writeFileSync(path.join(ROOT, file), html);
+/* Honest dates. Pages are rebuilt on every build, but a page's dateModified, "Updated" line and sitemap
+   <lastmod> only move when its content really changes: tools/page-dates.json keeps a hash of each page
+   (with the date taken out) and the day that hash last changed. Search engines stop trusting <lastmod>
+   on sites where it is always today, so this keeps re-crawling fast for the pages that did change. */
+const DATES_FILE = path.join(ROOT, 'tools', 'page-dates.json');
+const DATES = (() => { try { return JSON.parse(fs.readFileSync(DATES_FILE, 'utf8')); } catch { return {}; } })();
+const hashOf = x => createHash('sha256').update(x).digest('hex').slice(0, 16);
+const dateFor = (file, content) => {
+  const hash = hashOf(content), prev = DATES[file];
+  const date = prev && prev.hash === hash ? prev.date : TODAY;
+  DATES[file] = { hash, date };
+  return date;
+};
+const stamp = (file, html) => {
+  if (typeof html !== 'string' || !/\.(html|txt)$/.test(file)) return html;
+  const today = [TODAY, fmtDay(TODAY, 'en'), fmtDay(TODAY, 'ta')];
+  const date = dateFor(file, today.reduce((h, t) => h.split(t).join('@DATE@'), html));
+  if (date === TODAY) return html;
+  const then = [date, fmtDay(date, 'en'), fmtDay(date, 'ta')];
+  return today.reduce((h, t, i) => h.split(t).join(then[i]), html);
+};
+const lastmod = p => DATES[p || 'index.html']?.date || TODAY;
+const write = (file, html) => fs.writeFileSync(path.join(ROOT, file), stamp(file, html));
 
 /* ---------- 0. stylesheet bundle: the numbered CSS files joined in order ---------- */
 write(STYLE_BUNDLE, '/* Generated by tools/build-pages.mjs from assets/css/NN-*.css — do not edit; edit those files. */\n' +
@@ -1031,7 +1056,7 @@ const KURAL_SCHEMA = { '@context': 'https://schema.org', '@graph': [faqSchemaFor
   putK('KURAL-ABOUT', KURAL_ABOUT);
   putK('FOOTER', FOOTER);
   putK('SCRIPTS', scriptTags([...KURAL_SCRIPTS, ...SERVICES]));
-  fs.writeFileSync(f, h);
+  fs.writeFileSync(f, stamp('thirukkural.html', h));
 }
 
 const CHAPTERS_FAQ = [
@@ -1044,7 +1069,7 @@ const CHAPTERS_FAQ = [
 write('thirukkural-chapters.html', shell({
   file: 'thirukkural-chapters.html', guide: true, bubble: '133!', crumbs: [['Thirukkural for kids', 'thirukkural.html']],
   title: 'All 133 Thirukkural Chapters (Adhikaram) in Tamil & English',
-  description: `The 133 chapters (அதிகாரம்) of Thirukkural in order, with English names: from ${KURAL.ch[0][0]} (${KURAL.ch[0][1]}) to ${KURAL.ch[132][0]}. Open any chapter for its 10 Kurals.`,
+  description: `All 133 Thirukkural chapters (அதிகாரம்) in order with English names, from ${KURAL.ch[0][0]} (${KURAL.ch[0][1]}) to ${KURAL.ch[132][0]}. 10 Kurals each.`,
   h1: 'All 133 Thirukkural chapters — <span class="ta">அதிகாரங்கள்</span>', eyebrow: '3 divisions · 13 sections · 133 chapters · 1,330 Kurals',
   body: `
 <p class="lead-doc"><strong>Thirukkural has 133 chapters (${ta('அதிகாரம்')}, adhikaram) of exactly 10 Kurals each — 1,330 Kurals in all.</strong> The chapters are grouped into sections (${ta('இயல்')}, iyal) inside three divisions (${ta('பால்')}, paal). Chapter <i>n</i> holds Kurals 10<i>n</i> − 9 to 10<i>n</i>; for example, chapter 40, ${ta(KURAL.ch[39][0])} (${esc(KURAL.ch[39][1])}), holds Kurals 391–400.</p>
@@ -1599,8 +1624,8 @@ const altXml = p => (p === 'tamil-alphabet.html' || p === 'ezhuthukal.html')
   ? ALT.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${SITE}${a.file}"/>`).join('') : '';
 const imgXml = p => p === 'tamil-printables.html' ? PRINTS.map(d =>
   `<image:image><image:loc>${SITE}assets/printables/${d.file}.png</image:loc><image:title>${esc(d.title)}</image:title></image:image>`).join('') : '';
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
-  pages.map(([p, pr, cf]) => `  <url><loc>${SITE}${p}</loc>${altXml(p)}${imgXml(p)}<lastmod>${TODAY}</lastmod><changefreq>${cf}</changefreq><priority>${pr}</priority></url>`).join('\n') + `\n</urlset>\n`);
+const writeSitemap = () => write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
+  pages.map(([p, pr, cf]) => `  <url><loc>${SITE}${p}</loc>${altXml(p)}${imgXml(p)}<lastmod>${lastmod(p)}</lastmod><changefreq>${cf}</changefreq><priority>${pr}</priority></url>`).join('\n') + `\n</urlset>\n`);
 
 /* ---------- llms.txt (summary for AI assistants) ---------- */
 write('llms.txt', `# Learn Tamil (தமிழ் கற்போம்)
@@ -1705,7 +1730,7 @@ const privacyBody = `
 <p>To make the site work, a few small values are saved in your browser's own storage. They never leave your device and we cannot see them.</p>
 <div class="tbl"><table><thead><tr><th>What</th><th>Where</th><th>Why</th></tr></thead><tbody>
 <tr><td>Light or dark theme</td><td>localStorage <code>lt-theme</code></td><td>Remembers your colour choice</td></tr>
-<tr><td>⚙️ Settings: text size, high contrast, less movement, voice speed and volume</td><td>localStorage <code>lt-text</code>, <code>lt-contrast</code>, <code>lt-motion</code>, <code>lt-rate</code>, <code>lt-vol</code></td><td>Remembers how you like the app to look and sound on this device</td></tr>
+<tr><td>⚙️ Settings: text size, high contrast, less movement, who speaks (woman, man, girl, boy), device voice, speed and volume</td><td>localStorage <code>lt-text</code>, <code>lt-contrast</code>, <code>lt-motion</code>, <code>lt-rate</code>, <code>lt-vol</code>, <code>lt-voice</code>, <code>lt-cast</code></td><td>Remembers how you like the app to look and sound on this device</td></tr>
 <tr><td>Children’s first names, pictures and age groups</td><td>localStorage <code>lt-profiles</code>, <code>lt-profile</code></td><td>Lets each child have their own progress and the learning path for their age</td></tr>
 <tr><td>Game progress: tokens, badges, daily gifts, letters heard, words read, stories finished, Thirukkural couplets learned and bookmarked, Thirukkural quiz answers</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
 <tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser. On the website the name is also sent with the certificate record (see <a href="#certificates">Certificate records</a>); in the Android app it is never sent.</td></tr>
@@ -1777,7 +1802,7 @@ const privacyBody = `
 <h2>Contact</h2>
 <p>For any privacy question or request, please use the ${CONTACT}.</p>
 `;
-fs.writeFileSync(path.join(ROOT, 'privacy.html'), shell({
+write('privacy.html', shell({
   file: 'privacy.html', ogType: 'website',
   title: 'Privacy & Data Policy | Learn Tamil',
   description: 'Learn Tamil has no accounts or ad tracking. See what is stored on your device, the certificate records parents give with consent, and the services used.',
@@ -1827,7 +1852,7 @@ const termsBody = `
 <h2>11. Contact</h2>
 <p>Questions about these terms can be sent through the ${CONTACT}.</p>
 `;
-fs.writeFileSync(path.join(ROOT, 'terms.html'), shell({
+write('terms.html', shell({
   file: 'terms.html', ogType: 'website',
   title: 'Terms & Conditions | Learn Tamil',
   description: 'Terms for using Learn Tamil, a free Tamil alphabet learning website for children: free educational use, MIT licence, accuracy notes, children and liability.',
@@ -1835,7 +1860,7 @@ fs.writeFileSync(path.join(ROOT, 'terms.html'), shell({
 }));
 
 /* ---------- 404 ---------- */
-fs.writeFileSync(path.join(ROOT, '404.html'), shell({
+write('404.html', shell({
   file: '404.html', ogType: 'website',
   title: 'Page not found | Learn Tamil',
   description: 'This page does not exist. Go back to Learn Tamil.',
@@ -1863,6 +1888,12 @@ put('SUPPORT', SUPPORT + '\n' + CONNECT('home') + '\n' + SPONSOR('home'));
 put('PRINT-PROMO', `<a class="print-promo" href="tamil-printables.html"><span class="pp-ic" aria-hidden="true">🖨️</span><span><b>Free printables · <span class="ta">அச்சிடும் தாள்கள்</span></b><small>${PRINTS.length} charts, tracing and activity worksheets and colouring pages — print and practise away from the screen.</small></span><span class="pp-go" aria-hidden="true">→</span></a>`);
 put('GUIDES', GUIDES.map(g => `<a class="guide-card" href="${g.file}"><span class="gc-ic" aria-hidden="true">${g.ic}</span><b>${g.en}</b><span class="ta">${g.ta}</span></a>`).join(''));
 fs.writeFileSync(idxPath, idx);
+dateFor('index.html', idx);
+/* PDFs: date from their bytes */
+for (const d of PRINTS) { const pdf = 'printables/' + d.file + '.pdf';
+  try { dateFor(pdf, fs.readFileSync(path.join(ROOT, pdf))); } catch {} }
+writeSitemap();
+fs.writeFileSync(DATES_FILE, JSON.stringify(Object.fromEntries(Object.entries(DATES).sort()), null, 1) + '\n');
 
 /* ---------- stamp a content hash into sw.js so every change reaches installed apps ---------- */
 import('node:crypto').then(({ createHash }) => {

@@ -149,7 +149,12 @@ const TEXT = {
     sfx: ['விளையாட்டு ஒலிகள்', 'Game sounds'],
     rate: ['குரல் வேகம்', 'Voice speed'],
     volume: ['குரல் ஒலி அளவு', 'Voice volume'],
-    tryVoice: ['குரலைக் கேள்', 'Try the voice']
+    tryVoice: ['குரலைக் கேள்', 'Try the voice'],
+    voice: ['குரல்', 'Voice'],
+    voiceAuto: ['தானாக', 'Automatic'],
+    who: ['யார் பேசட்டும்?', 'Who speaks?'],
+    cast: { woman: ['👩', 'அக்கா', 'Woman'], man: ['👨', 'அண்ணா', 'Man'], girl: ['👧', 'சிறுமி', 'Girl'], boy: ['👦', 'சிறுவன்', 'Boy'] },
+    deviceVoice: ['சாதனக் குரல்', 'Device voice']
   },
 
   /* Thirukkural 📜 (#/kural). Lessons: data/kural-lessons.js · couplets: data/thirukkural.json */

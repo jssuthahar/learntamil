@@ -163,10 +163,12 @@ await check('settings: text size, contrast and motion reach <html>, and the pare
   document.getElementById('settingsBtn').click(); const d = document.getElementById('settingsDlg');
   d.querySelector('[data-size=lg]').click(); const c = d.querySelector('#setContrast'); c.checked = true; c.onchange({ target: c });
   const r = document.documentElement; const ok = r.dataset.text === 'lg' && r.dataset.contrast === 'high' && localStorage.getItem('lt-text') === 'lg';
-  d.querySelector('[data-size=""]').click(); c.checked = false; c.onchange({ target: c }); d.close();
+  d.querySelector('[data-size=""]').click(); c.checked = false; c.onchange({ target: c });
+  d.querySelector('[data-cast=girl]').click(); const girl = utter('அ'); const toneOk = voiceCast() === 'girl' && girl.pitch > 1.3 && d.querySelectorAll('[data-cast]').length === 4;
+  d.querySelector('[data-cast=woman]').click(); const toneBack = voiceCast() === 'woman' && localStorage.getItem('lt-cast') === null && utter('அ').pitch < 1.3; d.close();
   const p = document.getElementById('parentDlg'); renderParents(p);
   const dash = !!p.querySelector('#pcAge') && p.querySelectorAll('.pc-lessons li').length === LESSONS[childAge()].length; p.close();
-  return ok && !r.dataset.text && !r.dataset.contrast && dash; })()`);
+  return ok && toneOk && toneBack && !r.dataset.text && !r.dataset.contrast && dash; })()`);
 await check('tracing accepts a traced letter', `(async()=>{ showGame('trace'); await renderTrace(); inkCv.getContext('2d').drawImage(maskCv,0,0); drawLetter(inkCv.getContext('2d'), trItem().l, '#000', 14); TR.inked=true; checkTrace(); return TR.done; })()`);
 await check('messages come from data/messages.js', `(async()=>{ location.hash='/practice'; await new Promise(r=>setTimeout(r,200)); showGame('build');
   const ask = document.getElementById('qAsk').textContent;

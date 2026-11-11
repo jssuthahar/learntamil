@@ -11,10 +11,12 @@ How Learn Tamil is found in Google and Bing (**SEO**), quoted in answer boxes an
 | Canonical and hreflang | every page canonical; English ↔ Tamil alternates for the alphabet pages (`tamil-alphabet.html` ↔ `ezhuthukal.html`) |
 | Structured data | the app: WebSite, WebApplication + LearningResource, Person/Brand. Every guide: WebPage, BreadcrumbList, Article, FAQPage. Also DefinedTermSet (word lists), ShortStory (stories), CreativeWork (Aathichoodi, rhymes), HowTo (parents' guide), ItemList + DigitalDocument (PDFs) |
 | Direct answers (AEO) | each page opens with a one-sentence answer in bold; every page ends with 2–5 FAQs whose answers stand alone (Tamil + romanisation) |
-| Sitemap | all pages, all PDFs, hreflang alternates, and an **image sitemap** of the 23 printable previews |
+| Sitemap | all pages, all PDFs, hreflang alternates, and an **image sitemap** of the printable previews |
+| Honest dates | `tools/page-dates.json` keeps a hash of each page and the day it last really changed. `dateModified`, the visible "Updated" line and sitemap `<lastmod>` use that day, not the build day, so search engines keep trusting `<lastmod>`. Generated; don't edit it by hand, and commit it with the pages |
+| IndexNow | `npm run indexnow` (after deploying) tells Bing, which also feeds ChatGPT search and Copilot, plus Yandex, Seznam and Naver, which pages changed today. The key file `4140fc78b075cd96dcad049738dbc15f.txt` in the site root must never move |
 | AI files (GEO) | `robots.txt` allows all crawlers; `llms.txt` (key facts + links to every page and PDF); `llms-full.txt` (all learning content as plain text) |
 | Internal links | every guide links to every other (footer + "More guides"), to the app sections, and to the printables |
-| Speed | one CSS file (`assets/css/app.css`); scripts at the end of `<body>`; offline cache; no third-party scripts until consent |
+| Speed | one CSS file (`assets/css/app.css`); Google Fonts load without blocking first paint (`preload` + `onload`, `<noscript>` fallback); scripts at the end of `<body>`; offline cache; no third-party scripts until consent |
 | Language | `index.html` is `lang="en"` with Tamil passages marked `lang="ta"`/`class="ta"`; `ezhuthukal.html` is `lang="ta"` |
 | Trust (E-E-A-T) | named author with profile links, published/modified dates, a privacy page that says exactly what is stored, a public issue tracker |
 
@@ -55,7 +57,7 @@ Follow the skill `learntamil-pages`. In short:
 
 ## After publishing (owner)
 
-1. Submit `https://learntamil.msdevbuild.com/sitemap.xml` to Google Search Console and Bing Webmaster Tools. Bing also powers ChatGPT search and Copilot.
+1. Submit `https://learntamil.msdevbuild.com/sitemap.xml` to Google Search Console and Bing Webmaster Tools. Bing also powers ChatGPT search and Copilot. After each deploy, run `npm run indexnow` (first time: `npm run indexnow -- --all`).
 2. Test a few pages in the Rich Results Test and the Schema.org validator.
 3. Watch Search Console → Performance for the queries above, and write new pages for the queries that bring impressions but no matching page.
 4. Earn links: Tamil schools and Tamil Sangams abroad, parenting blogs, blog.msdevbuild.com and social profiles. Trusted links matter more than any on-page change.

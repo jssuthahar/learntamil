@@ -11,6 +11,7 @@
     "printables": "node tools/build-printables.mjs && node tools/build-pages.mjs",
     "serve": "python3 -m http.server 8080",
     "test": "node tools/smoke-test.mjs",
-    "check": "npm run build && npm test"
+    "check": "npm run build && npm test",
+    "indexnow": "node tools/indexnow.mjs"
   }
 }
