@@ -81,6 +81,8 @@
     if (d.showModal) d.showModal(); else d.setAttribute('open', '');
     return d;
   }
-  window.LTShare = { open, fill, info: pageInfo };
+  /* icon(id): the SVG for a network id, 'copy' or 'more' (used by the certificate share card). */
+  const icon = id => id === 'copy' ? IC_COPY : id === 'more' ? IC_MORE : ((NETS.find(n => n.id === id) || {}).ic || '');
+  window.LTShare = { open, fill, info: pageInfo, icon };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill); else fill();
 })();

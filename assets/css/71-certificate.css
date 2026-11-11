@@ -69,3 +69,48 @@
   .cq-opts{gap:8px}
   .cq-opt{font-size:17px;min-height:58px}
 }
+
+/* 🎉 Celebration card + grown-up sharing under a new certificate (features/certificate/cert-share.js) */
+.cs-card{position:relative;max-width:640px;margin:18px auto 4px;padding:20px 16px 18px;border-radius:24px;text-align:center;
+  background:linear-gradient(135deg,color-mix(in srgb,#ffcd56 22%,var(--glass)),color-mix(in srgb,#7c3aed 12%,var(--glass)));
+  border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);animation:popIn .5s cubic-bezier(.3,1.6,.5,1) both}
+.cs-burst{font-size:56px;line-height:1.1;animation:bob 2.6s ease-in-out infinite}
+.cs-title{font-family:var(--font-kid);font-size:clamp(22px,4.4vw,30px);margin:4px 0 2px;line-height:1.35}
+.cs-title small{display:block;font-family:var(--font-ui,inherit);font-size:16px;font-weight:700;color:var(--text-muted)}
+.cs-body{margin:6px auto 14px;max-width:520px;line-height:1.55}
+.cs-open{min-height:48px}
+.cs-gate{padding:12px 4px 4px}
+.cs-panel{text-align:left;margin-top:6px}
+.cs-panel h4{margin:4px 0 8px;font-size:18px;text-align:center}
+.cs-msg{margin:0 0 12px;padding:12px 14px;border-radius:14px;background:var(--bg);border:1px dashed var(--border);font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+.cs-list{justify-content:center}
+.cs-list .share-btn{min-height:46px;padding:10px 14px}
+.cs-panel .share-save{background:var(--accent-soft);color:var(--text)}
+.cs-panel a.btn,.cs-panel a.btn:hover{text-decoration:none}
+.share-instagram{background:linear-gradient(45deg,#f09433,#dc2743 50%,#bc1888)}
+.cs-note{margin:10px 0 0;text-align:center;font-weight:700;color:var(--ok)}
+.cs-ig{margin-top:12px;padding:12px 14px;border-radius:16px;background:var(--bg-subtle)}
+.cs-ig ol{margin:0 0 6px;padding-left:22px;line-height:1.6}
+.cs-ig .btn svg{vertical-align:-4px}
+.cs-privacy{margin:14px 0 0;font-size:13px;color:var(--text-muted);line-height:1.5}
+@media (prefers-reduced-motion: reduce){ .cs-card,.cs-burst{animation:none} }
+
+/* 👪 Parent's details on the certificate form (features/certificate/cert-record.js) — a grown-up surface, gentle errors */
+.crc{margin:10px 0 2px;padding:14px 14px 12px;border:1px solid var(--border);border-radius:18px;background:var(--bg-subtle);display:flex;flex-direction:column;gap:6px;min-width:0}
+.crc legend{padding:0 6px;font-weight:800}
+.crc-why{margin:0 0 4px;font-size:14px;line-height:1.5;color:var(--text-muted)}
+.crc-fields{display:flex;flex-direction:column;gap:6px}
+.crc-fields[hidden]{display:none}
+.crc label{font-weight:700}
+.crc input[type=email],.crc input[type=tel]{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:14px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:17px;font-family:inherit}
+.crc input:focus{border-color:var(--accent);outline:none}
+.crc input[aria-invalid]{border-color:#e0a030}
+.crc-consent{display:flex;gap:10px;align-items:flex-start;font-weight:600 !important;font-size:14px;line-height:1.5;margin-top:4px;cursor:pointer}
+.crc-consent input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--accent)}
+.crc-err{color:#a86400;font-weight:700;font-size:13.5px}
+:root[data-theme="dark"] .crc-err{color:#ffc46b}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .crc-err{color:#ffc46b} }
+.crc-saved{margin:0;font-weight:700;line-height:1.7}
+.crc-saved .btn{margin-left:6px}
+.cr-make{align-self:center;min-height:50px;margin-top:8px;padding-inline:22px}
+.crc-note{max-width:560px;margin:10px auto 0;padding:10px 14px;border-radius:14px;background:var(--bg-subtle);font-size:14px;line-height:1.5}

@@ -899,7 +899,7 @@ const HELP = [
   ['What are tokens and badges?', 'Children earn 🪙 tokens for right answers, finished games, words read, stories and certificates, and unlock 🏅 badges such as “முதல் அடி” (first step). Tap 🪙 at the top to see them. They are saved only on this device.', 'token tokens coin coins badge badges reward rewards star stars points score', ''],
   ['How do I reset progress?', 'Tap 🪙 at the top to open My rewards, then press Reset progress. You can also clear this site’s data in your browser settings.', 'reset clear delete progress start again restart', ''],
   ['Which games are there?', 'Fourteen games: க் + ஆ = ? (build a letter), Listen & pick, Spin wheel, Balloon pop, Word builder, Memory, Tamil quiz, Picture words, Topics, Spelling, Sentences, Trace (write letters with a finger), Colouring (colours in Tamil) and Little ones for ages 3–5. Every right answer gives points, a cheer and tokens; 3 in a row gives a bonus.', 'game games play fun quiz balloon spin memory word builder', './#/practice'],
-  ['Is my child’s data safe?', 'Yes. Learn Tamil collects no personal data: no accounts and no ad tracking. If a parent allows it, it counts anonymous visits and game use with Google Analytics for Firebase, with advertising features turned off. Progress and the certificate name are saved only in your own browser. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
+  ['Is my child’s data safe?', 'Yes. Learn Tamil has no accounts and no ad tracking. Progress is saved only in your own browser. If a parent allows it, it counts anonymous visits and game use with Google Analytics for Firebase, with advertising features turned off. On the website, a parent or guardian gives the child’s name, their own email and phone, and their consent before a certificate is made. We keep that record privately and never show it publicly or share it with advertisers. The Android app asks for nothing. See the [Privacy & data policy](privacy.html).', 'privacy data safe tracking personal cookies child children secure gdpr coppa', 'privacy.html'],
   ['How can I report a mistake or give feedback?', `Please open an issue on [GitHub Issues](${ISS}). There are short forms for a wrong sound or Tamil mistake, a bug, or an idea. Issues are public, so please don’t include personal details.`, 'report mistake bug error wrong issue feedback idea suggest problem github', ''],
   ['How can I support Learn Tamil?', `Learn Tamil is free, with no ads in the lessons or games. If it helps your family or classroom, you can [buy me a coffee](${COFFEE_URL}) ☕. Businesses can also sponsor the parents’ guide pages: [contact us to advertise](${ADVERTISE_URL}). Thank you — உங்கள் ஆதரவுக்கு நன்றி!`, 'support donate coffee pay money help contribute sponsor', ''],
   ['Who made Learn Tamil?', 'Learn Tamil was made by Suthahar Jegatheesan (MSDEVBUILD) as a free, non-commercial project for children and beginners learning Tamil. More at [blog.msdevbuild.com](https://blog.msdevbuild.com).', 'who made author creator owner msdevbuild suthahar about contact', ''],
@@ -1560,7 +1560,7 @@ ${h2('policy', '📜', 'Advertising policy')}
     <li>Ads must not ask children to buy anything or to give personal details.</li></ul></section>
   <section class="glass"><h3>🔒 User privacy</h3><ul>
     <li>We never share our visitors’ personal information, email addresses, phone numbers or other private data with advertisers.</li>
-    <li>Advertisers have no access to any user data. Learn Tamil has no accounts and collects no personal information.</li>
+    <li>Advertisers have no access to any user data. Learn Tamil has no accounts, and the only personal details it keeps are the certificate records a parent or guardian chooses to give, which are never shared with advertisers.</li>
     <li>Ads are plain images or text with a link: no advertising scripts, tracking pixels or cookies, and no targeting or personalisation.</li>
     <li>Business details sent to us in an enquiry are used only to handle that enquiry and the advertisement, and are kept private.</li></ul></section>
   <section class="glass"><h3>⚖️ Advertisement disclaimer</h3><ul>
@@ -1633,7 +1633,7 @@ ${PRINTS.map(d => `- [${d.title}](${SITE}printables/${d.file}.pdf): ${d.pages} p
 
 ## App and policies
 - [Learning app](${SITE}): interactive letters with audio, reading practice, stories and games (requires JavaScript).
-- [Privacy & data](${SITE}privacy.html): no personal data is collected.
+- [Privacy & data](${SITE}privacy.html): no accounts and no ad tracking; certificate records (child’s name, parent’s email and phone) only with a parent’s consent, never public.
 - [Terms](${SITE}terms.html)
 - [Advertise with us](${SITE}advertise.html): sponsor formats for businesses, shown only on parents’ and teachers’ pages, booked directly with no ad network or tracking.
 - [Report an issue](${ISSUES_URL})
@@ -1684,13 +1684,13 @@ ${KURAL.ch.map(([t, e], c) => `### Chapter ${c + 1}: ${t} — ${e}\n${Array.from
 const CONTACT = '<a href="https://blog.msdevbuild.com/contact/" rel="noopener">contact page</a>';
 const ISSUES = '<a href="https://github.com/jssuthahar/learntamil/issues" rel="noopener">GitHub Issues</a>';
 const privacyBody = `
-<div class="callout glass"><b>In short:</b> Learn Tamil does not collect, store or sell any personal information. There are no accounts and no advertising scripts or ad tracking. Some parents’ guide pages show a simple sponsor box, never inside the children’s lessons or games. If you allow it, we count anonymous visits and game use with Google Analytics for Firebase, with all advertising features turned off. Progress and settings are saved only in your own browser.</div>
+<div class="callout glass"><b>In short:</b> Learn Tamil never sells personal information and never asks a child for it. The only personal details it keeps are certificate records that a parent or guardian gives on the website, with consent (the child’s name and the parent’s email and phone), and nobody can see them publicly. There are no accounts and no advertising scripts or ad tracking. Some parents’ guide pages show a simple sponsor box, never inside the children’s lessons or games. If you allow it, we count anonymous visits and game use with Google Analytics for Firebase, with all advertising features turned off. Progress and settings are saved only in your own browser.</div>
 
 <h2>Who runs this website</h2>
 <p>Learn Tamil (<a href="${SITE}">${SITE}</a>) is a free educational website made by Suthahar Jegatheesan under the MSDEVBUILD name. It is a personal, non-commercial project. Questions about privacy can be sent through the ${CONTACT}.</p>
 
 <h2>Information we collect</h2>
-<p><strong>No personal information.</strong> The site has no sign-up, no login, no comments and no forms that send information anywhere. We do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
+<p><strong>Almost no personal information.</strong> The site has no sign-up, no login and no comments. The one form that sends information is the certificate form on the website, filled in by a parent or guardian with their consent (see <a href="#certificates">Certificate records</a>). Apart from that, we do not ask for names, email addresses, ages, photos or any other personal details, and we do not run advertising scripts.</p>
 <h3 id="sponsors">Sponsor boxes</h3>
 <p>Some guide pages for parents and teachers (and the parents’ area at the bottom of the home page) may show a small box marked <em>Sponsored</em> or <em>Sample ad</em>. It is plain text or an image with a link, chosen by us — not by an ad network. It loads <strong>no advertising script, sets no cookies, is not personalised or targeted</strong>, and sends nothing about you or your child to the sponsor. Nothing is sent until you tap the link, and then the sponsor’s own website and privacy policy apply. Sponsor boxes never appear inside the children’s lessons, games, stories or certificates. Businesses interested in sponsoring can read <a href="advertise.html">Advertise with us</a> and our <a href="advertise.html#policy">advertising policy</a>.</p>
 <h3 id="microphone">Microphone (“Say it back”)</h3>
@@ -1708,7 +1708,9 @@ const privacyBody = `
 <tr><td>⚙️ Settings: text size, high contrast, less movement, voice speed and volume</td><td>localStorage <code>lt-text</code>, <code>lt-contrast</code>, <code>lt-motion</code>, <code>lt-rate</code>, <code>lt-vol</code></td><td>Remembers how you like the app to look and sound on this device</td></tr>
 <tr><td>Children’s first names, pictures and age groups</td><td>localStorage <code>lt-profiles</code>, <code>lt-profile</code></td><td>Lets each child have their own progress and the learning path for their age</td></tr>
 <tr><td>Game progress: tokens, badges, daily gifts, letters heard, words read, stories finished, Thirukkural couplets learned and bookmarked, Thirukkural quiz answers</td><td>localStorage <code>lt-progress</code></td><td>Remembers your child's rewards and progress</td></tr>
-<tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser; the name is never sent anywhere.</td></tr>
+<tr><td>Name typed for a certificate, and certificate results</td><td>localStorage <code>lt-cert-name</code>, <code>lt-progress</code></td><td>Puts the name on the certificate and remembers which levels are passed. The certificate PDF is made inside your browser. On the website the name is also sent with the certificate record (see <a href="#certificates">Certificate records</a>); in the Android app it is never sent.</td></tr>
+<tr><td>Parent’s email and phone for certificates</td><td>localStorage <code>lt-parent-contact</code></td><td>So you are not asked again for the next certificate. Tap <em>Change</em> on the form to correct them</td></tr>
+<tr><td>Certificate records sent or waiting to be sent</td><td>localStorage <code>lt-cert-sent</code>, <code>lt-cert-outbox</code></td><td>The certificate IDs already stored, so a certificate is never stored twice; and records made while offline, sent the next time the site is online</td></tr>
 <tr><td>Questions and words already shown</td><td>localStorage <code>lt-cert-seen</code>, <code>lt-spin-seen</code></td><td>So certificate retakes and the Spin wheel give new questions and words instead of repeating</td></tr>
 <tr><td>Reminder device token</td><td>localStorage <code>lt-push</code></td><td>Only if you turn reminders on; deleted when you turn them off</td></tr>
 <tr><td>When the “support this project” note was last shown</td><td>localStorage <code>lt-support</code></td><td>So the note appears only now and then, and rests after you answer it</td></tr>
@@ -1720,6 +1722,17 @@ const privacyBody = `
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
 </tbody></table></div>
 <p>You can remove all of this at any time with <em>Reset progress</em> in the 🪙 My rewards panel, or by clearing this site's data in your browser settings.</p>
+
+<h2 id="certificates">Certificate records (website only, with a parent’s consent)</h2>
+<p>On the website, before a certificate is made, a form asks a <strong>parent or guardian</strong> for the child’s name, <strong>their own email address and phone number</strong> (with country code), and to tick a box to agree. Nothing on the form is sent until you tick that box and tap the button.</p>
+<ul>
+<li><strong>What is stored:</strong> the child’s name, your email and phone, the certificate ID, the level or chapter passed, the date and time, that you agreed (and which version of the wording), and whether you later tapped a WhatsApp, Facebook, LinkedIn or Instagram share button for that certificate.</li>
+<li><strong>Where:</strong> <strong>Cloud Firestore</strong> (Google Firebase, project <code>learntamil-js</code>). One record per certificate. The security rules let the website add a record once; <strong>nobody can read records from the website</strong>, so names, emails and phone numbers are never shown publicly, on the certificate or in share links. Only the site owner can see them, in the Firebase console.</li>
+<li><strong>Why:</strong> to keep a record of each certificate, so we can confirm it if asked, and to tell you about new Learn Tamil levels and lessons. We never sell your details or share them with advertisers.</li>
+<li><strong>Your choices:</strong> to see, correct or delete your records, or to stop hearing from us, use the ${CONTACT}. Your email and phone are also remembered in this browser (<code>lt-parent-contact</code>) so you are not asked again; clearing this site’s data removes them from the device.</li>
+<li><strong>Offline:</strong> the child always gets the certificate. If the record cannot be sent, it waits in this browser and is sent the next time the site is online.</li>
+<li><strong>Android app:</strong> the form does not appear and nothing is sent.</li>
+</ul>
 
 <h2 id="android">The Learn Tamil Android app</h2>
 <p>The Learn Tamil app on Android (Google Play or a test copy) shows this same website inside the phone’s Chrome engine. Because it is made for children, the app collects and sends <strong>nothing</strong>: there is no cookie notice and no Google Analytics, no “learning around the world” visit counter, no location lookup, no reminders or push token, no sponsor boxes and no donation links. Progress and settings are saved only on the phone, as listed below, and the 🎤 <b>Say it</b> microphone works the same way as on the website (never recorded to storage, never uploaded). The app remembers that it is the app only for the current session (sessionStorage <code>lt-app</code>). Uninstalling the app, or clearing Chrome’s data for this site, removes everything.</p>
@@ -1740,7 +1753,8 @@ const privacyBody = `
 <ul>
 <li><strong>GitHub Pages</strong> hosts the site and may keep standard server logs. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Google Analytics for Firebase</strong> (project <code>learntamil-js</code>) receives the anonymous usage statistics described above, only if you allow them.</li>
-<li><strong>Share buttons</strong> (WhatsApp, LinkedIn, Facebook, X, Telegram, email) are plain links: no script or tracking button from those sites loads on our pages. Nothing is sent until you tap one, and then only the page link and title (or the Kural you chose) go to the site you picked, under that site’s own privacy policy. We never include your child’s name or progress.</li>
+<li><strong>Share buttons</strong> (WhatsApp, LinkedIn, Facebook, X, Telegram, email) are plain links: no script or tracking button from those sites loads on our pages. Nothing is sent until you tap one, and then only the page link and title (or the Kural you chose) go to the site you picked, under that site’s own privacy policy. We never include your child’s name or progress. After a certificate test, the share buttons sit behind a press-and-hold check for grown-ups. Their message and link never contain the child’s name. The name is only inside the certificate image, which leaves your device only if you choose to share or save it.</li>
+<li><strong>Cloud Firestore</strong> (Google Firebase) keeps the certificate records a parent or guardian chooses to give (see <a href="#certificates">Certificate records</a>).</li>
 <li><strong>Firebase Realtime Database</strong> keeps the anonymous visit totals for the “learning around the world” counter.</li>
 <li><strong>Google reCAPTCHA</strong> (through Firebase App Check) quietly checks that requests to our Firebase services come from this real website and not from automated scripts, to keep the counter and reminders free of spam. It runs in the background, never shows a puzzle, and works under the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/terms" rel="noopener">Terms</a>.</li>
 <li><strong>GeoJS</strong> looks up an approximate country and town, only if you allowed the cookie notice (see <a href="#live">the counter</a>).</li>
@@ -1754,7 +1768,7 @@ const privacyBody = `
 </ul>
 
 <h2>Children's privacy</h2>
-<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads inside the lessons or games, no ad tracking, no chat and no links that ask for personal details; sponsor boxes and links to our YouTube, Instagram and blog appear only in grown-up areas (see <a href="#sponsors">Sponsor boxes</a>). We recommend that young children use the site with a parent or teacher.</p>
+<p>Learn Tamil is made for children. It never asks a child for personal details. The only personal information it keeps is the certificate record that a <strong>parent or guardian</strong> gives on the website, with their consent (see <a href="#certificates">Certificate records</a>). Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads inside the lessons or games, no ad tracking, no chat and no links that ask for personal details; sponsor boxes and links to our YouTube, Instagram and blog appear only in grown-up areas (see <a href="#sponsors">Sponsor boxes</a>). We recommend that young children use the site with a parent or teacher.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the new version will be posted on this page with a new “Updated” date.</p>
@@ -1765,7 +1779,7 @@ const privacyBody = `
 fs.writeFileSync(path.join(ROOT, 'privacy.html'), shell({
   file: 'privacy.html', ogType: 'website',
   title: 'Privacy & Data Policy | Learn Tamil',
-  description: 'Learn Tamil collects no personal data: no accounts and no ad tracking, only anonymous usage statistics. See what is stored on your device and which services it uses.',
+  description: 'Learn Tamil has no accounts or ad tracking. See what is stored on your device, the certificate records parents give with consent, and the services used.',
   h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No tracking — promise!', body: privacyBody
 }));
 
@@ -1795,7 +1809,7 @@ const termsBody = `
 <p>Level certificates are made in your browser when a test is passed. They are practice certificates to encourage children, <strong>not an official or accredited qualification</strong>, and are not verified by any school or examination board.</p>
 
 <h2>6. Children</h2>
-<p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects no personal information, only anonymous usage statistics; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
+<p>The site is designed for children. Parents, guardians and teachers are responsible for supervising how children use the internet, including this site. Learn Tamil collects anonymous usage statistics (if allowed) and, on the website, a certificate record that a parent or guardian gives with consent; see the <a href="privacy.html">Privacy &amp; data policy</a>.</p>
 
 <h2>7. Links to other websites and sponsors</h2>
 <p>The site may link to other websites (for example the MSDEVBUILD blog or GitHub). Some parents’ guide pages show sponsor boxes marked “Sponsored”; sponsors are responsible for their own products, services and offers (see our <a href="advertise.html#policy">advertising policy</a>). We are not responsible for the content or practices of other websites.</p>

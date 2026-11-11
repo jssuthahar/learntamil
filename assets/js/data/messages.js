@@ -314,6 +314,45 @@ const TEXT = {
     level: 'நிலை',
     date: 'Date · தேதி',
     id: 'Certificate ID · சான்றிதழ் எண்',
-    name: 'பெயர்'
+    name: 'பெயர்',
+    /* Certificate form for a parent or guardian (features/certificate/cert-record.js). A grown-up surface, so English.
+       Shown on the website only, never in the Google Play app. Bump CONSENT_VERSION in cert-record.js if `consent` changes. */
+    contact: {
+      head: '👪 For a parent or guardian',
+      why: 'Please ask a grown-up to fill this in. We keep a record of each certificate with your child’s name and your email and phone, so we can confirm a certificate and tell you about new Learn Tamil levels and lessons. We never show your email or phone publicly, never sell them, and never put them on the certificate or in share links.',
+      email: 'Parent’s email',
+      phone: 'Parent’s phone, with country code',
+      phoneHint: 'e.g. +91 98765 43210',
+      consent: 'I am this child’s parent or guardian, and I agree that Learn Tamil may store my child’s name, my email and my phone number with this certificate, as described in the privacy policy.',
+      privacyLink: 'Privacy policy',
+      saved: 'Saved on this device for the next certificate.',
+      change: 'Change',
+      errName: 'Please type the name for the certificate.',
+      errEmail: 'Please check the email address (for example name@example.com).',
+      errPhone: 'Please add the phone number with the country code, starting with + (for example +91 98765 43210).',
+      errConsent: 'Please tick the box to agree, so we can make the certificate.',
+      notSaved: 'Your certificate is ready. We could not save the record just now, so we will try again the next time you are online.'
+    },
+    /* Celebration card under a new certificate (features/certificate/cert-share.js).
+       The share part is a grown-up surface (behind press-and-hold), so it is English like share.js.
+       Share messages never contain the child's name: it is only in the image a parent chooses to share. */
+    celebrate: {
+      ready: ['உன் சான்றிதழ் தயார்!', 'Your certificate is ready!'],
+      again: ['இன்னொரு வெற்றி!', 'Another milestone! 🏆'],
+      body: 'You did it! Your hard work and practice paid off. Download your certificate, and ask a grown-up to share it with family and friends.',
+      shareBtn: ['பகிர்', 'Share this achievement'],
+      gate: 'For grown-ups: press and hold for 3 seconds to share.',
+      hold: '✋ Hold',
+      shareHead: '📣 Share your child’s achievement',
+      privacy: 'Learn Tamil sends nothing. Each button opens the app or site you choose, with the message shown above. Your child’s name is only inside the certificate image, if you decide to share it.',
+      message: '🎉 So proud! My child just earned a Learn Tamil certificate: {what}.\n\nEvery Tamil letter learned is a step forward. Learn Tamil for free:',
+      messageAgain: '🏆 Another milestone! My child just earned another Learn Tamil certificate: {what}.\n\nEvery Tamil letter learned is a step forward. Learn Tamil for free:',
+      device: 'Share image',
+      copy: 'Copy message', copied: '✓ Message copied',
+      pasteHint: 'The message is copied. Paste it into your post.',
+      saveImg: 'Save image',
+      openIg: 'Open Instagram',
+      igSteps: ['Tap “Save image” to keep the certificate in your photos.', 'Tap “Copy message”.', 'Open Instagram, tap ＋, choose Post or Story and pick the certificate.', 'Paste the message as the caption and share.']
+    }
   }
 };

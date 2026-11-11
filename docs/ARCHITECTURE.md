@@ -140,4 +140,4 @@ all precached files ──► content hash ────────────�
 | Site served from the repo root | Keeps GitHub Pages settings and every public URL unchanged | Tools and docs must not be public: move the site into `public/` and deploy it with GitHub Actions |
 | Numbered CSS source files, joined into `app.css` at build | One render-blocking request for a fast first paint; the source stays small, ordered files | — |
 | Images stay in `assets/` root | Their URLs are in social cards, the manifest and installed apps | — |
-| Progress only in `localStorage` | No accounts and no personal data for children | Families ask for sync between devices |
+| Progress only in `localStorage` | No accounts; the only personal data is the certificate record a parent gives with consent (Firestore, website only) | Families ask for sync between devices |

@@ -1,7 +1,9 @@
 /* Learn Tamil — Firebase (project learntamil-js): anonymous usage statistics only.
    Nothing is loaded or sent until a parent or teacher taps "Allow" on the cookie notice.
    Kid-safe settings: no ad storage, no ad personalisation, no Google signals, no user IDs,
-   and nothing typed by the child (like the certificate name) is ever sent.
+   and nothing typed by the child (like the certificate name) is ever sent to Analytics.
+   The one exception to "nothing personal" is the certificate record below (window.ltCertStore), sent only after a
+   parent or guardian fills in the certificate form and ticks the consent box.
    Other scripts log events with logEv() in core/analytics.js (→ window.ltLog); calls made before
    Analytics starts are queued in window.ltQ.
    The choice is saved in localStorage "lt-consent" ('yes' / 'no').
@@ -107,6 +109,35 @@ function showNotice(){
 }
 
 window.ltConsent = { show: showNotice, choice: getChoice };
+
+/* =====================================================================
+   🎓 CERTIFICATE RECORDS (Cloud Firestore, collection "certificates")
+   Only after a parent or guardian fills in the certificate form and ticks the consent box
+   (features/certificate/cert-record.js). Not tied to the cookie choice: the form is its own consent.
+   One document per certificate, its ID = the certificate ID, so a certificate is never stored twice.
+   Rules (firestore.rules): create once, nobody can read, only the sharing flags can change.
+   Never in the Google Play app, never on localhost.
+   ===================================================================== */
+const FS = () => import(SDK + 'firebase-firestore.js');
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error('timeout')), ms))]);
+window.ltCertStore = {
+  available: () => live && !inApp,
+  async save(rec){
+    if (!live || inApp) throw new Error('not-live');
+    const [app, fs] = await Promise.all([getApp(), FS()]);
+    const db = fs.getFirestore(app);
+    await withTimeout(fs.setDoc(fs.doc(db, 'certificates', rec.certificateId), {
+      ...rec, certificateUrl: '', issuedAt: fs.serverTimestamp(), status: 'issued',
+      sharingStatus: { linkedin: false, whatsapp: false, facebook: false, instagram: false }
+    }), 15000);
+  },
+  async shared(certificateId, net){
+    if (!live || inApp) return;
+    const [app, fs] = await Promise.all([getApp(), FS()]);
+    await withTimeout(fs.updateDoc(fs.doc(fs.getFirestore(app), 'certificates', certificateId), { ['sharingStatus.' + net]: true }), 15000);
+  }
+};
+document.dispatchEvent(new Event('lt:certstore'));
 
 const choice = getChoice();
 if (choice === 'yes') startAnalytics();

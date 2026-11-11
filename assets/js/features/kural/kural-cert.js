@@ -98,12 +98,36 @@ const KC = (() => {
       return;
     }
     const d = kd(), store = X.kind === 'level' ? d.kLevels : d.kCerts, prev = store[X.id];
+    const again = Object.keys(d.kLevels || {}).length + Object.keys(d.kCerts || {}).length - (prev ? 1 : 0) > 0;
     store[X.id] = { d: todayStr(), s: Math.max(right, prev ? prev.s : 0),
       id: prev ? prev.id : (X.kind === 'level' ? 'TKL' : 'TK') + X.id + '-' + Date.now().toString(36).toUpperCase() };
     kTouchDay(); Progress.save(); if (!prev) Progress.addTokens(X.kind === 'level' ? 20 : 10);
     celebrate(X.kind === 'level' ? X.L.ic : '🎓', C.passed[0], `${C.passed[1]} ${right}/${X.total}`);
     let name = ''; try { name = Profiles.get('lt-cert-name') || ''; } catch (e) {}
     const nextL = X.kind === 'level' && KURAL_LEVELS[X.id];
+    const rec = store[X.id], what = X.kind === 'level' ? `Thirukkural Level ${X.id}` : `Thirukkural chapter ${X.id}`;
+    // Website: a parent's details first (cert-record.js), then the certificate. Google Play app: straight to the certificate.
+    if (CertRecord.collecting() && !CertRecord.wasSent(rec.id)){
+      box.innerHTML = `<p class="k-quiz-done">🎉 ${kPair(C.passed)} ${C.score[1]}: ${right}/${X.total}</p>
+        <form class="cr-form" id="kcForm" novalidate><label for="kcFName">${kPair(C.name)}</label>
+          <div class="cr-row"><input id="kcFName" maxlength="40" autocomplete="off" value="${attr(name)}"></div>
+          <small class="crc-err" data-crc-err="name" hidden></small>
+          ${CertRecord.fieldsHTML('kc')}<button class="btn primary cr-make" type="submit">🎓 ${C.title[1]}</button></form>`;
+      const f = $('#kcForm'); CertRecord.wire(f); let making = false;
+      f.addEventListener('submit', async e => {
+        e.preventDefault(); if (making) return;
+        const nm = $('#kcFName').value.replace(/\s+/g, ' ').trim().slice(0, 40);
+        const r = CertRecord.read(f, nm); if (!r.ok){ if (!nm) $('#kcFName').focus(); return; }
+        making = true; try { Profiles.set('lt-cert-name', nm); } catch (e2) {}
+        showCert(nm);
+        const st = await CertRecord.submit({ studentName: nm, certificateId: rec.id, batchId: (X.kind === 'level' ? 'kural-level-' : 'kural-chapter-') + X.id,
+          courseName: `Learn Tamil · ${what}`, source: 'kural' }, r.contact);
+        if (st === 'queued') box.querySelector('.k-acts').insertAdjacentHTML('afterend', `<p class="crc-note" role="status">${TEXT.certificate.contact.notSaved}</p>`);
+      });
+      return;
+    }
+    showCert(name);
+    function showCert(name){
     box.innerHTML = `<p class="k-quiz-done">🎉 ${kPair(C.passed)} ${C.score[1]}: ${right}/${X.total}</p>
       <label class="k-field"><span>${kPair(C.name)}</span><input id="kcName" type="text" maxlength="40" autocomplete="off" value="${attr(name)}"></label>
       <div class="cert-preview"><canvas id="kcCanvas" width="2339" height="1654" aria-label="${C.title[1]}"></canvas></div>
@@ -119,6 +143,9 @@ const KC = (() => {
     $('#kcPng').addEventListener('click', async () => { await redraw(); cv.toBlob(b => save(b, file('png')), 'image/png'); });
     $('#kcPdf').addEventListener('click', async () => { await redraw();
       cv.toBlob(async b => save(CERT.jpegToPdf(new Uint8Array(await b.arrayBuffer()), cv.width, cv.height, `Thirukkural Certificate - ${label}`), file('pdf')), 'image/jpeg', 0.92); });
+    CertShare.mount(box.querySelector('.k-acts'), { again, url: 'https://learntamil.msdevbuild.com/thirukkural.html', what, certId: rec.id,
+      get file(){ return file('png'); }, blob: async () => { await redraw(); return new Promise(r => cv.toBlob(r, 'image/png')); } });
+    }
   }
 
   function save(blob, name){

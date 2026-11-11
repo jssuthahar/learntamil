@@ -1,0 +1,43 @@
+rules_version = '2';
+// Learn Tamil — Cloud Firestore rules. Deploy: firebase deploy --only firestore:rules
+// "certificates": one document per certificate, written from the certificate form after a parent
+// or guardian gives consent (assets/js/features/certificate/cert-record.js, services/firebase.js).
+// Nobody can read them from the website (no public verification, no listing of names, emails or phones);
+// the owner reads them in the Firebase console. A document can be created once and never replaced;
+// only the sharing flags can be switched on afterwards.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /certificates/{certId} {
+      allow read, delete: if false;
+      allow create: if validCertId(certId)
+        && request.resource.data.keys().hasOnly(['studentName', 'email', 'phoneNumber', 'certificateId', 'batchId', 'courseName',
+             'certificateUrl', 'issuedAt', 'status', 'sharingStatus', 'source', 'consent', 'consentVersion'])
+        && request.resource.data.keys().hasAll(['studentName', 'email', 'phoneNumber', 'certificateId', 'batchId', 'courseName',
+             'issuedAt', 'status', 'sharingStatus', 'source', 'consent', 'consentVersion'])
+        && request.resource.data.certificateId == certId
+        && str(request.resource.data.studentName, 1, 40)
+        && str(request.resource.data.email, 6, 254)
+        && request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$')
+        && request.resource.data.phoneNumber is string
+        && request.resource.data.phoneNumber.matches('^\\+[1-9][0-9]{6,14}$')
+        && str(request.resource.data.batchId, 1, 40)
+        && str(request.resource.data.courseName, 1, 160)
+        && (!('certificateUrl' in request.resource.data) || request.resource.data.certificateUrl == '')
+        && request.resource.data.issuedAt == request.time
+        && request.resource.data.status == 'issued'
+        && request.resource.data.source in ['letters', 'kural']
+        && request.resource.data.consent == true
+        && request.resource.data.consentVersion is int
+        && request.resource.data.sharingStatus == { 'linkedin': false, 'whatsapp': false, 'facebook': false, 'instagram': false };
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sharingStatus'])
+        && request.resource.data.sharingStatus.keys().hasOnly(['linkedin', 'whatsapp', 'facebook', 'instagram'])
+        && request.resource.data.sharingStatus.linkedin is bool && request.resource.data.sharingStatus.whatsapp is bool
+        && request.resource.data.sharingStatus.facebook is bool && request.resource.data.sharingStatus.instagram is bool;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    function validCertId(id) { return id is string && id.matches('^(LT|TKL|TK)[0-9]{1,3}-[A-Z0-9]{4,12}$'); }
+    function str(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
+  }
+}

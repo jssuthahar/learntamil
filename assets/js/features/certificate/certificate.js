@@ -302,25 +302,36 @@ const CERT = (() => {
     const lastName = Profiles.get('lt-cert-name') || Profiles.current().name || '';
     box.innerHTML = `<div class="cr-emo" aria-hidden="true">🎓</div><h3><span class="ta">${TEXT.congrats}</span> You passed Level ${L.n}</h3>
       <p class="cr-score">${S.right}/${N} <small>(${pct}%)</small></p>
-      <form class="cr-form" id="crForm"><label for="crName">Name for the certificate · <span class="ta">${TEXT.certificate.name}</span></label>
+      <form class="cr-form" id="crForm" novalidate><label for="crName">Name for the certificate · <span class="ta">${TEXT.certificate.name}</span></label>
         <div class="cr-row"><input id="crName" maxlength="40" autocomplete="off" required placeholder="e.g. Kavin" value="${escapeAttr(lastName)}">
-        <button class="btn primary" type="submit">🎓 Make my certificate</button></div>
-        <small class="muted">The name stays on this device only.</small></form>`;
-    $('#crForm').onsubmit = e => {
-      e.preventDefault();
-      const name = $('#crName').value.replace(/\s+/g, ' ').trim().slice(0, 40); if (!name) return;
+        ${CertRecord.collecting() ? '' : '<button class="btn primary" type="submit">🎓 Make my certificate</button>'}</div>
+        <small class="crc-err" data-crc-err="name" hidden></small>
+        ${CertRecord.collecting() ? CertRecord.fieldsHTML('cr') + '<button class="btn primary cr-make" type="submit">🎓 Make my certificate</button>'
+          : '<small class="muted">The name stays on this device only.</small>'}</form>`;
+    CertRecord.wire($('#crForm'));
+    let making = false;   // a double tap makes one certificate, not two
+    $('#crForm').onsubmit = async e => {
+      e.preventDefault(); if (making) return;
+      const name = $('#crName').value.replace(/\s+/g, ' ').trim().slice(0, 40);
+      const r = CertRecord.read($('#crForm'), name); if (!r.ok){ if (!name) $('#crName').focus(); return; }
+      making = true;
       Profiles.set('lt-cert-name', name);
       const prev = certs()[L.n];
+      const again = Object.keys(certs()).some(k => +k !== L.n);   // another level was already earned
+      // Retaking a passed level keeps its certificate ID, so one level never has two IDs.
       const c = { name, score: Math.max(S.right, prev ? prev.score : 0), total: tot(L), date: new Date().toISOString().slice(0, 10),
-        id: `LT${L.n}-${Date.now().toString(36).toUpperCase().slice(-6)}` };
+        id: prev && prev.id ? prev.id : `LT${L.n}-${Date.now().toString(36).toUpperCase().slice(-6)}` };
       const first = !prev; certs()[L.n] = c; Progress.save();
       if (first) Progress.addTokens(20); else Progress.check();
-      showCertificate(L, c);
+      showCertificate(L, c, again);
+      const st = await CertRecord.submit({ studentName: name, certificateId: c.id, batchId: `letters-${L.n}`, source: 'letters',
+        courseName: `Learn Tamil Level ${L.n} · ${L.titleEn} (${L.en})` }, r.contact);
+      if (st === 'queued') $('#certResult .cr-btns').insertAdjacentHTML('afterend', `<p class="crc-note" role="status">${TEXT.certificate.contact.notSaved}</p>`);
     };
   }
   const escapeAttr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
-  function showCertificate(L, c){
+  function showCertificate(L, c, again){
     const box = $('#certResult');
     box.innerHTML = `<h3>🎓 Your certificate</h3><div class="cert-preview"><canvas id="certCanvas" width="2339" height="1654" aria-label="Certificate for ${escapeAttr(c.name)}"></canvas></div>
       <div class="cr-btns"><button class="btn primary" id="crPdf">⬇ Download PDF</button><button class="btn" id="crPng">🖼 Save image</button><button class="btn" id="crBack2">← All levels</button></div>`;
@@ -328,6 +339,8 @@ const CERT = (() => {
     $('#crPdf').onclick = () => downloadPdf(L, c);
     $('#crPng').onclick = () => { $('#certCanvas').toBlob(b => save(b, fileName(L, c, 'png')), 'image/png'); };
     $('#crBack2').onclick = renderLevels;
+    CertShare.mount(box.querySelector('.cr-btns'), { what: `Level ${L.n} · ${L.titleEn} (${L.en})`, again, url: 'https://learntamil.msdevbuild.com/',
+      certId: c.id, file: fileName(L, c, 'png'), blob: () => new Promise(r => $('#certCanvas').toBlob(r, 'image/png')) });
   }
 
   /* ---------- drawing the certificate (A4 landscape, 2339 × 1654 px ≈ 200 dpi) ---------- */

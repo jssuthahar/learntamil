@@ -179,6 +179,49 @@ await check('celebrations fill their placeholders', `(async()=>{ celebrate('🎯
   const t = document.querySelector('.badge-pop').innerText; document.querySelectorAll('.badge-pop').forEach(x=>x.remove()); return t.includes('10 things'); })()`);
 await check('certificate levels come from data/rewards.js', `CERT.LEVELS.length === CERT_LEVELS.length && CERT.LEVELS.every(L => L.gen && L.gen.length > 0)`);
 await check('certificate test starts', `(async()=>{ location.hash='/certificate'; await new Promise(r=>setTimeout(r,200)); document.querySelector('#certLevels button')?.click(); return true; })()`);
+await check('passing a level shows the celebration card; sharing is behind the grown-up hold and never carries the name', `(async()=>{
+  const wait = ms => new Promise(r=>setTimeout(r,ms));
+  location.hash='/certificate'; await wait(200); CERT.start(1); await wait(50);
+  const S = CERT._state();
+  for (let q = 0; q < S.qs.length; q++){ const opts = document.querySelectorAll('#certQuiz .cq-opt');
+    opts[CERT._state().qs[CERT._state().i].opts.findIndex(o => o.ok)].click(); document.getElementById('cqNext').click(); await wait(20); }
+  const store = window.ltCertStore; const sent = []; window.ltCertStore = { available: () => true, save: d => { sent.push(d); return Promise.resolve(); }, shared: () => Promise.resolve() };
+  localStorage.removeItem('lt-parent-contact'); localStorage.removeItem('lt-cert-sent'); localStorage.removeItem('lt-cert-outbox');
+  CERT.start(1); await wait(50);
+  for (let q = 0; q < CERT._state().qs.length; q++){ document.querySelectorAll('#certQuiz .cq-opt')[CERT._state().qs[CERT._state().i].opts.findIndex(o => o.ok)].click(); document.getElementById('cqNext').click(); await wait(20); }
+  const f = document.getElementById('crForm'), inp = k => f.querySelector('[data-crc-in=' + k + ']');
+  document.getElementById('crName').value = 'Zzkavin Test'; inp('email').value = 'not-an-email'; inp('phone').value = '98765 43210';
+  f.requestSubmit(); await wait(100);
+  const blocked = !document.getElementById('certCanvas') && ['email','phone','consent'].every(k => !f.querySelector('[data-crc-err=' + k + ']').hidden) && !sent.length;
+  inp('email').value = ' Parent@Example.COM '; inp('phone').value = '+91 98765-43210'; inp('consent').checked = true;
+  f.requestSubmit(); f.requestSubmit(); await wait(300);
+  const doc = sent[0];
+  const record = blocked && sent.length === 1 && doc.email === 'parent@example.com' && doc.phoneNumber === '+919876543210' && doc.studentName === 'Zzkavin Test'
+    && doc.certificateId === Progress.d.certs[1].id && doc.consent === true && doc.batchId === 'letters-1' && /Level 1/.test(doc.courseName);
+  document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  const card = document.querySelector('#certResult .cs-card'); if (!card) return false;
+  const id1 = Progress.d.certs[1].id;
+  const locked = card.querySelector('.cs-panel').hidden && !card.querySelector('.cs-title').textContent.includes('{');
+  card.csUnlock();
+  const panel = card.querySelector('.cs-panel'), hrefs = [...panel.querySelectorAll('a[href]')].map(a => a.href).join(' ');
+  const nets = ['whatsapp','facebook','linkedin','instagram','copy','save'].every(n => panel.querySelector('[data-cs=' + n + ']'));
+  panel.querySelector('[data-cs=instagram]').click(); const ig = !panel.querySelector('.cs-ig').hidden && panel.querySelectorAll('.cs-ig li').length === 4;
+  const noName = !hrefs.includes('Zzkavin') && !panel.querySelector('.cs-msg').textContent.includes('Zzkavin') && !/\{\w+\}/.test(panel.textContent);
+  CERT.start(1); await wait(50);   // retake: same certificate ID, details not asked again, record not stored twice
+  for (let q = 0; q < CERT._state().qs.length; q++){ document.querySelectorAll('#certQuiz .cq-opt')[CERT._state().qs[CERT._state().i].opts.findIndex(o => o.ok)].click(); document.getElementById('cqNext').click(); await wait(20); }
+  const remembered = !!document.querySelector('#crForm [data-crc-saved]') && document.querySelector('#crForm [data-crc-fields]').hidden;
+  document.getElementById('crForm').requestSubmit(); await wait(200); document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  const once = sent.length === 1;
+  // offline: the certificate is still made and the record waits in the outbox
+  window.ltCertStore = { available: () => false, save: () => Promise.reject(new Error('offline')), shared: () => Promise.resolve() };
+  CERT.start(2); await wait(50);
+  for (let q = 0; q < CERT._state().qs.length; q++){ document.querySelectorAll('#certQuiz .cq-opt')[CERT._state().qs[CERT._state().i].opts.findIndex(o => o.ok)].click(); document.getElementById('cqNext').click(); await wait(20); }
+  document.getElementById('crForm').requestSubmit(); await wait(300); document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  const queued = !!document.getElementById('certCanvas') && !!document.querySelector('#certResult .crc-note') && JSON.parse(localStorage.getItem('lt-cert-outbox')).length === 1;
+  window.ltCertStore = { available: () => true, save: d => { sent.push(d); return Promise.resolve(); }, shared: () => Promise.resolve() };
+  await CertRecord.flush(); const flushed = sent.length === 2 && JSON.parse(localStorage.getItem('lt-cert-outbox')).length === 0;
+  window.ltCertStore = store;
+  return record && locked && !panel.hidden && nets && ig && noName && remembered && once && queued && flushed && Progress.d.certs[1].id === id1 && !!document.querySelector('#certResult .cs-card'); })()`);
 for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html', 'thirukkural-chapters.html', 'thirukkural-chapter-1.html', 'thirukkural-chapter-133.html']){
   const before = errors.length; await open(page);
   if (errors.length > before) fail(`${page}: errors while loading: ${errors.slice(before).join(' | ')}`);
@@ -252,7 +295,11 @@ await check('thirukkural: passing a chapter test earns a certificate with a PDF'
   for (let q = 0; q < 10; q++){ const box = document.getElementById('kcBox');
     box.querySelectorAll('.k-opt')[box.kq.opts.findIndex(o => o.ok)].click(); box.querySelector('.k-nextq').click(); await new Promise(r=>setTimeout(r,30)); }
   document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
-  return list && !!Progress.d.kCerts[1] && !!document.getElementById('kcCanvas') && typeof CERT.jpegToPdf === 'function'; })()`);
+  { const f = document.getElementById('kcForm'); if (f){ const i = k => f.querySelector('[data-crc-in=' + k + ']');
+      if (!f.querySelector('[data-crc-fields]').hidden){ i('email').value = 'parent@example.com'; i('phone').value = '+60123456789'; i('consent').checked = true; }
+      document.getElementById('kcFName').value = 'Test'; f.requestSubmit(); await new Promise(r=>setTimeout(r,200)); } }
+  const card = document.querySelector('#kcBox .cs-card'), share = !!card && card.querySelector('.cs-panel').hidden && card.querySelector('.cs-msg').textContent.includes('Thirukkural chapter 1');
+  return list && share && !!Progress.d.kCerts[1] && !!document.getElementById('kcCanvas') && typeof CERT.jpegToPdf === 'function'; })()`);
 await check('thirukkural page: settings, rewards and child switcher open', `(async()=>{
   document.getElementById('settingsBtn').click(); const st = document.getElementById('settingsDlg'); const a = !!st && st.open; st.close();
   document.getElementById('stars').click(); const rw = document.getElementById('rewardsDlg'); const b = rw.open && rw.querySelectorAll('.rw-badge').length === BADGES.length; rw.close();
@@ -264,6 +311,9 @@ await check('thirukkural: level exams — level 1 open, level 2 locked until lev
   for (let q = 0; q < 10; q++){ const box = document.getElementById('kcBox');
     box.querySelectorAll('.k-opt')[box.kq.opts.findIndex(o => o.ok)].click(); box.querySelector('.k-nextq').click(); await new Promise(r=>setTimeout(r,30)); }
   document.querySelectorAll('.badge-pop').forEach(x=>x.remove());
+  { const f = document.getElementById('kcForm'); if (f){ const i = k => f.querySelector('[data-crc-in=' + k + ']');
+      if (!f.querySelector('[data-crc-fields]').hidden){ i('email').value = 'parent@example.com'; i('phone').value = '+60123456789'; i('consent').checked = true; }
+      document.getElementById('kcFName').value = 'Test'; f.requestSubmit(); await new Promise(r=>setTimeout(r,200)); } }
   const passed = !!Progress.d.kLevels[1] && !!document.getElementById('kcCanvas') && !!document.querySelector('#kcBox a[href="#/certificate/level/2"]');
   location.hash='/certificate'; ${kw}
   return shape && passed && !document.querySelectorAll('.kc-level')[1].classList.contains('locked')

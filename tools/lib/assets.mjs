@@ -47,7 +47,7 @@ export const APP_SCRIPTS = [
     'features/reading/reading',
     'features/games/hub', 'features/games/spin-wheel', 'features/games/balloon-pop',
     'features/games/word-builder', 'features/games/memory', 'features/games/question-games',
-    'features/certificate/certificate',
+    'features/certificate/cert-record', 'features/certificate/certificate', 'features/certificate/cert-share',
     'features/games/trace', 'features/games/colouring',
     'features/voice/say-back',
     'features/stories/rhymes',
@@ -67,7 +67,7 @@ export const KURAL_SCRIPTS = [
   ...[
     'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics',
     'features/rewards/score', 'features/rewards/progress', 'features/rewards/today',
-    'features/games/game-utils', 'features/certificate/certificate',
+    'features/games/game-utils', 'features/certificate/cert-record', 'features/certificate/certificate', 'features/certificate/cert-share',
     'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
     'features/kural/kural-scene', 'features/kural/kural', 'features/kural/kural-games',
     'features/kural/kural-print', 'features/kural/kural-cert',

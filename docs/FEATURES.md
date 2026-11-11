@@ -111,6 +111,9 @@ The hub (`hub.js`) resets the score, shows the panel and fires `lt:game`. Every 
 - **Passing:** 8 of 10 (level 10: 12 of 15). Each level unlocks the next.
 - **No repeats:** questions already asked are remembered per child (`lt-cert-seen`).
 - **The certificate:** drawn on a canvas, so Tamil is shaped correctly, then turned into a PDF by a tiny built-in writer. No library, and it works offline.
+- **One ID per level:** retaking a passed level keeps its certificate ID (the name and score can change).
+- **Parent's details and the certificate record** (`cert-record.js`, website only, never in the Google Play app): before a certificate is made, a parent or guardian gives the child's name, their email and phone (with country code) and ticks consent. Valid details are remembered on the device (`lt-parent-contact`) and shown as "Saved · Change" next time. After the certificate is drawn, one Cloud Firestore document per certificate ID is created (`services/firebase.js` → `window.ltCertStore`, rules in `firestore.rules`: create once, no reads, only `sharingStatus` can change). Already-stored IDs are in `lt-cert-sent`; failures and offline saves wait in `lt-cert-outbox` and are retried when online. The child always gets the certificate. Text in `TEXT.certificate.contact`; the privacy page explains it under `#certificates`.
+- **Celebration and sharing** (`cert-share.js`, also used by the Thirukkural certificates): a 🎉 card under every new certificate ("Another milestone!" once the child already has one). The share options (device share sheet with the image, WhatsApp, Facebook, LinkedIn, Instagram steps, copy message, save image) sit behind the same 3-second press-and-hold as the Parent dashboard. Messages and links never contain the child's name; nothing is sent by the app. Text in `TEXT.certificate.celebrate`.
 - **Also used by games:** `CERT.bank` holds the question generators the question games use.
 
 ## Rewards and motivation (`features/rewards/`)
