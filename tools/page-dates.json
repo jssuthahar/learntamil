@@ -20,7 +20,7 @@
   "date": "2026-11-11"
  },
  "index.html": {
-  "hash": "1aee4f785d8de696",
+  "hash": "7ed7af414da3bce8",
   "date": "2026-11-11"
  },
  "install-app.html": {
@@ -28,7 +28,7 @@
   "date": "2026-11-11"
  },
  "learn-tamil-faq.html": {
-  "hash": "3a1f7ebb7165e1fb",
+  "hash": "af61194d22356c1e",
   "date": "2026-11-11"
  },
  "learn-tamil-online.html": {
@@ -40,7 +40,7 @@
   "date": "2026-11-11"
  },
  "llms.txt": {
-  "hash": "5162e6044d1fc8d5",
+  "hash": "68c0028e1b73d141",
   "date": "2026-11-11"
  },
  "printables/aathichoodi-poster.pdf": {
@@ -168,7 +168,7 @@
   "date": "2026-11-11"
  },
  "privacy.html": {
-  "hash": "131d900d8ec89cb4",
+  "hash": "16b590dab163169d",
   "date": "2026-11-11"
  },
  "share-learn-tamil.html": {
@@ -264,7 +264,7 @@
   "date": "2026-11-11"
  },
  "terms.html": {
-  "hash": "dd3c98eebbd2c35b",
+  "hash": "1df40e12522b03c9",
   "date": "2026-11-11"
  },
  "thirukkural-chapter-1.html": {
@@ -808,11 +808,15 @@
   "date": "2026-11-11"
  },
  "thirukkural.html": {
-  "hash": "fe263cc5d6fad7a4",
+  "hash": "31bb940fdd32ebf2",
   "date": "2026-11-11"
  },
  "uyirmei-ezhuthukal.html": {
   "hash": "079fab4b1348702e",
+  "date": "2026-11-11"
+ },
+ "verify-certificate.html": {
+  "hash": "a248dbc8c3a57e4d",
   "date": "2026-11-11"
  }
 }

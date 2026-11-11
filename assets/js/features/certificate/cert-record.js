@@ -115,6 +115,24 @@ const CertRecord = (() => {
     ltCertStore.shared(certificateId, net).catch(() => {});
   }
   const wasSent = id => load(K_SENT, []).includes(id);
+  /* Stored, or waiting in the outbox to be stored: only then can the certificate be checked, so only then does it get a QR code. */
+  const onRecord = id => collecting() && (wasSent(id) || load(K_OUT, []).some(d => d.certificateId === id));
+
+  /* The public check page for one certificate (verify-certificate.html). The URL never changes: it is printed on certificates. */
+  const VERIFY_PAGE = 'https://learntamil.msdevbuild.com/verify-certificate.html';
+  const verifyUrl = id => VERIFY_PAGE + '?id=' + encodeURIComponent(id);
+  /* Draw the "scan to check" QR code (dark on white, 4-module quiet zone) with the left edge at x, top at y, about `size` px wide.
+     Returns false (and draws nothing) when the certificate is not on record, e.g. in the Google Play app. */
+  function drawVerifyQR(g, id, x, y, size, caption){
+    if (!onRecord(id) || typeof QR === 'undefined') return false;
+    let m; try { m = QR.matrix(verifyUrl(id)); } catch (e) { return false; }
+    const dim = m.length + 8, px = Math.max(2, Math.floor(size / dim)), w = px * dim;
+    g.save(); g.fillStyle = '#fff'; g.fillRect(x, y, w, w); g.fillStyle = '#0b1020';
+    m.forEach((row, r) => row.forEach((on, c) => { if (on) g.fillRect(x + (c + 4) * px, y + (r + 4) * px, px, px); }));
+    if (caption){ g.font = '600 26px "Inter","Segoe UI",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = '#4a5163'; g.fillText(caption, x + w / 2, y + w + 8); }
+    g.restore();
+    return true;
+  }
 
   /* 🔎 "Check a certificate": type an ID, see the name, course and date (certificateVerify — never the email or phone). */
   function verifyHTML(p){
@@ -152,5 +170,5 @@ const CertRecord = (() => {
   addEventListener('online', () => setTimeout(flush, 2000));
   if (window.ltCertStore) setTimeout(flush, 3000);
 
-  return { collecting, fieldsHTML, wire, read, submit, flush, shared, wasSent, verifyHTML, wireVerify, cleanPhone, okPhone, okEmail, CONSENT_VERSION };
+  return { collecting, fieldsHTML, wire, read, submit, flush, shared, wasSent, onRecord, verifyUrl, drawVerifyQR, verifyHTML, wireVerify, cleanPhone, okPhone, okEmail, CONSENT_VERSION };
 })();

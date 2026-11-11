@@ -39,7 +39,7 @@ export const APP_SCRIPTS = [
   'assets/audio/manifest.js',           // recorded letter sounds (optional)
   ...DATA,
   ...[
-    'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics',
+    'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics', 'core/qr',
     'features/rewards/score', 'features/rewards/progress', 'features/rewards/today', 'features/rewards/path',
     'features/letters/letters',
     'features/stories/story-reader',
@@ -65,7 +65,7 @@ export const KURAL_SCRIPTS = [
   'assets/audio/manifest.js',
   ...DATA, ...KURAL_DATA,
   ...[
-    'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics',
+    'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics', 'core/qr',
     'features/rewards/score', 'features/rewards/progress', 'features/rewards/today',
     'features/games/game-utils', 'features/certificate/cert-record', 'features/certificate/certificate', 'features/certificate/cert-share',
     'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
@@ -73,6 +73,13 @@ export const KURAL_SCRIPTS = [
     'features/kural/kural-print', 'features/kural/kural-cert',
     'features/kural/kural-app'          // router: last
   ].map(n => `${JS}${n}.js`)
+].map(src => ({ src }));
+
+/* "Check a certificate" page (verify-certificate.html): the messages, the check form (cert-record.js) and the page's starter.
+   The certificate store itself comes from services/firebase.js, which every page loads. */
+export const VERIFY_SCRIPTS = [
+  ...DATA.filter(f => f.endsWith('/messages.js')),
+  ...['features/certificate/cert-record', 'features/certificate/verify-page'].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
 
 /* Pages load ONE stylesheet: the files above joined in order by the build (fewer render-blocking
@@ -85,7 +92,7 @@ export const scriptTags = list => list.map(tag).join('\n');
 
 /* Everything the offline app needs (service worker PRECACHE), besides the HTML pages. */
 export const PRECACHE_ASSETS = [
-  STYLE_BUNDLE, ...new Set([...APP_SCRIPTS, ...KURAL_SCRIPTS].map(s => s.src)), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
+  STYLE_BUNDLE, ...new Set([...APP_SCRIPTS, ...KURAL_SCRIPTS, ...VERIFY_SCRIPTS].map(s => s.src)), ...SERVICES.map(s => s.src).filter(s => !APP_SCRIPTS.some(a => a.src === s)),
   'assets/js/data/thirukkural.json',   // the 1,330 couplets, fetched when #/kural opens
   'manifest.webmanifest', 'assets/favicon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/icon-maskable-512.png', 'assets/apple-touch-icon.png'

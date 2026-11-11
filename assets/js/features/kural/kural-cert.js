@@ -123,6 +123,7 @@ const KC = (() => {
         showCert(nm);
         const st = await CertRecord.submit({ studentName: nm, certificateId: rec.id, batchId: (X.kind === 'level' ? 'kural-level-' : 'kural-chapter-') + X.id,
           courseName: `Learn Tamil · ${what}`, source: 'kural' }, r.contact);
+        const ni = $('#kcName'); if (st !== 'skipped' && ni) ni.dispatchEvent(new Event('input'));   // now on record: redraw with the QR code
         if (st === 'queued') box.querySelector('.k-acts').insertAdjacentHTML('afterend', `<p class="crc-note" role="status">${TEXT.certificate.contact.notSaved}</p>`);
       });
       return;
@@ -184,6 +185,7 @@ const KC = (() => {
     g.fillText(`${C.score[0]} · ${C.score[1]}: ${rec.s}/${X.total}`, 200, H - 180);
     g.textAlign = 'right'; g.fillText(`${TEXT.certificate.id}: ${rec.id}`, W - 200, H - 230);
     g.fillText('Learn Tamil · learntamil.msdevbuild.com', W - 200, H - 180);
+    CertRecord.drawVerifyQR(g, rec.id, W / 2 - 90, H - 364, 180, TEXT.certificate.verify.scan);   // only when on record
   }
   return { render };
 })();

@@ -128,3 +128,6 @@
 .crv-card dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
 .crv-card dt{font-weight:700;color:var(--text-muted)}
 .crv-card dd{margin:0;overflow-wrap:anywhere}
+/* verify-certificate.html: the same check form, on a guide page */
+.verify-box{margin:18px 0 26px}
+.verify-box .crv{max-width:680px;margin:0}

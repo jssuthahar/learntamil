@@ -350,7 +350,11 @@ const TEXT = {
       valid: '✅ This is a real Learn Tamil certificate',
       name: 'Name', course: 'For', date: 'Date',
       notFound: 'We could not find a certificate with this ID. Please check each letter and number. Certificates made in the Android app, or before this check existed, are not listed.',
-      offline: 'Could not check right now. Please make sure you are online and try again.'
+      offline: 'Could not check right now. Please make sure you are online and try again.',
+      /* Under the QR code printed on certificates that are on record (CertRecord.drawVerifyQR). */
+      scan: 'Scan to check',
+      /* verify-certificate.html opened inside the Google Play app, where nothing is sent. */
+      appOnly: 'Certificates can be checked on the website: open learntamil.msdevbuild.com/verify-certificate.html in a web browser.'
     },
     /* Celebration card under a new certificate (features/certificate/cert-share.js).
        The share part is a grown-up surface (behind press-and-hold), so it is English like share.js.

@@ -327,6 +327,7 @@ const CERT = (() => {
       showCertificate(L, c, again);
       const st = await CertRecord.submit({ studentName: name, certificateId: c.id, batchId: `letters-${L.n}`, source: 'letters',
         courseName: `Learn Tamil Level ${L.n} · ${L.titleEn} (${L.en})` }, r.contact);
+      if (st !== 'skipped' && $('#certCanvas')) drawCertificate($('#certCanvas'), L, c);   // now on record: add the QR code
       if (st === 'queued') $('#certResult .cr-btns').insertAdjacentHTML('afterend', `<p class="crc-note" role="status">${TEXT.certificate.contact.notSaved}</p>`);
     };
   }
@@ -363,7 +364,8 @@ const CERT = (() => {
     g.lineWidth = 4; g.strokeStyle = 'rgba(23,105,209,.35)'; g.setLineDash([18, 16]); roundRect(g, 110, 110, W - 220, H - 220, 50); g.stroke(); g.setLineDash([]);
     // corner decorations
     g.font = `110px ${ui}`; g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.fillText('⭐', 210, 220); g.fillText('🌟', W - 210, 220); g.fillText('🎈', 210, H - 230); g.fillText('🦜', W - 220, H - 240);
+    const qr = CertRecord.onRecord(c.id);   // on record → a "scan to check" QR code takes the parrot's corner
+    g.fillText('⭐', 210, 220); g.fillText('🌟', W - 210, 220); g.fillText('🎈', 210, H - 230); if (!qr) g.fillText('🦜', W - 220, H - 240);
     // header
     g.fillStyle = '#0b1020'; g.font = `700 40px ${ui}`; g.fillText('LEARN TAMIL · MSDEVBUILD', W / 2, 230);
     const tg = g.createLinearGradient(W / 2 - 500, 0, W / 2 + 500, 0); tg.addColorStop(0, '#1769d1'); tg.addColorStop(0.55, '#7c3aed'); tg.addColorStop(1, '#e0480c');
@@ -387,9 +389,11 @@ const CERT = (() => {
     g.fillStyle = '#7a5600'; g.fillText(pill, W / 2, 1249);
     // footer: date, medal, certificate ID (no signature)
     const date = new Date(c.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    g.fillStyle = '#0b1020'; g.font = `700 40px ${ui}`; g.fillText(date, 560, 1395); g.fillText(c.id, W - 560, 1395);
-    g.fillStyle = '#4a5163'; g.font = `500 32px ${ui}`; g.fillText(TEXT.certificate.date, 560, 1450); g.fillText(TEXT.certificate.id, W - 560, 1450);
+    const idX = qr ? W - 720 : W - 560;   // with a QR code in the corner, the ID column moves left to make room
+    g.fillStyle = '#0b1020'; g.font = `700 40px ${ui}`; g.fillText(date, 560, 1395); g.fillText(c.id, idX, 1395);
+    g.fillStyle = '#4a5163'; g.font = `500 32px ${ui}`; g.fillText(TEXT.certificate.date, 560, 1450); g.fillText(TEXT.certificate.id, idX, 1450);
     g.font = `190px ${ui}`; g.fillText('🏅', W / 2, 1400);
+    if (qr) CertRecord.drawVerifyQR(g, c.id, W - 340, H - 480, 200, TEXT.certificate.verify.scan);   // 180 px, above the footer line
     g.fillStyle = '#6b7385'; g.font = `500 28px ${ui}`;
     g.fillText('Learn Tamil · MSDEVBUILD  ·  learntamil.msdevbuild.com  ·  A practice certificate for encouragement, not an official qualification', W / 2, H - 150);
   }

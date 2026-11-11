@@ -240,11 +240,36 @@ await check('check a certificate by ID: shows name, course and date only, handle
   f.requestSubmit(); await wait(100); const off = out.textContent.includes('online');
   window.ltCertStore = store;
   return bad && found && none && off; })()`);
+await check('certificate QR code: drawn only for a certificate on record, and it reads back as the check page link', `(async()=>{
+  const sent = localStorage.getItem('lt-cert-sent'); localStorage.setItem('lt-cert-sent', JSON.stringify(['LT1-QRTEST']));
+  const cv = document.createElement('canvas'); cv.width = cv.height = 300; const g = cv.getContext('2d');
+  const none = CertRecord.drawVerifyQR(g, 'LT9-NOTSENT', 0, 0, 225) === false;
+  const drew = CertRecord.drawVerifyQR(g, 'LT1-QRTEST', 0, 0, 225, 'Scan to check');
+  if (sent === null) localStorage.removeItem('lt-cert-sent'); else localStorage.setItem('lt-cert-sent', sent);
+  const url = CertRecord.verifyUrl('LT1-QRTEST'), m = QR.matrix(url);
+  // read the modules back from the pixels (5 px each, 4-module quiet zone) and compare with the encoder
+  const px = g.getImageData(0, 0, 225, 225).data, at = (c, r) => px[(((r + 4) * 5 + 2) * 225 + (c + 4) * 5 + 2) * 4] < 128;
+  const same = m.every((row, r) => row.every((on, c) => on === at(c, r)));
+  let scanned = true;
+  if ('BarcodeDetector' in window) try { const r = await new BarcodeDetector({ formats: ['qr_code'] }).detect(cv); scanned = r.length === 1 && r[0].rawValue === url; } catch (e) {}
+  return none && drew && same && scanned && url === 'https://learntamil.msdevbuild.com/verify-certificate.html?id=LT1-QRTEST'; })()`);
 for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.html', 'record.html', 'thirukkural-chapters.html', 'thirukkural-chapter-1.html', 'thirukkural-chapter-133.html']){
   const before = errors.length; await open(page);
   if (errors.length > before) fail(`${page}: errors while loading: ${errors.slice(before).join(' | ')}`);
   await check(`${page} loads`, 'document.readyState === "complete"');
 }
+{ const before = errors.length; await open('verify-certificate.html?id=lt1-ab12cd');
+  if (errors.length > before) fail(`verify-certificate.html: errors while loading: ${errors.slice(before).join(' | ')}`); }
+await check('verify-certificate.html: opened from a QR code (?id=) it fills in the ID and checks it; a check puts its ID in the address bar', `(async()=>{
+  const wait = ms => new Promise(r=>setTimeout(r,ms));
+  const f = document.querySelector('#certVerify [data-crv]'); if (!f) return false;
+  const inp = f.querySelector('[data-crv-id]'), out = f.querySelector('[data-crv-out]');
+  const auto = inp.value === 'lt1-ab12cd' && out.textContent.includes('online');   // localhost: the store is not live, so the gentle offline message
+  window.ltCertStore = { available: () => true, verify: id => Promise.resolve(id === 'TKL2-AB12CD'
+    ? { certificateId: id, studentName: 'Kavin', courseName: 'Learn Tamil · Thirukkural Level 2', issuedOn: '2026-11-11' } : null) };
+  inp.value = ' tkl2-ab12cd'; f.requestSubmit(); await wait(150);
+  const card = out.querySelector('.crv-card');
+  return auto && !!card && card.textContent.includes('Thirukkural Level 2') && card.textContent.includes('Kavin') && location.search === '?id=TKL2-AB12CD'; })()`);
 /* Thirukkural: its own page (thirukkural.html) with Learn · Games · Print · Certificate · Parents. */
 await open('index.html');
 await check('index links to the Thirukkural page from the home screen (not the letter tabs), and the games card goes there', `(async()=>{
