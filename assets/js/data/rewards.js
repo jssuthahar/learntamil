@@ -95,15 +95,27 @@ const STAGES = [
 ];
 
 /* Certificate levels 🎓 — title is printed on the certificate. total/pass default to 10/8. */
+/* about: what a child showed they can do to pass the level (English, for grown-ups): shown on the
+   "Check a certificate" page when someone scans a certificate's QR code. Keep it in step with LEVEL_QUESTIONS in certificate.js. */
 const CERT_LEVELS = [
-  { n: 1, ic: '🌱', ta: 'உயிர் எழுத்துகள்', en: 'Tamil vowels', title: 'தொடக்க நிலை', titleEn: 'Starter' },
-  { n: 2, ic: '🧱', ta: 'மெய் எழுத்துகள்', en: 'Tamil consonants', title: 'அடிப்படை நிலை', titleEn: 'Beginner' },
-  { n: 3, ic: '🧩', ta: 'உயிர்மெய் எழுத்துகள்', en: 'Uyirmei letters', title: 'வளர்ச்சி நிலை', titleEn: 'Explorer' },
-  { n: 4, ic: '📖', ta: 'சொற்கள் படித்தல்', en: 'Reading words', title: 'வாசிப்பு நிலை', titleEn: 'Reader' },
-  { n: 5, ic: '👑', ta: 'தமிழ் எழுத்து வல்லுநர்', en: 'Tamil alphabet master', title: 'சிறப்பு நிலை', titleEn: 'Master' },
-  { n: 6, ic: '🔢', ta: 'எண்கள், நிறங்கள், கிழமைகள்', en: 'Numbers, colours and days', title: 'சொல் நிலை', titleEn: 'Word Explorer' },
-  { n: 7, ic: '🏡', ta: 'குடும்பம், உடல், உணவு', en: 'Family, body and food', title: 'அன்றாடச் சொல் நிலை', titleEn: 'Everyday Words' },
-  { n: 8, ic: '✏️', ta: 'எழுத்துக்கூட்டல்', en: 'Spelling words', title: 'எழுத்துக்கூட்டல் நிலை', titleEn: 'Speller' },
-  { n: 9, ic: '📚', ta: 'வாக்கியம் படித்தல்', en: 'Reading sentences', title: 'வாசிப்புத் திறன் நிலை', titleEn: 'Story Reader' },
-  { n: 10, ic: '🏆', ta: 'தமிழ்ச் சாதனையாளர்', en: 'Tamil champion', title: 'சாதனை நிலை', titleEn: 'Champion', total: 15, pass: 12 }
+  { n: 1, ic: '🌱', ta: 'உயிர் எழுத்துகள்', en: 'Tamil vowels', title: 'தொடக்க நிலை', titleEn: 'Starter',
+    about: 'The 12 Tamil vowels (உயிர் எழுத்துகள்): recognising each vowel by its sound and by a picture word that starts with it, telling short vowels (குறில்) from long ones (நெடில்), and knowing their order.' },
+  { n: 2, ic: '🧱', ta: 'மெய் எழுத்துகள்', en: 'Tamil consonants', title: 'அடிப்படை நிலை', titleEn: 'Beginner',
+    about: 'The 18 Tamil consonants (மெய் எழுத்துகள்): recognising each by its sound, knowing its group (வல்லினம், மெல்லினம், இடையினம்), finding it inside a word, and knowing their order.' },
+  { n: 3, ic: '🧩', ta: 'உயிர்மெய் எழுத்துகள்', en: 'Uyirmei letters', title: 'வளர்ச்சி நிலை', titleEn: 'Explorer',
+    about: 'The 216 uyirmei letters (உயிர்மெய் எழுத்துகள்): joining a consonant and a vowel into one letter, splitting a letter back into its parts, telling short from long letters, and reading letters by their sound.' },
+  { n: 4, ic: '📖', ta: 'சொற்கள் படித்தல்', en: 'Reading words', title: 'வாசிப்பு நிலை', titleEn: 'Reader',
+    about: 'Reading Tamil words: matching words to pictures and meanings, counting the letters in a word, and finding the letter a word starts with.' },
+  { n: 5, ic: '👑', ta: 'தமிழ் எழுத்து வல்லுநர்', en: 'Tamil alphabet master', title: 'சிறப்பு நிலை', titleEn: 'Master',
+    about: 'A mixed test of levels 1 to 4 (vowels, consonants, uyirmei letters and words), plus facts about the Tamil alphabet.' },
+  { n: 6, ic: '🔢', ta: 'எண்கள், நிறங்கள், கிழமைகள்', en: 'Numbers, colours and days', title: 'சொல் நிலை', titleEn: 'Word Explorer',
+    about: 'Tamil numbers, colours and days of the week: reading the words and their meanings, Tamil digits, and which day comes before or after another.' },
+  { n: 7, ic: '🏡', ta: 'குடும்பம், உடல், உணவு', en: 'Family, body and food', title: 'அன்றாடச் சொல் நிலை', titleEn: 'Everyday Words',
+    about: 'Everyday words for family, the body and food: matching each Tamil word to its picture and its meaning.' },
+  { n: 8, ic: '✏️', ta: 'எழுத்துக்கூட்டல்', en: 'Spelling words', title: 'எழுத்துக்கூட்டல் நிலை', titleEn: 'Speller',
+    about: 'Spelling Tamil words: filling in a missing letter, joining letters into a word, putting mixed-up letters in order, and finding a word’s last letter.' },
+  { n: 9, ic: '📚', ta: 'வாக்கியம் படித்தல்', en: 'Reading sentences', title: 'வாசிப்புத் திறன் நிலை', titleEn: 'Story Reader',
+    about: 'Reading Tamil sentences and short stories: understanding what a sentence means, choosing the right sentence, saying who did what in a story, and naming the story.' },
+  { n: 10, ic: '🏆', ta: 'தமிழ்ச் சாதனையாளர்', en: 'Tamil champion', title: 'சாதனை நிலை', titleEn: 'Champion', total: 15, pass: 12,
+    about: 'The champion test: 15 questions from every level, from letters and numbers to spelling, words and sentences.' }
 ];

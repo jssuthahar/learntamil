@@ -4,7 +4,7 @@
      #/certificate/40         quick test for chapter 40 (chapters 1–108; காமத்துப்பால் has no tests)
    Questions are made from the verified text only: the missing word, the next line, and which chapter.
    Passing (8 of 10 on the first try; 12 of 15 for the last level) earns a certificate with the child's name,
-   drawn on a <canvas> and saved as PDF (CERT.jpegToPdf from features/certificate) or PNG.
+   drawn by CertDraw.kural (features/certificate/cert-draw.js) and saved as PDF (CERT.jpegToPdf) or PNG.
    Results are kept per child: Progress.d.kLevels and Progress.d.kCerts; the name in lt-cert-name. */
 'use strict';
 
@@ -122,7 +122,7 @@ const KC = (() => {
         making = true; try { Profiles.set('lt-cert-name', nm); } catch (e2) {}
         showCert(nm);
         const st = await CertRecord.submit({ studentName: nm, certificateId: rec.id, batchId: (X.kind === 'level' ? 'kural-level-' : 'kural-chapter-') + X.id,
-          courseName: `Learn Tamil · ${what}`, source: 'kural' }, r.contact);
+          courseName: `Learn Tamil · ${what}`, source: 'kural', score: rec.s, total: X.total }, r.contact);
         const ni = $('#kcName'); if (st !== 'skipped' && ni) ni.dispatchEvent(new Event('input'));   // now on record: redraw with the QR code
         if (st === 'queued') box.querySelector('.k-acts').insertAdjacentHTML('afterend', `<p class="crc-note" role="status">${TEXT.certificate.contact.notSaved}</p>`);
       });
@@ -155,37 +155,8 @@ const KC = (() => {
     document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
   }
 
-  async function draw(cv, X, name, rec){
-    try { await Promise.all(['800 90px "Noto Sans Tamil"', '600 60px "Noto Sans Tamil"'].map(f => document.fonts.load(f))); } catch (e) {}
-    const g = cv.getContext('2d'), W = cv.width, H = cv.height, TA = '"Noto Sans Tamil","Latha","Tamil Sangam MN",sans-serif';
-    const text = (s, y, size, color = '#3b2a12', weight = 600) => { g.font = `${weight} ${size}px ${TA}`; g.fillStyle = color; g.textAlign = 'center';
-      while (g.measureText(s).width > W - 360 && size > 20){ size -= 2; g.font = `${weight} ${size}px ${TA}`; } g.fillText(s, W / 2, y); };
-    const bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#fff8e6'); bg.addColorStop(1, '#fdebc8');
-    g.fillStyle = bg; g.fillRect(0, 0, W, H);
-    g.strokeStyle = '#0b8a6c'; g.lineWidth = 26; g.strokeRect(60, 60, W - 120, H - 120);
-    g.strokeStyle = '#c9952b'; g.lineWidth = 6; g.strokeRect(110, 110, W - 220, H - 220);
-    const lvl = X.kind === 'level' ? X.L : null, from = lvl ? lvl.from : X.id * 10 - 9, to = lvl ? lvl.to : X.id * 10;
-    g.font = `130px ${TA}`; g.textAlign = 'center'; g.fillText(lvl ? lvl.ic : '📜', W / 2, 300);
-    text(C.heading, 430, 92, '#0b5f4b', 800);
-    text(C.presented, 560, 44, '#5b4a2e', 600);
-    text(name || '…………………………', 720, 120, '#1f1a12', 800);
-    g.strokeStyle = '#c9952b'; g.lineWidth = 4; g.beginPath(); g.moveTo(W / 2 - 600, 760); g.lineTo(W / 2 + 600, 760); g.stroke();
-    if (lvl){
-      text(fmt(C.forLevel, { n: lvl.n }), 860, 50, '#5b4a2e');
-      text(`${lvl.ta} · ${lvl.en}`, 965, 84, '#0b5f4b', 800);
-    } else {
-      text(fmt(C.forChapter, { n: X.id }), 860, 50, '#5b4a2e');
-      text(`${kCh(X.id)[0]} · ${kCh(X.id)[1]}`, 965, 74, '#0b5f4b', 800);
-    }
-    text(fmt(C.kurals, { from, to }), 1045, 42, '#5b4a2e');
-    const [l1, l2] = kText(from);
-    text(`“${l1}`, 1175, 50, '#3b2a12', 700); text(`${l2}”`, 1245, 50, '#3b2a12', 700);
-    g.font = `600 36px ${TA}`; g.fillStyle = '#5b4a2e';
-    g.textAlign = 'left'; g.fillText(`${TEXT.certificate.date}: ${rec.d}`, 200, H - 230);
-    g.fillText(`${C.score[0]} · ${C.score[1]}: ${rec.s}/${X.total}`, 200, H - 180);
-    g.textAlign = 'right'; g.fillText(`${TEXT.certificate.id}: ${rec.id}`, W - 200, H - 230);
-    g.fillText('Learn Tamil · learntamil.msdevbuild.com', W - 200, H - 180);
-    CertRecord.drawVerifyQR(g, rec.id, W / 2 - 90, H - 364, 180, TEXT.certificate.verify.scan);   // only when on record
-  }
+  /* Drawing: features/certificate/cert-draw.js (shared with the check page). */
+  const draw = (cv, X, name, rec) => { const from = X.kind === 'level' ? X.L.from : X.id * 10 - 9;
+    return CertDraw.kural(cv, X, name, rec, { chapter: X.kind === 'chapter' ? kCh(X.id) : null, couplet: kText(from) }, { qr: CertRecord.onRecord(rec.id) }); };
   return { render };
 })();

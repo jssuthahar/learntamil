@@ -47,7 +47,7 @@ export const APP_SCRIPTS = [
     'features/reading/reading',
     'features/games/hub', 'features/games/spin-wheel', 'features/games/balloon-pop',
     'features/games/word-builder', 'features/games/memory', 'features/games/question-games',
-    'features/certificate/cert-record', 'features/certificate/certificate', 'features/certificate/cert-share',
+    'features/certificate/cert-record', 'features/certificate/cert-draw', 'features/certificate/certificate', 'features/certificate/cert-share',
     'features/games/trace', 'features/games/colouring',
     'features/voice/say-back',
     'features/stories/rhymes',
@@ -67,7 +67,7 @@ export const KURAL_SCRIPTS = [
   ...[
     'core/dom', 'core/letter-model', 'core/speech', 'core/sound', 'core/analytics', 'core/qr',
     'features/rewards/score', 'features/rewards/progress', 'features/rewards/today',
-    'features/games/game-utils', 'features/certificate/cert-record', 'features/certificate/certificate', 'features/certificate/cert-share',
+    'features/games/game-utils', 'features/certificate/cert-record', 'features/certificate/cert-draw', 'features/certificate/certificate', 'features/certificate/cert-share',
     'features/family/profile-switcher', 'features/family/stickers', 'features/family/parent-corner', 'features/family/settings',
     'features/kural/kural-scene', 'features/kural/kural', 'features/kural/kural-games',
     'features/kural/kural-print', 'features/kural/kural-cert',
@@ -75,11 +75,13 @@ export const KURAL_SCRIPTS = [
   ].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
 
-/* "Check a certificate" page (verify-certificate.html): the messages, the check form (cert-record.js) and the page's starter.
+/* "Check a certificate" page (verify-certificate.html): the messages, the QR encoder, the check form (cert-record.js),
+   the certificate drawer (to redraw a checked certificate for download), its panel and the page's starter.
+   Level and chapter details come in the page itself (a JSON block written by build-pages.mjs), so the big lesson files stay out.
    The certificate store itself comes from services/firebase.js, which every page loads. */
 export const VERIFY_SCRIPTS = [
   ...DATA.filter(f => f.endsWith('/messages.js')),
-  ...['features/certificate/cert-record', 'features/certificate/verify-page'].map(n => `${JS}${n}.js`)
+  ...['core/qr', 'features/certificate/cert-record', 'features/certificate/cert-draw', 'features/certificate/verify-share', 'features/certificate/verify-page'].map(n => `${JS}${n}.js`)
 ].map(src => ({ src }));
 
 /* Pages load ONE stylesheet: the files above joined in order by the build (fewer render-blocking

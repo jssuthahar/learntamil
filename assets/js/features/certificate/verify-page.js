@@ -1,6 +1,7 @@
 /* Learn Tamil — 🔎 the "Check a certificate" page (verify-certificate.html) for parents, teachers and schools.
    Shows the same check form as the certificate screens (CertRecord.verifyHTML). Opened from a certificate's QR code
-   (verify-certificate.html?id=LT1-AB12CD), it checks that ID straight away. Each check puts its ID in the address bar,
+   (verify-certificate.html?id=LT1-AB12CD), it checks that ID straight away. A found certificate gets download and share
+   options (verify-share.js). Each check puts its ID in the address bar,
    so the result can be copied as a link. The lookup reads only certificateVerify/{id} (services/firebase.js). */
 'use strict';
 (() => {
@@ -9,7 +10,7 @@
   if (!html){ box.innerHTML = `<p class="crv-msg">${TEXT.certificate.verify.appOnly}</p>`; return; }   // Google Play app: nothing is sent
   box.innerHTML = html;
   const form = box.querySelector('[data-crv]'), inp = form.querySelector('[data-crv-id]');
-  CertRecord.wireVerify(form);
+  CertRecord.wireVerify(form, { onFound: (r, out) => VerifyShare.mount(out, r) });
   form.addEventListener('submit', () => {
     const id = inp.value.replace(/\s+/g, '').toUpperCase();
     if (/^[A-Z0-9-]{1,20}$/.test(id)) try { history.replaceState(null, '', '?id=' + encodeURIComponent(id)); } catch (e) {}

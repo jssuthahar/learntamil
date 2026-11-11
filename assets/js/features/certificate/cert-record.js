@@ -87,6 +87,8 @@ const CertRecord = (() => {
     const doc = { studentName: rec.studentName.slice(0, 40), email: contact.email, phoneNumber: contact.phone,
       certificateId: rec.certificateId, batchId: rec.batchId, courseName: rec.courseName.slice(0, 160), source: rec.source,
       consent: true, consentVersion: contact.v };
+    // the score, so the check page can redraw the certificate exactly as it was printed
+    if (Number.isInteger(rec.score) && Number.isInteger(rec.total) && rec.total > 0 && rec.score >= 0 && rec.score <= rec.total){ doc.score = rec.score; doc.total = rec.total; }
     try { await send(doc); return 'saved'; }
     catch (e) { const out = load(K_OUT, []).filter(d => d.certificateId !== doc.certificateId); out.push(doc); store(K_OUT, out); return 'queued'; }
   }
@@ -122,9 +124,10 @@ const CertRecord = (() => {
   const VERIFY_PAGE = 'https://learntamil.msdevbuild.com/verify-certificate.html';
   const verifyUrl = id => VERIFY_PAGE + '?id=' + encodeURIComponent(id);
   /* Draw the "scan to check" QR code (dark on white, 4-module quiet zone) with the left edge at x, top at y, about `size` px wide.
-     Returns false (and draws nothing) when the certificate is not on record, e.g. in the Google Play app. */
-  function drawVerifyQR(g, id, x, y, size, caption){
-    if (!onRecord(id) || typeof QR === 'undefined') return false;
+     Returns false (and draws nothing) when the certificate is not on record on this device, e.g. in the Google Play app,
+     unless `checked` is true (the check page: the ID was just found online). */
+  function drawVerifyQR(g, id, x, y, size, caption, checked = false){
+    if (!(checked || onRecord(id)) || typeof QR === 'undefined') return false;
     let m; try { m = QR.matrix(verifyUrl(id)); } catch (e) { return false; }
     const dim = m.length + 8, px = Math.max(2, Math.floor(size / dim)), w = px * dim;
     g.save(); g.fillStyle = '#fff'; g.fillRect(x, y, w, w); g.fillStyle = '#0b1020';
@@ -144,7 +147,9 @@ const CertRecord = (() => {
         <button class="btn primary" type="submit">${v.button}</button></div>
       <div class="crv-out" data-crv-out role="status" aria-live="polite"></div></form>`;
   }
-  function wireVerify(form){
+  /* opts.onFound(result, outEl): the check page adds its download and share options under the result.
+     Without it (the app's certificate screens) the result links to that page instead. */
+  function wireVerify(form, opts = {}){
     if (!form) return;
     const v = TEXT.certificate.verify, out = form.querySelector('[data-crv-out]'), inp = form.querySelector('[data-crv-id]');
     let busy = false;
@@ -161,6 +166,8 @@ const CertRecord = (() => {
         out.innerHTML = `<div class="crv-card"><b>${v.valid}</b><dl>
           <dt>${v.name}</dt><dd>${esc(r.studentName)}</dd><dt>${v.course}</dt><dd>${esc(r.courseName)}</dd>
           ${date ? `<dt>${v.date}</dt><dd>${esc(date)}</dd>` : ''}<dt>${v.label}</dt><dd><code>${esc(id)}</code></dd></dl></div>`;
+        if (opts.onFound) opts.onFound({ ...r, certificateId: id, dateText: date }, out);
+        else out.insertAdjacentHTML('beforeend', `<p class="crv-more"><a href="${esc(verifyUrl(id))}" target="_blank" rel="noopener">${v.openPage}</a></p>`);
       } catch (err) { out.innerHTML = `<p class="crv-msg">${v.offline}</p>`; }
       finally { busy = false; }
     });

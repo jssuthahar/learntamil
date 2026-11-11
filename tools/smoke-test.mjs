@@ -93,6 +93,7 @@ async function check(name, expr){
     const bad = await run(`(()=>{ const t = document.body.textContent;   // includes hidden panels and closed dialogs
       const m = t.match(/undefined|NaN|\\[object Object\\]|\\{[a-z]+\\}/); return m ? m[0] : ''; })()`);
     if (v === false) fail(name);
+    else if (typeof v === 'string') fail(`${name}: ${v}`);
     else if (errors.length > before) fail(`${name}: ${errors.slice(before).join(' | ')}`);
     else if (bad) fail(`${name}: broken text on screen ("${bad}")`);
     else pass(name);
@@ -234,7 +235,8 @@ await check('check a certificate by ID: shows name, course and date only, handle
   inp.value = 'hello'; f.requestSubmit(); await wait(50); const bad = !asked.length && !!out.querySelector('.crv-msg');
   inp.value = ' lt1-ab12cd '; f.requestSubmit(); await wait(100);
   const card = out.querySelector('.crv-card'), t = card ? card.textContent : '';
-  const found = !!card && asked[0] === 'LT1-AB12CD' && t.includes('Kavin <b>') && !card.querySelector('b b') && t.includes('Level 1') && t.includes('11 November 2026') && !t.includes('x@y.zz');
+  const link = out.querySelector('.crv-more a'), linked = !!link && link.href.endsWith('verify-certificate.html?id=LT1-AB12CD') && !out.querySelector('.vs-panel');
+  const found = linked && !!card && asked[0] === 'LT1-AB12CD' && t.includes('Kavin <b>') && !card.querySelector('b b') && t.includes('Level 1') && t.includes('11 November 2026') && !t.includes('x@y.zz');
   inp.value = 'LT2-ZZZZZZ'; f.requestSubmit(); await wait(100); const none = !out.querySelector('.crv-card') && out.textContent.includes('could not find');
   window.ltCertStore = { available: () => false, verify: () => Promise.reject(new Error('not-live')) };
   f.requestSubmit(); await wait(100); const off = out.textContent.includes('online');
@@ -261,15 +263,44 @@ for (const page of ['tamil-alphabet.html', 'tamil-printables.html', 'privacy.htm
 { const before = errors.length; await open('verify-certificate.html?id=lt1-ab12cd');
   if (errors.length > before) fail(`verify-certificate.html: errors while loading: ${errors.slice(before).join(' | ')}`); }
 await check('verify-certificate.html: opened from a QR code (?id=) it fills in the ID and checks it; a check puts its ID in the address bar', `(async()=>{
-  const wait = ms => new Promise(r=>setTimeout(r,ms));
+  const wait = ms => new Promise(r=>setTimeout(r,ms)), until = async (fn, ms = 3000) => { for (let t = 0; t < ms && !fn(); t += 50) await wait(50); return !!fn(); };
   const f = document.querySelector('#certVerify [data-crv]'); if (!f) return false;
   const inp = f.querySelector('[data-crv-id]'), out = f.querySelector('[data-crv-out]');
-  const auto = inp.value === 'lt1-ab12cd' && out.textContent.includes('online');   // localhost: the store is not live, so the gentle offline message
+  // localhost: the store is not live, so the check ends with the gentle offline message
+  const auto = inp.value === 'lt1-ab12cd' && await until(() => out.textContent.includes('online'));
   window.ltCertStore = { available: () => true, verify: id => Promise.resolve(id === 'TKL2-AB12CD'
-    ? { certificateId: id, studentName: 'Kavin', courseName: 'Learn Tamil · Thirukkural Level 2', issuedOn: '2026-11-11' } : null) };
-  inp.value = ' tkl2-ab12cd'; f.requestSubmit(); await wait(150);
+    ? { certificateId: id, studentName: 'Kavin', courseName: 'Learn Tamil · Thirukkural Level 2', issuedOn: '2026-11-11', score: 9, total: 10 } : null) };
+  inp.value = ' tkl2-ab12cd'; f.requestSubmit();
+  const shown = await until(() => out.querySelector('.crv-card') && out.querySelector('.vs-panel'));
   const card = out.querySelector('.crv-card');
-  return auto && !!card && card.textContent.includes('Thirukkural Level 2') && card.textContent.includes('Kavin') && location.search === '?id=TKL2-AB12CD'; })()`);
+  return auto && shown && card.textContent.includes('Thirukkural Level 2') && card.textContent.includes('Kavin') && location.search === '?id=TKL2-AB12CD'; })()`);
+await check('verify-certificate.html: a found certificate explains what the child did and how it is earned, redraws it for download (with a QR code that scans), and shares without the name', `(async()=>{
+  const wait = ms => new Promise(r=>setTimeout(r,ms)), until = async (fn, ms = 3000) => { for (let t = 0; t < ms && !fn(); t += 50) await wait(50); return !!fn(); };
+  const f = document.querySelector('#certVerify [data-crv]'), inp = f.querySelector('[data-crv-id]'), out = f.querySelector('[data-crv-out]');
+  const R = { 'LT3-QRTEST': { studentName: 'Kavin', courseName: 'Learn Tamil Level 3 · Explorer (Uyirmei letters)', score: 10, total: 10 },
+              'TKL2-QRTEST': { studentName: 'Kavin', courseName: 'Learn Tamil · Thirukkural Level 2', score: 8, total: 10 },
+              'TK5-QRTEST': { studentName: 'Kavin', courseName: 'Learn Tamil · Thirukkural chapter 5' } };   // an older record: no score
+  window.ltCertStore = { available: () => true, verify: id => Promise.resolve(R[id] ? { certificateId: id, issuedOn: '2026-11-11', score: null, total: null, ...R[id] } : null) };
+  const res = {};
+  for (const id of Object.keys(R)){
+    inp.value = id; f.requestSubmit();
+    if (!await until(() => out.querySelector('.vs-panel') && out.querySelector('.crv-card dd code') && out.querySelector('.crv-card dd code').textContent === id)) return 'no panel ' + id;
+    const p = out.querySelector('.vs-panel'), about = p.querySelector('.vs-about').textContent;
+    const cv = await p.vsReady;
+    if (!await until(() => !p.querySelector('.vs-cert img').hidden)) return 'no preview ' + id;
+    let scanned = true;
+    if ('BarcodeDetector' in window) try { const d = await new BarcodeDetector({ formats: ['qr_code'] }).detect(cv); scanned = d.length === 1 && d[0].rawValue === CertRecord.verifyUrl(id); } catch (e) {}
+    const msg = p.querySelector('.cs-msg').textContent, hrefs = [...p.querySelectorAll('a[href]')].map(a => decodeURIComponent(a.href)).join(' ');
+    const nets = ['pdf', 'save', 'whatsapp', 'linkedin', 'facebook', 'x', 'telegram', 'email', 'instagram', 'copy'].every(n => p.querySelector('[data-vs="' + n + '"]'));
+    const noName = !msg.includes('Kavin') && !hrefs.includes('Kavin') && msg.includes('?id=' + id);
+    res[id] = { about, ok: cv.width === 2339 && scanned && nets && noName };
+  }
+  const L3 = res['LT3-QRTEST'], K2 = res['TKL2-QRTEST'], C5 = res['TK5-QRTEST'];
+  const texts = L3.about.includes('Kavin passed Level 3') && L3.about.includes('uyirmei') && L3.about.includes('10 of 10') && L3.about.includes('Levels 1 to 2')
+    && K2.about.includes('Thirukkural Level 2') && K2.about.includes('Kurals 11–40') && K2.about.includes('8 of 10')
+    && C5.about.includes('chapter 5') && !C5.about.includes('Score:') && C5.about.includes('11 November 2026');
+  const noOfficial = !/official/i.test(document.body.textContent);
+  return (L3.ok && K2.ok && C5.ok && texts && noOfficial) || JSON.stringify({ L3: L3.ok, K2: K2.ok, C5: C5.ok, texts, noOfficial }); })()`);
 /* Thirukkural: its own page (thirukkural.html) with Learn · Games · Print · Certificate · Parents. */
 await open('index.html');
 await check('index links to the Thirukkural page from the home screen (not the letter tabs), and the games card goes there', `(async()=>{

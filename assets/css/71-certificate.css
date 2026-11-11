@@ -131,3 +131,13 @@
 /* verify-certificate.html: the same check form, on a guide page */
 .verify-box{margin:18px 0 26px}
 .verify-box .crv{max-width:680px;margin:0}
+/* the check page: download or share a found certificate (verify-share.js) */
+.vs-panel{margin-top:14px;text-align:left}
+.vs-panel h4{margin:4px 0 10px;font-size:18px}
+.crv-more{margin-top:8px !important;font-weight:700}
+.vs-about{margin:4px 0 16px;line-height:1.6}
+.vs-about h4{margin:6px 0 6px;font-size:19px}
+.vs-about h5{margin:14px 0 4px;font-size:16px}
+.vs-about p{margin:0 0 8px !important}
+.vs-cert{margin:6px 0 18px}
+.vs-cert img{display:block;width:100%;height:auto;margin:0 0 10px;border-radius:12px;box-shadow:var(--glass-shadow)}

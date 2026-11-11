@@ -116,8 +116,8 @@ window.ltConsent = { show: showNotice, choice: getChoice };
    (features/certificate/cert-record.js). Not tied to the cookie choice: the form is its own consent.
    Two documents per certificate, both keyed by the certificate ID and written together in one batch:
      certificates/{id}        the full record (name, parent's email and phone, …) — nobody can read it from the website
-     certificateVerify/{id}   only what is printed on the certificate (name, course, date) — anyone with the ID can
-                              look it up with "Check a certificate"; it never holds the email or phone
+     certificateVerify/{id}   only what is printed on the certificate (name, course, date, score) — anyone with the ID can
+                              look it up with "Check a certificate" and download the certificate; never the email or phone
    Rules (firestore.rules): create once; only the sharing flags can change. Never in the Google Play app, never on localhost.
    ===================================================================== */
 const FS = () => import(SDK + 'firebase-firestore.js');
@@ -133,7 +133,9 @@ window.ltCertStore = {
       ...rec, certificateUrl: '', issuedAt: fs.serverTimestamp(), status: 'issued',
       sharingStatus: { linkedin: false, whatsapp: false, facebook: false, instagram: false }
     });
-    b.set(fs.doc(db, 'certificateVerify', id), { certificateId: id, studentName: rec.studentName, courseName: rec.courseName, issuedAt: fs.serverTimestamp() });
+    const pub = { certificateId: id, studentName: rec.studentName, courseName: rec.courseName, issuedAt: fs.serverTimestamp() };
+    if ('score' in rec){ pub.score = rec.score; pub.total = rec.total; }
+    b.set(fs.doc(db, 'certificateVerify', id), pub);
     await withTimeout(b.commit(), 15000);
   },
   async shared(certificateId, net){
@@ -141,14 +143,16 @@ window.ltCertStore = {
     const [fs, db] = await fsDb();
     await withTimeout(fs.updateDoc(fs.doc(db, 'certificates', certificateId), { ['sharingStatus.' + net]: true }), 15000);
   },
-  /* "Check a certificate": the public part only. Resolves to { studentName, courseName, issuedOn } or null. */
+  /* "Check a certificate": the public part only. Resolves to { studentName, courseName, issuedOn, score, total } or null
+     (score and total are null for records made before they were kept). */
   async verify(certificateId){
     if (!live || inApp) throw new Error('not-live');
     const [fs, db] = await fsDb();
     const snap = await withTimeout(fs.getDoc(fs.doc(db, 'certificateVerify', certificateId)), 15000);
     if (!snap.exists()) return null;
     const d = snap.data(), t = d.issuedAt && d.issuedAt.toDate ? d.issuedAt.toDate() : null;
-    return { certificateId: d.certificateId, studentName: d.studentName, courseName: d.courseName, issuedOn: t ? t.toISOString().slice(0, 10) : '' };
+    return { certificateId: d.certificateId, studentName: d.studentName, courseName: d.courseName, issuedOn: t ? t.toISOString().slice(0, 10) : '',
+      score: Number.isInteger(d.score) ? d.score : null, total: Number.isInteger(d.total) ? d.total : null };
   }
 };
 document.dispatchEvent(new Event('lt:certstore'));

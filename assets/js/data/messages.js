@@ -354,7 +354,41 @@ const TEXT = {
       /* Under the QR code printed on certificates that are on record (CertRecord.drawVerifyQR). */
       scan: 'Scan to check',
       /* verify-certificate.html opened inside the Google Play app, where nothing is sent. */
-      appOnly: 'Certificates can be checked on the website: open learntamil.msdevbuild.com/verify-certificate.html in a web browser.'
+      appOnly: 'Certificates can be checked on the website: open learntamil.msdevbuild.com/verify-certificate.html in a web browser.',
+      /* In the app, under a found certificate: the check page has the download and share options. */
+      openPage: '⬇ Download or share this certificate →',
+      /* "About this certificate", on the check page under a found certificate (verify-share.js): what the child did and how
+         a certificate is earned. A grown-up page, so English. {name} is the name on the certificate. */
+      about: {
+        head: '🎓 About this certificate',
+        didLevel: '{name} passed Level {n} of the Learn Tamil certificate tests: {title} ({en}).',
+        didKuralLevel: '{name} passed Thirukkural Level {n}: {en} ({ta}), on Kurals {from}–{to}.',
+        didChapter: '{name} learned Thirukkural chapter {n}, {chEn} ({chTa}), and passed its test.',
+        onDate: 'Earned on {date}.',
+        score: 'Score: {score} of {total} questions right ({pct}%).',
+        coversHead: 'What {name} showed they can do',
+        kuralCovers: 'Know the Kurals of Thirukkural, the 2,000-year-old book of wisdom by Thiruvalluvar, from Kural {from} to {to} (chapters {chFrom}–{chTo}): fill in the missing word of a Kural, give its next line, and say which chapter it belongs to.',
+        chapterCovers: 'Know the 10 Kurals of chapter {n}, which begins “{l1} {l2}”: for each Kural, fill in its missing word.',
+        howHead: 'How this certificate is earned',
+        how: 'In the Learn Tamil app, the child answers {total} multiple-choice questions and needs {pass} right to pass. The questions are made fresh for every try, so they cannot be learned by heart.',
+        howLevels: 'Levels open one at a time: to take Level {n}, {name} first passed Levels 1 to {prev}.',
+        record: 'The certificate was made on the Learn Tamil website, after a parent or guardian gave the child’s name and their consent. The record was saved when the certificate was made and cannot be changed afterwards.',
+        app: 'Learn Tamil (learntamil.msdevbuild.com) is a free app that teaches children the 247 Tamil letters, reading, stories, rhymes and Thirukkural, with sound, games and level tests.'
+      },
+      /* Download and share, on the check page only (features/certificate/verify-share.js). A grown-up page, so English.
+         The message never contains the name: the name is only on the certificate and on the check page the link opens. */
+      share: {
+        head: '📣 Download or share',
+        download: 'Download image', pdf: 'Download PDF',
+        device: 'Share image',
+        copy: 'Copy message', copied: '✓ Message copied',
+        pasteHint: 'The message and link are copied. Paste them into your post.',
+        openIg: 'Open Instagram',
+        igSteps: ['Tap “Download image” to keep the certificate in your photos.', 'Tap “Copy message”.', 'Open Instagram, tap ＋, choose Post or Story and pick the certificate.', 'Paste the message as the caption and share.'],
+        message: '✅ Verified certificate: {course}, {date}.\n\nAnyone can check it here:',
+        privacy: 'Learn Tamil sends nothing. Each button opens the app or site you choose, with the message shown above. The message has no name in it; the name is on the certificate and on this page.',
+        title: 'Verified Learn Tamil certificate'
+      }
     },
     /* Celebration card under a new certificate (features/certificate/cert-share.js).
        The share part is a grown-up surface (behind press-and-hold), so it is English like share.js.

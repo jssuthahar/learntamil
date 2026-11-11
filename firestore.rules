@@ -11,7 +11,8 @@ service cloud.firestore {
       allow read, delete: if false;
       allow create: if validCertId(certId)
         && request.resource.data.keys().hasOnly(['studentName', 'email', 'phoneNumber', 'certificateId', 'batchId', 'courseName',
-             'certificateUrl', 'issuedAt', 'status', 'sharingStatus', 'source', 'consent', 'consentVersion'])
+             'certificateUrl', 'issuedAt', 'status', 'sharingStatus', 'source', 'consent', 'consentVersion', 'score', 'total'])
+        && validScore(request.resource.data)
         && request.resource.data.keys().hasAll(['studentName', 'email', 'phoneNumber', 'certificateId', 'batchId', 'courseName',
              'issuedAt', 'status', 'sharingStatus', 'source', 'consent', 'consentVersion'])
         && request.resource.data.certificateId == certId
@@ -34,14 +35,17 @@ service cloud.firestore {
         && request.resource.data.sharingStatus.linkedin is bool && request.resource.data.sharingStatus.whatsapp is bool
         && request.resource.data.sharingStatus.facebook is bool && request.resource.data.sharingStatus.instagram is bool;
     }
-    // "Check a certificate": only what is printed on the certificate (name, course, date), never the email or phone.
-    // Anyone with an ID can open that one document; nobody can list or search them. Created in the same batch as
-    // certificates/{certId}, and must match it.
+    // "Check a certificate": only what is printed on the certificate (name, course, date, score), never the email or phone.
+    // Anyone with an ID can open that one document (and redraw the certificate from it); nobody can list or search them.
+    // Created in the same batch as certificates/{certId}, and must match it.
     match /certificateVerify/{certId} {
       allow get: if true;
       allow list, update, delete: if false;
       allow create: if validCertId(certId)
-        && request.resource.data.keys().hasOnly(['certificateId', 'studentName', 'courseName', 'issuedAt'])
+        && request.resource.data.keys().hasOnly(['certificateId', 'studentName', 'courseName', 'issuedAt', 'score', 'total'])
+        && validScore(request.resource.data)
+        && getAfter(/databases/$(database)/documents/certificates/$(certId)).data.get('score', -1) == request.resource.data.get('score', -1)
+        && getAfter(/databases/$(database)/documents/certificates/$(certId)).data.get('total', -1) == request.resource.data.get('total', -1)
         && request.resource.data.keys().hasAll(['certificateId', 'studentName', 'courseName', 'issuedAt'])
         && request.resource.data.certificateId == certId
         && request.resource.data.issuedAt == request.time
@@ -52,6 +56,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
     function validCertId(id) { return id is string && id.matches('^(LT|TKL|TK)[0-9]{1,3}-[A-Z0-9]{4,12}$'); }
+    // score and total come together or not at all (records made before they were kept have neither)
+    function validScore(d) { return (!('score' in d) && !('total' in d))
+      || (d.score is int && d.total is int && d.total >= 1 && d.total <= 20 && d.score >= 0 && d.score <= d.total); }
     function str(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
   }
 }

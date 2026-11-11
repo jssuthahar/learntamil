@@ -23,8 +23,8 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const fmtDay = (d, lang) => new Date(d).toLocaleDateString(lang === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Load the same data the app uses.
-const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES, FESTIVALS, KURAL_PAALS, KURAL_LESSONS } =
-  loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'WORDS', 'STORIES', 'TOPICS', 'AATHICHOODI', 'RHYMES', 'FESTIVALS', 'KURAL_PAALS', 'KURAL_LESSONS']);
+const { PULLI, VOWELS, CONS, GROUPS, WORDS, STORIES, TOPICS, AATHICHOODI, RHYMES, FESTIVALS, KURAL_PAALS, KURAL_LESSONS, CERT_LEVELS, KURAL_LEVELS } =
+  loadData(['PULLI', 'VOWELS', 'CONS', 'GROUPS', 'WORDS', 'STORIES', 'TOPICS', 'AATHICHOODI', 'RHYMES', 'FESTIVALS', 'KURAL_PAALS', 'KURAL_LESSONS', 'CERT_LEVELS', 'KURAL_LEVELS']);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const PUBLISHED = '2026-11-09';
 const REPO_URL = 'https://github.com/jssuthahar/learntamil';
@@ -1845,9 +1845,9 @@ const privacyBody = `
 <h2 id="certificates">Certificate records (website only, with a parent’s consent)</h2>
 <p>On the website, before a certificate is made, a form asks a <strong>parent or guardian</strong> for the child’s name, <strong>their own email address and phone number</strong> (with country code), and to tick a box to agree. Nothing on the form is sent until you tick that box and tap the button.</p>
 <ul>
-<li><strong>What is stored:</strong> the child’s name, your email and phone, the certificate ID, the level or chapter passed, the date and time, that you agreed (and which version of the wording), and whether you later tapped a WhatsApp, Facebook, LinkedIn or Instagram share button for that certificate.</li>
+<li><strong>What is stored:</strong> the child’s name, your email and phone, the certificate ID, the level or chapter passed, the score, the date and time, that you agreed (and which version of the wording), and whether you later tapped a WhatsApp, Facebook, LinkedIn or Instagram share button for that certificate.</li>
 <li><strong>Where:</strong> <strong>Cloud Firestore</strong> (Google Firebase, project <code>learntamil-js</code>). One record per certificate. The security rules let the website add a record once; <strong>nobody can read records from the website</strong>, so names, emails and phone numbers are never shown publicly, on the certificate or in share links. Only the site owner can see them, in the Firebase console.</li>
-<li><strong>Checking a certificate:</strong> a copy of only what is printed on the certificate (the child’s name, the level or chapter, the date and the certificate ID) is kept separately, so anyone who has a certificate ID can confirm it on the <a href="verify-certificate.html">Check a certificate</a> page (or with <em>🔎 Check a certificate</em> in the app). Certificates that are on record also carry a QR code that opens that page: it holds only the page address and the certificate ID, nothing else. The email and phone are never part of that copy and can’t be looked up. Certificates are never listed or searchable by name.</li>
+<li><strong>Checking a certificate:</strong> a copy of only what is printed on the certificate (the child’s name, the level or chapter, the score, the date and the certificate ID) is kept separately, so anyone who has a certificate ID can confirm it, see how it was earned and download the certificate on the <a href="verify-certificate.html">Check a certificate</a> page (or with <em>🔎 Check a certificate</em> in the app). Certificates that are on record also carry a QR code that opens that page: it holds only the page address and the certificate ID, nothing else. The email and phone are never part of that copy and can’t be looked up. Certificates are never listed or searchable by name.</li>
 <li><strong>Why:</strong> to keep a record of each certificate, so we can confirm it if asked, and to tell you about new Learn Tamil levels and lessons. We never sell your details or share them with advertisers.</li>
 <li><strong>Your choices:</strong> to see, correct or delete your records, or to stop hearing from us, use the ${CONTACT}. Your email and phone are also remembered in this browser (<code>lt-parent-contact</code>) so you are not asked again; clearing this site’s data removes them from the device.</li>
 <li><strong>Offline:</strong> the child always gets the certificate. If the record cannot be sent, it waits in this browser and is sent the next time the site is online.</li>
@@ -1903,6 +1903,14 @@ write('privacy.html', shell({
   h1: 'Privacy &amp; data policy', eyebrow: 'Legal', bubble: 'No tracking — promise!', body: privacyBody
 }));
 
+/* What the check page needs to explain and redraw a certificate (features/certificate/verify-share.js), so it does not load
+   the lesson files: the letter levels, the Thirukkural levels, and for chapters 1–108 (those with certificates)
+   [Tamil name, English name, line 1, line 2] of the chapter's first Kural. */
+const CERT_INFO = JSON.stringify({
+  letters: CERT_LEVELS.map(({ n, ic, ta, en, title, titleEn, total, pass, about }) => ({ n, ic, ta, en, title, titleEn, total, pass, about })),
+  kuralLevels: KURAL_LEVELS.map(({ n, ic, ta, en, from, to, total, pass }) => ({ n, ic, ta, en, from, to, total, pass })),
+  chapters: Array.from({ length: 108 }, (_, i) => [KURAL.ch[i][0], KURAL.ch[i][1], ...kText(i * 10 + 1).slice(0, 2)])
+}).replace(/</g, '\\u003c');
 /* ---------- Check a certificate (verify-certificate.html) ----------
    For parents, teachers and schools. The form is drawn by features/certificate/verify-page.js (VERIFY_SCRIPTS) from
    TEXT.certificate.verify; ?id=… (the QR code on a certificate) checks that ID straight away.
@@ -1910,11 +1918,12 @@ write('privacy.html', shell({
 write('verify-certificate.html', shell({
   file: 'verify-certificate.html', ogType: 'website', share: false, scripts: VERIFY_SCRIPTS,
   title: 'Check a Learn Tamil Certificate by ID | Learn Tamil',
-  description: 'Check a Learn Tamil certificate: type the certificate ID or scan its QR code to see the name, level and date printed on it. Email and phone are never shown.',
+  description: 'Check a Learn Tamil certificate by its ID or QR code: see the name, level and date, then download or share it. Email and phone are never shown.',
   h1: 'Check a certificate <span class="ta">· சான்றிதழ் சரிபார்ப்பு</span>', eyebrow: 'For parents, teachers and schools', bubble: 'Is it real? Let’s check! 🔎',
   body: `
 <p class="lead-doc">Every certificate made on the Learn Tamil website has an ID printed at the bottom, such as <code>LT1-AB12CD</code> (letter levels) or <code>TKL2-…</code> and <code>TK5-…</code> (Thirukkural). Scan the certificate’s QR code, or type its ID below, to see the details it was made with.</p>
 <div id="certVerify" class="verify-box"><noscript><p class="crv-msg">Please turn on JavaScript to check a certificate.</p></noscript></div>
+<script type="application/json" id="certInfo">${CERT_INFO}</script>
 
 <h2>What the check shows</h2>
 <ul>
@@ -1923,15 +1932,15 @@ write('verify-certificate.html', shell({
 <li>Certificates can’t be listed or searched by name: you need the ID.</li>
 </ul>
 
-<h2>If a certificate is not found</h2>
+<h2>What you see for a real certificate</h2>
 <ul>
-<li>Check each character: IDs use the number <b>0</b> and the letter <b>O</b>, the number <b>1</b> and the letter <b>I</b>.</li>
-<li>Certificates made in the <strong>Android app</strong>, or before <strong>November 2026</strong>, are not listed. They have no QR code.</li>
-<li>A certificate made while the device was <strong>offline</strong> is listed after that device is next online with Learn Tamil open.</li>
+<li><strong>About this certificate:</strong> what the child achieved, what that level or Thirukkural chapter covers, the score, and how a certificate is earned in the app.</li>
+<li><strong>The certificate itself</strong>, exactly as it was printed, to <strong>download as a PDF or image</strong>.</li>
+<li><strong>Share buttons</strong> for WhatsApp, LinkedIn, Facebook, X, Telegram, Instagram and email. The share message holds the level, the date and the link to this page, never the child’s name. Learn Tamil sends nothing: each button opens the app or site you choose.</li>
 </ul>
 
-<h2>What a Learn Tamil certificate means</h2>
-<p>Learn Tamil certificates are practice certificates that encourage children. A child earns one by passing a short test in the app. They are <strong>not an official or accredited qualification</strong> (see the <a href="terms.html#certificates">terms</a>). How the records are kept is explained in the <a href="privacy.html#certificates">privacy policy</a>.</p>
+<h2>How children earn a certificate</h2>
+<p>In the free Learn Tamil app, a child takes a level test: 10 multiple-choice questions (15 for the champion level), made fresh for every try from the app’s letters, words, sentences and Thirukkural. Passing needs 8 right (12 for the champion level), and each level opens only after the one before it is passed. A parent or guardian then gives the child’s name to make the certificate, and the record is saved so it can be checked here.</p>
 <p>A certificate looks wrong, or you want a record corrected or deleted? Please use the ${CONTACT}.</p>
 <p><a class="btn primary" href="./#/certificate">🎓 Earn a certificate in the app</a></p>
 `
