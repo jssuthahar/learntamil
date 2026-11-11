@@ -72,6 +72,65 @@ export function SPONSOR(place) {
 </aside>`;
 }
 
+/* "Stay connected" — the maker's YouTube, Instagram, Buy Me a Coffee, AI & programming blog and contact.
+   Grown-up places ONLY: guide pages (after the article), the parents' area of the home page, the footer and the
+   Parent dashboard (behind the Hold gate). Never inside lessons, games, stories or certificates: the YouTube and
+   Instagram content is for adults (Instagram is 13+). Plain links in a new tab — no embeds, no widget scripts,
+   no tracking pixels — so nothing loads from those sites until a grown-up taps. */
+export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCDrVJHz36TVZ3eFP8n-KLSg';
+export const INSTAGRAM_URL = 'https://www.instagram.com/nikibhavi/';
+export const BLOG_URL = 'https://blog.msdevbuild.com/';
+export const CONTACT_URL = 'https://blog.msdevbuild.com/contact/';
+const ICON_YT = '<svg viewBox="0 0 28 20" width="28" height="20" aria-hidden="true" focusable="false"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11.2 5.6v8.8l7.6-4.4z" fill="#fff"/></svg>';
+const ICON_IG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="#fff" stroke="none"/></svg>';
+const CONNECT_ITEMS = [
+  { id: 'yt', ic: ICON_YT, url: YOUTUBE_URL, title: 'Subscribe to NikiBhavi',
+    text: 'Want to know more about Malaysia, living costs, career opportunities and life in Malaysia? Subscribe to NikiBhavi on YouTube and stay connected!',
+    btn: 'Subscribe on YouTube', short: 'YouTube' },
+  { id: 'ig', ic: ICON_IG, url: INSTAGRAM_URL, title: 'Follow us on Instagram',
+    text: 'Follow us on Instagram for more updates, interesting content, tips and everyday experiences!',
+    btn: 'Follow on Instagram', short: 'Instagram' },
+  { id: 'bmc', ic: '<span aria-hidden="true">☕</span>', url: COFFEE_URL, title: 'Support our work',
+    text: 'Enjoying our content? Support our work and help us create more useful learning resources. Every contribution makes a difference!',
+    btn: 'Buy Me a Coffee', short: 'Buy me a coffee' },
+  { id: 'ai', ic: '<span aria-hidden="true">🤖</span>', url: BLOG_URL, title: 'Learn AI and programming',
+    text: 'Want to learn AI, programming, software development and real-world technology concepts? Explore our technical articles and start learning today!',
+    btn: 'Explore AI & Programming', short: 'AI & programming blog' },
+];
+const ext = (url, cls, inner, label) => `<a class="${cls}" href="${url}" target="_blank" rel="noopener"${label ? ` aria-label="${esc(label)} (opens a new tab)"` : ''}>${inner}</a>`;
+export function CONNECT(place = 'page') {
+  if (place === 'footer') return `<div class="foot-connect">
+      <b>Stay connected</b>
+      <nav class="fc-links" aria-label="Follow and support">${CONNECT_ITEMS.map(c => ext(c.url, `fc fc-${c.id}`, `<span class="fc-ic">${c.ic}</span>${esc(c.short)}`, c.btn)).join('')}${ext(CONTACT_URL, 'fc fc-mail', '<span class="fc-ic"><span aria-hidden="true">✉️</span></span>Contact us', 'Contact us')}</nav>
+    </div>`;
+  // The home page already shows the coffee card right above this one, so it skips that tile.
+  const items = place === 'home' ? CONNECT_ITEMS.filter(c => c.id !== 'bmc') : CONNECT_ITEMS;
+  return `<section class="connect connect-${place}" aria-labelledby="connect-${place}-h">
+  <span class="cn-deco" aria-hidden="true"><i>⭐</i><i>💛</i><i>✨</i><i>🌸</i></span>
+  <div class="cn-top">
+    <div class="cn-kili" aria-hidden="true"><span class="cn-bird">🦜</span><span class="cn-bubble" lang="ta">வணக்கம்!</span></div>
+    <div>
+      <p class="cn-eyebrow">For parents &amp; grown-ups</p>
+      <h2 id="connect-${place}-h" class="cn-h">Stay connected with us 💛</h2>
+      <p class="cn-sub">Learn Tamil stays free, with no ads in the lessons or games. If you enjoy it, here is where else you can find us. <span class="ta">நன்றி!</span></p>
+    </div>
+  </div>
+  <div class="cn-grid">${items.map(c => `
+    <div class="cn-card cn-${c.id}">
+      <span class="cn-ic">${c.ic}</span>
+      <b>${esc(c.title)}</b>
+      <p>${esc(c.text)}</p>
+      ${ext(c.url, 'cn-btn', `${esc(c.btn)} <span aria-hidden="true">↗</span>`, c.btn)}
+    </div>`).join('')}
+  </div>
+  <div class="cn-contact">
+    <span class="cn-ic" aria-hidden="true">✉️</span>
+    <p><b>Let’s talk.</b> Have a question, need guidance, or want to collaborate with us? Feel free to get in touch. We’d love to hear from you! <span class="muted">Questions about Malaysia and careers, AI and programming, partnerships or a topic you’d like us to cover — all welcome.</span></p>
+    ${ext(CONTACT_URL, 'cn-btn cn-btn-mail', 'Get in touch <span aria-hidden="true">↗</span>', 'Get in touch')}
+  </div>
+</section>`;
+}
+
 /* All guide pages — used for the footer, "More guides" cards, sitemap and llms.txt. */
 export const GUIDES = [
   { file: 'learn-tamil-online.html', ic: '🚀', en: 'Learn Tamil online — free beginner’s guide', ta: 'தமிழ் கற்போம்' },
@@ -213,6 +272,7 @@ ${guide ? SPONSOR('vertical') + SPONSOR('banner') : ''}
 ${body}
 ${guide ? SPONSOR('card') : ''}
 ${share ? '<div class="share-row share-inline" data-share-row="Share this page"></div>' : ''}
+${guide ? CONNECT('page') : ''}
 ${more}
 </main>
 ${FOOTER}
@@ -230,10 +290,9 @@ export const FOOTER = `<footer>
       <a href="terms.html">Terms</a>
       <a href="${ISSUES_URL}" rel="noopener">Report an issue / feedback</a>
       <a href="${REPO_URL}" rel="noopener" title="Learn Tamil is open source: see the code or contribute">Open source on GitHub</a>
-      <a href="https://blog.msdevbuild.com/contact/" rel="noopener">Contact</a>
       <a href="${ADVERTISE_URL}" rel="noopener">Advertise with us</a>
-      <a class="coffee-link" href="${COFFEE_URL}" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </nav>
+    ${CONNECT('footer')}
     <div class="share-row" data-share-row="Share Learn Tamil"></div>
     <nav class="foot-guides" aria-label="Guides"><b>Guides:</b> ${GUIDES.map(g => `<a href="${g.file}">${g.en}</a>`).join(' · ')}</nav>
     <p class="foot-disc"><b>Disclaimer:</b> Sounds are played by your device's text-to-speech voice and may sometimes be incorrect. If you hear any mistake in the voice, please <a href="${ISSUES_URL}" rel="noopener">report it here as an issue</a>.</p>
@@ -1482,12 +1541,13 @@ const privacyBody = `
 <li><strong>Google Fonts</strong> supplies the Tamil and English fonts. See the <a href="https://developers.google.com/fonts/faq/privacy" rel="noopener">Google Fonts privacy FAQ</a>.</li>
 <li><strong>cdnjs (Cloudflare)</strong> supplies a zip library, only on the Letter Recorder page.</li>
 <li><strong>Buy Me a Coffee</strong>: the “Buy me a coffee” link opens buymeacoffee.com, where you can choose to support the project. This website does not load any Buy Me a Coffee script and sends it nothing. If you decide to support, Buy Me a Coffee handles the payment under <a href="https://www.buymeacoffee.com/privacy-policy" rel="noopener">its own privacy policy</a>, and may share with the creator the name and message you choose to leave.</li>
+<li><strong>YouTube, Instagram and our blog</strong>: the “Stay connected” boxes on guide pages, at the bottom of the home page, in the footer and in the Parent dashboard are plain links to our NikiBhavi YouTube channel, our Instagram page and blog.msdevbuild.com. No video player, feed, follow button or other script from those sites loads on our pages, and nothing is sent to them until you tap a link; then that site’s own privacy policy applies. These links are meant for parents and grown-ups: the YouTube and Instagram content is for adults, and Instagram requires users to be 13 or older. They never appear inside the children’s lessons, games, stories or certificates.</li>
 <li><strong>GitHub Issues</strong> is where you can report bugs and give feedback. Issues are <em>public</em>: your GitHub username and whatever you write can be seen by anyone, and are handled under GitHub's privacy statement. Please do not include personal details, especially about children. For private questions use the ${CONTACT}.</li>
 <li><strong>Your browser's text-to-speech voice</strong> reads letters and words aloud. Some voices (for example Microsoft Edge “natural” voices or Google voices) are online services: your browser may send the text being spoken — Tamil letters and words from this site — to that provider. No personal information is part of that text.</li>
 </ul>
 
 <h2>Children's privacy</h2>
-<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads inside the lessons or games, no ad tracking, no chat and no links that ask for personal details; sponsor boxes appear only on grown-up guide pages (see <a href="#sponsors">Sponsor boxes</a>). We recommend that young children use the site with a parent or teacher.</p>
+<p>Learn Tamil is made for children and is designed so that it does not collect personal information from anyone, including children. Anonymous usage statistics are collected only after a parent or teacher allows them, with advertising features off. There are no ads inside the lessons or games, no ad tracking, no chat and no links that ask for personal details; sponsor boxes and links to our YouTube, Instagram and blog appear only in grown-up areas (see <a href="#sponsors">Sponsor boxes</a>). We recommend that young children use the site with a parent or teacher.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the new version will be posted on this page with a new “Updated” date.</p>
@@ -1577,7 +1637,7 @@ put('FAQ-SCHEMA', '');
 put('FOOTER', FOOTER);
 put('STYLES', styleTags());
 put('SCRIPTS', scriptTags([...APP_SCRIPTS, ...SERVICES]));
-put('SUPPORT', SUPPORT + '\n' + SPONSOR('home'));
+put('SUPPORT', SUPPORT + '\n' + CONNECT('home') + '\n' + SPONSOR('home'));
 put('PRINT-PROMO', `<a class="print-promo" href="tamil-printables.html"><span class="pp-ic" aria-hidden="true">🖨️</span><span><b>Free printables · <span class="ta">அச்சிடும் தாள்கள்</span></b><small>${PRINTS.length} charts, tracing and activity worksheets and colouring pages — print and practise away from the screen.</small></span><span class="pp-go" aria-hidden="true">→</span></a>`);
 put('GUIDES', GUIDES.map(g => `<a class="guide-card" href="${g.file}"><span class="gc-ic" aria-hidden="true">${g.ic}</span><b>${g.en}</b><span class="ta">${g.ta}</span></a>`).join(''));
 fs.writeFileSync(idxPath, idx);

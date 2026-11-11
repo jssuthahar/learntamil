@@ -809,6 +809,75 @@ body:not(.doc-page) .coffee-top .ct-cup{font-size:20px}
   .coffee-btn{grid-column:1/-1;justify-content:center}
 }
 
+/* "Stay connected" — CONNECT() in tools/build-pages.mjs. Grown-up areas only; plain links, no scripts. */
+.connect{position:relative;margin:28px 0;padding:22px 20px 18px;border-radius:34px;overflow:hidden;
+  background:radial-gradient(260px 180px at 0% 0%,rgb(255 0 0 / .10),transparent 70%),radial-gradient(260px 180px at 100% 0%,rgb(214 41 118 / .12),transparent 70%),radial-gradient(260px 180px at 100% 100%,rgb(0 120 212 / .12),transparent 70%),var(--glass);
+  border:1px solid var(--glass-line);box-shadow:var(--glass-shadow)}
+.cn-eyebrow{margin:0;font-size:12px!important;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.connect .cn-h{margin:2px 0 4px;font-family:var(--font-kid);font-size:24px;border:0;padding:0}
+.connect .cn-h::before{content:none}
+.cn-sub{margin:0 0 14px;color:var(--text-muted);font-size:15px!important}
+.cn-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.connect-home .cn-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.cn-grid,.connect-home .cn-grid{grid-template-columns:1fr}}
+.cn-card{display:flex;flex-direction:column;gap:6px;padding:18px 16px 16px;border-radius:28px;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--cn,#0078d4) 13%,var(--surface)),var(--surface) 70%);
+  border:2px solid color-mix(in srgb,var(--cn,#0078d4) 28%,transparent);box-shadow:0 6px 0 color-mix(in srgb,var(--cn,#0078d4) 18%,transparent);transition:transform .18s,box-shadow .18s}
+.cn-card:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:0 10px 0 color-mix(in srgb,var(--cn,#0078d4) 22%,transparent)}
+.cn-card:nth-child(even):hover{transform:translateY(-4px) rotate(.6deg)}
+.cn-card:hover .cn-ic{animation:cnWiggle .5s ease-in-out}
+@keyframes cnWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+/* Kili says hello */
+.cn-top{display:flex;gap:16px;align-items:center;position:relative;padding-bottom:10px}
+.cn-kili{position:relative;flex:none;width:76px;height:76px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,color-mix(in srgb,#2fbf71 22%,var(--surface)));box-shadow:0 5px 0 rgb(47 191 113 / .25)}
+.cn-bird{font-size:44px;line-height:1;animation:bob 3s ease-in-out infinite}
+.cn-bubble{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);padding:3px 10px;border-radius:14px;background:#fff;color:#0b1020;font-family:var(--font-kid);font-weight:800;font-size:13px;white-space:nowrap;box-shadow:0 3px 10px -4px rgb(0 0 0 / .3)}
+.cn-deco i{position:absolute;font-style:normal;opacity:.55;pointer-events:none;animation:cnFloat 6s ease-in-out infinite}
+.cn-deco i:nth-child(1){top:14px;right:22px;font-size:20px}
+.cn-deco i:nth-child(2){top:58px;right:70px;font-size:16px;animation-delay:-2s}
+.cn-deco i:nth-child(3){bottom:18px;left:12px;font-size:18px;animation-delay:-4s}
+.cn-deco i:nth-child(4){top:20px;right:120px;font-size:15px;animation-delay:-3s}
+@keyframes cnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.cn-deco i,.cn-bird,.cn-card:hover .cn-ic{animation:none}}
+@media (max-width:760px){.cn-kili{width:60px;height:60px}.cn-bird{font-size:34px}.cn-bubble{font-size:11px;bottom:-10px}.cn-top{align-items:flex-start;padding-bottom:6px}.cn-deco i:nth-child(n+2){display:none}}
+.cn-card b{font-family:var(--font-kid);font-size:18px;line-height:1.25}
+.cn-card p{margin:0;flex:1;font-size:14px!important;line-height:1.55!important;color:var(--text-muted)}
+.cn-yt{--cn:#ff0000}.cn-ig{--cn:#d62976}.cn-bmc{--cn:#e0b400}.cn-ai{--cn:#0078d4}
+.cn-ic{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:26px;line-height:1;background:color-mix(in srgb,var(--cn,#0078d4) 14%,transparent)}
+.cn-ig .cn-ic{background:linear-gradient(45deg,#feda75,#fa7e1e 25%,#d62976 50%,#962fbf 75%,#4f5bd5)}
+.cn-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;padding:10px 16px;border-radius:999px;background:var(--cn,#0078d4);color:#fff!important;font-weight:800;font-family:var(--font-kid);font-size:16px;text-decoration:none!important;white-space:nowrap;box-shadow:0 4px 0 color-mix(in srgb,var(--cn,#0078d4) 70%,#000);transition:transform .12s,box-shadow .12s}
+.cn-btn:hover{transform:translateY(-2px)}
+.cn-btn:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--cn,#0078d4) 70%,#000)}
+.cn-ig .cn-btn{background:linear-gradient(45deg,#fa7e1e,#d62976 50%,#962fbf)}
+.cn-bmc .cn-btn{background:#ffdd00;color:#0b1020!important}
+.cn-yt .cn-ic svg{animation:cnPulse 2.6s ease-in-out infinite}
+@keyframes cnPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.cn-yt .cn-ic svg{animation:none}.cn-card:hover,.cn-btn:hover{transform:none}}
+.cn-contact{--cn:#7c3aed;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;margin-top:12px;padding:14px 16px;border-radius:26px;background:linear-gradient(160deg,color-mix(in srgb,#7c3aed 10%,var(--surface)),var(--surface) 70%);border:2px dashed color-mix(in srgb,#7c3aed 45%,transparent)}
+.cn-contact p{margin:0;font-size:14.5px!important;line-height:1.55!important}
+.cn-contact .muted{display:block;font-size:13px}
+@media (max-width:760px){
+  .connect{padding:18px 14px 14px}
+  .cn-contact{grid-template-columns:auto 1fr}
+  .cn-contact .cn-btn{grid-column:1/-1}
+}
+/* Footer + Parent dashboard: compact pill row */
+.foot-connect{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 0 4px;border-top:1px solid rgb(255 255 255 / .1)}
+.fc-links,.pc-connect{display:flex;flex-wrap:wrap;gap:8px}
+.fc{display:inline-flex;align-items:center;gap:7px;padding:6px 14px 6px 8px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none!important;transition:transform .12s,filter .12s}
+.fc:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.fc-ic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:15px}
+.fc-ic svg{width:20px;height:auto}
+footer .fc,.pc-connect .fc{color:#fff!important}
+.fc-yt{background:#ff0000}
+.fc-ig{background:linear-gradient(45deg,#fa7e1e,#d62976 50%,#962fbf)}
+footer .fc-bmc{background:#ffdd00;color:#0b1020!important}
+.fc-ai{background:#0078d4}
+.fc-mail{background:#7c3aed}
+.fc-yt .fc-ic svg rect{fill:#fff}.fc-yt .fc-ic svg path{fill:#ff0000}
+.pc-connect{margin:-4px 0 14px}
+.pc-connect .fc{padding:6px 12px;font-size:13px}
+
 /* Aathichoodi, rhymes, festivals and the parents' guide */
 .aathi{display:flex;flex-direction:column;gap:8px;margin:16px 0}
 .aathi-row{display:grid;grid-template-columns:56px 1fr;align-items:center;gap:14px;padding:10px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--border)}

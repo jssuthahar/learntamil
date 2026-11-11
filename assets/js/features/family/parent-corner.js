@@ -81,6 +81,12 @@ function renderParents(d){
       <span class="pc-coffee-t"><b>Enjoying Learn Tamil? Buy me a coffee</b><small>It is free, with no ads in the lessons or games. Your support keeps it that way. <span class="ta">நன்றி!</span></small></span>
       <span class="pc-coffee-go" aria-hidden="true">→</span>
     </a>
+    <nav class="pc-connect" aria-label="Stay connected (for grown-ups)">
+      <a class="fc fc-yt" href="https://www.youtube.com/channel/UCDrVJHz36TVZ3eFP8n-KLSg" target="_blank" rel="noopener"><span aria-hidden="true">▶️</span> Subscribe to NikiBhavi on YouTube</a>
+      <a class="fc fc-ig" href="https://www.instagram.com/nikibhavi/" target="_blank" rel="noopener"><span aria-hidden="true">📸</span> Follow on Instagram</a>
+      <a class="fc fc-ai" href="https://blog.msdevbuild.com/" target="_blank" rel="noopener"><span aria-hidden="true">🤖</span> Learn AI &amp; programming</a>
+      <a class="fc fc-mail" href="https://blog.msdevbuild.com/contact/" target="_blank" rel="noopener"><span aria-hidden="true">✉️</span> Contact us</a>
+    </nav>
 
     <div class="pc-path">
       <label class="pc-set">🎂 Age group
