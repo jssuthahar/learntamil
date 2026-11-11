@@ -1,0 +1,11 @@
+# Android build output and machine-specific files (the signing key lives in ~/.android-keys, never here)
+.gradle/
+build/
+app/build/
+local.properties
+*.jks
+*.keystore
+*.apk
+*.aab
+*.idx
+dist/

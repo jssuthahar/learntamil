@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.msdevbuild.learntamil",
+      "sha256_cert_fingerprints": [
+        "A0:CE:A3:FA:42:41:0B:C2:28:C5:52:10:0A:63:DF:4B:D8:A5:CA:8D:55:FB:EE:C9:AC:B7:9F:E9:DF:E9:2F:B0"
+      ]
+    }
+  }
+]

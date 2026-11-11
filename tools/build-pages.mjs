@@ -1512,10 +1512,14 @@ const privacyBody = `
 <tr><td>Visit counted, random session ID and approximate place</td><td>sessionStorage <code>lt-counted</code>, <code>lt-sid</code>, <code>lt-geo</code>, <code>lt-located</code></td><td>So one visit is counted once; removed when the tab is closed</td></tr>
 <tr><td>Your cookie choice</td><td>localStorage <code>lt-consent</code></td><td>Remembers whether you allowed anonymous usage statistics</td></tr>
 <tr><td>Best game scores and sound on/off</td><td>localStorage <code>lt-best-*</code>, <code>lt-sfx</code></td><td>Shows the best score for each game; remembers if game sounds are muted</td></tr>
+<tr><td>Opened from the Android app</td><td>sessionStorage <code>lt-app</code></td><td>Turns off analytics, counters, reminders, sponsor boxes and donation links inside the app; removed when the app is closed</td></tr>
 <tr><td>Closed voice message</td><td>sessionStorage <code>lt-notice</code></td><td>Keeps the “no Tamil voice” message closed until the tab is closed</td></tr>
 <tr><td>Your letter recordings</td><td>IndexedDB (only on <code>record.html</code>)</td><td>Keeps recordings you make until you download or delete them</td></tr>
 </tbody></table></div>
 <p>You can remove all of this at any time with <em>Reset progress</em> in the 🪙 My rewards panel, or by clearing this site's data in your browser settings.</p>
+
+<h2 id="android">The Learn Tamil Android app</h2>
+<p>The Learn Tamil app on Android (Google Play or a test copy) shows this same website inside the phone’s Chrome engine. Because it is made for children, the app collects and sends <strong>nothing</strong>: there is no cookie notice and no Google Analytics, no “learning around the world” visit counter, no location lookup, no reminders or push token, no sponsor boxes and no donation links. Progress and settings are saved only on the phone, as listed below, and the 🎤 <b>Say it</b> microphone works the same way as on the website (never recorded to storage, never uploaded). The app remembers that it is the app only for the current session (sessionStorage <code>lt-app</code>). Uninstalling the app, or clearing Chrome’s data for this site, removes everything.</p>
 
 <h2 id="live">“Learning around the world” counter</h2>
 <p>The home page shows how many visits the site has had, how many people are learning right now, and the top countries and cities. To make this work, each visit adds one to a shared counter in <strong>Firebase Realtime Database</strong> (Google), and an open page keeps a temporary anonymous entry (a random ID, removed when the page is closed) so it can be counted as “learning right now”. No cookies are used for this.</p>

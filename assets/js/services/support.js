@@ -7,6 +7,7 @@
    Everything is remembered only in this browser (localStorage "lt-support"). */
 (function () {
   'use strict';
+  if (window.LT_APP) return;   // no donation prompts inside the Google Play app (Play payments policy)
   const KEY = 'lt-support', DAY = 864e5;
   const COFFEE = 'https://buymeacoffee.com/jssuthahar';
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };

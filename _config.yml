@@ -1,0 +1,7 @@
+# GitHub Pages (Jekyll) settings. The site itself is plain HTML; this file only changes what is published.
+# .well-known/assetlinks.json proves the Android app (com.msdevbuild.learntamil) belongs to this site, so the
+# app opens full-screen with no address bar. Jekyll skips dot-folders unless they are listed here.
+# When Google Play App Signing is turned on, add Play's app-signing SHA-256 to assetlinks.json as well.
+include: [".well-known"]
+# The Android project's source is not part of the website.
+exclude: ["android"]

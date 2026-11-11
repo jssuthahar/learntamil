@@ -958,6 +958,10 @@ footer .fc-bmc{background:#ffdd00;color:#0b1020!important}
 .pc-coffee-go{font-weight:800;font-size:20px}
 @media (min-width:761px) and (max-width:859px){ .kural-page .coffee-top{display:none} }   /* no room beside the Thirukkural menu */
 
+/* Google Play app (services/pwa.js sets html.in-app): no sponsor boxes, donation links, install button or reminders. */
+.in-app .sponsor-slot,.in-app .sky-rail,.in-app .support-card,.in-app .coffee-top,.in-app .coffee-btn,.in-app .fc-bmc,
+.in-app .pc-coffee,.in-app .install-btn,.in-app .push-row{display:none!important}
+
 /* ===== 70-rewards.css ===== */
 /* Learn Tamil — Game rewards: scoreboard, cheer pop-up, badges, rewards panel.
    Order matters: files load in number order (see tools/lib/assets.mjs). */

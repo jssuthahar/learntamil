@@ -25,6 +25,9 @@ const KEY = 'lt-consent';
 
 // Only count real visits to the published site (not local testing).
 const live = location.protocol === 'https:' && !/^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname);
+/* Google Play app (window.LT_APP, set by services/pwa.js): a children's app, so nothing is sent at all —
+   no Analytics, no cookie notice, no location lookup, no push token, no visit counter. */
+const inApp = !!window.LT_APP;
 
 const getChoice = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
 const setChoice = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
@@ -51,7 +54,7 @@ const getApp = () => appP || (appP = (async () => {
 
 let started = false;
 async function startAnalytics(){
-  if (started || !live) return; started = true;
+  if (started || !live || inApp) return; started = true;
   try {
     const { initializeAnalytics, setConsent, logEvent, isSupported } = await import(SDK + 'firebase-analytics.js');
     if (!(await isSupported().catch(() => false))) return;
@@ -75,7 +78,7 @@ function clearGaCookies(){
 
 let box = null;
 function showNotice(){
-  if (box) return;
+  if (box || inApp) return;
   box = document.createElement('div');
   box.className = 'consent'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-live', 'polite');
   box.setAttribute('aria-label', 'Cookie choice');
@@ -131,6 +134,7 @@ const standalone = matchMedia('(display-mode: standalone)').matches || navigator
 const pushCapable = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 
 function pushState(){
+  if (inApp) return 'unsupported';
   if (!pushCapable) return isIOS && !standalone ? 'ios-install' : 'unsupported';
   if (Notification.permission === 'denied') return 'blocked';
   let t = null; try { t = localStorage.getItem(PUSH_KEY); } catch (e) {}
@@ -207,7 +211,7 @@ const ss = { get(k){ try { return sessionStorage.getItem(k); } catch (e) { retur
              set(k, v){ try { sessionStorage.setItem(k, v); } catch (e) {} } };
 
 async function liveStart(){
-  if (!live) return;
+  if (!live || inApp) return;
   try {
     const m = await import(SDK + 'firebase-database.js');
     liveRefs = m; liveDb = m.getDatabase(await getApp());
@@ -225,7 +229,7 @@ async function liveStart(){
 }
 
 async function liveLocate(){
-  if (!liveDb || ss.get('lt-located')) return;
+  if (inApp || !liveDb || ss.get('lt-located')) return;
   try {
     let g = null; try { g = JSON.parse(ss.get('lt-geo')); } catch (e) {}
     if (!g){

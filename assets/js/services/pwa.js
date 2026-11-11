@@ -1,5 +1,20 @@
 /* Learn Tamil — Progressive Web App: offline support, install button, updates.
    Works on every page; it builds its own small UI. */
+/* Android app mode: the Google Play app (a Trusted Web Activity) opens "./?source=twa".
+   Children's apps on Play must not run analytics, location lookups, push tokens, ads or donation links,
+   so window.LT_APP is set and <html class="in-app"> hides those (services/firebase.js, support.js, 60-pages.css).
+   Kept in sessionStorage (this app session only), so the same phone's Chrome browser is not affected. */
+window.LT_APP = (function () {
+  let on = false;
+  try {
+    on = new URLSearchParams(location.search).get('source') === 'twa' || /^android-app:\/\//.test(document.referrer)
+      || sessionStorage.getItem('lt-app') === 'android';
+    if (on) sessionStorage.setItem('lt-app', 'android');
+  } catch (e) {}
+  if (on) document.documentElement.classList.add('in-app');
+  return on;
+})();
+
 (function () {
   'use strict';
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
