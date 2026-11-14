@@ -295,6 +295,10 @@ export const FOOTER = `<footer>
       <a href="${REPO_URL}" rel="noopener" title="Learn Tamil is open source: see the code or contribute">Open source on GitHub</a>
       <a href="share-learn-tamil.html">Share &amp; promo kit</a>
       <a href="${ADVERTISE_URL}" rel="noopener">Advertise with us</a>
+      <a href="verify-certificate.html">Verify a certificate</a>
+      <a href="sitemap.xml">Sitemap</a>
+      <a href="llms.txt" title="Summary of Learn Tamil for AI assistants">llms.txt</a>
+      <a href="llms-full.txt" title="All Learn Tamil content as plain text, for AI assistants">llms-full.txt</a>
     </nav>
     ${CONNECT('footer')}
     <div class="share-row" data-share-row="Share Learn Tamil"></div>
